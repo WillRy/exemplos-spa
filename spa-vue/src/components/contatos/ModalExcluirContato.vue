@@ -1,0 +1,113 @@
+<template>
+    <BaseModal
+        :aberta="modalExcluirContatoState.open"
+        @onClose="fecharModal"
+        @onOpen="carregarFormulario"
+    >
+        <template #title>
+            <h3>Exclusão de contato</h3>
+        </template>
+        <template #body>
+            <Loader width="60px" height="60px" :cor-principal="true" v-if="loadingDados"></Loader>
+            <p v-else>Deseja excluir o contato <strong>{{ modalExcluirContatoState.payload.nome }}</strong>?</p>
+        </template>
+        <template #footer>
+            <BaseButtonDanger @click.prevent="submit" :loading="loading">
+                Excluir
+            </BaseButtonDanger>
+            <BaseButtonTertiary @click.prevent="fecharModal">
+                Cancelar
+            </BaseButtonTertiary>
+        </template>
+    </BaseModal>
+</template>
+
+<script>
+
+import api from "../../services/api";
+import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
+import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
+import BaseModal from "../../external/components/modal/BaseModal";
+import BaseSelectAjax from "../../external/components/form/BaseSelectAjax";
+import BaseInput from "../../external/components/form/BaseInput";
+import BaseDate from "../../external/components/form/BaseDate";
+import {modalExcluirContatoStore} from "../../stores/contato";
+import BaseButtonDanger from "../../external/components/buttons/BaseButtonDanger";
+
+export default {
+    name: "ModalExcluirContato",
+    setup() {
+        const modalExcluirContatoState = modalExcluirContatoStore();
+        return {
+            modalExcluirContatoState
+        };
+    },
+    components: {
+        BaseButtonDanger,
+        BaseDate,
+        BaseInput,
+        BaseSelectAjax,
+        BaseModal,
+        BaseButtonTertiary,
+        BaseButtonPrimary,
+    },
+    data() {
+        return {
+            form: {
+                nome: '',
+                email: '',
+                telefone: '',
+                cep: '',
+                endereco: '',
+                numero: '',
+                complemento: '',
+                cidade: '',
+                estado: '',
+                organizacao_id: null,
+            },
+            pesquisouCep: false,
+            config: false,
+            loading: false,
+            loadingDados: false,
+            resultadoPesquisaEmpresa: []
+        }
+    },
+    computed: {},
+    methods: {
+        async carregarFormulario() {
+            this.loadingDados = true;
+
+            await api.get(`/contato/${this.modalExcluirContatoState.payload.id}`);
+
+            this.loadingDados = false;
+        },
+        fecharModal() {
+            this.modalExcluirContatoState.fechar()
+            this.$emit("onClose");
+        },
+        async submit() {
+            try {
+                this.loading = true;
+                await api.delete(`/contato/${this.modalExcluirContatoState.payload.id}`);
+
+                this.fecharModal();
+                this.modalExcluirContatoState.onReload();
+                this.loading = false;
+
+            } catch (e) {
+                this.$laravelError(e, 'Não foi possível excluir o contato!');
+            } finally {
+                this.loading = false;
+            }
+        },
+    },
+    beforeUnmount() {
+    },
+    created() {
+    },
+}
+</script>
+
+<style scoped>
+
+</style>
