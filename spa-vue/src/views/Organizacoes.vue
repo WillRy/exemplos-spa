@@ -27,7 +27,7 @@
                     </form>
                 </template>
                 <Tabela
-                    :loading="loading"
+                    :loading="loaders.loading"
                     :colunas="[
                         {
                             nome: 'id',
