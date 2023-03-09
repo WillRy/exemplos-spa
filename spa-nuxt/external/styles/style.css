@@ -1,0 +1,10 @@
+@import "variables.css";
+@import "colors.css";
+
+@import 'v-calendar/dist/style.css';
+@import 'vue-multiselect/dist/vue-multiselect.css';
+@import 'floating-vue/dist/style.css';
+@import 'vue-toast-notification/dist/theme-sugar.css';
+
+@import "select.css";
+@import "tabelas.css";
