@@ -30,7 +30,7 @@ api.interceptors.response.use(function (response) {
 }, async function (error) {
     if (401 === error.response.status) {
         window.localStorage.removeItem("token");
-        app.config.globalProperties.$router.push({name: 'login'});
+        await app.config.globalProperties.$router.push({name: 'login'});
     }
     return Promise.reject(error);
 });
