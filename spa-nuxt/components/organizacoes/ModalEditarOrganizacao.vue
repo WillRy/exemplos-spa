@@ -234,7 +234,7 @@ export default {
                     this.loading = false;
                 }
             } catch (e) {
-                useToastApi(e, 'Não foi possível editar o organizacao!');
+                useMessageApi(e, 'Não foi possível editar o organizacao!');
             } finally {
                 this.loading = false;
             }

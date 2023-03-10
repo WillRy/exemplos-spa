@@ -126,7 +126,6 @@
 import {modalCriarOrganizacaoStore} from "../../store/organizacao";
 import {email, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
-import useToastApi from '../../hooks/useToastApi';
 
 export default {
     name: "ModalCriarOrganizacao",
@@ -245,7 +244,7 @@ export default {
                     this.loading = false;
                 }
             } catch (e) {
-                useToastApi(e, 'Não foi possível cadastrar o organizacao!');
+                useMessageApi(e, 'Não foi possível cadastrar o organizacao!');
             } finally {
                 this.loading = false;
             }

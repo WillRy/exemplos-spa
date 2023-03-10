@@ -1,7 +1,7 @@
 <template>
   <div class="dropdown-header" @click="toggle" v-click-away="() => clickFora()">
     <div class="dropdown-header-texto">
-      {{ authState.usuario.nome }}
+      {{ usuario.nome }}
       <img src="../../assets/arrow-down-branca.svg" />
     </div>
     <div class="dropdown-header-corpo" :class="{ aberto: aberto }">
@@ -18,6 +18,10 @@
 import { authStore } from "~~/store/auth";
 
 const authState = authStore();
+
+const {usuario} = storeToRefs(authState);
+
+
 const aberto = ref(false);
 
 

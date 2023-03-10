@@ -1,7 +1,9 @@
 <template>
+  <div>
     <div>
-        <slot></slot>
+      <slot></slot>
     </div>
+  </div>
 </template>
 <script setup>
 import { authStore } from "../store/auth";
@@ -10,9 +12,8 @@ const authState = authStore();
 
 
 // Init profile on server
-await useAsyncData('user', () => authState.carregarUsuarioLogado())
-
-// 
+await useAsyncData("user", () => authState.carregarUsuarioLogado());
+//
 // console.log(data.value, error.value);
 
 // const authState = authStore();

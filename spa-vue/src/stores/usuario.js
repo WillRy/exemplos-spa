@@ -8,7 +8,7 @@ export const usuarioStore = defineStore('usuarioStore', {
         }
     },
     actions: {
-        carregarUsuarioLogado() {
+        async carregarUsuarioLogado() {
             return api.get('/usuario').then((r) => {
                 this.usuario = r.data.data;
             });

@@ -1,3 +1,6 @@
 <template>
-    <p>logout</p>
+    <div></div>
 </template>
+<script setup>
+
+</script>

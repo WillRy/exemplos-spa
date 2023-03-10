@@ -10,7 +10,11 @@
         </BaseInput>
       </div>
       <div>
-        <BaseButtonPrimary :loading="loaders.loading" style="width: 100%" class="mb-xs">
+        <BaseButtonPrimary
+          :loading="loaders.loading"
+          style="width: 100%"
+          class="mb-xs"
+        >
           Recuperar
         </BaseButtonPrimary>
         <NuxtLink to="login">Voltar para o login</NuxtLink>
@@ -22,7 +26,7 @@
 <script setup>
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
-import useToast from "~~/hooks/useToast";
+import useCustomToast from "~~/hooks/useCustomToast";
 
 definePageMeta({
   layout: "publico",
@@ -52,31 +56,20 @@ async function submit() {
       const fetch = fetchApiPublic();
 
       const resultado = await fetch("/esqueci-senha", {
-        method: 'post',
+        method: "post",
         body: {
           email: form.email,
           url: window.location.origin + "/" + "redefinir-senha",
         },
       });
 
-      if (resultado.success) {
-        useToast({
-          message: "Verifique seu e-mail com as instruções de recuperação!",
-          type: "success",
-        });
-      }
-
-      if (!resultado.success) {
-        useToast({
-          message: "Verifique seu e-mail com as instruções de recuperação!",
-          type: "success",
-        });
-      }
-
+      useCustomToast({
+        message: "Verifique seu e-mail com as instruções de recuperação!",
+        type: "success",
+      });
     }
   } catch (e) {
-    console.log(e)
-    useToast({
+    useMessageApi({
       message: "Não foi possível enviar o e-mail de recuperação!",
       type: "error",
     });

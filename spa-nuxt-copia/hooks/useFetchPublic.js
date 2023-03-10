@@ -1,4 +1,4 @@
-const useFetchApi = async (url, params) => {
+const useFetchPublic = async (url, params) => {
 
 
     const config = useRuntimeConfig()
@@ -33,4 +33,4 @@ const useFetchApi = async (url, params) => {
 
 }
 
-export default useFetchApi;
+export default useFetchPublic;

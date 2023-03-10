@@ -1,7 +1,7 @@
 <template>
   <div>
     <Guard>
-      <!-- <Header /> -->
+      <Header />
       <Sidebar /> 
     
       <div class="home-section">

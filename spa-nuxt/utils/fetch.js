@@ -1,19 +1,29 @@
+
+
 export const fetchApiProtected = (params = {}) => {
+  const router = useRouter();
+
   const onResponse = async ({ response }) => {
-    if (params.onResponseError) {
-      params.onResponseError({ response });
+    if (params.onResponse) {
+      await params.onResponse({ response });
     }
 
-    if (response.status === 401) {
+    if (response.status == 401) {
       
-      // const authCookie = useCookie('token')
-      // authCookie.value = null
+      await router.push({
+        path: "/logout",
+      }).then(() => {
+        useCustomToast({
+          message: "Sua sessão expirou!",
+          type: "error",
+        });
+      });
+    }
+  };
 
-      console.log("401=================================================")
-
-      setTimeout(async () => {
-        await navigateTo("/login");
-      }, 300)
+  const onResponseError = async ({ response }) => {
+    if (params.onResponseError) {
+      params.onResponseError({ response });
     }
   };
 
@@ -41,7 +51,9 @@ export const fetchApiProtected = (params = {}) => {
   const config = useRuntimeConfig();
   return $fetch.create({
     baseURL: config.API_URL,
+    ...params,
     onResponse,
+    onResponseError,
     onRequestError,
     onRequest,
     headers: {

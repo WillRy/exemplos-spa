@@ -1,5 +1,5 @@
 <template>
-    <div class="layout" v-if="!loading">
+    <div class="layout" v-if="!loading && usuarioState.usuario">
         <Header/>
         <Sidebar/>
         <div class="home-section">

@@ -91,8 +91,6 @@
 </template>
 
 <script setup>
-import useToast from "~/hooks/useToast";
-import useFetchApi from "~~/hooks/useFetchApi";
 
 // watch("modalCriarOrganizacaoState.reload", () => {
 //   buscarDados();
@@ -196,13 +194,7 @@ watch(
   (error) => {
     if (!error) return;
 
-    useToast({
-      type: "error",
-      message:
-        error.data && error.data.message
-          ? error.data.message
-          : "Não foi possível listar as organizações",
-    });
+    useMessageApi(error,"Não foi possível listar as organizações");
   },
   { immediate: true }
 );

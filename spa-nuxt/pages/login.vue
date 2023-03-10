@@ -33,7 +33,6 @@
 <script setup>
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
-import useToast from "../hooks/useToast";
 import { authStore } from "../store/auth";
 
 definePageMeta({ layout: "publico", middleware: ["guest"] });
@@ -63,25 +62,13 @@ const submit = async () => {
 
     const result = await v$.$validate();
     if (result) {
-      let response = await authState.login(login);
+      await authState.login(login);
 
-      console.log(response);
-
-      if (!response.success) {
-        useToast({
-          message: response.message ?? "Não foi possível realizar o login!",
-          type: "error",
-        });
-      }
-
-      if (response.success) {
-        window.localStorage.setItem("token", response.data.token);
-        await navigateTo("/painel/organizacoes");
-      }
+      await navigateTo("/painel/organizacoes");
     }
   } catch (e) {
-    console.log(e);
-    useToast({
+    
+    useMessageApi({
       message: "Não foi possível realizar o login!",
       type: "error",
     });
