@@ -53,23 +53,8 @@ export default {
     },
     data() {
         return {
-            form: {
-                nome: '',
-                email: '',
-                telefone: '',
-                cep: '',
-                endereco: '',
-                numero: '',
-                complemento: '',
-                cidade: '',
-                estado: '',
-                organizacao_id: null,
-            },
-            pesquisouCep: false,
-            config: false,
             loading: false,
-            loadingDados: false,
-            resultadoPesquisaEmpresa: []
+            loadingDados: false
         }
     },
     computed: {},

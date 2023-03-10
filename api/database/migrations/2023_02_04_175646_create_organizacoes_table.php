@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->string('cep', 255)->nullable();
             $table->string('endereco', 255)->nullable();
             $table->string('numero', 255)->nullable();
+            $table->string('bairro', 255)->nullable();
             $table->string('complemento', 255)->nullable();
             $table->string('cidade', 255)->nullable();
             $table->string('estado', 255)->nullable();

@@ -85,11 +85,7 @@ export default {
                 estado: '',
                 organizacao_id: null,
             },
-            pesquisouCep: false,
-            config: false,
-            loading: false,
-            loadingDados: false,
-            resultadoPesquisaEmpresa: []
+            loadingDados: false
         }
     },
     computed: {},
