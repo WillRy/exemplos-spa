@@ -86,6 +86,8 @@
     <ClientOnly>
       <ModalCriarOrganizacao />
       <ModalEditarOrganizacao/>
+      <ModalExcluirOrganizacao/>
+      <ModalDetalhesOrganizacao/>
     </ClientOnly>
     <!-- <ModalEditarOrganizacao/> -->
     <!-- <ModalExcluirOrganizacao/> -->
@@ -94,13 +96,17 @@
 </template>
 
 <script setup>
-import { modalCriarOrganizacaoStore } from "../../store/organizacao";
+import { modalCriarOrganizacaoStore, modalEditarOrganizacaoStore, modalExcluirOrganizacaoStore } from "../../store/organizacao";
 
 const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
 const modalEditarOrganizacaoState = modalEditarOrganizacaoStore();
+const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore();
+const modalDetalhesOrganizacaoState = modalDetalhesOrganizacaoStore();
 
 const { reload: reloadCriarOrganizacao } = storeToRefs(modalCriarOrganizacaoState);
 const { reload: reloadEditarOrganizacao } = storeToRefs(modalEditarOrganizacaoState);
+const { reload: reloadExcluirOrganizacao } = storeToRefs(modalExcluirOrganizacaoState);
+
 
 watch(reloadCriarOrganizacao, () => {
   buscarDados();
@@ -108,13 +114,9 @@ watch(reloadCriarOrganizacao, () => {
 watch(reloadEditarOrganizacao, () => {
   buscarDados();
 });
-// watch("modalEditarOrganizacaoState.reload", () => {
-//   buscarDados();
-// });
-// watch("modalExcluirOrganizacaoState.reload", () => {
-//   buscarDados();
-// });
-
+watch(reloadExcluirOrganizacao, () => {
+  buscarDados();
+});
 const loaders = reactive({
   loading: false,
 });

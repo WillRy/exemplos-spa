@@ -26,7 +26,6 @@
 <script setup>
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
-import useCustomToast from "~~/hooks/useCustomToast";
 
 definePageMeta({
   layout: "publico",
@@ -55,7 +54,7 @@ async function submit() {
     if (result) {
       const fetch = fetchApiPublic();
 
-      const resultado = await fetch("/esqueci-senha", {
+      await fetch("/esqueci-senha", {
         method: "post",
         body: {
           email: form.email,
@@ -69,10 +68,7 @@ async function submit() {
       });
     }
   } catch (e) {
-    useMessageApi({
-      message: "Não foi possível enviar o e-mail de recuperação!",
-      type: "error",
-    });
+    useMessageApi(e,  "Não foi possível enviar o e-mail de recuperação!");
   } finally {
     loaders.loading = false;
   }

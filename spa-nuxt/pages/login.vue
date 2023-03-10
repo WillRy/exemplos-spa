@@ -67,11 +67,9 @@ const submit = async () => {
       await navigateTo("/painel/organizacoes");
     }
   } catch (e) {
+    console.log("error", e)
     
-    useMessageApi({
-      message: "Não foi possível realizar o login!",
-      type: "error",
-    });
+    useMessageApi(e, "Não foi possível realizar o login!");
   } finally {
     loaders.loading = false;
   }

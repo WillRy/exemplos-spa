@@ -125,7 +125,7 @@
 
 import {modalCriarOrganizacaoStore} from "../../store/organizacao";
 import {email, required} from "@vuelidate/validators";
-import useVuelidate from "@vuelidate/core";
+import { useVuelidate } from "@vuelidate/core";
 
 export default {
     name: "ModalCriarOrganizacao",

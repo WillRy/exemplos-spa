@@ -12,16 +12,11 @@ export default defineNuxtPlugin(async (nuxtApp) => {
           }
 
           if (response.status == 401) {
-            await router
-              .push({
-                path: "/logout",
-              })
-              .then(() => {
-                useCustomToast({
-                  message: "Sua sessão expirou!",
-                  type: "error",
-                });
-              });
+            await router.push({
+              path: '/logout'
+          }).then(() => {
+              useCustomToast({type: 'error', message: 'Sua sessão expirou'})
+          })
           }
         };
 
@@ -69,10 +64,10 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         const { data, pending, error, execute } = await useFetch(url, opts);
 
         return {
-          data,
-          pending,
-          error,
-          execute,
+          data: data.value,
+          pending: pending.value,
+          error: error.value,
+          execute: execute,
         };
       },
     },

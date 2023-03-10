@@ -1,4 +1,4 @@
-import useFetchPublic from "~/hooks/useFetchPublic";
+
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
@@ -27,6 +27,7 @@ export default defineEventHandler(async (event) => {
       ...response,
     };
   } catch (error) {
+    setResponseStatus(event, error.statusCode ?? 401);
     return {
       success: false,
       message: error.data ? error.data.message : error.message,
