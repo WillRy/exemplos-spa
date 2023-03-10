@@ -7,9 +7,9 @@
         <div class="dropdown-header-corpo" :class="{aberto: aberto}">
             <ul>
                 <li>
-                    <router-link to="/logout">
+                    <a @click="logout">
                         Sair
-                    </router-link>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -40,6 +40,12 @@ export default {
 
         clickFora() {
             this.aberto = false;
+        },
+        logout() {
+            window.localStorage.removeItem("token");
+            this.$router.push({
+                path: '/'
+            })
         }
     }
 }

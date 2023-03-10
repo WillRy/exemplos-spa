@@ -8,7 +8,7 @@
                     v-model="login.email"
                 >
                     <template v-slot:error v-if="v$.login.email.$error">
-                        <p v-if="v$.login.email.required.$invalid">Informe seu e-mail</p>
+                        <p v-if="v$.login.email.$error">Informe seu e-mail</p>
                     </template>
                 </BaseInput>
             </div>
@@ -19,7 +19,7 @@
                     type="password"
                 >
                     <template v-slot:error v-if="v$.login.senha.$error">
-                        <p v-if="v$.login.senha.required.$invalid">Informe sua senha</p>
+                        <p v-if="v$.login.senha.$error">Informe sua senha</p>
                     </template>
                 </BaseInput>
             </div>

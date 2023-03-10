@@ -8,7 +8,7 @@
                     v-model="email"
                 >
                     <template v-slot:error v-if="v$.email.$error">
-                        <p v-if="v$.email.required.$invalid">Informe seu e-mail</p>
+                        <p v-if="v$.email.$error">Informe seu e-mail</p>
                     </template>
                 </BaseInput>
             </div>
