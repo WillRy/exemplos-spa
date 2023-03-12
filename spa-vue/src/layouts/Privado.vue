@@ -1,9 +1,9 @@
 <template>
-    <div class="layout" v-if="!loading">
+    <div class="layout" v-if="!loading && usuarioState.usuario">
         <Header/>
         <Sidebar/>
         <div class="home-section">
-            <router-view></router-view>
+            <router-view key="privado"></router-view>
         </div>
 
     </div>
@@ -32,19 +32,19 @@ export default {
         }
     },
     async created() {
-        this.loading = true;
+        // this.loading = true;
 
-        let token = window.localStorage.getItem("token");
-        if (token) {
+        // let token = window.localStorage.getItem("token");
+        // if (token) {
 
-            await this.usuarioState.carregarUsuarioLogado()
-                .catch(() => {
-                    window.localStorage.removeItem("token");
-                    this.$router.push({name: 'login'})
-                })
-        } else {
-            await this.$router.push({name: 'login'})
-        }
+        //     await this.usuarioState.carregarUsuarioLogado()
+        //         .catch(() => {
+        //             window.localStorage.removeItem("token");
+        //             this.$router.push({name: 'login'})
+        //         })
+        // } else {
+        //     await this.$router.push({name: 'login'})
+        // }
 
         this.loading = false;
     }

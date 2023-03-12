@@ -90,11 +90,11 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
                     $fail('Informe um CEP válido');
                 }
             }],
-            'endereco' => 'max:255',
-            'numero' => 'max:255',
-            'complemento' => 'max:255',
-            'cidade' => 'max:255',
-            'estado' => 'max:255|in:AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC,SP,SE,TO'
+            'endereco' => 'nullable|max:255',
+            'numero' => 'nullable|max:255',
+            'complemento' => 'nullable|max:255',
+            'cidade' => 'nullable|max:255',
+            'estado' => 'nullable|max:255|in:AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC,SP,SE,TO'
         ], [], [
             'endereco' => 'endereço',
             'numero' => 'número',

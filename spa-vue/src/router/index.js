@@ -3,6 +3,9 @@ import Publico from "../layouts/Publico";
 import Login from "../views/auth/Login";
 import Privado from "../layouts/Privado";
 import {defineAsyncComponent} from "vue";
+import { usuarioStore } from '../stores/usuario';
+import { useToast } from 'vue-toast-notification';
+import NProgress from 'nprogress';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,8 +32,26 @@ const router = createRouter({
             ]
         },
         {
+
             path: '/painel',
             component: Privado,
+            async beforeEnter(from, to, next) {
+                try {
+                    const usuarioState = usuarioStore();
+                    await usuarioState.carregarUsuarioLogado();
+                    
+                    next();
+                } catch(error) {
+                    console.log(error)
+                    const toast = useToast()
+                    toast.open({
+                        type: 'error',
+                        message: 'Erro ao carregar dados do usuario'
+                    })
+                    window.localStorage.removeItem('token');
+                    next({'path': '/'})
+                }
+            },
             children: [
                 {
                     path: '',
@@ -40,7 +61,8 @@ const router = createRouter({
                 {
                     path: 'organizacoes',
                     name: 'organizacoes',
-                    component: defineAsyncComponent(() => import("../views/Organizacoes"))
+                    component: defineAsyncComponent(() => import("../views/Organizacoes")),
+
                 },
                 {
                     path: 'contatos',
@@ -59,5 +81,21 @@ const router = createRouter({
 // }
     ]
 })
+
+
+
+router.beforeResolve((to, from, next) => {
+    // If this isn't an initial page load.
+    if (to.name) {
+        // Start the route progress bar.
+        NProgress.start()
+    }
+    next()
+  })
+  
+  router.afterEach(() => {
+    // Complete the animation of the route progress bar.
+    NProgress.done()
+  })
 
 export default router
