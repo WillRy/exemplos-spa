@@ -5,7 +5,13 @@ export const usuarioStore = defineStore("usuarioStore", {
   state: () => {
     return {
       usuario: null,
+      permissoes: []
     };
+  },
+  getters: {
+    temPermissao: (state) => {
+      return (permissao) => state.permissoes.includes(permissao)
+    },
   },
   actions: {
     async carregarUsuarioLogado() {

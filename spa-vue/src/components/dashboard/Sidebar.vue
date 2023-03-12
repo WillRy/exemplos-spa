@@ -37,11 +37,20 @@
                 </router-link>
                 <span class="tooltip">Contatos</span>
             </li>
+            <li>
+                <router-link :to="{name:'sem-permissao'}">
+                    <img src="../../assets/lock-b.svg" alt="" class="black">
+                    <img src="../../assets/lock-w.svg" alt="" class="white">
+                    <span class="links_name">Rota sem permissão</span>
+                </router-link>
+                <span class="tooltip">Rota sem permissão</span>
+            </li>
         </ul>
     </div>
 </template>
 
 <script>
+
 
 export default {
     name: "Sidebar",

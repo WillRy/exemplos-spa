@@ -11,5 +11,21 @@ export default defineConfig({
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url))
         }
+    },
+    build: {
+        minify: 'terser',
+        terserOptions: {
+            parse: {
+                html5_comments: false,
+            },
+            compress: {
+              drop_console: true,
+              keep_fargs: false,
+              keep_fnames: true
+            },
+            format: {
+                comments: false
+            }
+          },
     }
 })

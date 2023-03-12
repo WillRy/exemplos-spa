@@ -11,6 +11,14 @@
                         Sair
                     </a>
                 </li>
+                <li>
+                    <button :disabled="!usuarioState.temPermissao('botao')" v-if="!usuarioState.temPermissao('botao')">
+                        Botão sem permissao
+                    </button>
+                    <button v-else="usuarioState.temPermissao('botao')">
+                        Botão com permissao
+                    </button>
+                </li>
             </ul>
         </div>
     </div>
@@ -103,7 +111,7 @@ export default {
     list-style: none;
 }
 
-.dropdown-header-corpo a {
+.dropdown-header-corpo a, .dropdown-header-corpo button {
     padding: 8px 12px;
     width: 100%;
     display: flex;
@@ -117,6 +125,12 @@ export default {
     white-space: nowrap;
     /* visibility: hidden; */
     text-decoration: none;
+    background: none;
+    border: none;
+}
+.dropdown-header-corpo button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .dropdown-header-corpo a:hover {
