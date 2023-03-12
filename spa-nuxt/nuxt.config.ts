@@ -1,6 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: true,
+  build: {
+    transpile: []
+  },
   runtimeConfig: {
     API_URL: process.env.API_URL,
     public: {

@@ -1,11 +1,11 @@
 <template>
   <BaseModal
-    :aberta="modalDetalhesOrganizacaoState.open"
+    :aberta="modalDetalhesContatoState.open"
     @onClose="fecharModal"
     @onOpen="carregarFormulario"
   >
     <template #title>
-      <h3>Detalhes do organizacao</h3>
+      <h3>Detalhes do contato</h3>
     </template>
     <template #body>
       <Loader
@@ -58,8 +58,11 @@
 </template>
 
 <script setup>
-import { modalDetalhesOrganizacaoStore } from "../../store/organizacao";
-const modalDetalhesOrganizacaoState = modalDetalhesOrganizacaoStore();
+import { modalDetalhesContatoStore } from "../../store/contato";
+
+const modalDetalhesContatoState = modalDetalhesContatoStore();
+
+const $emit = defineEmits();
 
 const form = reactive({
   nome: "",
@@ -77,22 +80,28 @@ const form = reactive({
 const loadingDados = ref(false);
 
 function fecharModal() {
-  modalDetalhesOrganizacaoState.open = false;
+  modalDetalhesContatoState.fechar();
+  $emit("onClose");
 }
+
 async function carregarFormulario() {
   try {
     loadingDados.value = true;
 
     const ajax = fetchApiProtected();
-
-    const response = await ajax(
-      `/organizacao/${modalDetalhesOrganizacaoState.payload.id}`
+    const data = await ajax(
+      `/contato/${modalDetalhesContatoState.payload.id}`,
+      {
+        method: "GET",
+      }
     );
-    const dados = response.data;
+
+    const dados = data.data;
     Object.assign(form, dados);
+
     form.organizacao_id = dados.organizacao;
   } catch (error) {
-    useMessageApi(error, "Não foi possível exibir os dados!");
+    useMessageApi(error, 'Não foi possível exibir os dados!')
     fecharModal();
   } finally {
     loadingDados.value = false;

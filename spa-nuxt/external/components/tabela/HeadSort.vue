@@ -8,16 +8,17 @@
             <SortIcon v-else/>
             {{ texto }}
 
-            <InfoIcon v-if="info" class="info" v-tooltip="{content: info}"/>
+            <div v-tooltip="{content: info}">
+                <InfoIcon v-if="info" class="info"/>
+            </div>
         </button>
         <span v-else>{{ texto }}</span>
     </th>
 </template>
 
 <script>
-import {
-  VTooltip,
-} from 'floating-vue'
+import * as pkg from 'floating-vue'
+const {VTooltip} = pkg;
 
 
 import InfoIcon from "../icons/InfoIcon";

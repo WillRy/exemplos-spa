@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {app} from '../main'
 
 export let store = null;
 
@@ -30,7 +29,7 @@ api.interceptors.response.use(function (response) {
 }, async function (error) {
     if (401 === error.response.status) {
         window.localStorage.removeItem("token");
-        app.config.globalProperties.$router.push({name: 'login'});
+        window.location.href = "/"
     }
     return Promise.reject(error);
 });

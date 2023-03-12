@@ -1,25 +1,35 @@
 <template>
   <BaseModal
-    :aberta="modalEditarOrganizacaoState.open"
+    :aberta="modalCriarContatoState.open"
     @onClose="fecharModal"
     @onOpen="carregarFormulario"
   >
     <template #title>
-      <h3>Edição de organizacao</h3>
+      <h3>Criação de contato</h3>
     </template>
     <template #body>
-      <Loader
-        width="60px"
-        height="60px"
-        :cor-principal="true"
-        v-if="loadingDados"
-      ></Loader>
-      <form @submit.prevent="submit" v-if="!loadingDados">
+      <form @submit.prevent="submit">
         <div class="row-xxs">
+          <div class="col-12 mb-sm">
+            <BaseSelectAjax
+              label="Organização"
+              placeholder="Pesquise as organizações"
+              v-model="form.organizacao_id"
+              track-by="id"
+              text-by="nome"
+              :options="resultadoPesquisaEmpresa"
+              @search-change="pesquisarEmpresa"
+              :clear="true"
+              noOptions="Pesquise as organizações"
+              :empty="false"
+              :remover="true"
+            >
+            </BaseSelectAjax>
+          </div>
           <div class="col-12 mb-sm">
             <BaseInput v-model="form.nome" label="Nome *" placeholder="Nome">
               <template v-slot:error v-if="v$.nome.$error">
-                <p v-if="v$.nome.$error">Informe o nome</p>
+                <p v-if="v$.nome.required.$invalid">Informe o nome</p>
               </template>
             </BaseInput>
           </div>
@@ -32,7 +42,9 @@
             >
               <template v-slot:error v-if="v$.email.$error">
                 <p v-if="v$.email.required.$invalid">Informe o e-mail</p>
-                <p v-if="v$.email.email.$invalid">Informe um e-mail inválido</p>
+                <p v-if="v$.email.email.$invalid">
+                  Informe um e-mail inválido
+                </p>
               </template>
             </BaseInput>
           </div>
@@ -113,7 +125,7 @@
     </template>
     <template #footer>
       <BaseButtonPrimary @click.prevent="submit" :loading="loading">
-        Editar
+        Cadastrar
       </BaseButtonPrimary>
       <BaseButtonTertiary @click.prevent="fecharModal">
         Cancelar
@@ -123,13 +135,11 @@
 </template>
 
 <script setup>
-import { modalEditarOrganizacaoStore } from "../../store/organizacao";
-import { email, required } from "@vuelidate/validators";
-import { useVuelidate } from "@vuelidate/core";
+import {useVuelidate} from "@vuelidate/core";
+import { required, email } from "@vuelidate/validators";
+import { modalCriarContatoStore } from "../../store/contato";
 
-const modalEditarOrganizacaoState = modalEditarOrganizacaoStore();
-
-const emit = defineEmits();
+const modalCriarContatoState = modalCriarContatoStore();
 
 const form = reactive({
   nome: "",
@@ -144,7 +154,7 @@ const form = reactive({
   organizacao_id: null,
 });
 
-const { value: v$ } = useVuelidate(
+const {value: v$} = useVuelidate(
   {
     nome: { required },
     email: { email, required },
@@ -162,57 +172,72 @@ const { value: v$ } = useVuelidate(
 );
 
 const pesquisouCep = ref(false);
+
 const loading = ref(false);
-const loadingDados = ref(false);
+
+const resultadoPesquisaEmpresa = ref([]);
+
+const $emit = defineEmits();
 
 async function tratarCep() {
-  pesquisouCep.value = false;
-  if (form.cep.length === 8) {
-    $fetch(`https://viacep.com.br/ws/${form.cep}/json/`)
-      .then((data) => {
-        if (data.erro) {
-          pesquisouCep.value = true;
-          useCustomToast({
-            type: "error",
-            message: "Não foi possível encontrar o CEP",
-          });
-        }
+  try {
+    pesquisouCep.value = false;
 
-        form.endereco = data.logradouro;
-        form.complemento = data.complemento;
-        form.bairro = data.bairro;
-        form.cidade = data.localidade;
-        form.estado = data.uf;
-      })
-      .catch(() => {
-        pesquisouCep.value = true;
-      });
+    if (form.cep.length === 8) {
+      const data = await $fetch(`https://viacep.com.br/ws/${form.cep}/json/`);
+
+      if (data.erro) {
+        pesquisouCep = true;
+        useCustomToast({
+          type: "error",
+          message: "Não foi possível encontrar o CEP",
+        });
+      }
+
+      form.endereco = data.logradouro;
+      form.complemento = data.complemento;
+      form.bairro = data.bairro;
+      form.cidade = data.localidade;
+      form.estado = data.uf;
+    }
+  } catch (error) {
+    pesquisouCep.value = true;
   }
 }
 
-async function carregarFormulario() {
+async function pesquisarEmpresa(pesquisa) {
   try {
-    loadingDados.value = true;
-
     const ajax = fetchApiProtected();
-    const response = await ajax(
-      `/organizacao/${modalEditarOrganizacaoState.payload.id}`
-    );
-    const dados = response.data;
-    Object.assign(form, dados);
+    const data = await ajax("/organizacao", {
+      params: {
+        pesquisa: pesquisa,
+      },
+    });
+    resultadoPesquisaEmpresa.value = data.data.data;
   } catch (error) {
-    useMessageApi(error, "Não foi possível exibir os dados!");
-
-    fecharModal();
-  } finally {
-    loadingDados.value = false;
+    useMessageApi(error, "Não foi possível listar as empresas");
   }
+}
+
+function carregarFormulario() {
+  Object.assign(form, {
+    nome: "",
+    email: "",
+    telefone: "",
+    cep: "",
+    endereco: "",
+    numero: "",
+    complemento: "",
+    cidade: "",
+    estado: "",
+    organizacao_id: null,
+  });
 }
 
 function fecharModal() {
   v$.$reset();
-  modalEditarOrganizacaoState.fechar();
-  emit("onClose");
+  modalCriarContatoState.fechar();
+  $emit("onClose");
 }
 
 async function submit() {
@@ -223,21 +248,26 @@ async function submit() {
     if (result) {
       const data = {
         ...form,
+        organizacao_id: form.organizacao_id ? form.organizacao_id.id : null,
       };
 
       const ajax = fetchApiProtected();
-      await ajax(`/organizacao/${modalEditarOrganizacaoState.payload.id}`, {
+
+      await ajax("/contato", {
+        method: "POST",
         body: data,
-        method: "PUT",
       });
 
       fecharModal();
-      modalEditarOrganizacaoState.onReload();
+      modalCriarContatoState.onReload();
+      loading = false;
     }
   } catch (e) {
-    useMessageApi(e, "Não foi possível editar o organizacao!");
+    useMessageApi(e, "Não foi possível cadastrar o contato!");
   } finally {
-    loading.value = false;
+    loading = false;
   }
 }
 </script>
+
+<style scoped></style>

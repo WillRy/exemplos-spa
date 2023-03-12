@@ -1,4 +1,5 @@
-import { useToast } from "vue-toast-notification";
+import * as pkg from "vue-toast-notification";
+const {useToast} = pkg
 
 const useCustomToast = (params) => {
   const $toast = useToast();

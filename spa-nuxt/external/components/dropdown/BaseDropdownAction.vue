@@ -24,7 +24,8 @@
 </template>
 
 <script>
-import { Dropdown } from "floating-vue";
+import * as pkg from "floating-vue";
+const {Dropdown} = pkg;
 import BaseButtonSecondary from "../buttons/BaseButtonSecondary.vue";
 import ArrowDownIcon from "../icons/ArrowDownIcon";
 import { directive } from "../../directives/click-away";

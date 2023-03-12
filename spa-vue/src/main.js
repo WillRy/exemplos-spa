@@ -16,6 +16,15 @@ import Loader from "./external/components/Loader";
 
 import {directive} from './directives/click-away'
 
+
+import { Skeleton } from 'vue-loading-skeleton';
+import "vue-loading-skeleton/dist/style.css"
+
+
+import 'nprogress/nprogress.css' 
+
+
+
 export const app = createApp(App)
 
 app.use(createPinia())

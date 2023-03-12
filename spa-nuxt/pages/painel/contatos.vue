@@ -1,6 +1,6 @@
 <template>
-  <div class="organizacoes text-primary-900">
-    <HeaderPage titulo="Organizações">
+  <div class="contatos text-primary-900">
+    <HeaderPage titulo="Contatos">
       <BaseButtonPrimary @click="abrirCriar"> Criar </BaseButtonPrimary>
     </HeaderPage>
     <PageContent>
@@ -15,7 +15,21 @@
                   v-model="form.pesquisa"
                 />
               </div>
-
+              <div class="col-md-4">
+                <BaseSelectAjax
+                  label="Empresa"
+                  placeholder="Pesquise as empresas"
+                  v-model="form.empresa_id"
+                  track-by="id"
+                  text-by="nome"
+                  :options="resultadoPesquisaEmpresa"
+                  @search-change="pesquisarEmpresa"
+                  noOptions="Pesquise as empresas"
+                  :empty="true"
+                  :remover="true"
+                >
+                </BaseSelectAjax>
+              </div>
               <div class="col-auto">
                 <BaseButtonPrimary :loading="loaders.loading">
                   Pesquisar
@@ -44,11 +58,12 @@
               texto: 'telefone',
             },
             {
-              nome: 'qtd_contatos',
-              texto: 'Qtde. Contatos',
+              nome: 'organizacao',
+              texto: 'Organização',
+              disabled: true,
             },
           ]"
-          :dados="organizacoes && organizacoes.data"
+          :dados="contatos && contatos.data"
           :sort-name="sort.sortName"
           :sort-order="sort.sortOrder"
           @onSort="sortBy"
@@ -60,7 +75,7 @@
               <ColunaTabela>{{ dado.nome }}</ColunaTabela>
               <ColunaTabela>{{ dado.email }}</ColunaTabela>
               <ColunaTabela>{{ dado.telefone }}</ColunaTabela>
-              <ColunaTabela>{{ dado.qtd_contatos }}</ColunaTabela>
+              <ColunaTabela>{{ dado.organizacao }}</ColunaTabela>
               <th class="coluna-acoes">
                 <BaseDropdownAction :fundoClaro="true">
                   <button @click="abrirEdicao(dado)">Editar</button>
@@ -74,10 +89,10 @@
         <template #footer>
           <PaginacaoSemRouter
             :exibir-total="true"
-            v-if="organizacoes"
-            :pagina-atual="organizacoes.current_page"
-            :total="organizacoes.total"
-            :porPagina="organizacoes.per_page"
+            v-if="contatos"
+            :pagina-atual="contatos.current_page"
+            :total="contatos.total"
+            :porPagina="contatos.per_page"
             @onChange="updatePagina($event)"
           />
         </template>
@@ -85,10 +100,10 @@
     </PageContent>
     <ClientOnly>
       <div>
-        <ModalCriarOrganizacao />
-        <ModalEditarOrganizacao />
-        <ModalExcluirOrganizacao />
-        <ModalDetalhesOrganizacao />
+        <ModalCriarContato />
+        <ModalEditarContato />
+        <ModalExcluirContato />
+        <ModalDetalhesContato />
       </div>
     </ClientOnly>
   </div>
@@ -96,42 +111,36 @@
 
 <script setup>
 import {
-  modalCriarOrganizacaoStore,
-  modalEditarOrganizacaoStore,
-  modalExcluirOrganizacaoStore,
-} from "../../store/organizacao";
+  modalCriarContatoStore,
+  modalEditarContatoStore,
+  modalDetalhesContatoStore,
+  modalExcluirContatoStore,
+} from "../../store/contato";
 
-const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
-const modalEditarOrganizacaoState = modalEditarOrganizacaoStore();
-const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore();
-const modalDetalhesOrganizacaoState = modalDetalhesOrganizacaoStore();
+const modalCriarContatoState = modalCriarContatoStore();
+const modalEditarContatoState = modalEditarContatoStore();
+const modalExcluirContatoState = modalExcluirContatoStore();
+const modalDetalhesContatoState = modalDetalhesContatoStore();
 
-const { reload: reloadCriarOrganizacao } = storeToRefs(
-  modalCriarOrganizacaoState
+const { reload: modalCriarContatoReload } = storeToRefs(modalCriarContatoState);
+const { reload: modalEditarContatoReload } = storeToRefs(
+  modalEditarContatoState
 );
-const { reload: reloadEditarOrganizacao } = storeToRefs(
-  modalEditarOrganizacaoState
-);
-const { reload: reloadExcluirOrganizacao } = storeToRefs(
-  modalExcluirOrganizacaoState
+const { reload: modalExcluirContatoReload } = storeToRefs(
+  modalExcluirContatoState
 );
 
-watch(reloadCriarOrganizacao, () => {
-  buscarDados();
-});
-watch(reloadEditarOrganizacao, () => {
-  buscarDados();
-});
-watch(reloadExcluirOrganizacao, () => {
-  buscarDados();
-});
-const loaders = reactive({
-  loading: false,
-});
+watch(modalCriarContatoReload, () => buscarDados());
+watch(modalEditarContatoReload, () => buscarDados());
+watch(modalExcluirContatoReload, () => buscarDados());
 
 const form = reactive({
   pesquisa: "",
-  empresa_id: "",
+  empresa_id: null,
+});
+
+const loaders = reactive({
+  loading: false,
 });
 
 const sort = reactive({
@@ -141,67 +150,57 @@ const sort = reactive({
 
 let page = ref(1);
 
-let organizacoes = reactive({});
+let contatos = reactive({});
+
+let resultadoPesquisaEmpresa = ref([]);
+
+async function pesquisarEmpresa(pesquisa) {
+  const ajax = fetchApiProtected();
+  const data = await ajax("/organizacao", {
+    params: {
+      pesquisa: pesquisa,
+    },
+  });
+
+  resultadoPesquisaEmpresa.value = data.data.data;
+}
 
 function abrirCriar() {
-  modalCriarOrganizacaoState.abrir();
+  modalCriarContatoState.abrir();
 }
 function abrirEdicao(usuario) {
-  modalEditarOrganizacaoState.abrir(usuario);
+  modalEditarContatoState.abrir(usuario);
 }
 function abrirExclusao(usuario) {
-  modalExcluirOrganizacaoState.abrir(usuario);
+  modalExcluirContatoState.abrir(usuario);
 }
 function abrirDetalhes(usuario) {
-  modalDetalhesOrganizacaoState.abrir(usuario);
+  modalDetalhesContatoState.abrir(usuario);
 }
+
 function sortBy({ sortName, sortOrder }) {
   sort.sortName = sortName;
   sort.sortOrder = sortOrder;
-  buscarDados();
-}
-function updatePagina(pagina) {
-  page.value = pagina;
-  buscarDados();
-}
-function pesquisar() {
   page.value = 1;
   buscarDados();
 }
-// function buscarDados() {
-//   loaders.loading = true;
 
-//   const fetch = fetchApiProtected();
+function updatePagina(pagina) {
+  page = pagina;
+  buscarDados();
+}
 
-//   fetch("/organizacao", {
-//     body: {
-//       ...(form.pesquisa ? { pesquisa: form.pesquisa } : {}),
-//       ...(form.empresa_id ? { empresa_id: form.empresa_id.id } : {}),
-//       ...(this.page ? { page: this.page } : {}),
-//       sortOrder: sort.sortOrder,
-//       sortName: sort.sortName,
-//     },
-//   })
-//     .then((r) => {
-//       if (!r.data.success) return;
+function pesquisar() {
+  page = 1;
+  buscarDados();
+}
 
-//       organizacoes = r.data;
-//     })
-//     .catch((e) => {
-//       this.$laravelError("Não foi possível listar os dados");
-//       useToast({
-//         type: "Não foi possível listar os dados",
-//       });
-//     })
-//     .finally(() => {
-//       loaders.loading = false;
-//     });
-// }
+async function buscarDados() {
+  try {
+    loaders.loading = true;
 
-const { data, error, pending, refresh } = await useAsyncData(
-  "organizacao",
-  () => {
-    return fetchApiProtected()("/organizacao", {
+    const ajax = fetchApiProtected();
+    const data = await ajax("/contato", {
       params: {
         ...(form.pesquisa ? { pesquisa: form.pesquisa } : {}),
         ...(form.empresa_id ? { empresa_id: form.empresa_id.id } : {}),
@@ -210,44 +209,18 @@ const { data, error, pending, refresh } = await useAsyncData(
         sortName: sort.sortName,
       },
     });
+
+    contatos = data.data;
+  } catch (error) {
+    useMessageApi(error, "Não foi possível listar os contatos");
+  } finally {
+    loaders.loading = false;
   }
-);
-
-watch(
-  data,
-  (data) => {
-    if (!data) return;
-
-    organizacoes = data.data;
-  },
-  { immediate: true }
-);
-
-watch(
-  pending,
-  (pending) => {
-    loaders.loading = pending;
-  },
-  { immediate: true }
-);
-
-watch(
-  error,
-  (error) => {
-    if (!error) return;
-
-    useMessageApi(error, "Não foi possível listar as organizações");
-  },
-  { immediate: true }
-);
-
-function buscarDados() {
-  refresh();
 }
 
-// onMounted(() => {
-//   buscarDados();
-// });
+onMounted(() => {
+  buscarDados();
+});
 </script>
 
 <style scoped></style>

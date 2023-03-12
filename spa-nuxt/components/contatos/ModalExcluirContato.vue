@@ -1,10 +1,10 @@
 <template>
   <BaseModal
-    :aberta="modalExcluirOrganizacaoState.open"
+    :aberta="modalExcluirContatoState.open"
     @onClose="fecharModal"
   >
     <template #title>
-      <h3>Exclusão de organizacao</h3>
+      <h3>Exclusão de contato</h3>
     </template>
     <template #body>
       <Loader
@@ -14,8 +14,8 @@
         v-if="loadingDados"
       ></Loader>
       <p v-else>
-        Deseja excluir o organizacao
-        <strong>{{ modalExcluirOrganizacaoState.payload.nome }}</strong
+        Deseja excluir o contato
+        <strong>{{ modalExcluirContatoState.payload.nome }}</strong
         >?
       </p>
     </template>
@@ -31,36 +31,31 @@
 </template>
 
 <script setup>
-import { modalExcluirOrganizacaoStore } from "../../store/organizacao";
+import { modalExcluirContatoStore } from "../../store/contato";
+const modalExcluirContatoState = modalExcluirContatoStore();
 
-const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore();
-
-const emit = defineEmits();
+const $emit = defineEmits();
 
 const loadingDados = ref(false);
 const loading = ref(false);
 
-async function fecharModal() {
-  modalExcluirOrganizacaoState.fechar();
-  emit("onClose");
+function fecharModal() {
+  modalExcluirContatoState.fechar();
+  $emit("onClose");
 }
-
 async function submit() {
   try {
     loading.value = true;
     const ajax = fetchApiProtected();
-    await ajax(
-      `/organizacao/${modalExcluirOrganizacaoState.payload.id}`,
-      {
-        method: 'delete'
-      }
-    );
+    await ajax(`/contato/${modalExcluirContatoState.payload.id}`, {
+      method: "DELETE",
+    });
 
     fecharModal();
-    modalExcluirOrganizacaoState.onReload();
+    modalExcluirContatoState.onReload();
     loading.value = false;
-  } catch (e) {
-    useMessageApi(e, "Não foi possível excluir a organização!");
+  } catch (error) {
+    useMessageApi(error, "Não foi possível excluir o contato!");
   } finally {
     loading.value = false;
   }
