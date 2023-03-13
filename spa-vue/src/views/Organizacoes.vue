@@ -21,11 +21,8 @@
                 </BaseButtonPrimary>
               </div>
             </div>
-
           </form>
         </template>
-
-        
 
         <Tabela
           :loading="loading"
@@ -117,6 +114,7 @@ import ModalEditarOrganizacao from "../components/organizacoes/ModalEditarOrgani
 import ModalExcluirOrganizacao from "../components/organizacoes/ModalExcluirOrganizacao";
 import ModalDetalhesOrganizacao from "../components/organizacoes/ModalDetalhesOrganizacao";
 import { Skeleton } from "vue-loading-skeleton";
+import { useHead } from "@unhead/vue";
 
 export default {
   name: "Organizacaos",
@@ -135,13 +133,17 @@ export default {
     PageContent,
     BaseButtonPrimary,
     HeaderPage,
-    Skeleton
-},
+    Skeleton,
+  },
   setup() {
     const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
     const modalEditarOrganizacaoState = modalEditarOrganizacaoStore();
     const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore();
     const modalDetalhesOrganizacaoState = modalDetalhesOrganizacaoStore();
+
+    useHead({
+      title: "CRM - Organizações",
+    });
 
     return {
       modalDetalhesOrganizacaoState,
@@ -246,7 +248,6 @@ export default {
   created() {
     this.buscarDados();
   },
-
 };
 </script>
 

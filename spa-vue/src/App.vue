@@ -1,13 +1,31 @@
-<script setup>
-import { RouterView } from "vue-router";
-</script>
-
 <template>
-    <RouterView key="principal"/>
+  <RouterView key="principal" />
 </template>
 
-<style>
+<script setup>
+import { useHead } from "@unhead/vue";
+import { RouterView } from "vue-router";
+useHead({
+  title: "CRM",
+  meta: [
+    {
+      name: "og:image",
+      content: "/thumb.png",
+      itemprop: "image"
+    },
+    {
+      name: "og:title",
+      content: "CRM",
+    },
+    {
+      name: "og:description",
+      content: "CRM",
+    },
+  ],
+});
+</script>
 
+<style>
 #nprogress .bar {
   background: var(--warning-color-700) !important;
   height: 5px !important;
@@ -19,13 +37,13 @@ import { RouterView } from "vue-router";
   width: 100%;
 }
 
-#nprogress .peg { 
-  box-shadow: 0 0 10px var(--warning-color-700), 0 0 5px var(--warning-color-700) !important;;
+#nprogress .peg {
+  box-shadow: 0 0 10px var(--warning-color-700),
+    0 0 5px var(--warning-color-700) !important;
 }
 
 #nprogress .spinner-icon {
-  border-top-color: var(--warning-color-700) !important;;
-  border-left-color: var(--warning-color-700) !important;;
+  border-top-color: var(--warning-color-700) !important;
+  border-left-color: var(--warning-color-700) !important;
 }
-
 </style>

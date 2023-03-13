@@ -23,7 +23,7 @@ import "vue-loading-skeleton/dist/style.css"
 
 import 'nprogress/nprogress.css' 
 
-
+import { createHead } from "@vueuse/head"
 
 export const app = createApp(App)
 
@@ -35,6 +35,7 @@ app.use(filters)
 app.use(EventBus)
 app.use(ckeditorupload)
 app.use(VueTheMask)
+app.use(createHead())
 app.directive('click-away', directive)
 app.component('DatePicker', DatePicker)
 app.component('Loader', Loader)
