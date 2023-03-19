@@ -1,7 +1,7 @@
 <template>
   <div class="organizacoes text-primary-900">
-    <HeaderPage titulo="Organizações">
-      <BaseButtonPrimary @click="abrirCriar"> Criar </BaseButtonPrimary>
+    <HeaderPage :titulo="$t('palavras.organizacoes')">
+      <BaseButtonPrimary @click="abrirCriar"> {{$t("palavras.criar")}} </BaseButtonPrimary>
     </HeaderPage>
     <PageContent>
       <ContentTable>
@@ -10,14 +10,14 @@
             <div class="row-xs align-items-end">
               <div class="col-md-4">
                 <BaseInput
-                  label="Pesquisa"
+                  :label="$t('palavras.pesquisar')"
                   name="pesquisa"
                   v-model="form.pesquisa"
                 />
               </div>
               <div class="col-auto">
                 <BaseButtonPrimary :loading="loading">
-                  Pesquisar
+                  {{$t('palavras.pesquisar')}}
                 </BaseButtonPrimary>
               </div>
             </div>
@@ -29,23 +29,23 @@
           :colunas="[
             {
               nome: 'id',
-              texto: 'ID',
+              texto: $t('palavras.id'),
             },
             {
               nome: 'nome',
-              texto: 'nome',
+              texto: $t('palavras.nome'),
             },
             {
               nome: 'email',
-              texto: 'email',
+              texto: $t('palavras.email'),
             },
             {
               nome: 'telefone',
-              texto: 'telefone',
+              texto: $t('palavras.telefone'),
             },
             {
               nome: 'qtd_contatos',
-              texto: 'Qtde. Contatos',
+              texto: $t('palavras.qtd_contatos'),
             },
           ]"
           :dados="organizacoes && organizacoes.data"
@@ -63,9 +63,9 @@
               <ColunaTabela>{{ dado.qtd_contatos }}</ColunaTabela>
               <th class="coluna-acoes">
                 <DropdownAcoes :fundoClaro="true">
-                  <button @click="abrirEdicao(dado)">Editar</button>
-                  <button @click="abrirExclusao(dado)">Excluir</button>
-                  <button @click="abrirDetalhes(dado)">Detalhes</button>
+                  <button @click="abrirEdicao(dado)">{{$t('palavras.editar')}}</button>
+                  <button @click="abrirExclusao(dado)">{{$t('palavras.excluir')}}</button>
+                  <button @click="abrirDetalhes(dado)">{{$t('palavras.detalhes')}}</button>
                 </DropdownAcoes>
               </th>
             </tr>
@@ -79,6 +79,10 @@
             :total="organizacoes.total"
             :porPagina="organizacoes.per_page"
             @onChange="updatePagina($event)"
+            :textoTotal="$t('palavras.total')"
+            :textoResultados="$tc('palavras.resultados', organizacoes.total)"
+            :tituloPrimeiraPagina="$t('palavras.primeira')"
+            :tituloUltimaPagina="$t('palavras.ultima')"
           />
         </template>
       </ContentTable>
@@ -237,7 +241,7 @@ export default {
           this.organizacoes = r.data.data;
         })
         .catch((e) => {
-          this.$laravelError(e, "Não foi possível listar os dados");
+          this.$laravelError(e, $t('texto.erro_listar_dados'));
         })
         .finally(() => {
           this.loading = false;

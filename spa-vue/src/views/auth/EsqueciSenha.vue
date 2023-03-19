@@ -58,16 +58,13 @@ export default {
                     });
 
                     this.$toast.open({
-                        message: 'Verifique seu e-mail com as instruções de recuperação!',
+                        message: this.$t('textos.sucesso_solicitar_reset_senha'),
                         type: 'success'
                     });
 
                 }
             } catch (e) {
-                this.$toast.open({
-                    message: 'Não foi possível enviar o e-mail de recuperação!',
-                    type: 'error'
-                });
+                this.$laravelError(e, this.$t('textos.erro_solicitar_reset_senha'))
             } finally {
                 this.loading = false;
             }

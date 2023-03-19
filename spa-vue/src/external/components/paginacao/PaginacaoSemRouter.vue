@@ -5,7 +5,7 @@
                 <a
                     @click.prevent="query(1)"
                     :class="{active: paginaEstaAtiva(1)}"
-                    title="Primeira"
+                    :title="tituloPrimeiraPagina"
                 >
                     &lt;&lt;
                 </a>
@@ -29,7 +29,7 @@
             </li>
         </ul>
         <p class="total-registros" v-if="exibirTotal && total > 0">
-            <strong>Total:</strong> {{total}} resultados
+            <strong>{{textoTotal}}:</strong> {{total}} {{textoResultados}}
         </p>
     </div>
 </template>
@@ -38,6 +38,22 @@
 export default {
     name: "PaginacaoSemRouter",
     props: {
+        tituloPrimeiraPagina: {
+            type: String,
+            default: 'Primeira'
+        },
+        tituloUltimaPagina: {
+            type: String,
+            default: 'Última'
+        },
+        textoTotal: {
+            type: String,
+            default: 'Total'
+        },
+        textoResultados: {
+            type: String,
+            default: 'resultados'
+        },
         exibirTotal: false,
         porPagina: {
             type: Number,

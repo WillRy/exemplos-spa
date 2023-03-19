@@ -2,6 +2,11 @@
     <div class="header">
         <div class="item item-left">
             <div class="item-content">
+                <DropdownIdioma></DropdownIdioma>
+            </div>
+        </div>
+        <div class="item item-left">
+            <div class="item-content">
                 <DropdownHeader></DropdownHeader>
             </div>
         </div>
@@ -10,10 +15,11 @@
 
 <script>
 import DropdownHeader from "./DropdownHeader";
+import DropdownIdioma from "./DropdownIdioma.vue";
 
 export default {
     name: "Header",
-    components: {DropdownHeader},
+    components: { DropdownHeader, DropdownIdioma },
 }
 </script>
 
@@ -27,7 +33,7 @@ export default {
     top: 0;
 
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     z-index: var(--z-index-2);
     color: #fff;
@@ -51,6 +57,7 @@ export default {
     align-items: center;
     transition: all .2s;
     border-radius: 8px;
+    gap: 12px;
 }
 
 .item-content:hover {
@@ -58,6 +65,6 @@ export default {
 }
 
 .item-left {
-    margin-left: auto;
+    /* margin-left: auto; */
 }
 </style>

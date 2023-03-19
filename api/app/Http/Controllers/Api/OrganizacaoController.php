@@ -29,7 +29,7 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
             $organizacaoExiste = Organizacao::find($id);
 
             if (empty($organizacaoExiste)) {
-                return $this->errorAPI('Organização inexistente', null, null, 404);
+                return $this->errorAPI(__('organizacao_inexistente'), null, null, 404);
             }
 
             return $this->successAPI($organizacaoExiste);
@@ -46,12 +46,12 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
             'email' => 'required|email|max:255|unique:organizacoes,email',
             'telefone' => ['nullable','max:255', function ($attribute, $value, $fail) {
                 if (!preg_match('/([(][0-9]{2}[)])\s[0-9]{4,5}\-[0-9]{4}/',$value)) {
-                    $fail('Informe um telefone válido');
+                    $fail(__('custom.validacao_telefone_valido'));
                 }
             }],
             'cep' => ['nullable','max:255', function ($attribute, $value, $fail) {
                 if (!preg_match('/^[0-9]{5,5}([- ]?[0-9]{3,3})?$/',$value)) {
-                    $fail('Informe um CEP válido');
+                    $fail(__('custom.validacao_cep_valido'));
                 }
             }],
             'endereco' => 'nullable|max:255',
@@ -82,7 +82,7 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
             'email' => "required|email|max:255|unique:organizacoes,email,{$id}", //permitir burlar o unique para proprio dono
             'telefone' => ['nullable','max:255', function ($attribute, $value, $fail) {
                 if (!preg_match('/([(][0-9]{2}[)])\s[0-9]{4,5}\-[0-9]{4}/',$value)) {
-                    $fail('Informe um telefone válido');
+                    $fail(__('custom.validacao_telefone_valido'));
                 }
             }],
             'cep' => ['nullable','max:255', function ($attribute, $value, $fail) {
@@ -104,12 +104,12 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
             $organizacaoExiste = Organizacao::find($id);
 
             if (empty($organizacaoExiste)) {
-                return $this->errorAPI('Organização inexistente', null, null, 404);
+                return $this->errorAPI(__('organizacao_inexistente'), null, null, 404);
             }
 
             $organizacao = (new Organizacao())->editar($id, $dados);
 
-            return $this->successAPI($organizacao, 'Organização editada com sucesso');
+            return $this->successAPI($organizacao, __('organizacao_editado_com_sucesso'));
 
         } catch (\Exception $e) {
             return $this->errorAPI($e->getMessage());
@@ -122,12 +122,12 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
             $organizacaoExiste = Organizacao::find($id);
 
             if (empty($organizacaoExiste)) {
-                return $this->errorAPI('Organização inexistente', null, null, 404);
+                return $this->errorAPI(__('organizacao_inexistente'), null, null, 404);
             }
 
             (new Organizacao())->deletar($id);
 
-            return $this->successAPI(null, 'Organização excluída com sucesso');
+            return $this->successAPI(null, __('organizacao_excluido_com_sucesso'));
 
         } catch (\Exception $e) {
             return $this->errorAPI($e->getMessage());

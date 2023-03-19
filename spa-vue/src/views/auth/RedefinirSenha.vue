@@ -58,7 +58,7 @@ export default {
                     });
 
                     this.$toast.open({
-                        message: 'Senha redefinida com sucesso!',
+                        message: this.$t('textos.sucesso_redefinir_senha'),
                         type: 'success'
                     });
 
@@ -66,7 +66,7 @@ export default {
 
                 }
             } catch (e) {
-                this.$laravelError(e, 'Não foi possível redefinir a senha')
+                this.$laravelError(e, this.$t('textos.erro_redefinir_senha'))
             } finally {
                 this.loading = false;
             }

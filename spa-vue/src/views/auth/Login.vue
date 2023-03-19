@@ -1,31 +1,31 @@
 <template>
     <div class="login">
-        <h3>Contatos</h3>
+        <h3>{{$t('login.titulo')}}</h3>
         <form @submit.prevent="submit">
             <div class="mb-xs">
                 <BaseInput
-                    label="E-mail"
+                    :label="$t('login.email')"
                     v-model="login.email"
                 >
                     <template v-slot:error v-if="v$.login.email.$error">
-                        <p v-if="v$.login.email.$error">Informe seu e-mail</p>
+                        <p v-if="v$.login.email.$error">{{$t("validacao.required",{field: $t('login.email')})}}</p>
                     </template>
                 </BaseInput>
             </div>
             <div class="mb-md">
                 <BaseInput
-                    label="Senha"
+                    :label="$t('login.senha')"
                     v-model="login.senha"
                     type="password"
                 >
                     <template v-slot:error v-if="v$.login.senha.$error">
-                        <p v-if="v$.login.senha.$error">Informe sua senha</p>
+                        <p v-if="v$.login.senha.$error">{{$t("validacao.required",{field: $t('login.senha')})}}</p>
                     </template>
                 </BaseInput>
             </div>
             <div>
-                <BaseButtonPrimary :loading="loading" style="width: 100%;" class="mb-xs">Entrar</BaseButtonPrimary>
-                <router-link to="esqueci-senha">Esqueci minha senha</router-link>
+                <BaseButtonPrimary :loading="loading" style="width: 100%;" class="mb-xs">{{$t('login.login')}}</BaseButtonPrimary>
+                <router-link to="esqueci-senha">{{$t('login.esqueci_senha')}}</router-link>
             </div>
         </form>
     </div>
@@ -84,10 +84,7 @@ export default {
 
                 }
             } catch (e) {
-                this.$toast.open({
-                    message: 'Não foi possível realizar o login!',
-                    type: 'error'
-                });
+                this.$laravelError(e, this.$t('login.invalid'))
             } finally {
                 this.loading = false;
             }

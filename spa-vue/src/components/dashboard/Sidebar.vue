@@ -25,25 +25,25 @@
                 <router-link :to="{name:'organizacoes'}">
                     <img src="../../assets/empresa-b.svg" alt="" class="black">
                     <img src="../../assets/empresa-w.svg" alt="" class="white">
-                    <span class="links_name">Organizações</span>
+                    <span class="links_name">{{$t('palavras.organizacoes')}}</span>
                 </router-link>
-                <span class="tooltip">Organizações</span>
+                <span class="tooltip">{{$t('palavras.organizacoes')}}</span>
             </li>
             <li>
                 <router-link :to="{name:'contatos'}">
                     <img src="../../assets/usuarios-b.svg" alt="" class="black">
                     <img src="../../assets/usuarios-w.svg" alt="" class="white">
-                    <span class="links_name">Contatos</span>
+                    <span class="links_name">{{$t('palavras.contatos')}}</span>
                 </router-link>
-                <span class="tooltip">Contatos</span>
+                <span class="tooltip">{{$t('palavras.contatos')}}</span>
             </li>
             <li>
                 <router-link :to="{name:'sem-permissao'}">
                     <img src="../../assets/lock-b.svg" alt="" class="black">
                     <img src="../../assets/lock-w.svg" alt="" class="white">
-                    <span class="links_name">Rota sem permissão</span>
+                    <span class="links_name">{{$t('textos.rota_sem_permissao')}}</span>
                 </router-link>
-                <span class="tooltip">Rota sem permissão</span>
+                <span class="tooltip">{{$t('textos.rota_sem_permissao')}}</span>
             </li>
         </ul>
     </div>

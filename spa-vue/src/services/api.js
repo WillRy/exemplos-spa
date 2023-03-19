@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { i18n } from '../lang';
 
 export let store = null;
 
@@ -12,6 +13,7 @@ const api = axios.create({
 
 api.interceptors.request.use(function (config) {
     config.headers.Authorization = 'Bearer ' + window.localStorage.getItem("token");
+    config.headers['Accept-Language'] = i18n.global.locale;
 
     return config;
 });

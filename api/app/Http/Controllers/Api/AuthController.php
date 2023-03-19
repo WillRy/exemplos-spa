@@ -29,7 +29,7 @@ class AuthController extends Controller
             ]);
 
             if (empty($token)) {
-                return $this->errorAPI('Usuário ou senha inválidos', null, null, 401);
+                return $this->errorAPI(__('auth.failed'), null, null, 401);
             }
 
             return $this->successAPI(['token' => $token]);
@@ -50,7 +50,7 @@ class AuthController extends Controller
             $usuario = Usuario::where('email', $dados['email'])->first();
 
             if (empty($usuario)) {
-                return $this->errorAPI('Usuário inválido', null, null, 404);
+                return $this->errorAPI(__('auth.failed'), null, null, 404);
             }
 
             $token = (new Token())->gerarToken(
@@ -66,7 +66,7 @@ class AuthController extends Controller
                     $dados['url']
                 )));
 
-            return $this->successAPI([], 'Token para reset de senha e com sucesso');
+            return $this->successAPI([], __('custom.token_reset_senha_enviado'));
 
         } catch (\Exception $e) {
             return $this->errorAPI($e->getMessage());
@@ -83,7 +83,7 @@ class AuthController extends Controller
                 $specialChars = preg_match('@[^\w]@', $value);
 
                 if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($value) < 8) {
-                    $fail('Senha deve ter 8 caracteres, letras minusculas, maísculas, numero e caracter especial!');
+                    $fail(__('custom.validacao_senha_forte'));
                 }
             },
             'token' => 'required'
@@ -92,7 +92,7 @@ class AuthController extends Controller
             $tokenComUsuario = Token::where('token', $dados['token'])->with('usuario')->first();
 
             if (empty($tokenComUsuario)) {
-                return $this->errorAPI('Token de reset de senha inválido', null, null, 404);
+                return $this->errorAPI(__('custom.token_reset_senha_invalido'), null, null, 404);
             }
 
             $usuario = $tokenComUsuario->usuario;
@@ -104,7 +104,7 @@ class AuthController extends Controller
 
             if (!$temTokenValido) {
                 return $this->errorAPI(
-                    'Token de reset de senha inválido',
+                    __('custom.token_reset_senha_invalido'),
                     null,
                     null,
                     403
@@ -114,7 +114,7 @@ class AuthController extends Controller
             $usuario->senha = Hash::make($dados['senha']);
             $usuario->save();
 
-            return $this->successAPI([], 'Senha redefinida com sucesso');
+            return $this->successAPI([], __('custom.senha_redefinida'));
 
         } catch (\Exception $e) {
             return $this->errorAPI($e->getMessage());

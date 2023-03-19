@@ -5,48 +5,48 @@
         @onOpen="carregarFormulario"
     >
         <template #title>
-            <h3>Detalhes do contato</h3>
+            <h3>{{ $t("textos.detalhes_contato") }}</h3>
         </template>
         <template #body>
             <Loader width="60px" height="60px" :cor-principal="true" v-if="loadingDados"></Loader>
             <div v-if="!loadingDados">
                 <div class="row-xxs">
                     <div class="col-md-6 mb-xs">
-                        <p><strong>Nome: </strong> {{ form.nome }}</p>
+                        <p><strong>{{$t('palavras.nome')}}: </strong> {{ form.nome }}</p>
                     </div>
                     <div class="col-md-6 mb-xs">
-                        <p><strong>Email: </strong>{{ form.email }}</p>
+                        <p><strong>{{$t('palavras.email')}}: </strong>{{ form.email }}</p>
                     </div>
                     <div class="col-md-6 mb-xs">
-                        <p><strong>Telefone:</strong> {{ form.telefone }}</p>
+                        <p><strong>{{$t('palavras.telefone')}}:</strong> {{ form.telefone }}</p>
                     </div>
                     <div class="col-md-6 mb-xs">
-                        <p><strong>CEP: </strong> {{ form.cep }}</p>
+                        <p><strong>{{$t('palavras.cep')}}: </strong> {{ form.cep }}</p>
                     </div>
                     <div class="col-md-6 mb-xs">
-                        <p><strong>Endereço</strong>: {{ form.endereco }}</p>
+                        <p><strong>{{$t('palavras.endereco')}}:</strong>: {{ form.endereco }}</p>
                     </div>
                     <div class="col-md-6 mb-xs">
-                        <p><strong>Bairro:</strong> {{ form.bairro }}</p>
+                        <p><strong>{{$t('palavras.bairro')}}:</strong> {{ form.bairro }}</p>
                     </div>
                     <div class="col-md-6 mb-xs">
-                        <p><strong>Número:</strong> {{ form.numero }}</p>
+                        <p><strong>{{$t('palavras.numero')}}:</strong> {{ form.numero }}</p>
                     </div>
                     <div class="col-md-6 mb-xs">
-                        <p><strong>Complemento:</strong> {{ form.complemento }}</p>
+                        <p><strong>{{$t('palavras.complemento')}}:</strong> {{ form.complemento }}</p>
                     </div>
                     <div class="col-md-6 mb-xs">
-                        <p><strong>Cidade:</strong> {{ form.cidade }}</p>
+                        <p><strong>{{$t('palavras.cidade')}}:</strong> {{ form.cidade }}</p>
                     </div>
                     <div class="col-md-6 mb-xs">
-                        <p><strong>Estado:</strong> {{ form.estado }}</p>
+                        <p><strong>{{$t('palavras.estado')}}:</strong> {{ form.estado }}</p>
                     </div>
                 </div>
             </div>
         </template>
         <template #footer>
             <BaseButtonTertiary @click.prevent="fecharModal">
-                Fechar
+                {{$t('palavras.fechar')}}
             </BaseButtonTertiary>
         </template>
     </BaseModal>

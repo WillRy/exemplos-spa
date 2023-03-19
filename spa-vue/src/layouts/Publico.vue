@@ -24,6 +24,7 @@ export default {
         }
     },
     async created() {
+        console.log("publico")
         try {
             let token = window.localStorage.getItem("token");
             if (token) {

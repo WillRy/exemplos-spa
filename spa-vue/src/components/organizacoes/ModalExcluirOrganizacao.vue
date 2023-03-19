@@ -5,18 +5,18 @@
         @onOpen="carregarFormulario"
     >
         <template #title>
-            <h3>Exclusão de organizacao</h3>
+            <h3>{{ $t("textos.exclusao_organizacao") }}</h3>
         </template>
         <template #body>
             <Loader width="60px" height="60px" :cor-principal="true" v-if="loadingDados"></Loader>
-            <p v-else>Deseja excluir o organizacao <strong>{{ modalExcluirOrganizacaoState.payload.nome }}</strong>?</p>
+            <p v-else>{{$t('textos.confirmar_excluir_organizacao')}} <strong>{{ modalExcluirOrganizacaoState.payload.nome }}</strong>?</p>
         </template>
         <template #footer>
             <BaseButtonDanger @click.prevent="submit" :loading="loading">
-                Excluir
+                {{$t('palavras.excluir')}}
             </BaseButtonDanger>
             <BaseButtonTertiary @click.prevent="fecharModal">
-                Cancelar
+                {{$t('palavras.cancelar')}}
             </BaseButtonTertiary>
         </template>
     </BaseModal>
@@ -80,7 +80,7 @@ export default {
                 this.loading = false;
 
             } catch (e) {
-                this.$laravelError(e, 'Não foi possível excluir o organizacao!');
+                this.$laravelError(e, $t('textos.erro_excluir_organizacao'));
             } finally {
                 this.loading = false;
             }

@@ -1,25 +1,19 @@
 <template>
   <div class="dropdown-header" @click="toggle" v-click-away="() => clickFora()">
     <div class="dropdown-header-texto">
-      {{ usuarioState.usuario.nome }}
+      {{ $i18n.locale }}
       <img src="../../assets/arrow-down-branca.svg" />
     </div>
     <div class="dropdown-header-corpo" :class="{ aberto: aberto }">
       <ul>
         <li>
-          <a @click="logout">
-            {{ $t("palavras.logout") }}
-          </a>
+          <button @click="mudarIdioma('pt-BR')">
+            Português
+          </button>
         </li>
         <li>
-          <button
-            :disabled="!usuarioState.temPermissao('botao')"
-            v-if="!usuarioState.temPermissao('botao')"
-          >
-            {{ $t("textos.botao_sem_permissao") }}
-          </button>
-          <button v-else="usuarioState.temPermissao('botao')">
-            {{ $t("textos.botao_sem_permissao") }}
+          <button @click="mudarIdioma('en')">
+            Inglês
           </button>
         </li>
       </ul>
@@ -29,9 +23,10 @@
 
 <script>
 import { usuarioStore } from "../../stores/usuario";
+import {i18n} from '../../lang/index'
 
 export default {
-  name: "DropdownHeader",
+  name: "DropdownIdioma",
   setup() {
     const usuarioState = usuarioStore();
     return {
@@ -51,11 +46,12 @@ export default {
     clickFora() {
       this.aberto = false;
     },
-    logout() {
-      window.localStorage.removeItem("token");
+    mudarIdioma(lang) {
       this.$router.push({
-        path: "/",
-      });
+        params: {
+          lang: lang
+        }
+      })
     },
   },
 };
@@ -134,6 +130,7 @@ export default {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
 .dropdown-header-corpo a:hover,
 .dropdown-header-corpo button:hover {
   background-color: #f2f2f2;
