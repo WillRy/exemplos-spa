@@ -159,7 +159,8 @@ export default {
     BaseModal,
     BaseButtonTertiary,
     BaseButtonPrimary,
-  },
+    BaseDate
+},
   data() {
     return {
       form: {
@@ -172,6 +173,7 @@ export default {
         complemento: "",
         cidade: "",
         estado: "",
+        teste: "",
       },
       pesquisouCep: false,
       config: false,

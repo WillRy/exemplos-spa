@@ -27,7 +27,7 @@
                     <slot name="prefix"></slot>
                 </div>
 
-                <DatePicker v-model="data" v-bind="attrs" is24hr mode="date">
+                <DatePicker v-model="data" v-bind="attrs" is24hr mode="date" :locale="lang">
                     <template v-slot="{ inputValue, inputEvents }">
                         <input
                             v-if="!disabled"
@@ -129,8 +129,15 @@ export default {
         timezone: {
             default: "America/Sao_Paulo",
         },
+        locale: {
+            type: String
+        }
     },
     computed: {
+        lang() {
+            const lang = this.locale ? this.locale : document.querySelector("html").getAttribute("lang")
+            return lang;
+        },
         attrs() {
             return {
                 ...this.$attrs,

@@ -2,7 +2,7 @@
     <transition name="modal">
         <div v-if="aberta" :class="{aberta: aberta, center: textCenter}" class="base-modal-container"
              @click.self="fecharModalClick" >
-            <div :style="{padding: padding}" class="base-modal" :class="tamanhoClass" data-modal="" v-drag="{handle: 'base-modal-title'}">
+            <div :style="{padding: padding}" class="base-modal" :class="tamanhoClass" data-modal="" v-drag="{handle: '.base-modal-title'}">
                 <div v-if="$slots.title" class="base-modal-title">
                     <CloseIcon v-if="exibirBtnFechar" class="btn-fechar-modal"
                                @click="fecharModal"/>
@@ -23,7 +23,6 @@
 </template>
 <script>
 import CloseIcon from '../icons/CloseIcon.vue'
-
 
 export default {
     name: "BaseModal",

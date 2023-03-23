@@ -47,11 +47,20 @@ export default {
       this.aberto = false;
     },
     mudarIdioma(lang) {
+      // const route = this.$router.resolve({
+      //   params: {
+      //     lang: lang
+      //   }
+      // });
+      // window.location.href = route.fullPath;
+
+
       this.$router.push({
         params: {
           lang: lang
         }
-      })
+      });
+      
     },
   },
 };

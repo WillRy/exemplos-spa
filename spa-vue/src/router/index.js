@@ -127,9 +127,9 @@ router.beforeEach((to, from, next) => {
   const usuarioState = usuarioStore();
   const permissoesUsuario = usuarioState.permissoes;
 
-  const usuarioTemPermissao = permissoesRotas.every((elem) =>
-    permissoesUsuario.includes(elem)
-  );
+  const usuarioTemPermissao = permissoesRotas.every((elem) =>  {
+    return permissoesUsuario.includes(elem)
+  });
 
   if (usuarioTemPermissao || permissoesRotas.length === 0) {
     next();
@@ -137,7 +137,7 @@ router.beforeEach((to, from, next) => {
     const toast = useToast();
     toast.open({
       type: "error",
-      message: i18n.global.t('message.rota_sem_permissao'),
+      message: i18n.global.t("message.rota_sem_permissao"),
     });
     next(from);
   }
