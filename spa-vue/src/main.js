@@ -26,6 +26,7 @@ import { i18n } from "./lang";
 
 
 
+import drag from "v-drag"
 
 export const app = createApp(App);
 
@@ -38,6 +39,7 @@ app.use(EventBus);
 app.use(ckeditorupload);
 app.use(VueTheMask);
 app.use(i18n);
+app.use(drag);
 app.use(createHead());
 app.directive("click-away", directive);
 app.component("DatePicker", DatePicker);

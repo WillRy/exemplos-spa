@@ -4,6 +4,7 @@
 
 <script setup>
 import { useHead } from "@unhead/vue";
+import { onMounted } from "vue";
 import { RouterView } from "vue-router";
 useHead({
   title: "CRM",
@@ -23,6 +24,9 @@ useHead({
     },
   ],
 });
+
+
+
 </script>
 
 <style>
