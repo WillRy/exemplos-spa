@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import BaseButton from "./BaseButton";
+import BaseButton from "./BaseButton.vue";
 
 export default {
     name: "BaseButtonAction",
@@ -17,7 +17,7 @@ export default {
         },
         min: {
             type: Boolean,
-            default: ''
+            default: false
         },
         loading: {
             type: Boolean,
@@ -52,5 +52,21 @@ export default {
     color: var(--gray-300);
     cursor: not-allowed;
     border: none;
+}
+
+.btn-action :deep(.fill path) {
+  fill: #fff;
+}
+
+.btn-action:hover :deep(.fill path) {
+  fill: #fff;
+}
+
+.btn-action :deep(.stroke path) {
+  stroke: var(--second-color-400);
+}
+
+.btn-action:hover :deep(.stroke path) {
+  stroke: #fff;
 }
 </style>

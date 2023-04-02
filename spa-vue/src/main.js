@@ -10,7 +10,6 @@ import App from "./App.vue";
 import router from "./router";
 
 import "./styles/app.css";
-import { DatePicker } from "v-calendar";
 import Loader from "./external/components/Loader";
 
 import { directive } from "./directives/click-away";
@@ -39,7 +38,6 @@ app.use(i18n);
 app.use(drag);
 app.use(createHead());
 app.directive("click-away", directive);
-app.component("DatePicker", DatePicker);
 app.component("Loader", Loader);
 
 app.mount("#app");

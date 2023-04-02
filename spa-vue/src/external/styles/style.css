@@ -1,9 +1,42 @@
+@import "./normalize.css";
 @import "./variables.css";
 @import "./colors.css";
 
-@import 'v-calendar/dist/style.css';
-@import 'vue-multiselect/dist/vue-multiselect.css';
-@import 'floating-vue/dist/style.css';
+@import "./grid.css";
+@import "./estrutura.css";
+
+
+@import "v-calendar/dist/style.css";
+@import "vue-multiselect/dist/vue-multiselect.css";
+@import "floating-vue/dist/style.css";
 
 @import "./select.css";
 @import "./tabelas.css";
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+/* @font-face {
+  font-family: "Roboto";
+
+  src: url("./fonts/Roboto-Regular.ttf"), url("./fonts/Roboto-Black.ttf"),
+    url("./fonts/Roboto-BlackItalic.ttf"), url("./fonts/Roboto-Bold.ttf"),
+    url("./fonts/Roboto-BoldItalic.ttf"), url("./fonts/Roboto-Italic.ttf"),
+    url("./fonts/Roboto-Light.ttf"), url("./fonts/Roboto-LightItalic.ttf"),
+    url("./fonts/Roboto-Medium.ttf"), url("./fonts/Roboto-MediumItalic.ttf"),
+    url("./fonts/Roboto-Thin.ttf"), url("./fonts/Roboto-ThinItalic.ttf");
+
+  font-weight: normal;
+} */
+
+* {
+  font-family: "Roboto", sans-serif;
+  box-sizing: border-box;
+}
+
+.border-test {
+  border: 1px solid #000;
+}
+
+.v-popper__arrow-container{
+  display: none
+}

@@ -1,16 +1,22 @@
 <template>
-  <div class="dropdown-container">
+  <div class="dropdown-container" :class="{open: open}">
     <VDropdown
       :triggers="[]"
-      :distance="6"
       :shown="open"
       :hide="!open"
       :autoHide="false"
+      :distance="4"
+      placement="bottom-start"
     >
-      <BaseButtonSecondary @click="open = !open" class="dropdown-btn" v-click-away="fechar" :size="size">
+      <BaseButton
+        class="btn-action dropdown-btn"
+        @click="toggle"
+        v-click-away="fechar"
+        :size="size"
+      >
         <slot name="botao"></slot>
-        <ArrowDownIcon size="12px"/>
-      </BaseButtonSecondary>
+        <ArrowDownSolidIcon size="12px" color="#fff" />
+      </BaseButton>
 
       <!-- This will be the content of the popover -->
       <template #popper="{ hide }">
@@ -25,23 +31,28 @@
 <script>
 import { Dropdown } from "floating-vue";
 import BaseButtonSecondary from "../buttons/BaseButtonSecondary.vue";
-import ArrowDownIcon from "../icons/ArrowDownIcon";
-import {directive} from '../../directives/click-away'
+import ArrowDownIcon from "../icons/ArrowDownIcon.vue";
+import { directive } from "../../directives/click-away";
+import BaseButton from "../buttons/BaseButton.vue";
+import ArrowDownSolidIcon from "../icons/ArrowDownSolidIcon.vue";
 export default {
   name: "BaseDropdown",
+  emits: ["onOpen", "onClose"],
   props: {
     size: {
-        type: String,
-        default: 'md'
-    }
+      type: String,
+      default: "md",
+    },
   },
   components: {
     VDropdown: Dropdown,
     BaseButtonSecondary,
     ArrowDownIcon,
-  },
+    BaseButton,
+    ArrowDownSolidIcon
+},
   directives: {
-    'click-away': directive
+    "click-away": directive,
   },
   data() {
     return {
@@ -49,12 +60,14 @@ export default {
     };
   },
   methods: {
+    toggle() {
+      this.open = !this.open;
+
+      this.$emit(this.open ? "onOpen" : "onClose");
+    },
     fechar() {
       this.open = false;
-    },
-    emitir() {
-      this.$emit("remover");
-      this.fechar();
+      this.$emit("onClose");
     },
   },
 };
@@ -76,6 +89,7 @@ img {
   width: auto;
   display: flex;
   flex-direction: column;
+  max-width: 232px;
 }
 
 .dropdown-botao::v-deep button,
@@ -89,10 +103,26 @@ img {
   text-decoration: none;
   color: #444444;
   margin: 0;
+  width: 100%;
+  text-align: left;
+
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  color: var(--primary-color-400);
+  border-radius: 8px;
+  outline: 0;
 }
 
 .dropdown-botao::v-deep button:hover,
 .dropdown-botao::v-deep a:hover {
+  background: #f2f2f2;
+}
+
+.dropdown-botao::v-deep button:focus-within,
+.dropdown-botao::v-deep a:focus-within {
   background: #f2f2f2;
 }
 
@@ -119,4 +149,110 @@ img {
 .v-popper--shown .dropdown-btn > svg {
   transform: rotate(-180deg);
 }
+
+.btn {
+  all: "unset";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+  outline: 0;
+  gap: 10px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1;
+  position: relative;
+}
+
+.btn[data-loading="true"] {
+  cursor: progress !important;
+}
+
+.btn :deep(.loader) {
+  position: absolute;
+  left: -21px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.btn-sm {
+  font-size: 14px;
+  padding: 6px;
+}
+
+.btn-md {
+  font-size: 14px;
+  padding: 10px 20px;
+  min-height: 36px;
+}
+
+.btn-lg {
+  font-size: 16px;
+  padding: 10px 20px;
+  min-height: 42px;
+}
+
+.btn-min-width {
+  min-width: 100px;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.btn > span {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  outline: 0;
+  gap: 10px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1;
+}
+
+
+.dropdown-btn {
+  border: 1px solid var(--primary-color-300);
+  background: none;
+  color: var(--primary-color-400);
+}
+
+.dropdown-btn svg {
+  transition: rotate 100ms;
+}
+
+.dropdown-btn svg :deep(path) {
+  fill: var(--primary-color-400) !important;
+}
+
+
+.dropdown-btn:hover {
+  background: #EFF0F2 0% 0%;
+
+}
+
+.open .dropdown-btn  {
+  background: var(--second-color-500);
+  border: 1px solid transparent;
+  color: #fff;
+}
+
+.open .dropdown-btn svg{
+  rotate: 180deg;
+}
+
+.open .dropdown-btn svg :deep(path) {
+  fill: #fff !important;
+}
+
+
 </style>

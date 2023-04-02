@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import Loader from "../Loader";
+import Loader from "../Loader.vue";
 
 export default {
     name: "BaseButton",

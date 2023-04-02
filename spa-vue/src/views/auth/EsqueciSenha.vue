@@ -1,19 +1,21 @@
 <template>
     <div class="login">
-        <h3>Esqueci minha senha</h3>
+        <h3>{{$t("login.esqueci_senha")}}</h3>
         <form @submit.prevent="submit">
-            <div class="mb-xs">
+            <div class="mb-3">
                 <BaseInput
                     label="E-mail"
                     v-model="email"
                 >
                     <template v-slot:error v-if="v$.email.$error">
-                        <p v-if="v$.email.$error">Informe seu e-mail</p>
+                        <p v-if="v$.email.$error">
+                          {{$t("validacao.required",{field: $t('login.email')})}}
+                        </p>
                     </template>
                 </BaseInput>
             </div>
             <div>
-                <BaseButtonPrimary :loading="loading" style="width: 100%;" class="mb-xs">Recuperar</BaseButtonPrimary>
+                <BaseButtonPrimary :loading="loading" style="width: 100%;" class="mb-3">{{ $t('login.recuperar') }}</BaseButtonPrimary>
 
             </div>
         </form>
@@ -28,6 +30,7 @@ import {required, email} from '@vuelidate/validators'
 import axios from "axios";
 import api, {endpoint} from "../../services/api";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
+import {i18n} from "../../lang";
 
 export default {
     name: "Login",
@@ -54,7 +57,7 @@ export default {
 
                     await endpoint.post('/esqueci-senha', {
                         email: this.email,
-                        "url": window.location.origin + "/" + "redefinir-senha"
+                        "url": window.location.origin + "/" + this.$i18n.locale +'/' + "redefinir-senha"
                     });
 
                     this.$toast.open({

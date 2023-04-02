@@ -109,15 +109,15 @@ export default {
     --md-min-height: 36px;
 
     /* tamanho grande do container */
-    --lg-min-height: 56px;
+    --lg-min-height: 42px;
 
     /* tamanho do input dentro do container */
     --md-min-height-input: calc(36px - var(--border) - var(--border));
-    --lg-min-height-input: calc(56px - var(--border) - var(--border));
+    --lg-min-height-input: calc(42px - var(--border) - var(--border));
 
     /* tamanho do botão */
     --md-min-height-btn: calc(36px);
-    --lg-min-height-btn: calc(56px);
+    --lg-min-height-btn: calc(42px);
 
 
     --label-color: var(--gray-400);
@@ -324,6 +324,10 @@ input::placeholder {
     margin: 0;
 }
 
+.legenda:deep(*){
+  margin: 0;
+}
+
 .legenda > svg {
     display: block;
     width: 14px;
@@ -342,6 +346,10 @@ input::placeholder {
     margin: 0;
 }
 
+.errorMessage:deep(*){
+  margin: 0;
+}
+
 .errorMessage > svg {
     display: block;
     width: 14px;
@@ -357,6 +365,10 @@ input::placeholder {
     color: var(--success-color-600);
     line-height: 24px;
     margin: 0;
+}
+
+.successMessage:deep(*){
+  margin: 0;
 }
 
 .successMessage > svg {

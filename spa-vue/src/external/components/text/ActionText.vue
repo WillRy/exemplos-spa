@@ -1,5 +1,5 @@
 <template>
-    <component :is="is" :class="[size]">
+    <component :is="is" :class="[size,'action-text']">
         <slot></slot>
     </component>
 </template>
@@ -24,6 +24,11 @@ export default {
 </script>
 
 <style scoped>
+
+.action-text {
+  margin: 0;
+}
+
 .lg {
     font-size: 1rem;
     font-weight: bold;

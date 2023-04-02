@@ -10,41 +10,41 @@
         <template #body>
             <Loader width="60px" height="60px" :cor-principal="true" v-if="loadingDados"></Loader>
             <div v-if="!loadingDados">
-                <div class="row-xxs">
-                    <div class="col-md-6 mb-xs">
+                <div class="row gy-1">
+                    <div class="col-md-6">
                         <p><strong>{{$t('palavras.nome')}}: </strong> {{ form.nome }}</p>
                     </div>
-                    <div class="col-md-6 mb-xs">
+                    <div class="col-md-6">
                         <p><strong>{{$t('palavras.email')}}: </strong>{{ form.email }}</p>
                     </div>
-                    <div class="col-md-6 mb-xs">
+                    <div class="col-md-6">
                         <p><strong>{{$t('palavras.telefone')}}:</strong> {{ form.telefone }}</p>
                     </div>
-                    <div class="col-md-6 mb-xs">
+                    <div class="col-md-6">
                         <p><strong>{{$t('palavras.cep')}}: </strong> {{ form.cep }}</p>
                     </div>
-                    <div class="col-md-6 mb-xs">
+                    <div class="col-md-6">
                         <p><strong>{{$t('palavras.endereco')}}</strong>: {{ form.endereco }}</p>
                     </div>
-                    <div class="col-md-6 mb-xs">
+                    <div class="col-md-6">
                         <p><strong>{{$t('palavras.bairro')}}:</strong> {{ form.bairro }}</p>
                     </div>
-                    <div class="col-md-6 mb-xs">
+                    <div class="col-md-6">
                         <p><strong>{{$t('palavras.numero')}}:</strong> {{ form.numero }}</p>
                     </div>
-                    <div class="col-md-6 mb-xs">
+                    <div class="col-md-6">
                         <p><strong>{{$t('palavras.complemento')}}:</strong> {{ form.complemento }}</p>
                     </div>
-                    <div class="col-md-6 mb-xs">
+                    <div class="col-md-6">
                         <p><strong>{{$t('palavras.cidade')}}:</strong> {{ form.cidade }}</p>
                     </div>
-                    <div class="col-md-6 mb-xs">
+                    <div class="col-md-6">
                         <p><strong>{{$t('palavras.estado')}}:</strong> {{ form.estado }}</p>
                     </div>
                 </div>
             </div>
         </template>
-        <template #footer>
+        <template #footerDireito>
             <BaseButtonTertiary @click.prevent="fecharModal">
                 {{ $t("palavras.fechar") }}
             </BaseButtonTertiary>

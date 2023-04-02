@@ -1,19 +1,23 @@
 <template>
     <div class="login">
-        <h3>Redefinir senha</h3>
+        <h3>{{ $t('login.redefinir_senha') }}</h3>
         <form @submit.prevent="submit">
-            <div class="mb-xs">
+            <div class="mb-3">
                 <BaseInput
                     label="Senha"
                     v-model="senha"
                 >
                     <template v-slot:error v-if="v$.senha.$error">
-                        <p v-if="v$.senha.required.$invalid">Informe sua senha</p>
+                        <p v-if="v$.senha.required.$invalid">
+                          {{$t("validacao.required",{field: $t('login.senha')})}}
+                        </p>
                     </template>
                 </BaseInput>
             </div>
             <div>
-                <BaseButtonPrimary :loading="loading" style="width: 100%;" class="mb-xs">Redefinir</BaseButtonPrimary>
+                <BaseButtonPrimary :loading="loading" style="width: 100%;" class="mb-3">
+                  {{$t("login.redefinir")}}
+                </BaseButtonPrimary>
 
             </div>
         </form>

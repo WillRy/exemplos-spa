@@ -6,7 +6,10 @@ export default {
       senha: 'Senha',
       login: 'Entrar',
       esqueci_senha: 'Esqueci minha senha',
-      invalido: 'Credenciais inválidas'
+      invalido: 'Credenciais inválidas',
+      recuperar: 'Recuperar',
+      redefinir: 'Redefinir',
+      redefinir_senha: 'Nova senha'
     },
     message: {
       hello: 'Olá mundo',
@@ -39,7 +42,6 @@ export default {
       estado: 'Estado',
       salvar: 'Salvar',
       cancelar: 'Cancelar',
-      excluir: 'Deletar',
       fechar: 'Fechar',
       empresa: 'Empresa | Empresas',
     },

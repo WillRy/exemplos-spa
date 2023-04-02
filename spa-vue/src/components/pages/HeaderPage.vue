@@ -15,7 +15,7 @@ export default {
 <style scoped>
 .header-page {
     background: #fff;
-    border-bottom: 1px solid #f2f2f2;
+    border-bottom: 1px solid #dddddd;
     padding: 20px;
     margin-bottom: 60px;
 
@@ -23,5 +23,10 @@ export default {
     align-items: center;
     gap: 10px;
     justify-content: space-between;
+}
+
+h3 {
+  margin: 0;
+  color: var(--primary-color-600);
 }
 </style>

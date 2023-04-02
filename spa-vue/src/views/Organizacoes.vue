@@ -1,13 +1,12 @@
 <template>
-  <div class="organizacoes text-primary-900">
+  <div class="organizacoes">
     <HeaderPage :titulo="$t('palavras.organizacoes')">
       <BaseButtonPrimary @click="abrirCriar"> {{$t("palavras.criar")}} </BaseButtonPrimary>
     </HeaderPage>
-    <PageContent>
-      <ContentTable>
-        <template #header>
-          <form @submit.prevent="pesquisar">
-            <div class="row-xs align-items-end">
+    <div class="container-fluid">
+      <Box>
+        <form @submit.prevent="pesquisar" class="mb-3">
+          <div class="row align-items-end gy-1">
               <div class="col-md-4">
                 <BaseInput
                   :label="$t('palavras.pesquisar')"
@@ -22,8 +21,6 @@
               </div>
             </div>
           </form>
-        </template>
-
         <Tabela
           :loading="loading"
           :colunas="[
@@ -71,8 +68,7 @@
             </tr>
           </template>
         </Tabela>
-        <template #footer>
-          <PaginacaoSemRouter
+        <PaginacaoSemRouter
             :exibir-total="true"
             v-if="organizacoes"
             :pagina-atual="organizacoes.current_page"
@@ -84,9 +80,8 @@
             :tituloPrimeiraPagina="$t('palavras.primeira')"
             :tituloUltimaPagina="$t('palavras.ultima')"
           />
-        </template>
-      </ContentTable>
-    </PageContent>
+      </Box>
+    </div>
     <ModalCriarOrganizacao />
     <ModalEditarOrganizacao />
     <ModalExcluirOrganizacao />
@@ -105,6 +100,7 @@ import Tabela from "../external/components/tabela/Tabela";
 import ColunaTabela from "../external/components/tabela/ColunaTabela";
 import DropdownAcoes from "../external/components/dropdown/BaseDropdownAction";
 import PaginacaoSemRouter from "../external/components/paginacao/PaginacaoSemRouter";
+import Box from "../external/components/estrutura/Box";
 import api from "../services/api";
 import {
   modalCriarOrganizacaoStore,
@@ -138,6 +134,7 @@ export default {
     BaseButtonPrimary,
     HeaderPage,
     Skeleton,
+    Box
   },
   setup() {
     const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();

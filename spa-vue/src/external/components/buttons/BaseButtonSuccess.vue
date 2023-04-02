@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import BaseButton from "./BaseButton";
+import BaseButton from "./BaseButton.vue";
 
 export default {
     name: "BaseButtonSuccess",
@@ -17,7 +17,7 @@ export default {
         },
         min: {
             type: Boolean,
-            default: ''
+            default: false
         },
         loading: {
             type: Boolean,

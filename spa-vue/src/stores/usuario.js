@@ -15,9 +15,12 @@ export const usuarioStore = defineStore("usuarioStore", {
   },
   actions: {
     async carregarUsuarioLogado() {
-        const response = await api.get("/usuario");
-        this.usuario = response.data.data;
-        return this.usuario;
+        // const response = await api.get("/usuarioo");
+        // this.usuario = response.data.data;
+        // return this.usuario;
+        return api.get("/usuario").then((response) => {
+          this.usuario = response.data.data;
+        });
     },
   },
 });

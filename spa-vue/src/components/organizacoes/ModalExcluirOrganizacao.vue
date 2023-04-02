@@ -11,13 +11,13 @@
             <Loader width="60px" height="60px" :cor-principal="true" v-if="loadingDados"></Loader>
             <p v-else>{{$t('textos.confirmar_excluir_organizacao')}} <strong>{{ modalExcluirOrganizacaoState.payload.nome }}</strong>?</p>
         </template>
-        <template #footer>
-            <BaseButtonDanger @click.prevent="submit" :loading="loading">
-                {{$t('palavras.excluir')}}
-            </BaseButtonDanger>
+        <template #footerDireito>
             <BaseButtonTertiary @click.prevent="fecharModal">
                 {{$t('palavras.cancelar')}}
             </BaseButtonTertiary>
+            <BaseButtonDanger @click.prevent="submit" :loading="loading">
+                {{$t('palavras.excluir')}}
+            </BaseButtonDanger>
         </template>
     </BaseModal>
 </template>

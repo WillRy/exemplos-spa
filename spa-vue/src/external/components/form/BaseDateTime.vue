@@ -190,15 +190,15 @@ export default {
     --md-min-height: 36px;
 
     /* tamanho grande do container */
-    --lg-min-height: 56px;
+    --lg-min-height: 42px;
 
     /* tamanho do input dentro do container */
     --md-min-height-input: calc(36px - var(--border) - var(--border));
-    --lg-min-height-input: calc(56px - var(--border) - var(--border));
+    --lg-min-height-input: calc(42px - var(--border) - var(--border));
 
     /* tamanho do botão */
-    --md-min-height-btn: calc(36px + var(--border) + var(--border));
-    --lg-min-height-btn: calc(56px + var(--border) + var(--border));
+    --md-min-height-btn: calc(36px);
+    --lg-min-height-btn: calc(42px);
 
 
     --label-color: var(--gray-400);
@@ -395,55 +395,67 @@ input::placeholder {
 
 
 .legenda {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    padding-left: var(--padding-text);
-    font-size: 12px;
-    color: var(--gray-400);
-    line-height: 24px;
-    margin: 0;
+  padding-left: var(--padding-text);
+  font-size: 12px;
+  color: var(--gray-400);
+  line-height: 24px;
+  margin: 0;
+}
+
+.legenda:deep(*){
+  margin: 0;
 }
 
 .legenda > svg {
-    display: block;
-    width: 14px;
-    margin-right: 2px;
+  display: block;
+  width: 14px;
+  margin-right: 2px;
 }
 
 
 .errorMessage {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    padding-left: var(--padding-text);
-    font-size: 12px;
-    color: var(--error-color-600);
-    line-height: 24px;
-    margin: 0;
+  padding-left: var(--padding-text);
+  font-size: 12px;
+  color: var(--error-color-600);
+  line-height: 24px;
+  margin: 0;
+}
+
+.errorMessage:deep(*){
+  margin: 0;
 }
 
 .errorMessage > svg {
-    display: block;
-    width: 14px;
-    margin-right: 2px;
+  display: block;
+  width: 14px;
+  margin-right: 2px;
 }
 
 .successMessage {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    padding-left: var(--padding-text);
-    font-size: 12px;
-    color: var(--success-color-600);
-    line-height: 24px;
-    margin: 0;
+  padding-left: var(--padding-text);
+  font-size: 12px;
+  color: var(--success-color-600);
+  line-height: 24px;
+  margin: 0;
+}
+
+.successMessage:deep(*){
+  margin: 0;
 }
 
 .successMessage > svg {
-    display: block;
-    width: 14px;
-    margin-right: 2px;
+  display: block;
+  width: 14px;
+  margin-right: 2px;
 }
 
 

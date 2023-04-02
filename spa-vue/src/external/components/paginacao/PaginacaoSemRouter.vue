@@ -1,138 +1,220 @@
 <template>
-    <div>
-        <ul v-if="paginasTotal > 1">
-            <li>
-                <a
-                    @click.prevent="query(1)"
-                    :class="{active: paginaEstaAtiva(1)}"
-                    :title="tituloPrimeiraPagina"
-                >
-                    &lt;&lt;
-                </a>
-            </li>
-            <li v-for="pagina in paginas" :key="pagina">
-                <a
-                    @click.prevent="query(pagina)"
-                    :class="{active: paginaEstaAtiva(pagina)}"
-                >
-                    {{ pagina }}
-                </a>
-            </li>
-            <li>
-                <a
-                    @click.prevent="query(paginasTotal)"
-                    :class="{active: paginaEstaAtiva(paginasTotal)}"
-                    title="Última"
-                >
-                    &gt;&gt;
-                </a>
-            </li>
-        </ul>
-        <p class="total-registros" v-if="exibirTotal && total > 0">
-            <strong>{{textoTotal}}:</strong> {{total}} {{textoResultados}}
-        </p>
+  <div>
+    <div class="separador"></div>
+    <div class="paginacao" v-if="total">
+      <div class="total">
+        Exibindo de
+        <span>{{ numElementoInicial }}</span>
+        a
+        <span>{{ numElementoFinal }}</span>
+        de
+        <span>{{ total }}</span>
+        {{ total > 1 ? 'resultados' : 'resultado' }}
+      </div>
+      <div class="paginas">
+        <div class="paginas-container" v-if="paginasTotal > 1">
+          <button
+              @click.prevent="query(1)"
+              :disabled="paginaEstaAtiva(1)"
+              title="Primeira"
+              class="pagina pagina-arrow"
+          >
+            <ArrowLeftIcon/>
+          </button>
+
+          <button
+              v-for="pagina in paginas" :key="pagina"
+              @click.prevent="query(pagina)"
+              :class="{active: paginaEstaAtiva(pagina)}"
+              class="pagina"
+          >
+            {{ pagina }}
+          </button>
+          <button
+              @click.prevent="query(paginasTotal)"
+              :disabled="paginaEstaAtiva(paginasTotal)"
+              title="Última"
+              class="pagina pagina-arrow"
+          >
+            <ArrowRightIcon/>
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
+
 </template>
 
 <script>
+import ArrowLeftIcon from "../icons/ArrowLeftIcon.vue";
+import ArrowRightIcon from "../icons/ArrowRightIcon.vue";
+
 export default {
-    name: "PaginacaoSemRouter",
-    props: {
-        tituloPrimeiraPagina: {
-            type: String,
-            default: 'Primeira'
-        },
-        tituloUltimaPagina: {
-            type: String,
-            default: 'Última'
-        },
-        textoTotal: {
-            type: String,
-            default: 'Total'
-        },
-        textoResultados: {
-            type: String,
-            default: 'resultados'
-        },
-        exibirTotal: false,
-        porPagina: {
-            type: Number,
-            default: 1
-        },
-        total: {
-            type: Number,
-            default: 1
-        },
-        paginaAtual: {
-            type: Number,
-            default: 1
-        }
+  name: "PaginacaoSemRouter",
+  components: {ArrowRightIcon, ArrowLeftIcon},
+  props: {
+    exibirTotal: false,
+    porPagina: {
+      type: Number,
+      default: 1
     },
-    methods: {
-        query(pagina) {
-            this.$emit("onChange", pagina);
-        },
-        paginaEstaAtiva(pagina) {
-            return pagina === this.paginaAtual;
-        }
+    total: {
+      type: Number,
+      default: 1
     },
-    computed: {
-        paginas() {
-            const current = this.paginaAtual;
-            const range = 9;
-            const offset = Math.ceil(range / 2);
-            const total = this.paginasTotal;
-            const pagesArray = [];
-
-            for (let i = 1; i <= total; i++) {
-                pagesArray.push(i);
-            }
-
-            pagesArray.splice(0, current - offset);
-            pagesArray.splice(range, total);
-
-            return pagesArray;
-        },
-        paginasTotal() {
-            const total = this.total / this.porPagina;
-            return total !== Infinity ? Math.ceil(total) : 0;
-        },
+    paginaAtual: {
+      type: Number,
+      default: 1
     }
+  },
+  methods: {
+    query(pagina) {
+      this.$emit("onChange", pagina);
+    },
+    paginaEstaAtiva(pagina) {
+      return pagina === this.paginaAtual;
+    }
+  },
+  computed: {
+    numElementoInicial() {
+      const offset = (this.paginaAtual - 1);
+      const offsetNormalizado = this.paginaAtual * this.porPagina - this.porPagina;
+      return offsetNormalizado + 1;
+    },
+    numElementoFinal() {
+      return this.paginaAtual * this.porPagina;
+    },
+    paginas() {
+      const current = this.paginaAtual;
+      const range = 9;
+      const offset = Math.ceil(range / 2);
+      const total = this.paginasTotal;
+      const pagesArray = [];
+
+      for (let i = 1; i <= total; i++) {
+        pagesArray.push(i);
+      }
+
+      pagesArray.splice(0, current - offset);
+      pagesArray.splice(range, total);
+
+      return pagesArray;
+    },
+    paginasTotal() {
+      const total = this.total / this.porPagina;
+      return total !== Infinity ? Math.ceil(total) : 0;
+    },
+  }
 }
 </script>
 
 <style scoped>
-ul {
-    margin: 20px 0 8px 0px;
-    text-align: center;
+* {
+  box-sizing: border-box;
 }
 
-li {
-    display: inline-block;
+.paginacao {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-li a {
-    cursor: pointer;
-    padding: 2px 8px;
-    border-radius: 2px;
-    margin: 4px;
-    user-select: none;
+.paginas-container {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  list-style: none;
 }
 
-li a.router-link-exact-active, li a:hover, .active {
-    background: var(--primary-color-500);
-    color: #fff;
+.pagina {
+  width: 42px;
+  height: 42px;
+  border: 1px solid #EFF0F2;
+  color: var(--primary-color-300);
+  cursor: pointer;
+  padding: 10px;
+  user-select: none;
+  background: #fff;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.total-registros {
-    border: 2px solid #bbbfc4;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 400;
-    margin: 8px auto;
-    max-width: max-content;
-    padding: 4px 10px;
-    text-align: center;
-    background: #ebedf0;
+
+.pagina:disabled {
+  background: var(--gray-200);
+  color: var(--gray-300);
+  cursor: not-allowed;
 }
+
+.pagina.router-link-exact-active, .pagina:hover:not(:disabled), .active {
+  background: var(--primary-color-300);
+  color: #fff;
+  border: none;
+}
+
+.pagina-arrow:first-of-type {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  font-weight: bold;
+}
+
+.pagina-arrow:first-of-type :deep(path) {
+  fill: var(--primary-color-300);
+}
+
+.pagina-arrow:first-of-type:hover:not(:disabled) :deep(path) {
+  fill: #fff;
+}
+
+.pagina-arrow:first-of-type:disabled :deep(path) {
+  fill: var(--gray-300);
+}
+
+.pagina-arrow:first-of-type:disabled {
+  border-right: 0;
+}
+
+.pagina-arrow:last-of-type {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  font-weight: bold;
+}
+
+.pagina-arrow:last-of-type :deep(path) {
+  fill: var(--primary-color-300);
+}
+
+.pagina-arrow:last-of-type:hover:not(:disabled) :deep(path) {
+  fill: #fff;
+}
+
+.pagina-arrow:last-of-type:disabled :deep(path) {
+  fill: var(--gray-300);
+}
+
+.pagina-arrow:last-of-type:disabled {
+  border-left: 0;
+}
+
+
+.total:not(span) {
+  color: var(--primary-color-700);
+}
+
+.total span {
+  color: var(--primary-color-900) !important;
+  font-weight: bold;
+}
+
+.separador {
+  height: 1px;
+  background: #EFF0F2;
+  margin: 20px 0;
+}
+
 </style>

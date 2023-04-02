@@ -3,6 +3,8 @@ import pt_BR from './pt-BR';
 import end from './en';
 
 
+export const allowedLang = ['en','pt-BR'];
+
 const messages = {
   ...pt_BR,
   ...end

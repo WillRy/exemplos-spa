@@ -1,13 +1,12 @@
 <template>
-  <div class="contatos text-primary-900">
+  <div class="contatos">
     <HeaderPage :titulo="$t('palavras.contatos')">
       <BaseButtonPrimary @click="abrirCriar"> {{ $t('palavras.criar') }} </BaseButtonPrimary>
     </HeaderPage>
-    <PageContent>
-      <ContentTable>
-        <template #header>
-          <form @submit.prevent="pesquisar">
-            <div class="row-xs align-items-end">
+    <div class="container-fluid">
+      <Box>
+        <form @submit.prevent="pesquisar" class="mb-3">
+            <div class="row align-items-end gy-1">
               <div class="col-md-4">
                 <BaseInput
                   :label="$t('palavras.pesquisar')"
@@ -37,7 +36,6 @@
               </div>
             </div>
           </form>
-        </template>
         <Tabela
           :loading="loading"
           :colunas="[
@@ -86,8 +84,7 @@
             </tr>
           </template>
         </Tabela>
-        <template #footer>
-          <PaginacaoSemRouter
+        <PaginacaoSemRouter
             :exibir-total="true"
             v-if="contatos"
             :pagina-atual="contatos.current_page"
@@ -99,9 +96,8 @@
             :tituloPrimeiraPagina="$t('palavras.primeira')"
             :tituloUltimaPagina="$t('palavras.ultima')"
           />
-        </template>
-      </ContentTable>
-    </PageContent>
+      </Box>
+    </div>
     <ModalCriarContato />
     <ModalEditarContato />
     <ModalExcluirContato />
@@ -120,6 +116,7 @@ import Tabela from "../external/components/tabela/Tabela";
 import ColunaTabela from "../external/components/tabela/ColunaTabela";
 import DropdownAcoes from "../external/components/dropdown/BaseDropdownAction";
 import PaginacaoSemRouter from "../external/components/paginacao/PaginacaoSemRouter";
+import Box from "../external/components/estrutura/Box";
 import api from "../services/api";
 import {
   modalCriarContatoStore,
@@ -151,6 +148,7 @@ export default {
     PageContent,
     BaseButtonPrimary,
     HeaderPage,
+    Box
   },
   setup() {
     useHead({

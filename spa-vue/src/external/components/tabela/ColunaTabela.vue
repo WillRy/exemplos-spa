@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import EyeIcon from "../icons/EyeIcon";
+import EyeIcon from "../icons/EyeIcon.vue";
 
 export default {
     name: "ColunaTabela",

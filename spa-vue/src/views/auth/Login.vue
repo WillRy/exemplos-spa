@@ -2,7 +2,7 @@
     <div class="login">
         <h3>{{$t('login.titulo')}}</h3>
         <form @submit.prevent="submit">
-            <div class="mb-xs">
+            <div class="mb-3">
                 <BaseInput
                     :label="$t('login.email')"
                     v-model="login.email"
@@ -12,7 +12,7 @@
                     </template>
                 </BaseInput>
             </div>
-            <div class="mb-md">
+            <div class="mb-3">
                 <BaseInput
                     :label="$t('login.senha')"
                     v-model="login.senha"
@@ -24,8 +24,8 @@
                 </BaseInput>
             </div>
             <div>
-                <BaseButtonPrimary :loading="loading" style="width: 100%;" class="mb-xs">{{$t('login.login')}}</BaseButtonPrimary>
-                <router-link to="esqueci-senha">{{$t('login.esqueci_senha')}}</router-link>
+                <BaseButtonPrimary :loading="loading" style="width: 100%;" class="mb-3">{{$t('login.login')}}</BaseButtonPrimary>
+                <router-link to="/esqueci-senha">{{$t('login.esqueci_senha')}}</router-link>
             </div>
         </form>
     </div>

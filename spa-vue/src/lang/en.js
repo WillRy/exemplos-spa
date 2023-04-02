@@ -6,7 +6,10 @@ export default {
       senha: 'Password',
       login: 'Login',
       esqueci_senha: 'Forgot password',
-      invalido: 'Invalid credentials'
+      invalido: 'Invalid credentials',
+      recuperar: 'Recover',
+      redefinir: 'Redefine',
+      redefinir_senha: 'New Password'
     },
     message: {
       hello: 'Hello World',
@@ -39,7 +42,6 @@ export default {
       estado: 'State',
       salvar: 'Save',
       cancelar: 'Cancel',
-      excluir: 'Delete',
       fechar: 'Close',
       empresa: 'Company | Companies',
     },

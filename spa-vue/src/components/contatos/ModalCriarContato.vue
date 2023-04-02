@@ -9,8 +9,8 @@
     </template>
     <template #body>
       <form @submit.prevent="submit">
-        <div class="row-xxs">
-          <div class="col-12 mb-sm">
+        <div class="row mb-3 gy-3">
+          <div class="col-12 ">
             <BaseSelectAjax
               :label="$t('palavras.empresa')"
               :placeholder="$t('textos.pesquise_as_empresas')"
@@ -26,7 +26,7 @@
             >
             </BaseSelectAjax>
           </div>
-          <div class="col-12 mb-sm">
+          <div class="col-12 ">
             <BaseInput
               v-model="form.nome"
               :label="$t('palavras.nome') + '*'"
@@ -39,7 +39,7 @@
               </template>
             </BaseInput>
           </div>
-          <div class="col-md-6 mb-sm">
+          <div class="col-md-6 ">
             <BaseInput
               v-model="form.email"
               :label="$t('palavras.email') + '*'"
@@ -60,7 +60,7 @@
               </template>
             </BaseInput>
           </div>
-          <div class="col-md-6 mb-sm">
+          <div class="col-md-6 ">
             <BaseInput
               v-model="form.telefone"
               :label="$t('palavras.telefone')"
@@ -70,8 +70,8 @@
             />
           </div>
         </div>
-        <div class="row-xxs">
-          <div class="col-md-12 mb-sm">
+        <div class="row gy-3">
+          <div class="col-md-12 ">
             <BaseInput
               v-model="form.cep"
               :label="$t('palavras.cep')"
@@ -80,7 +80,7 @@
               @change="tratarCep"
             />
           </div>
-          <div class="col-md-4 mb-sm">
+          <div class="col-md-4 ">
             <BaseInput
               v-model="form.endereco"
               :label="$t('palavras.endereco')"
@@ -89,7 +89,7 @@
               :disabled="!pesquisouCep"
             />
           </div>
-          <div class="col-md-4 mb-sm">
+          <div class="col-md-4 ">
             <BaseInput
               v-model="form.bairro"
               :label="$t('palavras.bairro')"
@@ -98,7 +98,7 @@
               :disabled="!pesquisouCep"
             />
           </div>
-          <div class="col-md-4 mb-sm">
+          <div class="col-md-4 ">
             <BaseInput
               v-model="form.numero"
               :label="$t('palavras.numero')"
@@ -106,7 +106,7 @@
               type="number"
             />
           </div>
-          <div class="col-md-4 mb-sm">
+          <div class="col-md-4 ">
             <BaseInput
               v-model="form.complemento"
               :label="$t('palavras.complemento')"
@@ -114,7 +114,7 @@
               type="text"
             />
           </div>
-          <div class="col-md-4 mb-sm">
+          <div class="col-md-4 ">
             <BaseInput
               v-model="form.cidade"
               :label="$t('palavras.cidade')"
@@ -123,7 +123,7 @@
               :disabled="!pesquisouCep"
             />
           </div>
-          <div class="col-md-4 mb-sm">
+          <div class="col-md-4 ">
             <BaseInput
               v-model="form.estado"
               :label="$t('palavras.estado')"
@@ -135,13 +135,13 @@
         </div>
       </form>
     </template>
-    <template #footer>
-      <BaseButtonPrimary @click.prevent="submit" :loading="loading">
-        {{$t('palavras.salvar')}}
-      </BaseButtonPrimary>
+    <template #footerDireito>
       <BaseButtonTertiary @click.prevent="fecharModal">
         {{$t('palavras.cancelar')}}
       </BaseButtonTertiary>
+      <BaseButtonPrimary @click.prevent="submit" :loading="loading">
+        {{$t('palavras.salvar')}}
+      </BaseButtonPrimary>
     </template>
   </BaseModal>
 </template>
