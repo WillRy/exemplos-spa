@@ -1,22 +1,22 @@
 <template>
   <div class="contatos">
     <HeaderPage :titulo="$t('palavras.contatos')">
-      <BaseButtonPrimary @click="abrirCriar"> {{ $t('palavras.criar') }} </BaseButtonPrimary>
+      <BaseButtonPrimary @click="abrirCriar"> {{ $t('palavras.criar') }}</BaseButtonPrimary>
     </HeaderPage>
     <div class="container-fluid">
       <Box>
         <form @submit.prevent="pesquisar" class="mb-3">
-            <div class="row align-items-end gy-1">
-              <div class="col-md-4">
-                <BaseInput
+          <div class="row align-items-end gy-1">
+            <div class="col-md-4">
+              <BaseInput
                   :label="$t('palavras.pesquisar')"
                   name="pesquisa"
                   v-model="form.pesquisa"
-                />
-              </div>
-              <div class="col-md-4">
-                <BaseSelectAjax
-                :label="$t('palavras.empresa')"
+              />
+            </div>
+            <div class="col-md-4">
+              <BaseSelectAjax
+                  :label="$t('palavras.empresa')"
                   :placeholder="$t('textos.pesquise_as_empresas')"
                   v-model="form.empresa_id"
                   track-by="id"
@@ -26,19 +26,19 @@
                   :noOptions="$t('textos.pesquise_as_empresas')"
                   :empty="true"
                   :remover="true"
-                >
-                </BaseSelectAjax>
-              </div>
-              <div class="col-auto">
-                <BaseButtonPrimary :loading="loading">
-                  {{$t('palavras.pesquisar')}}
-                </BaseButtonPrimary>
-              </div>
+              >
+              </BaseSelectAjax>
             </div>
-          </form>
+            <div class="col-auto">
+              <BaseButtonPrimary :loading="loading">
+                {{ $t('palavras.pesquisar') }}
+              </BaseButtonPrimary>
+            </div>
+          </div>
+        </form>
         <Tabela
-          :loading="loading"
-          :colunas="[
+            :loading="loading"
+            :colunas="[
             {
               nome: 'id',
               texto: $t('palavras.id'),
@@ -61,11 +61,11 @@
               disabled: true,
             },
           ]"
-          :dados="contatos && contatos.data"
-          :sort-name="sortName"
-          :sort-order="sortOrder"
-          @onSort="sortBy"
-          texto-empty="Não há dados"
+            :dados="contatos && contatos.data"
+            :sort-name="sortName"
+            :sort-order="sortOrder"
+            @onSort="sortBy"
+            texto-empty="Não há dados"
         >
           <template v-slot:colunas="{ dados }">
             <tr v-for="(dado, index) in dados" :key="index">
@@ -76,9 +76,9 @@
               <ColunaTabela>{{ dado.organizacao }}</ColunaTabela>
               <th class="coluna-acoes">
                 <DropdownAcoes :fundoClaro="true">
-                  <button @click="abrirEdicao(dado)">{{$t('palavras.editar')}}</button>
-                  <button @click="abrirExclusao(dado)">{{$t('palavras.excluir')}}</button>
-                  <button @click="abrirDetalhes(dado)">{{$t('palavras.detalhes')}}</button>
+                  <button @click="abrirEdicao(dado)">{{ $t('palavras.editar') }}</button>
+                  <button @click="abrirExclusao(dado)">{{ $t('palavras.excluir') }}</button>
+                  <button @click="abrirDetalhes(dado)">{{ $t('palavras.detalhes') }}</button>
                 </DropdownAcoes>
               </th>
             </tr>
@@ -95,13 +95,13 @@
             :textoResultados="$tc('palavras.resultados', contatos.total)"
             :tituloPrimeiraPagina="$t('palavras.primeira')"
             :tituloUltimaPagina="$t('palavras.ultima')"
-          />
+        />
       </Box>
     </div>
-    <ModalCriarContato />
-    <ModalEditarContato />
-    <ModalExcluirContato />
-    <ModalDetalhesContato />
+    <ModalCriarContato/>
+    <ModalEditarContato/>
+    <ModalExcluirContato/>
+    <ModalDetalhesContato/>
   </div>
 </template>
 
@@ -129,7 +129,7 @@ import useVuelidate from "@vuelidate/core";
 import ModalEditarContato from "../components/contatos/ModalEditarContato";
 import ModalExcluirContato from "../components/contatos/ModalExcluirContato";
 import ModalDetalhesContato from "../components/contatos/ModalDetalhesContato";
-import { useHead } from "@unhead/vue";
+import {useHead} from "@unhead/vue";
 
 export default {
   name: "Contatos",
@@ -201,10 +201,10 @@ export default {
   methods: {
     pesquisarEmpresa(pesquisa) {
       api
-        .get(`/organizacao`, { params: { pesquisa: pesquisa } })
-        .then((response) => {
-          this.resultadoPesquisaEmpresa = response.data.data.data;
-        });
+          .get(`/organizacao`, {params: {pesquisa: pesquisa}})
+          .then((response) => {
+            this.resultadoPesquisaEmpresa = response.data.data.data;
+          });
     },
     abrirCriar() {
       this.modalCriarContatoState.abrir();
@@ -218,7 +218,7 @@ export default {
     abrirDetalhes(usuario) {
       this.modalDetalhesContatoState.abrir(usuario);
     },
-    sortBy({ sortName, sortOrder }) {
+    sortBy({sortName, sortOrder}) {
       console.log(sortName, sortOrder);
       this.sortName = sortName;
       this.sortOrder = sortOrder;
@@ -234,34 +234,47 @@ export default {
     },
     buscarDados() {
       this.loading = true;
-      api
-        .get("/contato", {
-          params: {
-            ...(this.form.pesquisa ? { pesquisa: this.form.pesquisa } : {}),
-            ...(this.form.empresa_id
-              ? { empresa_id: this.form.empresa_id.id }
-              : {}),
-            ...(this.page ? { page: this.page } : {}),
-            sortOrder: this.sortOrder,
-            sortName: this.sortName,
-          },
-        })
-        .then((r) => {
-          if (!r.data.success) return;
+      return api
+          .get("/contato", {
+            params: {
+              ...(this.form.pesquisa ? {pesquisa: this.form.pesquisa} : {}),
+              ...(this.form.empresa_id
+                  ? {empresa_id: this.form.empresa_id.id}
+                  : {}),
+              ...(this.page ? {page: this.page} : {}),
+              sortOrder: this.sortOrder,
+              sortName: this.sortName,
+            },
+          })
+          .then((r) => {
+            if (!r.data.success) return;
 
-          this.contatos = r.data.data;
-        })
-        .catch((e) => {
-          this.$laravelError(e, "Não foi possível listar os dados");
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+            this.contatos = r.data.data;
+          })
+          .catch((e) => {
+            this.$laravelError(e, "Não foi possível listar os dados");
+          })
+          .finally(() => {
+            this.loading = false;
+          });
     },
   },
-  beforeUnmount() {},
+  //pré carrega os dados
+  async beforeRouteEnter(to, from, next) {
+    try {
+      const r = await api.get("/contato");
+      next((vm) => vm.contatos = r.data.data)
+
+    } catch (error) {
+      next((vm) => {
+        vm.$laravelError(error, "Não foi possível listar os dados");
+      })
+    }
+  },
+  beforeUnmount() {
+  },
   created() {
-    this.buscarDados();
+    // this.buscarDados();
   },
 };
 </script>
