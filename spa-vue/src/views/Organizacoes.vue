@@ -113,7 +113,6 @@ import useVuelidate from "@vuelidate/core";
 import ModalEditarOrganizacao from "../components/organizacoes/ModalEditarOrganizacao";
 import ModalExcluirOrganizacao from "../components/organizacoes/ModalExcluirOrganizacao";
 import ModalDetalhesOrganizacao from "../components/organizacoes/ModalDetalhesOrganizacao";
-import { Skeleton } from "vue-loading-skeleton";
 import { useHead } from "@unhead/vue";
 
 export default {
@@ -133,7 +132,6 @@ export default {
     PageContent,
     BaseButtonPrimary,
     HeaderPage,
-    Skeleton,
     Box
   },
   setup() {
