@@ -1,17 +1,19 @@
 import {createRouter, createWebHistory} from "vue-router";
 import Publico from "../layouts/Publico";
 import Login from "../views/auth/Login";
+import NaoEncontrado from "../views/NaoEncontrado";
 import Privado from "../layouts/Privado";
 import Lang from "../layouts/Lang";
 import {defineAsyncComponent} from "vue";
 import {usuarioStore} from "../stores/usuario";
 import {useToast} from "vue-toast-notification";
 import NProgress from "nprogress";
-import {allowedLang, getLanguage, i18n} from "../lang";
+import {idiomasPermitidos, identificarIdioma, i18n} from "../lang";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
+
         {
             path: "/:lang(en|pt-BR)?",
             component: Publico,
@@ -35,7 +37,7 @@ const router = createRouter({
             ],
         },
         {
-            path: "/:lang/painel",
+            path: "/:lang(en|pt-BR)/painel",
             component: Privado,
             meta: {
                 permissoes: [],
@@ -83,29 +85,33 @@ const router = createRouter({
                 },
             ],
         },
-
+        {path: '/:pathMatch(.*)*', name: 'not-found', component: NaoEncontrado},
     ],
 });
 
 //definir o idioma da aplicação com base na rota
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
 
     debugger
+    if (to.name === 'not-found') return next();
+
     const newLocale = to.params.lang
     const prevLocale = from.params.lang
+    const targetLang = newLocale ?? prevLocale;
 
-    const isAllowed = allowedLang.find((lang) => lang === newLocale);
+
+    const isAllowed = idiomasPermitidos.find((lang) => lang === newLocale);
 
 
-    if (!newLocale) {
-        to.params.lang = prevLocale ? prevLocale : getLanguage();
-        return next(to);
+    if (!targetLang) {
+        to.params.lang = identificarIdioma();
+        return next(to)
     }
 
 
     if (!isAllowed) {
-        to.params.lang = getLanguage();
-        return next(to);
+        to.params.lang = identificarIdioma();
+        return next(to)
     }
 
 

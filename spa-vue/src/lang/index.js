@@ -3,20 +3,20 @@ import pt_BR from './pt-BR';
 import end from './en';
 
 
-export const allowedLang = ['en','pt-BR'];
+export const idiomasPermitidos = ['en','pt-BR'];
 
-const messages = {
+const mensagens = {
   ...pt_BR,
   ...end
 }
 
 // Create VueI18n instance with options
-export function getLanguage() {
+export function identificarIdioma() {
   // if has not choose language
   const language = (
     navigator.language || navigator.browserLanguage
   );
-  const locales = Object.keys(messages);
+  const locales = Object.keys(mensagens);
   for (const locale of locales) {
     if (language.indexOf(locale) > -1) {
       return locale;
@@ -26,6 +26,6 @@ export function getLanguage() {
 }
 
 export const i18n = createI18n({
-  locale: getLanguage(),
-  messages, // set locale messages
+  locale: identificarIdioma(),
+  messages: mensagens, // set locale messages
 });
