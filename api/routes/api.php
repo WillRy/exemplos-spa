@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ContatoController;
 use App\Http\Controllers\Api\OrganizacaoController;
+use App\Http\Controllers\Api\TagsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +47,14 @@ Route::group(['middleware' => 'locale'], function(){
             Route::post('/', [ContatoController::class, 'store'])->name('contato.store');
             Route::put('/{id}', [ContatoController::class, 'update'])->name('contato.update');
             Route::delete('/{id}', [ContatoController::class, 'destroy'])->name('contato.destroy');
+        });
+
+        Route::group(['prefix' => 'tag'], function () {
+            Route::get('/', [TagsController::class, 'index'])->name('tag.index');
+            Route::get('/{id}', [TagsController::class, 'show'])->name('tag.show');
+            Route::post('/', [TagsController::class, 'store'])->name('tag.store');
+            Route::put('/{id}', [TagsController::class, 'update'])->name('tag.update');
+            Route::delete('/{id}', [TagsController::class, 'destroy'])->name('tag.destroy');
         });
     });
 

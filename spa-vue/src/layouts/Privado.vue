@@ -25,6 +25,14 @@
           <ContatoIcon/>
         </template>
       </SidebarLink>
+      <SidebarLink :to="{name:'tags'}">
+        <template #texto>
+          {{ $t('palavras.tags') }}
+        </template>
+        <template #icone>
+          <TagIcon/>
+        </template>
+      </SidebarLink>
     </Sidebar>
 
     <Header>
@@ -69,12 +77,11 @@
     </Header>
 
 
-
     <HomeContainer>
       <router-view key="privado" :key="$route.path"></router-view>
     </HomeContainer>
   </div>
-  
+
   <div class="loader-overlay" v-if="loading">
     <Loader width="126px" height="126px" :corPrincipal="true"/>
   </div>
@@ -92,10 +99,12 @@ import ContatoIcon from "../components/icons/ContatoIcon.vue";
 import BaseDropdownPrimary from "../external/components/dropdown/BaseDropdownPrimary";
 import BaseButtonSecondary from "../external/components/buttons/BaseButtonSecondary";
 import BaseDropdownSecondary from "../external/components/dropdown/BaseDropdownSecondary";
+import TagIcon from "../components/icons/TagIcon";
 
 export default {
   name: "Privado",
   components: {
+    TagIcon,
     BaseDropdownSecondary,
     BaseButtonSecondary,
     BaseDropdownPrimary,

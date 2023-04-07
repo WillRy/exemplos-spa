@@ -1,0 +1,13 @@
+Tag::with('organizacoes')->get()
+exit
+Tag::with('organizacoes')->get()
+Tag::with('organizacoes')->get()
+exit
+Tag::with('organizacoes')->get()
+exit
+Tag::with('organizacoes')->get()
+exit
+Tag::with('organizacoes')->get()
+exit
+Organizacao::with("tags")->get()
+exit

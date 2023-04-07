@@ -24,7 +24,7 @@
             >
               <template v-slot:error v-if="v$.form.nome.$error">
                 <p v-if="v$.form.nome.required.$invalid">
-                  {{ $t("validacao.required", { field: $t("palavras.nome") }) }}
+                  {{ $t("validacao.required", {field: $t("palavras.nome")}) }}
                 </p>
               </template>
             </BaseInput>
@@ -39,12 +39,12 @@
               <template v-slot:error v-if="v$.form.email.$error">
                 <p v-if="v$.form.email.required.$invalid">
                   {{
-                    $t("validacao.required", { field: $t("palavras.email") })
+                    $t("validacao.required", {field: $t("palavras.email")})
                   }}
                 </p>
                 <p v-if="v$.form.email.email.$invalid">
                   {{
-                    $t("validacao.required", { field: $t("palavras.email") })
+                    $t("validacao.required", {field: $t("palavras.email")})
                   }}
                 </p>
               </template>
@@ -60,7 +60,7 @@
             />
           </div>
         </div>
-        <div class="row gy-3">
+        <div class="row mb-3 gy-3">
           <div class="col-md-12 ">
             <BaseInput
               v-model="form.cep"
@@ -123,14 +123,43 @@
             />
           </div>
         </div>
+
+        <div class="row">
+          <div class="col">
+            <BaseSelectAjax
+              :label="$t('palavras.tags')"
+              :placeholder="$t('textos.pesquise_as_tags')"
+              v-model="form.tags"
+              track-by="id"
+              text-by="nome"
+              :options="resultadoPesquisaTag"
+              @search-change="pesquisarTag"
+              :noOptions="$t('textos.pesquise_as_tags')"
+              :empty="true"
+              :remover="true"
+              :multiple="true"
+            >
+              <template v-slot:option="{option}">
+                <div class="custom-tag" :style="{background: option['cor_fundo'], color: option['cor_texto']}">
+                  {{ option['nome'] }}
+                </div>
+              </template>
+              <template v-slot:tag="{option}">
+                <div class="custom-tag" :style="{background: option['cor_fundo'], color: option['cor_texto']}">
+                  {{ option['nome'] }}
+                </div>
+              </template>
+            </BaseSelectAjax>
+          </div>
+        </div>
       </form>
     </template>
     <template #footerDireito>
       <BaseButtonTertiary @click.prevent="fecharModal">
-        {{$t('palavras.cancelar')}}
+        {{ $t('palavras.cancelar') }}
       </BaseButtonTertiary>
       <BaseButtonPrimary @click.prevent="submit" :loading="loading">
-        {{$t('palavras.salvar')}}
+        {{ $t('palavras.salvar') }}
       </BaseButtonPrimary>
     </template>
   </BaseModal>
@@ -144,8 +173,8 @@ import BaseModal from "../../external/components/modal/BaseModal";
 import BaseSelectAjax from "../../external/components/form/BaseSelectAjax";
 import BaseInput from "../../external/components/form/BaseInput";
 import BaseDate from "../../external/components/form/BaseDate";
-import { modalEditarOrganizacaoStore } from "../../stores/organizacao";
-import { email, required } from "@vuelidate/validators";
+import {modalEditarOrganizacaoStore} from "../../stores/organizacao";
+import {email, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import axios from "axios";
 
@@ -179,19 +208,20 @@ export default {
         cidade: "",
         estado: "",
         organizacao_id: null,
+        tags: []
       },
+      resultadoPesquisaTag: [],
       pesquisouCep: false,
       config: false,
       loading: false,
       loadingDados: false,
-      resultadoPesquisaEmpresa: [],
     };
   },
   validations() {
     return {
       form: {
-        nome: { required },
-        email: { email, required },
+        nome: {required},
+        email: {email, required},
         telefone: {},
         cep: {},
         endereco: {},
@@ -206,13 +236,20 @@ export default {
   },
   computed: {},
   methods: {
+    pesquisarTag(pesquisa) {
+      api
+        .get(`/tag`, {params: {pesquisa: pesquisa}})
+        .then((response) => {
+          this.resultadoPesquisaTag = response.data.data.data;
+        });
+    },
     tratarCep() {
       this.pesquisouCep = false;
       if (this.form.cep.length === 8) {
         axios
           .get(`https://viacep.com.br/ws/${this.form.cep}/json/`)
           .then((r) => {
-            const { data } = r;
+            const {data} = r;
 
             if (data.erro) {
               this.pesquisouCep = true;
@@ -275,8 +312,10 @@ export default {
       }
     },
   },
-  beforeUnmount() {},
-  created() {},
+  beforeUnmount() {
+  },
+  created() {
+  },
 };
 </script>
 

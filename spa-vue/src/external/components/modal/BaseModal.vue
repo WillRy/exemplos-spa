@@ -158,7 +158,7 @@ export default {
   left: 0;
   position: fixed;
   top: 0;
-  z-index: 2000;
+  z-index: var(--z-index-4);
   height: 100vh;
   width: 100vw;
 

@@ -1,26 +1,52 @@
 <template>
   <div class="organizacoes">
     <HeaderPage :titulo="$t('palavras.organizacoes')">
-      <BaseButtonPrimary @click="abrirCriar"> {{$t("palavras.criar")}} </BaseButtonPrimary>
+      <BaseButtonPrimary @click="abrirCriar"> {{ $t("palavras.criar") }}</BaseButtonPrimary>
     </HeaderPage>
     <div class="container-fluid">
       <Box>
         <form @submit.prevent="pesquisar" class="mb-3">
           <div class="row align-items-end gy-1">
-              <div class="col-md-4">
-                <BaseInput
-                  :label="$t('palavras.pesquisar')"
-                  name="pesquisa"
-                  v-model="form.pesquisa"
-                />
-              </div>
-              <div class="col-auto">
-                <BaseButtonPrimary :loading="loading">
-                  {{$t('palavras.pesquisar')}}
-                </BaseButtonPrimary>
-              </div>
+            <div class="col-md-4">
+              <BaseInput
+                :label="$t('palavras.pesquisar')"
+                name="pesquisa"
+                v-model="form.pesquisa"
+              />
             </div>
-          </form>
+            <div class="col-md-4">
+              <BaseSelectAjax
+                :label="$t('palavras.tags')"
+                :placeholder="$t('textos.pesquise_as_tags')"
+                v-model="form.tag_id"
+                track-by="id"
+                text-by="nome"
+                :options="resultadoPesquisaTag"
+                @search-change="pesquisarEmpresa"
+                :noOptions="$t('textos.pesquise_as_tags')"
+                :empty="true"
+                :remover="true"
+                :multiple="true"
+              >
+                <template v-slot:option="{option}">
+                  <div class="custom-tag" :style="{background: option['cor_fundo'], color: option['cor_texto']}">
+                    {{ option['nome'] }}
+                  </div>
+                </template>
+                <template v-slot:tag="{option}">
+                  <div class="custom-tag" :style="{background: option['cor_fundo'], color: option['cor_texto']}">
+                    {{ option['nome'] }}
+                  </div>
+                </template>
+              </BaseSelectAjax>
+            </div>
+            <div class="col-auto">
+              <BaseButtonPrimary :loading="loading">
+                {{ $t('palavras.pesquisar') }}
+              </BaseButtonPrimary>
+            </div>
+          </div>
+        </form>
         <Tabela
           :loading="loading"
           :colunas="[
@@ -44,6 +70,11 @@
               nome: 'qtd_contatos',
               texto: $t('palavras.qtd_contatos'),
             },
+            {
+              nome: 'tags',
+              texto: $t('palavras.tags'),
+              disabled: true
+            },
           ]"
           :dados="organizacoes && organizacoes.data"
           :sort-name="sortName"
@@ -58,34 +89,44 @@
               <ColunaTabela>{{ dado.email }}</ColunaTabela>
               <ColunaTabela>{{ dado.telefone }}</ColunaTabela>
               <ColunaTabela>{{ dado.qtd_contatos }}</ColunaTabela>
+              <ColunaTabela>
+                <span
+                  class="custom-tag"
+                  v-for="tag in dado.tags"
+                  :key="tag.id"
+                  :style="{background: tag['cor_fundo'], color: tag['cor_texto']}"
+                >
+                  {{ tag.nome }}
+                </span>
+              </ColunaTabela>
               <th class="coluna-acoes">
                 <DropdownAcoes :fundoClaro="true">
-                  <button @click="abrirEdicao(dado)">{{$t('palavras.editar')}}</button>
-                  <button @click="abrirExclusao(dado)">{{$t('palavras.excluir')}}</button>
-                  <button @click="abrirDetalhes(dado)">{{$t('palavras.detalhes')}}</button>
+                  <button @click="abrirEdicao(dado)">{{ $t('palavras.editar') }}</button>
+                  <button @click="abrirExclusao(dado)">{{ $t('palavras.excluir') }}</button>
+                  <button @click="abrirDetalhes(dado)">{{ $t('palavras.detalhes') }}</button>
                 </DropdownAcoes>
               </th>
             </tr>
           </template>
         </Tabela>
         <PaginacaoSemRouter
-            :exibir-total="true"
-            v-if="organizacoes"
-            :pagina-atual="organizacoes.current_page"
-            :total="organizacoes.total"
-            :porPagina="organizacoes.per_page"
-            @onChange="updatePagina($event)"
-            :textoTotal="$t('palavras.total')"
-            :textoResultados="$tc('palavras.resultados', organizacoes.total)"
-            :tituloPrimeiraPagina="$t('palavras.primeira')"
-            :tituloUltimaPagina="$t('palavras.ultima')"
-          />
+          :exibir-total="true"
+          v-if="organizacoes"
+          :pagina-atual="organizacoes.current_page"
+          :total="organizacoes.total"
+          :porPagina="organizacoes.per_page"
+          @onChange="updatePagina($event)"
+          :textoTotal="$t('palavras.total')"
+          :textoResultados="$tc('palavras.resultados', organizacoes.total)"
+          :tituloPrimeiraPagina="$t('palavras.primeira')"
+          :tituloUltimaPagina="$t('palavras.ultima')"
+        />
       </Box>
     </div>
-    <ModalCriarOrganizacao />
-    <ModalEditarOrganizacao />
-    <ModalExcluirOrganizacao />
-    <ModalDetalhesOrganizacao />
+    <ModalCriarOrganizacao/>
+    <ModalEditarOrganizacao/>
+    <ModalExcluirOrganizacao/>
+    <ModalDetalhesOrganizacao/>
   </div>
 </template>
 
@@ -113,7 +154,7 @@ import useVuelidate from "@vuelidate/core";
 import ModalEditarOrganizacao from "../components/organizacoes/ModalEditarOrganizacao";
 import ModalExcluirOrganizacao from "../components/organizacoes/ModalExcluirOrganizacao";
 import ModalDetalhesOrganizacao from "../components/organizacoes/ModalDetalhesOrganizacao";
-import { useHead } from "@unhead/vue";
+import {useHead} from "@unhead/vue";
 
 export default {
   name: "Organizacaos",
@@ -172,22 +213,22 @@ export default {
     return {
       form: {
         pesquisa: "",
-        empresa_id: null,
+        tag_id: [],
       },
       loading: false,
       sortName: "id",
       sortOrder: "desc",
       page: 1,
       organizacoes: null,
-      resultadoPesquisaEmpresa: [],
+      resultadoPesquisaTag: [],
     };
   },
   methods: {
     pesquisarEmpresa(pesquisa) {
       api
-        .get(`/organizacao`, { params: { pesquisa: pesquisa } })
+        .get(`/tag`, {params: {pesquisa: pesquisa}})
         .then((response) => {
-          this.resultadoPesquisaEmpresa = response.data.data.data;
+          this.resultadoPesquisaTag = response.data.data.data;
         });
     },
     abrirCriar() {
@@ -202,7 +243,7 @@ export default {
     abrirDetalhes(usuario) {
       this.modalDetalhesOrganizacaoState.abrir(usuario);
     },
-    sortBy({ sortName, sortOrder }) {
+    sortBy({sortName, sortOrder}) {
       console.log(sortName, sortOrder);
       this.sortName = sortName;
       this.sortOrder = sortOrder;
@@ -218,14 +259,16 @@ export default {
     },
     buscarDados() {
       this.loading = true;
+
+      const id_tags = this.form.tag_id ? this.form.tag_id.map((tag) => tag.id) : [];
       api
         .get("/organizacao", {
           params: {
-            ...(this.form.pesquisa ? { pesquisa: this.form.pesquisa } : {}),
-            ...(this.form.empresa_id
-              ? { empresa_id: this.form.empresa_id.id }
+            ...(this.form.pesquisa ? {pesquisa: this.form.pesquisa} : {}),
+            ...(id_tags
+              ? {id_tags: id_tags}
               : {}),
-            ...(this.page ? { page: this.page } : {}),
+            ...(this.page ? {page: this.page} : {}),
             sortOrder: this.sortOrder,
             sortName: this.sortName,
           },
@@ -236,18 +279,31 @@ export default {
           this.organizacoes = r.data.data;
         })
         .catch((e) => {
-          this.$laravelError(e, $t('texto.erro_listar_dados'));
+          this.$laravelError(e, this.$t('texto.erro_listar_dados'));
         })
         .finally(() => {
           this.loading = false;
         });
     },
   },
-  beforeUnmount() {},
+  beforeUnmount() {
+  },
   created() {
     this.buscarDados();
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.custom-tag {
+  box-sizing: border-box;
+  padding: 2px 4px;
+  border-radius: 4px;
+  border: 1px solid var(--gray-400);
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0px 4px;
+
+}
+</style>

@@ -34,7 +34,7 @@
             >
               <template v-slot:error v-if="v$.form.nome.$error">
                 <p v-if="v$.form.nome.required.$invalid">
-                  {{ $t("validacao.required", { field: $t("palavras.nome") }) }}
+                  {{ $t("validacao.required", {field: $t("palavras.nome")}) }}
                 </p>
               </template>
             </BaseInput>
@@ -49,12 +49,12 @@
               <template v-slot:error v-if="v$.form.email.$error">
                 <p v-if="v$.form.email.required.$invalid">
                   {{
-                    $t("validacao.required", { field: $t("palavras.email") })
+                    $t("validacao.required", {field: $t("palavras.email")})
                   }}
                 </p>
                 <p v-if="v$.form.email.email.$invalid">
                   {{
-                    $t("validacao.required", { field: $t("palavras.email") })
+                    $t("validacao.required", {field: $t("palavras.email")})
                   }}
                 </p>
               </template>
@@ -137,10 +137,10 @@
     </template>
     <template #footerDireito>
       <BaseButtonTertiary @click.prevent="fecharModal">
-        {{$t('palavras.cancelar')}}
+        {{ $t('palavras.cancelar') }}
       </BaseButtonTertiary>
       <BaseButtonPrimary @click.prevent="submit" :loading="loading">
-        {{$t('palavras.salvar')}}
+        {{ $t('palavras.salvar') }}
       </BaseButtonPrimary>
     </template>
   </BaseModal>
@@ -154,8 +154,8 @@ import BaseModal from "../../external/components/modal/BaseModal";
 import BaseSelectAjax from "../../external/components/form/BaseSelectAjax";
 import BaseInput from "../../external/components/form/BaseInput";
 import BaseDate from "../../external/components/form/BaseDate";
-import { modalCriarContatoStore } from "../../stores/contato";
-import { email, required } from "@vuelidate/validators";
+import {modalCriarContatoStore} from "../../stores/contato";
+import {email, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import axios from "axios";
 
@@ -199,8 +199,8 @@ export default {
   validations() {
     return {
       form: {
-        nome: { required },
-        email: { email, required },
+        nome: {required},
+        email: {email, required},
         telefone: {},
         cep: {},
         endereco: {},
@@ -221,7 +221,7 @@ export default {
         axios
           .get(`https://viacep.com.br/ws/${this.form.cep}/json/`)
           .then((r) => {
-            const { data } = r;
+            const {data} = r;
 
             if (data.erro) {
               this.pesquisouCep = true;
@@ -244,7 +244,7 @@ export default {
     },
     pesquisarEmpresa(pesquisa) {
       api
-        .get(`/organizacao`, { params: { pesquisa: pesquisa } })
+        .get(`/organizacao`, {params: {pesquisa: pesquisa}})
         .then((response) => {
           this.resultadoPesquisaEmpresa = response.data.data.data;
         });
@@ -294,8 +294,10 @@ export default {
       }
     },
   },
-  beforeUnmount() {},
-  created() {},
+  beforeUnmount() {
+  },
+  created() {
+  },
 };
 </script>
 

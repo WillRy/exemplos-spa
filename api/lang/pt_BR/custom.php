@@ -11,4 +11,11 @@ return [
     'organizacao_criado_com_sucesso' => 'Organização criada com sucesso',
     'organizacao_editado_com_sucesso' => 'Organização editada com sucesso',
     'organizacao_excluido_com_sucesso' => 'Organização excluida com sucesso',
+    'tag_inexistente' => 'tag inexistente',
+    'tag_criada_com_sucesso' => 'Etiqueta criada com sucesso',
+    'tag_editada_com_sucesso' => 'Etiqueta editada com sucesso',
+    'tag_excluida_com_sucesso' => 'Etiqueta excluida com sucesso',
+    'nome' => 'nome',
+    'cor_fundo' => 'Cor de fundo',
+    'cor_texto' => 'Cor de texto',
 ];

@@ -17,7 +17,7 @@ export default {
     },
     palavras: {
       logout: "Logout",
-      organizacoes: "Companies",  
+      organizacoes: "Companies",
       contatos: "Contacts",
       criar: "Create",
       pesquisar: "Search",
@@ -44,6 +44,9 @@ export default {
       cancelar: 'Cancel',
       fechar: 'Close',
       empresa: 'Company | Companies',
+      tags: 'Tags',
+      cor_fundo: 'Background color',
+      cor_texto: 'Text color',
     },
     textos: {
       'botao_sem_permissao': "Button without permission",
@@ -59,6 +62,7 @@ export default {
       'erro_excluir_organizacao': "Unable to remove organization",
       'confirmar_excluir_organizacao': "Do you want to delete the organization",
       'pesquise_as_empresas': "Search companies",
+      'pesquise_as_tags': "Search tags",
       'criacao_contato': "Contact creation",
       'edicao_contato': "Contact edition",
       'exclusao_contato': "Contact deletion",
@@ -71,9 +75,17 @@ export default {
       'erro_solicitar_reset_senha': "Unable to send reset password email",
       'sucesso_redefinir_senha': "Password successfully reset",
       'sucesso_solicitar_reset_senha': "Check your email for recovery instructions!",
+      'criacao_tag': "Tag creation",
+      'edicao_tag': "Tag edition",
+      'exclusao_tag': "Tag deletion",
+      'detalhes_tag': "Tag details",
+      'erro_cadastrar_tag': "Unable to save tag",
+      'erro_editar_tag': "Unable to save tag",
+      'erro_excluir_tag': "Unable to remove tag",
+      'confirmar_excluir_tag': "Do you want to delete the tag",
     },
     validacao: {
-      required: 'inform the {field}'
+      required: '{field} is required'
     }
   },
 };

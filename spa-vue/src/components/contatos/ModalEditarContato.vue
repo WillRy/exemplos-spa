@@ -297,7 +297,7 @@ export default {
           this.loading = false;
         }
       } catch (e) {
-        this.$laravelError(e, "Não foi possível editar o contato!");
+        this.$laravelError(e, this.$t('textos.erro_editar_contato'));
       } finally {
         this.loading = false;
       }

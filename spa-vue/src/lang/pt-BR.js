@@ -44,6 +44,9 @@ export default {
       cancelar: 'Cancelar',
       fechar: 'Fechar',
       empresa: 'Empresa | Empresas',
+      tags: 'Etiquetas',
+      cor_fundo: 'Cor de fundo',
+      cor_texto: 'Cor de texto',
     },
     textos: {
       'botao_sem_permissao': "Botão sem permissão",
@@ -59,6 +62,7 @@ export default {
       'erro_excluir_organizacao': "Não foi possível excluir a organizacao!",
       'confirmar_excluir_organizacao': "Você deseja excluir a organização",
       'pesquise_as_empresas': "Pesquise as empresas",
+      'pesquise_as_tags': "Pesquise as etiquetas",
       'criacao_contato': "Criação de contato",
       'edicao_contato': "Edição de contato",
       'exclusao_contato': "Exclusão de contato",
@@ -71,9 +75,17 @@ export default {
       'erro_solicitar_reset_senha': "Não foi possível enviar o email de redefinição de senha",
       'sucesso_redefinir_senha': "Senha redefinida com sucesso",
       'sucesso_solicitar_reset_senha': "Verifique seu e-mail com as instruções de recuperação!",
+      'criacao_tag': "Criação de etiqueta",
+      'edicao_tag': "Edição de etiqueta",
+      'exclusao_tag': "Exclusão de etiqueta",
+      'detalhes_tag': "Detalhes da tag",
+      'erro_cadastrar_tag': "Não foi possível cadastrar a tag!",
+      'erro_editar_tag': "Não foi possível editar a tag!",
+      'erro_excluir_tag': "Não foi possível excluir a tag!",
+      'confirmar_excluir_tag': "Você deseja excluir a tag",
     },
     validacao: {
-      required: 'informe o {field}'
+      required: '{field} é obrigatório'
     }
   },
 };

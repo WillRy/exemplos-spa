@@ -15,4 +15,11 @@ return [
     'organizacao_criado_com_sucesso' => 'Company created successfully',
     'organizacao_editado_com_sucesso' => 'Company edited successfully',
     'organizacao_excluido_com_sucesso' => 'Company deleted successfully',
+    'tag_inexistente' => 'non-existent tag',
+    'tag_criada_com_sucesso' => 'Tag created successfully',
+    'tag_editada_com_sucesso' => 'Tag edited successfully',
+    'tag_excluida_com_sucesso' => 'Tag deleted successfully',
+    'nome' => 'name',
+    'cor_fundo' => 'background color',
+    'cor_texto' => 'background text',
 ];

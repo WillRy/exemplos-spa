@@ -1,7 +1,7 @@
 <template>
-  <div class="contatos">
-    <HeaderPage :titulo="$t('palavras.contatos')">
-      <BaseButtonPrimary @click="abrirCriar"> {{ $t('palavras.criar') }}</BaseButtonPrimary>
+  <div class="tags">
+    <HeaderPage :titulo="$t('palavras.tags')">
+      <BaseButtonPrimary @click="abrirCriar"> {{ $t("palavras.criar") }}</BaseButtonPrimary>
     </HeaderPage>
     <div class="container-fluid">
       <Box>
@@ -13,21 +13,6 @@
                   name="pesquisa"
                   v-model="form.pesquisa"
               />
-            </div>
-            <div class="col-md-4">
-              <BaseSelectAjax
-                  :label="$t('palavras.empresa')"
-                  :placeholder="$t('textos.pesquise_as_empresas')"
-                  v-model="form.empresa_id"
-                  track-by="id"
-                  text-by="nome"
-                  :options="resultadoPesquisaEmpresa"
-                  @search-change="pesquisarEmpresa"
-                  :noOptions="$t('textos.pesquise_as_empresas')"
-                  :empty="true"
-                  :remover="true"
-              >
-              </BaseSelectAjax>
             </div>
             <div class="col-auto">
               <BaseButtonPrimary :loading="loading">
@@ -48,20 +33,15 @@
               texto: $t('palavras.nome'),
             },
             {
-              nome: 'email',
-              texto: $t('palavras.email'),
+              nome: 'cor_fundo',
+              texto: $t('palavras.cor_fundo'),
             },
             {
-              nome: 'telefone',
-              texto: $t('palavras.telefone'),
-            },
-            {
-              nome: 'organizacao',
-              texto: $t('palavras.empresa'),
-              disabled: true,
+              nome: 'cor_texto',
+              texto: $t('palavras.cor_texto'),
             },
           ]"
-            :dados="contatos && contatos.data"
+            :dados="tags && tags.data"
             :sort-name="sortName"
             :sort-order="sortOrder"
             @onSort="sortBy"
@@ -71,14 +51,20 @@
             <tr v-for="(dado, index) in dados" :key="index">
               <ColunaTabela>{{ dado.id }}</ColunaTabela>
               <ColunaTabela>{{ dado.nome }}</ColunaTabela>
-              <ColunaTabela>{{ dado.email }}</ColunaTabela>
-              <ColunaTabela>{{ dado.telefone }}</ColunaTabela>
-              <ColunaTabela>{{ dado.organizacao }}</ColunaTabela>
+              <ColunaTabela>
+                <div class="tag-col" :style="{background: dado.cor_fundo, color: dado.cor_texto}">
+                  {{ dado.cor_fundo }}
+                </div>
+              </ColunaTabela>
+              <ColunaTabela>
+                <div class="tag-col" :style="{background: dado.cor_fundo, color: dado.cor_texto}">
+                  {{ dado.cor_texto }}
+                </div>
+              </ColunaTabela>
               <th class="coluna-acoes">
                 <DropdownAcoes :fundoClaro="true">
                   <button @click="abrirEdicao(dado)">{{ $t('palavras.editar') }}</button>
                   <button @click="abrirExclusao(dado)">{{ $t('palavras.excluir') }}</button>
-                  <button @click="abrirDetalhes(dado)">{{ $t('palavras.detalhes') }}</button>
                 </DropdownAcoes>
               </th>
             </tr>
@@ -86,22 +72,22 @@
         </Tabela>
         <PaginacaoSemRouter
             :exibir-total="true"
-            v-if="contatos"
-            :pagina-atual="contatos.current_page"
-            :total="contatos.total"
-            :porPagina="contatos.per_page"
+            v-if="tags"
+            :pagina-atual="tags.current_page"
+            :total="tags.total"
+            :porPagina="tags.per_page"
             @onChange="updatePagina($event)"
             :textoTotal="$t('palavras.total')"
-            :textoResultados="$tc('palavras.resultados', contatos.total)"
+            :textoResultados="$tc('palavras.resultados', tags.total)"
             :tituloPrimeiraPagina="$t('palavras.primeira')"
             :tituloUltimaPagina="$t('palavras.ultima')"
         />
       </Box>
     </div>
-    <ModalCriarContato/>
-    <ModalEditarContato/>
-    <ModalExcluirContato/>
-    <ModalDetalhesContato/>
+
+    <ModalCriarTag/>
+    <ModalEditarTag/>
+    <ModalExcluirTag/>
   </div>
 </template>
 
@@ -118,26 +104,18 @@ import DropdownAcoes from "../external/components/dropdown/BaseDropdownAction";
 import PaginacaoSemRouter from "../external/components/paginacao/PaginacaoSemRouter";
 import Box from "../external/components/estrutura/Box";
 import api from "../services/api";
-import {
-  modalCriarContatoStore,
-  modalEditarContatoStore,
-  modalDetalhesContatoStore,
-  modalExcluirContatoStore,
-} from "../stores/contato";
-import ModalCriarContato from "../components/contatos/ModalCriarContato";
-import useVuelidate from "@vuelidate/core";
-import ModalEditarContato from "../components/contatos/ModalEditarContato";
-import ModalExcluirContato from "../components/contatos/ModalExcluirContato";
-import ModalDetalhesContato from "../components/contatos/ModalDetalhesContato";
 import {useHead} from "@unhead/vue";
+import ModalCriarTag from "../components/tags/ModalCriarTag";
+import {modalCriarTagStore, modalDetalhesTagStore, modalEditarTagStore, modalExcluirTagStore} from "../stores/tag";
+import ModalEditarTag from "../components/tags/ModalEditarTag";
+import ModalExcluirTag from "../components/tags/ModalExcluirTag";
 
 export default {
-  name: "Contatos",
+  name: "Tags",
   components: {
-    ModalDetalhesContato,
-    ModalExcluirContato,
-    ModalEditarContato,
-    ModalCriarContato,
+    ModalEditarTag,
+    ModalCriarTag,
+    ModalExcluirTag,
     PaginacaoSemRouter,
     DropdownAcoes,
     ColunaTabela,
@@ -151,34 +129,34 @@ export default {
     Box
   },
   setup() {
+    const modalCriarTagState = modalCriarTagStore();
+    const modalEditarTagState = modalEditarTagStore();
+    const ModalExcluirTagState = modalExcluirTagStore();
+    const ModalDetalhesTagState = modalDetalhesTagStore();
+
     useHead({
       title: "CRM - Organizações",
     });
 
-    const modalCriarContatoState = modalCriarContatoStore();
-    const modalEditarContatoState = modalEditarContatoStore();
-    const modalExcluirContatoState = modalExcluirContatoStore();
-    const modalDetalhesContatoState = modalDetalhesContatoStore();
-
     return {
-      modalDetalhesContatoState,
-      modalCriarContatoState,
-      modalEditarContatoState,
-      modalExcluirContatoState,
+      modalCriarTagState,
+      modalEditarTagState,
+      ModalExcluirTagState,
+      ModalDetalhesTagState
     };
   },
   watch: {
-    "modalCriarContatoState.reload": {
+    "modalCriarTagState.reload": {
       handler() {
         this.buscarDados();
       },
     },
-    "modalEditarContatoState.reload": {
+    "modalEditarTagState.reload": {
       handler() {
         this.buscarDados();
       },
     },
-    "modalExcluirContatoState.reload": {
+    "ModalExcluirTagState.reload": {
       handler() {
         this.buscarDados();
       },
@@ -188,35 +166,23 @@ export default {
     return {
       form: {
         pesquisa: "",
-        empresa_id: null,
       },
       loading: false,
       sortName: "id",
       sortOrder: "desc",
       page: 1,
-      contatos: null,
-      resultadoPesquisaEmpresa: [],
+      tags: null,
     };
   },
   methods: {
-    pesquisarEmpresa(pesquisa) {
-      api
-          .get(`/organizacao`, {params: {pesquisa: pesquisa}})
-          .then((response) => {
-            this.resultadoPesquisaEmpresa = response.data.data.data;
-          });
-    },
     abrirCriar() {
-      this.modalCriarContatoState.abrir();
+      this.modalCriarTagState.abrir();
     },
-    abrirEdicao(usuario) {
-      this.modalEditarContatoState.abrir(usuario);
+    abrirEdicao(tag) {
+      this.modalEditarTagState.abrir(tag);
     },
-    abrirExclusao(usuario) {
-      this.modalExcluirContatoState.abrir(usuario);
-    },
-    abrirDetalhes(usuario) {
-      this.modalDetalhesContatoState.abrir(usuario);
+    abrirExclusao(tag) {
+      this.ModalExcluirTagState.abrir(tag);
     },
     sortBy({sortName, sortOrder}) {
       console.log(sortName, sortOrder);
@@ -234,13 +200,10 @@ export default {
     },
     buscarDados() {
       this.loading = true;
-      return api
-          .get("/contato", {
+      api
+          .get("/tag", {
             params: {
               ...(this.form.pesquisa ? {pesquisa: this.form.pesquisa} : {}),
-              ...(this.form.empresa_id
-                  ? {empresa_id: this.form.empresa_id.id}
-                  : {}),
               ...(this.page ? {page: this.page} : {}),
               sortOrder: this.sortOrder,
               sortName: this.sortName,
@@ -249,7 +212,7 @@ export default {
           .then((r) => {
             if (!r.data.success) return;
 
-            this.contatos = r.data.data;
+            this.tags = r.data.data;
           })
           .catch((e) => {
             this.$laravelError(e, this.$t('texto.erro_listar_dados'));
@@ -259,24 +222,18 @@ export default {
           });
     },
   },
-  //pré carrega os dados
-  async beforeRouteEnter(to, from, next) {
-    try {
-      const r = await api.get("/contato");
-      next((vm) => vm.contatos = r.data.data)
-
-    } catch (error) {
-      next((vm) => {
-        vm.$laravelError(error, this.$t('texto.erro_listar_dados'));
-      })
-    }
-  },
   beforeUnmount() {
   },
   created() {
-    // this.buscarDados();
+    this.buscarDados();
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.tag-col {
+  padding: 6px;
+  border-radius: 8px;
+  border: 1px solid var(--gray-400);
+}
+</style>

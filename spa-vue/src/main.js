@@ -12,7 +12,7 @@ import router from "./router";
 import "./styles/app.css";
 import Loader from "./external/components/Loader";
 
-import { directive } from "./directives/click-away";
+import { directive } from "./external/directives/click-away";
 
 import "nprogress/nprogress.css";
 

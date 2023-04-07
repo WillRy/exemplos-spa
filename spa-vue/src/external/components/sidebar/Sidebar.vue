@@ -137,7 +137,7 @@ export default {
   display: flex;
   flex-direction: column;
 
-  z-index: 999;
+  z-index: var(--z-index-3);
 
   transition: all 0.5s ease;
 }

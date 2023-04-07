@@ -3,8 +3,6 @@ import Publico from "../layouts/Publico";
 import Login from "../views/auth/Login";
 import NaoEncontrado from "../views/NaoEncontrado";
 import Privado from "../layouts/Privado";
-import Lang from "../layouts/Lang";
-import {defineAsyncComponent} from "vue";
 import {usuarioStore} from "../stores/usuario";
 import {useToast} from "vue-toast-notification";
 import NProgress from "nprogress";
@@ -76,6 +74,11 @@ const router = createRouter({
                     component: () => import("../views/Contatos"),
                 },
                 {
+                    path: "tags",
+                    name: "tags",
+                    component: () => import("../views/Tags"),
+                },
+                {
                     path: "sem-permissao",
                     name: "sem-permissao",
                     meta: {
@@ -92,7 +95,6 @@ const router = createRouter({
 //definir o idioma da aplicação com base na rota
 router.beforeEach(async (to, from, next) => {
 
-    debugger
     if (to.name === 'not-found') return next();
 
     const newLocale = to.params.lang
