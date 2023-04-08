@@ -31,6 +31,7 @@
             </div>
             <div class="col-auto">
               <BaseButtonPrimary :loading="loading">
+                <font-awesome-icon :icon="faMagnifyingGlass"></font-awesome-icon>
                 {{ $t('palavras.pesquisar') }}
               </BaseButtonPrimary>
             </div>
@@ -130,6 +131,8 @@ import ModalEditarContato from "../components/contatos/ModalEditarContato";
 import ModalExcluirContato from "../components/contatos/ModalExcluirContato";
 import ModalDetalhesContato from "../components/contatos/ModalDetalhesContato";
 import {useHead} from "@unhead/vue";
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 export default {
   name: "Contatos",
@@ -148,7 +151,8 @@ export default {
     PageContent,
     BaseButtonPrimary,
     HeaderPage,
-    Box
+    Box,
+    FontAwesomeIcon
   },
   setup() {
     useHead({
@@ -186,6 +190,7 @@ export default {
   },
   data() {
     return {
+      faMagnifyingGlass: faMagnifyingGlass,
       form: {
         pesquisa: "",
         empresa_id: null,
