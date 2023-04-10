@@ -22,4 +22,6 @@ return [
     'nome' => 'name',
     'cor_fundo' => 'background color',
     'cor_texto' => 'background text',
+    'cor_fundo_invalida' => "Define a valid background color",
+    'cor_texto_invalida' => "Define a valid text color",
 ];

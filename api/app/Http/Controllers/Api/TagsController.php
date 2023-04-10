@@ -31,7 +31,7 @@ class TagsController extends Controller
         try {
             $tag = Tag::find($tagId);
 
-            if (empty($tagId)) {
+            if (empty($tag)) {
                 return $this->errorAPI(__('custom.tag_inexistente'), null, null, 404);
             }
 
@@ -46,8 +46,16 @@ class TagsController extends Controller
     {
         $dados = $request->validate([
             'nome' => 'required|max:255|unique:tags,nome',
-            'cor_fundo' => 'required|max:255',
-            'cor_texto' => 'required|max:255',
+            'cor_fundo' => ['required', 'max:255', function ($attribute, $value, $fail) {
+                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i',$value)) {
+                    $fail(__('cor_fundo_invalida'));
+                }
+            }],
+            'cor_texto' => ['required', 'max:255', function ($attribute, $value, $fail) {
+                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i',$value)) {
+                    $fail(__('cor_texto_invalida'));
+                }
+            }],
         ], [], [
             'nome' => __('custom.nome'),
             'cor_fundo' => __('custom.cor_fundo'),
@@ -70,8 +78,16 @@ class TagsController extends Controller
     {
         $dados = $request->validate([
             'nome' => "required|max:255|unique:tags,nome,{$tagId}",
-            'cor_fundo' => 'required|max:255',
-            'cor_texto' => 'required|max:255',
+            'cor_fundo' => ['required', 'max:255', function ($attribute, $value, $fail) {
+                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i',$value)) {
+                    $fail(__('cor_fundo_invalida'));
+                }
+            }],
+            'cor_texto' => ['required', 'max:255', function ($attribute, $value, $fail) {
+                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i',$value)) {
+                    $fail(__('cor_texto_invalida'));
+                }
+            }],
         ], [], [
             'nome' => __('custom.nome'),
             'cor_fundo' => __('custom.cor_fundo'),

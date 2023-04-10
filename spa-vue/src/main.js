@@ -22,6 +22,7 @@ import { i18n } from "./lang";
 
 
 
+
 import drag from "v-drag"
 
 // /* import the fontawesome core */
