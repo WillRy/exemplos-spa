@@ -258,16 +258,17 @@ export default {
         });
     },
     async carregarFormulario() {
-      this.loadingDados = true;
+      // this.loadingDados = true;
 
-      const response = await api.get(
-        `/contato/${this.modalEditarContatoState.payload.id}`
-      );
-      const dados = response.data.data;
-      Object.assign(this.form, dados);
-      this.form.organizacao_id = dados.organizacao;
+      // const response = await api.get(
+      //   `/contato/${this.modalEditarContatoState.payload.id}`
+      // );
+      // const dados = response.data.data;
+      // Object.assign(this.form, dados);
+      // this.form.organizacao_id = dados.organizacao;
 
-      this.loadingDados = false;
+      // this.loadingDados = false;
+      Object.assign(this.form, this.modalEditarContatoState.payload);
     },
     fecharModal() {
       this.v$.$reset();

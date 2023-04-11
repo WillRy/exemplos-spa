@@ -91,14 +91,15 @@ export default {
   computed: {},
   methods: {
     async carregarFormulario() {
-      this.loadingDados = true;
+      // this.loadingDados = true;
 
-      const response = await api.get(`/contato/${this.modalDetalhesContatoState.payload.id}`);
-      const dados = response.data.data;
-      Object.assign(this.form, dados);
-      this.form.organizacao_id = dados.organizacao;
+      // const response = await api.get(`/contato/${this.modalDetalhesContatoState.payload.id}`);
+      // const dados = response.data.data;
+      // Object.assign(this.form, dados);
+      // this.form.organizacao_id = dados.organizacao;
 
-      this.loadingDados = false;
+      // this.loadingDados = false;
+      Object.assign(this.form, this.modalDetalhesContatoState.payload);
     },
     fecharModal() {
       this.modalDetalhesContatoState.fechar()

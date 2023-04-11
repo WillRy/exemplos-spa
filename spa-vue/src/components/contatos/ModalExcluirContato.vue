@@ -62,11 +62,12 @@ export default {
   computed: {},
   methods: {
     async carregarFormulario() {
-      this.loadingDados = true;
+      // this.loadingDados = true;
 
-      await api.get(`/contato/${this.modalExcluirContatoState.payload.id}`);
+      // await api.get(`/contato/${this.modalExcluirContatoState.payload.id}`);
 
-      this.loadingDados = false;
+      // this.loadingDados = false;
+      Object.assign(this.form, this.modalEditarContatoState.payload);
     },
     fecharModal() {
       this.modalExcluirContatoState.fechar()
