@@ -166,7 +166,7 @@ import BaseModal from "../../external/components/modal/BaseModal";
 import BaseSelectAjax from "../../external/components/form/BaseSelectAjax";
 import BaseInput from "../../external/components/form/BaseInput";
 import BaseDate from "../../external/components/form/BaseDate";
-import {modalCriarOrganizacaoStore} from "../../stores/organizacao";
+import {modalCriarOrganizacaoStore, organizacaoStore} from "../../stores/organizacao";
 import {email, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import axios from "axios";
@@ -175,9 +175,11 @@ export default {
   name: "ModalCriarOrganizacao",
   setup() {
     const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
+    const organizacaoState = organizacaoStore();
     return {
       modalCriarOrganizacaoState,
       v$: useVuelidate(),
+      organizacaoState
     };
   },
   components: {
@@ -295,7 +297,11 @@ export default {
           await api.post(`/organizacao`, data);
 
           this.fecharModal();
-          this.modalCriarOrganizacaoState.onReload();
+          this.$emit("onReload");
+
+          // this.organizacaoState.carregarOrganizacoes();
+          // this.organizacaoState.buscarQuantidadeOrganizacoes();
+
           this.loading = false;
         }
       } catch (e) {

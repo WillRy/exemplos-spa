@@ -38,6 +38,14 @@
     <Header>
       <template #boxEsquerdo>
         <div class="row">
+          <!-- <div class="col col-count" v-if="organizacaoState.qtdOrganizacoes">
+            <span>Organizações:</span>
+            <span>{{ organizacaoState.qtdOrganizacoes }}</span>
+          </div> -->
+          <div class="col col-count" v-if="qtdOrganizacoes">
+            <span>Organizações:</span>
+            <span>{{ qtdOrganizacoes }}</span>
+          </div>
           <div class="col">
             <BaseDropdownSecondary>
               <template #botao>
@@ -100,6 +108,8 @@ import BaseDropdownPrimary from "../external/components/dropdown/BaseDropdownPri
 import BaseButtonSecondary from "../external/components/buttons/BaseButtonSecondary";
 import BaseDropdownSecondary from "../external/components/dropdown/BaseDropdownSecondary";
 import TagIcon from "../components/icons/TagIcon";
+import api from "../services/api";
+import { organizacaoStore } from "../stores/organizacao";
 
 export default {
   name: "Privado",
@@ -118,14 +128,17 @@ export default {
   },
   setup() {
     const usuarioState = usuarioStore();
+    const organizacaoState = organizacaoStore();
     return {
       usuarioState,
+      organizacaoState
     };
   },
   data() {
     return {
       loading: true,
-      sidebarAberta: false
+      sidebarAberta: false,
+      qtdOrganizacoes: null
     };
   },
   methods: {
@@ -154,8 +167,16 @@ export default {
         path: "/",
       });
     },
+    buscarQuantidadeOrganizacoes() {
+      api.get('/organizacao').then((r) => {
+        this.qtdOrganizacoes = r.data.data.total;
+      })
+    }
   },
   async created() {
+    this.buscarQuantidadeOrganizacoes();
+    // this.organizacaoState.buscarQuantidadeOrganizacoes();
+
     // this.loading = true;
 
     // let token = window.localStorage.getItem("token");
@@ -185,5 +206,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.col-count {
+  display: flex;
+  align-items: center;
+
 }
 </style>

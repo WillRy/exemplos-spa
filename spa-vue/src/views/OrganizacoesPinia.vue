@@ -11,14 +11,14 @@
               <BaseInput
                 :label="$t('palavras.pesquisar')"
                 name="pesquisa"
-                v-model="form.pesquisa"
+                v-model="organizacaoState.pesquisa"
               />
             </div>
             <div class="col-md-4">
               <BaseSelectAjax
                 :label="$t('palavras.tags')"
                 :placeholder="$t('textos.pesquise_as_tags')"
-                v-model="form.tag_id"
+                v-model="organizacaoState.tag_id"
                 track-by="id"
                 text-by="nome"
                 :options="resultadoPesquisaTag"
@@ -48,7 +48,7 @@
           </div>
         </form>
         <Tabela
-          :loading="loading"
+          :loading="organizacaoState.loading"
           :colunas="[
             {
               nome: 'id',
@@ -76,9 +76,9 @@
               disabled: true
             },
           ]"
-          :dados="organizacoes && organizacoes.data"
-          :sort-name="sortName"
-          :sort-order="sortOrder"
+          :dados="organizacaoState.organizacoes ? organizacaoState.organizacoes.data : []"
+          :sort-name="organizacaoState.sortName"
+          :sort-order="organizacaoState.sortOrder"
           @onSort="sortBy"
           texto-empty="Não há dados"
         >
@@ -111,13 +111,13 @@
         </Tabela>
         <PaginacaoSemRouter
           :exibir-total="true"
-          v-if="organizacoes"
-          :pagina-atual="organizacoes.current_page"
-          :total="organizacoes.total"
-          :porPagina="organizacoes.per_page"
+          v-if="organizacaoState.organizacoes"
+          :pagina-atual="organizacaoState.current_page"
+          :total="organizacaoState.total"
+          :porPagina="organizacaoState.per_page"
           @onChange="updatePagina($event)"
           :textoTotal="$t('palavras.total')"
-          :textoResultados="$tc('palavras.resultados', organizacoes.total)"
+          :textoResultados="$tc('palavras.resultados', organizacaoState.total)"
           :tituloPrimeiraPagina="$t('palavras.primeira')"
           :tituloUltimaPagina="$t('palavras.ultima')"
         />
@@ -148,6 +148,7 @@ import {
   modalEditarOrganizacaoStore,
   modalDetalhesOrganizacaoStore,
   modalExcluirOrganizacaoStore,
+  organizacaoStore,
 } from "../stores/organizacao";
 import ModalCriarOrganizacao from "../components/organizacoes/ModalCriarOrganizacao";
 import useVuelidate from "@vuelidate/core";
@@ -157,7 +158,7 @@ import ModalDetalhesOrganizacao from "../components/organizacoes/ModalDetalhesOr
 import {useHead} from "@unhead/vue";
 
 export default {
-  name: "Organizacaos",
+  name: "OrganizacoesPinia",
   components: {
     ModalDetalhesOrganizacao,
     ModalExcluirOrganizacao,
@@ -176,6 +177,7 @@ export default {
     Box
   },
   setup() {
+    const organizacaoState = organizacaoStore();
     const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
     const modalEditarOrganizacaoState = modalEditarOrganizacaoStore();
     const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore();
@@ -190,6 +192,7 @@ export default {
       modalCriarOrganizacaoState,
       modalEditarOrganizacaoState,
       modalExcluirOrganizacaoState,
+      organizacaoState
     };
   },
   watch: {
@@ -245,51 +248,26 @@ export default {
     },
     sortBy({sortName, sortOrder}) {
       console.log(sortName, sortOrder);
-      this.sortName = sortName;
-      this.sortOrder = sortOrder;
+      this.organizacaoState.sortName = sortName;
+      this.organizacaoState.sortOrder = sortOrder;
       this.buscarDados();
     },
     updatePagina(pagina) {
-      this.page = pagina;
+      this.organizacaoState.page = pagina;
       this.buscarDados();
     },
     pesquisar() {
-      this.page = 1;
+      this.organizacaoState.page = 1;
       this.buscarDados();
     },
     buscarDados() {
-      this.loading = true;
-
-      const id_tags = this.form.tag_id ? this.form.tag_id.map((tag) => tag.id) : [];
-      api
-        .get("/organizacao", {
-          params: {
-            ...(this.form.pesquisa ? {pesquisa: this.form.pesquisa} : {}),
-            ...(id_tags
-              ? {id_tags: id_tags}
-              : {}),
-            ...(this.page ? {page: this.page} : {}),
-            sortOrder: this.sortOrder,
-            sortName: this.sortName,
-          },
-        })
-        .then((r) => {
-          if (!r.data.success) return;
-
-          this.organizacoes = r.data.data;
-        })
-        .catch((e) => {
-          this.$laravelError(e, this.$t('texto.erro_listar_dados'));
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+      this.organizacaoState.carregarOrganizacoes();
     },
   },
   beforeUnmount() {
   },
   created() {
-    this.buscarDados();
+    this.organizacaoState.carregarOrganizacoes();
   },
 };
 </script>

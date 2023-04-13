@@ -69,6 +69,11 @@ const router = createRouter({
                     component: () => import("../views/Organizacoes"),
                 },
                 {
+                    path: "org2",
+                    name: "org2",
+                    component: () => import("../views/OrganizacoesPinia"),
+                },
+                {
                     path: "contatos",
                     name: "contatos",
                     component: () => import("../views/Contatos"),
