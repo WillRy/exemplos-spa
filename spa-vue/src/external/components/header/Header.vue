@@ -1,12 +1,12 @@
 <template>
-  <div class="header" >
+  <div class="header">
     <div class="container-fluid paddingSidebar">
       <div class="header-box">
-        <div class="box-direito">
-          <slot name="boxDireito"></slot>
-        </div>
         <div class="box-esquerdo">
           <slot name="boxEsquerdo"></slot>
+        </div>
+        <div class="box-direito">
+          <slot name="boxDireito"></slot>
         </div>
       </div>
     </div>
@@ -47,6 +47,10 @@ export default {
 }
 
 .box-esquerdo {
+  margin-right: auto;
+}
+
+.box-direito {
   margin-left: auto;
 }
 

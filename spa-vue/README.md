@@ -1,29 +1,44 @@
-# contacts
+# Aplicação de exemplo - Mini CRM
 
-This template should help get you started developing with Vue 3 in Vite.
+Uma aplicação de exemplo com o objetivo de demonstrar:
 
-## Recommended IDE Setup
+- autenticação
+- estruturação de rotas publicas e privadas
+- CRUD
+- comunicação entre componentes
+- internacionalização
+- validações
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Telas e seus exemplos
 
-## Customize configuration
+### CRUD de organizações e tags
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+Tela com carregamento inteiro feito posterior a exibição da tela
 
-## Project Setup
+### CRUD de contatos
 
-```sh
-npm install
+Tela com carregamento inteiro feito antes da exibição da tela
+
+
+## Usuário e senha
+
+- usuario: admin@admin.com
+- senha: 123456
+
+## Como executar?
+
+- entrar na pasta "../api"
+- executar o ambiente docker
+```shell
+docker-compose up -d 
+
+#OU
+
+docker compose up -d
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
+- voltar na pasta da "spa-vue"
+- executar:
+```shell
 npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
 ```

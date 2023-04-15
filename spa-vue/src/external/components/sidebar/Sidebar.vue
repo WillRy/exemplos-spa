@@ -8,7 +8,6 @@
         <ArrowSidebar
             class="arrow-menu arrow-hamburguer"
             v-if="open"
-            fill="#fff"
         />
         <HamburguerSidebar
             src="/arrow-menu.svg"
@@ -16,7 +15,7 @@
             v-if="!open"
         />
       </div>
-      <img :src="iconeEmresaSrc" class="logo-empresa" v-if="iconeEmresaSrc"/>
+      <img :src="iconeEmresaSrc" class="logo-empresa"/>
     </div>
 
     <div class="separador"></div>
@@ -104,7 +103,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 36px !important;
+  width: 46px !important;
   flex-shrink: 0;
   height: 36px;
   border-radius: 8px;
@@ -112,19 +111,18 @@ export default {
 
 
 .icon-menu-hamburguer:hover {
-  background: var(--gray-600);
-  fill: #fff;
+  background: rgba(196, 216, 255, 0.16);
+  color: #fff;
 }
 
 .icon-menu-hamburguer:focus {
+  background: rgba(196, 216, 255, 0.16);
   color: #fff;
-  border: 1px solid #fff;
-  background: var(--gray-600);
 }
 
 .sidebar {
   width: 70px;
-  background-color: var(--gray-800);
+  background-color: var(--primary-color-400);
   height: auto;
   text-align: center;
   position: fixed;
@@ -137,7 +135,7 @@ export default {
   display: flex;
   flex-direction: column;
 
-  z-index: var(--z-index-3);
+  z-index: 999;
 
   transition: all 0.5s ease;
 }
@@ -152,19 +150,14 @@ export default {
   text-align: left;
   /* height: 56px; */
   flex-shrink: 0;
-  gap: 14px;
+  gap: 8px;
   /* padding: 24px 12px 24px 12px; */
   /* margin: 0 auto; */
-  margin-left: 18px;
+  margin-left: 12px;
   /* margin-bottom: 5px; */
   /* margin-top: 5px; */
   user-select: none;
   height: 60px;
-}
-
-.logo img {
-  height: 40px;
-  width: 120px;
 }
 
 .logo-empresa {
@@ -199,7 +192,7 @@ export default {
   text-align: left;
   flex-shrink: 0;
   flex-grow: 1;
-  padding: 0px;
+  padding: 0;
 
   display: flex;
   flex-direction: column;
@@ -240,7 +233,7 @@ export default {
   height: 1px;
   background: #eff0f2;
   flex-shrink: 0;
-  margin-bottom: 16px;
+  margin-bottom: 40px;
 }
 
 .sidebar-item {

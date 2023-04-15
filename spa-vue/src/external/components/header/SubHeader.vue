@@ -3,9 +3,9 @@
     <div class="subheader-container">
 
       <div class="titulo">
-        <div class="btnEsquerdo" v-if="$slots.btnEsquerdo">
+        <div class="btnEsquerdo" v-if="exibirVoltar">
           <BaseButtonTertiary size="sm" @click="voltar">
-            <slot name="btnEsquerdo"></slot>
+            <ArrowSidebar/>
           </BaseButtonTertiary>
         </div>
         <slot name="titulo"></slot>
@@ -20,7 +20,7 @@
     </div>
     <div class="breadcrumb">
       <div class="link-home">
-        <router-link :to="{name: homeUrlName}">
+        <router-link :to="homeUrlName">
           <HomeIcon/>
         </router-link>
       </div>
@@ -36,22 +36,40 @@
 </template>
 
 <script>
-import BaseButtonTertiary from "../buttons/BaseButtonTertiary";
-import HomeIcon from "../icons/HomeIcon";
+import BaseButtonTertiary from "../buttons/BaseButtonTertiary.vue";
+import HomeIcon from "../icons/HomeIcon.vue";
+import ArrowSidebar from "../sidebar/ArrowSidebar.vue";
 
 export default {
   name: "SubHeader",
+  data() {
+    return {
+      exibirVoltar: this.exibirBtnVoltar,
+    }
+  },
+  watch: {
+    exibirBtnVoltar(valor) {
+      this.exibirVoltar = valor
+    }
+  },
   props: {
+    exibirBtnVoltar: {
+      type: Boolean,
+      default: true
+    },
     homeUrlName: {
       type: String,
       default: 'dashboard'
     }
   },
-  components: {HomeIcon, BaseButtonTertiary},
+  components: {ArrowSidebar, HomeIcon, BaseButtonTertiary},
   methods: {
     voltar() {
       this.$emit("voltar")
     }
+  },
+  created() {
+
   }
 }
 </script>
@@ -60,6 +78,7 @@ export default {
 .subheader {
   display: flex;
   flex-direction: column;
+  margin-top: var(--spacing-4);
 }
 
 .subheader-container {
@@ -68,12 +87,13 @@ export default {
   flex-wrap: wrap;
   gap: 6px;
   margin-bottom: 20px;
+  justify-content: space-between;
 }
 
 .botoes {
   display: flex;
   align-items: center;
-  gap: 21px;
+  gap: 16px;
   margin-left: 12px;
 }
 
@@ -87,11 +107,12 @@ export default {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
+  gap: 8px;
 }
 
 .breadcrumb {
   display: grid;
-  grid-template-columns: 20px 1fr;
+  grid-template-columns: 30px 1fr;
   gap: 9px;
 }
 
@@ -132,7 +153,7 @@ export default {
 }
 
 .links :deep(a:last-child) {
-  color: var(--second-color-500);
+  color: var(--primary-color-400);
 }
 
 .separador {

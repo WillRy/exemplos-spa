@@ -11,7 +11,7 @@
         <div class="sidebar-item-texto">
           <slot name="texto"></slot>
         </div>
-        <ArrowDownSolidIcon class="dropdown-sidebar-icon" size="16px"/>
+        <ArrowDownIcon class="dropdown-sidebar-icon" size="16px"/>
       </div>
     </div>
     <div class="dropdown-sidebar-content" @click.stop="">
@@ -23,10 +23,11 @@
 <script>
 
 import ArrowDownSolidIcon from "../icons/ArrowDownSolidIcon.vue";
+import ArrowDownIcon from "../icons/ArrowDownIcon.vue";
 
 export default {
   name: "SidebarDropdown",
-  components: {ArrowDownSolidIcon},
+  components: {ArrowDownIcon, ArrowDownSolidIcon},
   inject: ['sidenavAberta'],
   props: {
     abertoInicial: {
@@ -99,59 +100,63 @@ export default {
   width: 100%;
   box-sizing: border-box;
   cursor: pointer;
-  border-radius: 8px;
 
   text-decoration: none;
   display: flex;
   border: 1px solid transparent;
   outline: 0;
-  color: var(--primary-color-400);
-}
-
-.sidebar-item:hover {
-  background: var(--primary-color-50);
-  color: var(--primary-color-400);
-}
-
-.sidebar-item:focus, .dropdown-sidebar:focus .sidebar-item {
-  color: var(--primary-color-400);
-  border: 1px solid var(--primary-color-400);
-  background: var(--primary-color-50);
-}
-
-.sidebar-item.active, .dropdown-sidebar.active .sidebar-item {
-  background: var(--primary-color-200);
   color: #fff;
-}
 
+
+  position: relative;
+}
 
 .sidebar-item :deep(svg path) {
-  fill: var(--primary-color-400);
-}
-
-.sidebar-item.stroke-icon :deep(svg path) {
-  fill: none;
-  stroke: var(--primary-color-400);
-}
-
-
-.sidebar-item:hover :deep(svg path) {
-  fill: var(--primary-color-400);
-}
-
-.sidebar-item.active :deep(svg path) {
   fill: #fff;
 }
 
-.sidebar-item.stroke-icon:hover :deep(svg path) {
-  fill: none;
-  stroke: var(--primary-color-400);
+
+.sidebar-item:hover {
+  background: rgba(196, 216, 255, 0.16);
+  color: #fff;
 }
 
-.sidebar-item.active.stroke-icon :deep(svg path) {
-  fill: none;
-  stroke: var(--primary-color-400);
+.sidebar-item:hover :deep(svg path) {
+  fill: #fff;
 }
+
+
+.sidebar-item.active,
+.router-link-exact-active,
+.dropdown-sidebar.active .sidebar-item {
+  background: rgba(196, 216, 255, 0.16);
+  color: #fff;
+}
+
+.sidebar-item.active::before,
+.router-link-exact-active::before,
+.dropdown-sidebar.active .sidebar-item::before {
+  width: 4px;
+  background: #fff;
+  content: ' ';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+}
+
+.sidebar-item.active :deep(svg path),
+.router-link-exact-active:deep(svg path) {
+  fill: #fff;
+}
+
+
+.sidebar-item:focus:not(.active):not(.router-link-exact-active),
+.dropdown-sidebar:focus:not(.active):not(.router-link-exact-active) .sidebar-item {
+  background: rgba(196, 216, 255, 0.16);
+  color: #fff;
+}
+
 
 /** Icones **/
 .sidebar-item img.icon-noactive {
@@ -176,7 +181,7 @@ export default {
 .sidebar-item-corpo {
   width: 100%;
   display: grid;
-  grid-template-columns: 46px 1fr 20px;
+  grid-template-columns: 66px 1fr 20px;
   align-items: center;
   height: 36px;
   padding: 0px 10px 0px 0px;
@@ -257,11 +262,10 @@ export default {
   background: #f2f2f2;
   border: none;
   box-shadow: none;
-  border-radius: 8px;
 }
 
 .dropdown-sidebar-content > :deep(a) {
-  padding-left: 10px;
+  padding-left: 66px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -276,7 +280,7 @@ export default {
   font-weight: 500;
 }
 
-.dropdown-sidebar-content > :deep(a):hover:hover {
+.dropdown-sidebar-content > :deep(a):hover {
   color: var(--primary-color-400);
 }
 

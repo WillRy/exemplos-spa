@@ -1,5 +1,8 @@
 <template>
-  <router-link class="sidebar-item" :to="route">
+  <router-link
+      class="sidebar-item"
+      :to="route"
+  >
     <div class="sidebar-item-corpo">
       <div class="icon-menu icone" v-if="$slots.icone">
         <slot name="icone"></slot>
@@ -25,17 +28,19 @@ export default {
   name: "SidebarLink",
   props: {
     route: {
-      type: [Object, String],
+      type: [Object, String]
     },
     active: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
-};
+
+}
 </script>
 
 <style scoped>
+
 .icon-menu {
   width: 100%;
   display: inline-flex;
@@ -71,6 +76,7 @@ export default {
 
 .sidebar-item:hover .icone-active {
   display: none;
+
 }
 
 .router-link-exact-active .icone-hover,
@@ -83,6 +89,7 @@ export default {
   display: flex;
 }
 
+
 /*
 * INICIO DO BLOCO DE ESTILO DE LINK
 */
@@ -90,20 +97,25 @@ export default {
   width: 100%;
   box-sizing: border-box;
   cursor: pointer;
+
   text-decoration: none;
   display: flex;
   border: 1px solid transparent;
   outline: 0;
   color: #fff;
+
   margin-bottom: 6px;
+
+  position: relative;
 }
 
 .sidebar-item :deep(svg path) {
   fill: #fff;
 }
 
+
 .sidebar-item:hover {
-  background: var(--gray-600);
+  background: rgba(196, 216, 255, 0.16);
   color: #fff;
 }
 
@@ -111,11 +123,24 @@ export default {
   fill: #fff;
 }
 
+
 .sidebar-item.active,
 .router-link-exact-active,
 .dropdown-sidebar.active .sidebar-item {
-  background: var(--gray-600);
+  background: rgba(196, 216, 255, 0.16);
   color: #fff;
+}
+
+.sidebar-item.active::before,
+.router-link-exact-active::before,
+.dropdown-sidebar.active .sidebar-item::before {
+  width: 4px;
+  background: #fff;
+  content: ' ';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
 }
 
 .sidebar-item.active :deep(svg path),
@@ -123,17 +148,18 @@ export default {
   fill: #fff;
 }
 
+
 .sidebar-item:focus:not(.active):not(.router-link-exact-active),
-.dropdown-sidebar:focus:not(.active):not(.router-link-exact-active)
-  .sidebar-item {
-    background: var(--gray-600);
-    color: #fff;  
-    border: 1px solid var(--gray-500);
+.dropdown-sidebar:focus:not(.active):not(.router-link-exact-active) .sidebar-item {
+  background: rgba(196, 216, 255, 0.16);
+  color: #fff;
 }
+
 
 /*
 * FIM DO BLOCO DE ESTILO DE LINK
 */
+
 
 /** Icones **/
 .sidebar-item img.icon-noactive {
@@ -154,10 +180,11 @@ export default {
   display: block;
 }
 
+
 .sidebar-item-corpo {
   width: 100%;
   display: grid;
-  grid-template-columns: 68px 1fr 20px;
+  grid-template-columns: 66px 1fr 20px;
   align-items: center;
   height: 36px;
   padding: 0px 10px 0px 0px;
@@ -190,4 +217,6 @@ export default {
 
   opacity: 1;
 }
+
+
 </style>

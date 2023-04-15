@@ -6,7 +6,8 @@
             'btn-sm': size === 'sm',
             'btn-md': size === 'md',
             'btn-lg': size === 'lg',
-            'btn-full': full
+            'btn-full': full,
+            'outline': outline
         }"
         :disabled="disabled || loading"
         :style="{...(loading ? {paddingLeft: loadingPaddingSize} : {})}"
@@ -50,6 +51,10 @@ export default {
         loading: {
             type: Boolean,
             default: false
+        },
+        outline: {
+          type: Boolean,
+          default: false
         }
     },
     computed: {

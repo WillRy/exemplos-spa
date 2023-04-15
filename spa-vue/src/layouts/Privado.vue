@@ -36,7 +36,7 @@
     </Sidebar>
 
     <Header>
-      <template #boxEsquerdo>
+      <template #boxDireito>
         <div class="row">
           <div class="col col-count" v-if="qtdOrganizacoes">
             <span>Organizações:</span>

@@ -14,7 +14,7 @@ export default {
 .navegacao-abas-container {
     display: flex;
     gap: 4px;
-    background: #FFFFFF 0% 0% no-repeat padding-box;
+    background: var(--primary-color-400);
     box-shadow: inset 0px 2px 4px #00000029;
     overflow: hidden;
     border-radius: 8px;
