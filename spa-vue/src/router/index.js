@@ -11,9 +11,28 @@ import {idiomasPermitidos, identificarIdioma, i18n} from "../lang";
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
+          {
+            path: "/lang/:lang",
+            name: "lang",
+            //se eu estiver logado, envia para a dashboard
+            async beforeEnter(from, to, next) {
+                const lang = to.params.lang ?? from.params.lang;
 
+
+                window.localStorage.setItem("@lang", lang)
+
+
+                if (from.fullPath !== to.fullPath) {
+                    return next({
+                        name: 'login'
+                    });
+                }
+
+                return next(from);
+            },
+        },
         {
-            path: "/:lang(en|pt-BR)?",
+            path: "/",
             component: Publico,
             name: "publico",
             children: [
@@ -35,7 +54,7 @@ const router = createRouter({
             ],
         },
         {
-            path: "/:lang(en|pt-BR)/painel",
+            path: "/painel",
             component: Privado,
             meta: {
                 permissoes: [],
@@ -98,40 +117,24 @@ const router = createRouter({
 });
 
 //definir o idioma da aplicação com base na rota
-router.beforeEach(async (to, from, next) => {
+router.beforeEach((to, from, next) => {
 
-    if (to.name === 'not-found') return next();
+  const lang = window.localStorage.getItem("@lang");
 
-    const newLocale = to.params.lang
-    const prevLocale = from.params.lang
-    const targetLang = newLocale ?? prevLocale;
+  const isAllowed = idiomasPermitidos.find((idioma) => idioma === lang);
 
 
-    const isAllowed = idiomasPermitidos.find((lang) => lang === newLocale);
+  if (isAllowed) {
+      document.querySelector("html").setAttribute("lang", lang);
+      i18n.global.locale = lang;
+  } else {
+      const lang = identificarIdioma();
+      window.localStorage.setItem("@lang", lang)
+      document.querySelector("html").setAttribute("lang", lang);
+      i18n.global.locale = lang;
+  }
 
-
-    if (!targetLang) {
-        to.params.lang = identificarIdioma();
-        return next(to)
-    }
-
-
-    if (!isAllowed) {
-        to.params.lang = identificarIdioma();
-        return next(to)
-    }
-
-
-    // If the locale hasn't changed, do nothing
-    if (newLocale === prevLocale) {
-        return next();
-    }
-
-    document.querySelector("html").setAttribute("lang", newLocale);
-
-    i18n.global.locale = newLocale;
-
-    next();
+  next();
 });
 
 //exibir o loader em troca de pagina

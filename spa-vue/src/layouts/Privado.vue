@@ -38,10 +38,6 @@
     <Header>
       <template #boxEsquerdo>
         <div class="row">
-          <!-- <div class="col col-count" v-if="organizacaoState.qtdOrganizacoes">
-            <span>Organizações:</span>
-            <span>{{ organizacaoState.qtdOrganizacoes }}</span>
-          </div> -->
           <div class="col col-count" v-if="qtdOrganizacoes">
             <span>Organizações:</span>
             <span>{{ qtdOrganizacoes }}</span>
@@ -67,7 +63,7 @@
                 {{ usuarioState.usuario.nome }}
               </template>
               <template #acoes>
-                <button @click="logout">Sair</button>
+                <button @click="logout">{{$t("palavras.logout")}}</button>
                 <button
                     :disabled="!usuarioState.temPermissao('botao')"
                     v-if="!usuarioState.temPermissao('botao')"
@@ -109,7 +105,8 @@ import BaseButtonSecondary from "../external/components/buttons/BaseButtonSecond
 import BaseDropdownSecondary from "../external/components/dropdown/BaseDropdownSecondary";
 import TagIcon from "../components/icons/TagIcon";
 import api from "../services/api";
-import { organizacaoStore } from "../stores/organizacao";
+import { modalCriarOrganizacaoStore, modalEditarOrganizacaoStore, modalExcluirOrganizacaoStore, organizacaoStore } from "../stores/organizacao";
+import { definirIdioma } from "../lang";
 
 export default {
   name: "Privado",
@@ -129,9 +126,15 @@ export default {
   setup() {
     const usuarioState = usuarioStore();
     const organizacaoState = organizacaoStore();
+    const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
+    const modalEditarOrganizacaoState = modalEditarOrganizacaoStore();
+    const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore();
     return {
       usuarioState,
-      organizacaoState
+      organizacaoState,
+      modalCriarOrganizacaoState,
+      modalEditarOrganizacaoState,
+      modalExcluirOrganizacaoState
     };
   },
   data() {
@@ -141,22 +144,26 @@ export default {
       qtdOrganizacoes: null
     };
   },
+  watch: {
+    "modalCriarOrganizacaoState.reload": {
+      handler() {
+        this.buscarQuantidadeOrganizacoes();
+      },
+    },
+    "modalEditarOrganizacaoState.reload": {
+      handler() {
+        this.buscarQuantidadeOrganizacoes();
+      },
+    },
+    "modalExcluirOrganizacaoState.reload": {
+      handler() {
+        this.buscarQuantidadeOrganizacoes();
+      },
+    },
+  },
   methods: {
     mudarIdioma(lang) {
-      // const route = this.$router.resolve({
-      //   params: {
-      //     lang: lang
-      //   }
-      // });
-      // window.location.href = route.fullPath;
-
-
-      this.$router.push({
-        params: {
-          lang: lang
-        }
-      });
-
+      definirIdioma(lang);
     },
     mudarSidebar() {
       this.sidebarAberta = !this.sidebarAberta;
@@ -175,22 +182,6 @@ export default {
   },
   async created() {
     this.buscarQuantidadeOrganizacoes();
-    // this.organizacaoState.buscarQuantidadeOrganizacoes();
-
-    // this.loading = true;
-
-    // let token = window.localStorage.getItem("token");
-    // if (token) {
-
-    //     await this.usuarioState.carregarUsuarioLogado()
-    //         .catch(() => {
-    //             window.localStorage.removeItem("token");
-    //             this.$router.push({name: 'login'})
-    //         })
-    // } else {
-    //     await this.$router.push({name: 'login'})
-    // }
-
     this.loading = false;
   },
 };

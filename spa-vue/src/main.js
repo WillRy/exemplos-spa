@@ -25,20 +25,6 @@ import { i18n } from "./lang";
 
 import drag from "v-drag"
 
-// /* import the fontawesome core */
-// import { library } from '@fortawesome/fontawesome-svg-core'
-//
-// /* import font awesome icon component */
-// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-//
-// /* import specific icons */
-// import { faMagnifyingGlass, faPlus, faCheck} from '@fortawesome/free-solid-svg-icons'
-//
-// /* add icons to the library */
-// library.add(faMagnifyingGlass)
-// library.add(faPlus)
-// library.add(faCheck)
-
 
 export const app = createApp(App);
 
@@ -53,7 +39,6 @@ app.use(VueTheMask);
 app.use(i18n);
 app.use(drag);
 app.use(createHead());
-// app.component('font-awesome-icon', FontAwesomeIcon)
 app.directive("click-away", directive);
 app.component("Loader", Loader);
 
