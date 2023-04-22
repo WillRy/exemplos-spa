@@ -32,6 +32,7 @@ Route::group(['middleware' => 'locale'], function(){
     //rotas privadas
     Route::group(['middleware' => ['auth:api']], function () {
         Route::get('/usuario', [AuthController::class, 'usuarioLogado'])->name('usuarioLogado');
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
         Route::group(['prefix' => 'organizacao'], function () {
             Route::get('/', [OrganizacaoController::class, 'index'])->name('organizacao.index');

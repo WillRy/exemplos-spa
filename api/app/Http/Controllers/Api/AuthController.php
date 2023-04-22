@@ -8,6 +8,7 @@ use App\Models\Token;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
@@ -25,7 +26,7 @@ class AuthController extends Controller
 
             $token = Auth::guard("api")->attempt([
                 'email' => $dados['email'],
-                'password' => $dados['senha']
+                'senha' => $dados['senha']
             ]);
 
             if (empty($token)) {
@@ -128,5 +129,11 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return $this->errorAPI($e->getMessage());
         }
+    }
+
+    public function logout()
+    {
+        Auth::guard()->logout();
+        return $this->successAPI([]);
     }
 }

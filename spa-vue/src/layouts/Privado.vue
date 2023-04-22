@@ -1,36 +1,38 @@
 <template>
   <div class="layout" v-if="!loading && usuarioState.usuario">
-    <Sidebar :open="sidebarAberta" @change="mudarSidebar" :iconeEmresaSrc="'/fff.webp'">
-      <SidebarLink :to="{name:'dashboard'}">
-        <template #texto>
-          Dashboard
-        </template>
+    <Sidebar
+      :open="sidebarAberta"
+      @change="mudarSidebar"
+      :iconeEmresaSrc="'/fff.webp'"
+    >
+      <SidebarLink :to="{ name: 'dashboard' }">
+        <template #texto> Dashboard </template>
         <template #icone>
-          <HomeIcon/>
+          <HomeIcon />
         </template>
       </SidebarLink>
-      <SidebarLink :to="{name:'organizacoes'}">
+      <SidebarLink :to="{ name: 'organizacoes' }">
         <template #texto>
-          {{ $t('palavras.organizacoes') }}
+          {{ $t("palavras.organizacoes") }}
         </template>
         <template #icone>
-          <OrganizacaoIcon/>
+          <OrganizacaoIcon />
         </template>
       </SidebarLink>
-      <SidebarLink :to="{name:'contatos'}">
+      <SidebarLink :to="{ name: 'contatos' }">
         <template #texto>
-          {{ $t('palavras.contatos') }}
+          {{ $t("palavras.contatos") }}
         </template>
         <template #icone>
-          <ContatoIcon/>
+          <ContatoIcon />
         </template>
       </SidebarLink>
-      <SidebarLink :to="{name:'tags'}">
+      <SidebarLink :to="{ name: 'tags' }">
         <template #texto>
-          {{ $t('palavras.tags') }}
+          {{ $t("palavras.tags") }}
         </template>
         <template #icone>
-          <TagIcon/>
+          <TagIcon />
         </template>
       </SidebarLink>
     </Sidebar>
@@ -48,12 +50,8 @@
                 {{ $i18n.locale }}
               </template>
               <template #acoes>
-                <button @click="mudarIdioma('pt-BR')">
-                  Português
-                </button>
-                <button @click="mudarIdioma('en')">
-                  Inglês
-                </button>
+                <button @click="mudarIdioma('pt-BR')">Português</button>
+                <button @click="mudarIdioma('en')">Inglês</button>
               </template>
             </BaseDropdownSecondary>
           </div>
@@ -63,10 +61,10 @@
                 {{ usuarioState.usuario.nome }}
               </template>
               <template #acoes>
-                <button @click="logout">{{$t("palavras.logout")}}</button>
+                <button @click="logout">{{ $t("palavras.logout") }}</button>
                 <button
-                    :disabled="!usuarioState.temPermissao('botao')"
-                    v-if="!usuarioState.temPermissao('botao')"
+                  :disabled="!usuarioState.temPermissao('botao')"
+                  v-if="!usuarioState.temPermissao('botao')"
                 >
                   {{ $t("textos.botao_sem_permissao") }}
                 </button>
@@ -80,14 +78,13 @@
       </template>
     </Header>
 
-
     <HomeContainer>
       <router-view key="privado" :key="$route.path"></router-view>
     </HomeContainer>
   </div>
 
   <div class="loader-overlay" v-if="loading">
-    <Loader width="126px" height="126px" :corPrincipal="true"/>
+    <Loader width="126px" height="126px" :corPrincipal="true" />
   </div>
 </template>
 
@@ -97,7 +94,7 @@ import Sidebar from "../external/components/sidebar/Sidebar.vue";
 import SidebarLink from "../external/components/sidebar/SidebarLink.vue";
 import HomeIcon from "../external/components/icons/HomeIcon.vue";
 import HomeContainer from "../external/components/HomeContainer.vue";
-import {usuarioStore} from "../stores/usuario";
+import { usuarioStore } from "../stores/usuario";
 import OrganizacaoIcon from "../components/icons/OrganizacaoIcon.vue";
 import ContatoIcon from "../components/icons/ContatoIcon.vue";
 import BaseDropdownPrimary from "../external/components/dropdown/BaseDropdownPrimary";
@@ -105,7 +102,12 @@ import BaseButtonSecondary from "../external/components/buttons/BaseButtonSecond
 import BaseDropdownSecondary from "../external/components/dropdown/BaseDropdownSecondary";
 import TagIcon from "../components/icons/TagIcon";
 import api from "../services/api";
-import { modalCriarOrganizacaoStore, modalEditarOrganizacaoStore, modalExcluirOrganizacaoStore, organizacaoStore } from "../stores/organizacao";
+import {
+  modalCriarOrganizacaoStore,
+  modalEditarOrganizacaoStore,
+  modalExcluirOrganizacaoStore,
+  organizacaoStore,
+} from "../stores/organizacao";
 import { definirIdioma } from "../lang";
 
 export default {
@@ -121,7 +123,7 @@ export default {
     HomeIcon,
     HomeContainer,
     OrganizacaoIcon,
-    ContatoIcon
+    ContatoIcon,
   },
   setup() {
     const usuarioState = usuarioStore();
@@ -134,14 +136,14 @@ export default {
       organizacaoState,
       modalCriarOrganizacaoState,
       modalEditarOrganizacaoState,
-      modalExcluirOrganizacaoState
+      modalExcluirOrganizacaoState,
     };
   },
   data() {
     return {
       loading: true,
       sidebarAberta: false,
-      qtdOrganizacoes: null
+      qtdOrganizacoes: null,
     };
   },
   watch: {
@@ -169,16 +171,18 @@ export default {
       this.sidebarAberta = !this.sidebarAberta;
     },
     logout() {
-      window.localStorage.removeItem("token");
-      this.$router.push({
-        path: "/",
+      api.post("/logout").finally(() => {
+        window.localStorage.removeItem("token");
+        this.$router.push({
+          path: "/",
+        });
       });
     },
     buscarQuantidadeOrganizacoes() {
-      api.get('/organizacao').then((r) => {
+      api.get("/organizacao").then((r) => {
         this.qtdOrganizacoes = r.data.data.total;
-      })
-    }
+      });
+    },
   },
   async created() {
     this.buscarQuantidadeOrganizacoes();
@@ -201,6 +205,5 @@ body {
 .col-count {
   display: flex;
   align-items: center;
-
 }
 </style>

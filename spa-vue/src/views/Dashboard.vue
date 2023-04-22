@@ -1,10 +1,15 @@
 <template>
+<div v-html="$route.query.teste">
 
+</div>
 </template>
 
 <script>
 export default {
-    name: "Dashboard.vue"
+    name: "Dashboard",
+    created() {
+
+    }
 }
 </script>
 
