@@ -37,7 +37,7 @@
       </SidebarLink>
     </Sidebar>
 
-    <Header>
+    <Header :containerFluido="true">
       <template #boxDireito>
         <div class="row">
           <div class="col col-count" v-if="qtdOrganizacoes">

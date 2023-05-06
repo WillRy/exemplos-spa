@@ -1,0 +1,94 @@
+<template>
+    <component :is="is" :class="[size, 'heading-text']">
+        <slot></slot>
+    </component>
+</template>
+
+<script>
+export default {
+    name: "HeadingText",
+    props: {
+        is: {
+            type: String,
+            default: 'h2'
+        },
+        size: {
+            type: String,
+            default: 'md',
+            validator(value) {
+                return ["md", "lg", "xl", "xxl", "xxxl"].includes(value);
+            }
+        },
+    }
+}
+</script>
+
+<style scoped>
+.heading-text {
+  margin: 0;
+}
+
+.xxxl {
+    font-size: 4rem;
+    font-weight: bold;
+    line-height: 5rem;
+}
+
+.xxl {
+    font-size: 3rem;
+    font-weight: bold;
+    line-height: 3.75rem;
+}
+
+.xl {
+    font-size: 2.5rem;
+    font-weight: bold;
+    line-height: 3rem;
+}
+
+.lg {
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 2.5rem;
+}
+
+.md {
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1.995rem;
+}
+
+
+@media all and (max-width: 786px) {
+    .xxxl {
+        font-size: 3rem;
+        font-weight: bold;
+        line-height: 3.75rem;
+    }
+
+    .xxl {
+        font-size: 2.5rem;
+        font-weight: bold;
+        line-height: 3.125rem;
+    }
+
+    .xl {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .lg {
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.8rem;
+    }
+
+    .md {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+}
+
+</style>

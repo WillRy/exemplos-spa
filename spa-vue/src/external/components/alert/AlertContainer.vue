@@ -54,7 +54,7 @@ export default {
 
 <style scoped>
 .alert-container {
-  position: absolute;
+  position: fixed;
   bottom: 16px;
   display: flex;
   flex-direction: column;
