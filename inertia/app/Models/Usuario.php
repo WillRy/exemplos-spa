@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Auth;
+use Cookie;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -48,14 +50,13 @@ class Usuario extends Authenticatable implements JWTSubject
     }
 
 
-    public function retornarCookieToken(string $token)
+    public function retornarCookieToken(string $token = null)
     {
         return setcookie('token', $token, [
             'expires' => time() + 86400,
             'path' => '/',
             'secure' => false,
             'httponly' => true,
-            'samesite' => 'Lax',
         ]);
     }
 
@@ -66,7 +67,6 @@ class Usuario extends Authenticatable implements JWTSubject
             'path' => '/',
             'secure' => false,
             'httponly' => true,
-            'samesite' => 'Lax',
         ]);
     }
 
@@ -75,5 +75,13 @@ class Usuario extends Authenticatable implements JWTSubject
         $tokenHeader = Request::bearerToken() ?? null;
         $cookie = !empty($_COOKIE['token']) ? $_COOKIE['token'] : null;
         return $tokenHeader ?? $cookie;
+    }
+
+    public function logout()
+    {
+        $this->removerCookieToken();
+        if(Auth::check()) {
+            Auth::logout();
+        }
     }
 }
