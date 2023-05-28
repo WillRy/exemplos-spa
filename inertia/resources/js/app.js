@@ -5,7 +5,7 @@ import { createPinia } from "pinia";
 import VueToast from "vue-toast-notification";
 import VueTheMask from "vue-the-mask";
 
-import { filters, EventBus, LaravelError, VerificaPermissao } from "./plugins";
+import { filters, EventBus, LaravelError, VerificaPermissao, ajaxFormError } from "./plugins";
 
 import "./styles/app.css";
 import Loader from "./external/components/Loader";
@@ -34,6 +34,7 @@ createInertiaApp({
             .use(EventBus)
             .use(VueTheMask)
             .use(VerificaPermissao)
+            .use(ajaxFormError)
             .use(i18n)
             .use(drag)
             .directive("click-away", directive)

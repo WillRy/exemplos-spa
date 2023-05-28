@@ -7,7 +7,7 @@ export const useAlertStore = defineStore("alert", {
         alerts: [],
     }),
     actions: {
-        setAlert({tipo, title, mensagem, textoBtn = "Certo!", id = null}) {
+        setAlert({tipo, title, mensagem, textoBtn = "Certo!", id = null, acoes = null}) {
             const idAlert = id ? id : idNotificacao++;
 
             const exists = this.alerts.find((alert) => alert.id === id);
@@ -19,7 +19,56 @@ export const useAlertStore = defineStore("alert", {
                 title: title,
                 mensagem,
                 textoBtn: textoBtn,
-                id: idAlert
+                id: idAlert,
+                acoes: acoes
+            });
+        },
+        error({title, mensagem, textoBtn = "Certo!", id = null, acoes = null}) {
+            const idAlert = id ? id : idNotificacao++;
+
+            const exists = this.alerts.find((alert) => alert.id === id);
+
+            if (exists) return;
+
+            this.alerts.push({
+                tipo: 'error',
+                title: title,
+                mensagem,
+                textoBtn: textoBtn,
+                id: idAlert,
+                acoes: acoes
+            });
+        },
+        success({title, mensagem, textoBtn = "Certo!", id = null, acoes = null}) {
+            const idAlert = id ? id : idNotificacao++;
+
+            const exists = this.alerts.find((alert) => alert.id === id);
+
+            if (exists) return;
+
+            this.alerts.push({
+                tipo: 'success',
+                title: title,
+                mensagem,
+                textoBtn: textoBtn,
+                id: idAlert,
+                acoes: acoes
+            });
+        },
+        info({title, mensagem, textoBtn = "Certo!", id = null, acoes = null}) {
+            const idAlert = id ? id : idNotificacao++;
+
+            const exists = this.alerts.find((alert) => alert.id === id);
+
+            if (exists) return;
+
+            this.alerts.push({
+                tipo: 'info',
+                title: title,
+                mensagem,
+                textoBtn: textoBtn,
+                id: idAlert,
+                acoes: acoes
             });
         },
         removeAlert(id) {

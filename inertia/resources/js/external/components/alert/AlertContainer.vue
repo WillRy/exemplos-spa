@@ -64,6 +64,7 @@ export default {
   /* width: 100%; */
   left: 50%;
   transform: translate(-50%, 0%);
+  z-index: var(--z-index-5);
 }
 
 .shakeContainer {

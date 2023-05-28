@@ -76,7 +76,7 @@ export default {
 }
 
 .btn-secondary:focus :deep(path) {
-  fill: var(--secondary-button-focus-color);
+  fill: var(--secondary-button-color);
 }
 
 .btn-secondary:active :deep(path) {

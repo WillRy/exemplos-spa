@@ -27,7 +27,7 @@
                     <slot name="prefix"></slot>
                 </div>
 
-                <DatePicker v-model="data" v-bind="attrs" is24hr mode="date">
+                <DatePicker v-model="data" v-bind="attrs" is24hr mode="date" first-day-of-week="1.0">
                     <template v-slot="{ inputValue, inputEvents }">
                         <input
                             v-if="!disabled"
@@ -50,17 +50,17 @@
         </div>
 
         <div v-if="$slots.legenda || legenda" class="legenda">
-            <InfoInputIcon size="14px" />
+            <InfoInputIcon size="14px" class="icone-footer"/>
             <slot name="legenda" v-if="$slots.legenda"></slot>
             <template v-else>{{ legenda }}</template>
         </div>
         <div v-if="$slots.success || success" class="successMessage">
-            <InfoSuccessIcon size="14px" />
+            <InfoSuccessIcon size="14px" class="icone-footer"/>
             <slot name="success" v-if="$slots.success"></slot>
             <template v-else>{{ success }}</template>
         </div>
         <div v-if="$slots.error || error" class="errorMessage">
-            <InfoErrorIcon size="14px" />
+            <InfoErrorIcon size="14px" class="icone-footer"/>
             <slot name="error" v-if="$slots.error"></slot>
             <template v-else>{{ error }}</template>
         </div>
@@ -396,26 +396,28 @@ input::placeholder {
     color: var(--gray-400);
 }
 
+.icone-footer {
+  flex-shrink: 0;
+  margin-right: 8px;
+}
 
 .legenda {
-  display: flex;
-  align-items: center;
-
-  padding-left: var(--padding-text);
-  font-size: 12px;
-  color: var(--gray-400);
-  line-height: 24px;
-  margin: 0;
+    display: flex;
+    padding-left: var(--padding-text);
+    font-size: 12px;
+    color: var(--gray-400);
+    line-height: 24px;
+    margin: 0;
 }
 
 .legenda:deep(*){
-  margin: 0;
+    margin: 0;
 }
 
 .legenda > svg {
-  display: block;
-  width: 14px;
-  margin-right: 2px;
+    flex-shrink: 0;
+    margin-right: 8px;
+    margin-top: 4px;
 }
 
 

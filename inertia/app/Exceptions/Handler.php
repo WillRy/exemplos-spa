@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Request;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -36,6 +37,16 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
+
+    public function isAjax()
+    {
+        $isApi = str_contains(Request::route()->getPrefix(), 'api');
+        $isJSON = Request::expectsJson() || Request::isJson();
+        $isAjax = ($isApi || $isJSON) && !Request::header('X-Inertia');
+
+        return $isAjax;
+    }
+
     /**
      * Register the exception handling callbacks for the application.
      *
@@ -45,6 +56,55 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        $this->renderable(function (\Illuminate\Auth\AuthenticationException $e, \Illuminate\Http\Request $request) {
+            if ($this->isAjax()) {
+                $error = str_replace(' (and 1 more error)', '', $e->getMessage());
+                return response()->json([
+                    'success' => false,
+                    'message' => $error,
+                    'errors' => [],
+                    'error_code' => null,
+                    'data' => []
+                ], 401);
+            }
+        });
+
+        /**
+         * Padroniza o JSON de response em erro de VALIDAÇÃO
+         *
+         * Para requests que NÃO SÃO INERTIA
+         * */
+        $this->renderable(function (\Illuminate\Validation\ValidationException $e, \Illuminate\Http\Request $request) {
+            if ($this->isAjax()) {
+                $error = str_replace(' (and 1 more error)', '', $e->getMessage());
+                return response()->json([
+                    'success' => false,
+                    'message' => $error,
+                    'errors' => $e->validator->errors(),
+                    'error_code' => null,
+                    'data' => []
+                ], 422);
+            }
+        });
+
+        /**
+         * Padroniza o JSON de response em erro de PERMISSÃO
+         *
+         * Para requests que NÃO SÃO INERTIA
+         * */
+        $this->renderable(function (\Illuminate\Validation\UnauthorizedException $e, \Illuminate\Http\Request $request) {
+            if ($this->isAjax()) {
+                $error = str_replace(' (and 1 more error)', '', $e->getMessage());
+                return response()->json([
+                    'success' => false,
+                    'message' => $error,
+                    'errors' => [],
+                    'error_code' => null,
+                    'data' => []
+                ], 403);
+            }
         });
     }
 }

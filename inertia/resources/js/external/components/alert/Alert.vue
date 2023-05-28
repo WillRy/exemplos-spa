@@ -1,5 +1,5 @@
 <template>
-  <div class="alert" :class="{[classeTipo]: classeTipo}" ref="alert">
+  <div class="alert" :class="{[classeTipo]: classeTipo}" ref="alert" :data-identificador="alert.identificadorAcao">
     <div class="alert-content" v-html="alert.mensagem"></div>
     <div class="alert-close" @click="fecharModal">
       <svg xmlns="http://www.w3.org/2000/svg" width="22.81" height="19.958" viewBox="0 0 22.81 19.958">
@@ -48,7 +48,23 @@ export default {
     Array.from(anchors).forEach(anchor => {
       anchor.addEventListener('click', (e) => {
         e.preventDefault();
-        this.$router.push(anchor.getAttribute('href'));
+        debugger
+        const alertIdentificadorAcao = e.currentTarget.getAttribute('data-identificador');
+
+        if(this.alert.acoes) {
+          const acao = this.alert.acoes.find((acao) => acao.identificador === alertIdentificadorAcao);
+
+          if(!acao) return false;
+
+          if(!acao.click) return false;
+
+          acao.click();
+
+          if(acao.fecharNoClick) this.fecharModal();
+
+        }
+        
+
       })
 
     })

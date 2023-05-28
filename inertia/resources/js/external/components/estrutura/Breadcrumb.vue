@@ -1,15 +1,5 @@
 <template>
-  <div class="subheader" :style="{ padding: padding }">
-    <div class="subheader-container">
-      <div class="titulo">
-        <slot name="titulo"></slot>
-      </div>
-
-      <div class="botoes" v-if="$slots.botoes">
-        <slot name="botoes"> </slot>
-      </div>
-    </div>
-
+  <div class="breadcrumb">
     <div class="links">
       <template v-for="(link, index) in links" :key="index">
         <span class="breadcrumb-separador" v-if="index !== 0">></span>
@@ -37,107 +27,48 @@
         </component>
       </template>
     </div>
-
-    <div class="separador"></div>
   </div>
 </template>
 
 <script>
-import BaseButtonTertiary from "../buttons/BaseButtonTertiary.vue";
-import HomeIcon from "../icons/HomeIcon.vue";
-import ArrowSidebar from "../sidebar/ArrowSidebar.vue";
+import BaseButtonTertiary from './../buttons/BaseButtonTertiary.vue';
 
 export default {
-  name: "SubHeader",
-  data() {
-    return {
-      exibirVoltar: this.exibirBtnVoltar,
-    };
-  },
-  watch: {
-    exibirBtnVoltar(valor) {
-      this.exibirVoltar = valor;
+    name: "Breadcrumb",
+    props: {
+        links: {
+            type: Array,
+            default: () => [],
+        },
+        componentLink: {
+            type: String,
+            default: "a",
+        },
     },
-  },
-  props: {
-    links: {
-      type: Array,
-      default: () => [],
+    methods: {
+        clicou(link) {
+            this.$emit("change", link);
+        },
     },
-    exibirBtnVoltar: {
-      type: Boolean,
-      default: false,
-    },
-    homeUrlName: {
-      type: String,
-      default: "dashboard",
-    },
-    padding: {
-      type: String,
-      default: null,
-    },
-    componentLink: {
-      type: String,
-      default: "a",
-    },
-  },
-  components: { ArrowSidebar, HomeIcon, BaseButtonTertiary },
-  methods: {
-    voltar() {
-      this.$emit("voltar");
-    },
-  },
-  created() {},
+    components: { BaseButtonTertiary }
 };
 </script>
 
 <style scoped>
-.subheader {
-  display: flex;
-  flex-direction: column;
-  --bs-gutter-x: 1.5rem;
-  --bs-gutter-y: 0;
-  width: 100%;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-right: calc(var(--bs-gutter-x) * 0.5);
-  padding-left: calc(var(--bs-gutter-x) * 0.5);
+.breadcrumb {
+  padding: 16px 20px;
+  background: #e1e2e6;
 
-  background: var(--gray-200);
-}
-
-.subheader-container {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
   gap: 6px;
-  justify-content: space-between;
-  margin-bottom: 8px;
 }
 
-.botoes {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-left: 12px;
-}
-
-.titulo {
-  font-size: 20px;
-  line-height: 24px;
-  color: var(--primary-color-principal);
-  font-weight: bold;
-  flex-shrink: 0;
-
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 8px;
-}
 
 .breadcrumb-separador {
   color: #606266;
 }
+
 
 .links {
   display: flex;

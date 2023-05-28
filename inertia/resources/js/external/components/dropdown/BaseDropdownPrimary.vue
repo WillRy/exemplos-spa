@@ -9,14 +9,15 @@
       placement="bottom-start"
       v-bind="$attrs"
     >
-      <BaseButton
+      <BaseButtonPrimary
         class="btn-primary dropdown-btn"
         @click.stop.prevent="toggle"
         :size="size"
+        :disabled="disabled"
       >
         <slot name="botao"></slot>
         <ArrowDownSolidIcon size="12px" color="#fff" v-if="icone" />
-      </BaseButton>
+      </BaseButtonPrimary>
 
       <!-- This will be the content of the popover -->
       <template #popper="{ hide }" v-if="$slots.acoes">
@@ -41,6 +42,7 @@ import ArrowDownIcon from "../icons/ArrowDownIcon.vue";
 import { directive } from "../../directives/click-away";
 import BaseButton from "../buttons/BaseButton.vue";
 import ArrowDownSolidIcon from "../icons/ArrowDownSolidIcon.vue";
+import  BaseButtonPrimary  from "../buttons/BaseButtonPrimary.vue";
 
 export default {
   name: "BaseDropdownPrimary",
@@ -59,6 +61,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     VDropdown: Dropdown,
@@ -66,7 +72,8 @@ export default {
     ArrowDownIcon,
     BaseButton,
     ArrowDownSolidIcon,
-  },
+    BaseButtonPrimary
+},
   directives: {
     "click-away": directive,
   },

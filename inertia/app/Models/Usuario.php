@@ -52,22 +52,24 @@ class Usuario extends Authenticatable implements JWTSubject
 
     public function retornarCookieToken(string $token = null)
     {
-        return setcookie('token', $token, [
-            'expires' => time() + 86400,
-            'path' => '/',
-            'secure' => false,
-            'httponly' => true,
-        ]);
+        Cookie::queue("token",$token, time() + 86400);
+        // return setcookie('token', $token, [
+        //     'expires' => time() + 86400,
+        //     'path' => '/',
+        //     'secure' => false,
+        //     'httponly' => true,
+        // ]);
     }
 
     public function removerCookieToken()
     {
-        return setcookie('token', '', [
-            'expires' => -1,
-            'path' => '/',
-            'secure' => false,
-            'httponly' => true,
-        ]);
+        Cookie::expire("token");
+        // return setcookie('token', '', [
+        //     'expires' => -1,
+        //     'path' => '/',
+        //     'secure' => false,
+        //     'httponly' => true,
+        // ]);
     }
 
     public static function jwt()
