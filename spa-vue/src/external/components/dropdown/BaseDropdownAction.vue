@@ -10,6 +10,7 @@
         class="dropdown-acoes-btn"
         :class="{ 'disabled-btn': disabled }"
         @click.stop="toggle"
+        :disabled="disabled"
       >
         <DotsIcon />
       </button>

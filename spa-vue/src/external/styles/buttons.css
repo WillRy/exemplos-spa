@@ -24,7 +24,7 @@
     --secondary-button-icon: var(--primary-color-principal);
 
     /* variaveis botões secundários : hover*/
-    --secondary-button-hover-border: var(--primary-color-principal-hover);
+    --secondary-button-hover-border: var(--secondary-button-color);
     --secondary-button-hover-background: var(--primary-color-50);
     --secondary-button-hover-color: var(--primary-color-principal-hover);
 

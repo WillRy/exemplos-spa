@@ -28,7 +28,7 @@
       </tbody>
       <tbody v-if="loading">
         <tr class="overlay">
-          <Loader width="3%" height="3%" :cor-principal="true" />
+          <Loader width="30%" height="30%" :cor-principal="true" />
         </tr>
       </tbody>
     </table>

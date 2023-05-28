@@ -14,7 +14,12 @@
           <slot name="title"></slot>
         </div>
 
-        <div class="base-modal-separator"></div>
+        
+
+        <div class="base-modal-breadcrumb" v-if="$slots.breadcrumb">
+          <slot name="breadcrumb"></slot>
+        </div>
+        <div class="base-modal-separator" v-else></div>
 
         <div class="base-modal-body" :style="{padding: paddingBody}">
           <slot name="body"></slot>
@@ -156,7 +161,7 @@ export default {
   left: 0;
   position: fixed;
   top: 0;
-  z-index: 2000;
+  z-index: var(--z-index-4);
   height: 100vh;
   width: 100vw;
 
@@ -318,5 +323,10 @@ export default {
   width: 100%;
   background: #EFF0F2;
   margin: 24px 0;
+}
+
+.base-modal-breadcrumb {
+  padding-bottom: 20px;
+  padding-top: 20px;
 }
 </style>

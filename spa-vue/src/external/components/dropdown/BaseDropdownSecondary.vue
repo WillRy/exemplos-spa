@@ -9,14 +9,15 @@
       placement="bottom-start"
       v-bind="$attrs"
     >
-      <BaseButton
+      <BaseButtonSecondary
         class="btn-primary dropdown-btn"
         @click.stop.prevent="toggle"
         :size="size"
+        :disabled="disabled"
       >
         <slot name="botao"></slot>
         <ArrowDownSolidIcon size="12px" color="#fff" v-if="icone" />
-      </BaseButton>
+      </BaseButtonSecondary>
 
       <!-- This will be the content of the popover -->
       <template #popper="{ hide }" v-if="$slots.acoes">
@@ -57,6 +58,10 @@ export default {
     icone: {
       type: Boolean,
       default: true,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   components: {

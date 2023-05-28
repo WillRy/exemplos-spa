@@ -1,35 +1,44 @@
 <template>
-  <div class="subheader">
+  <div class="subheader" :style="{ padding: padding }">
     <div class="subheader-container">
-
       <div class="titulo">
-        <div class="btnEsquerdo" v-if="exibirVoltar">
-          <BaseButtonTertiary size="sm" @click="voltar">
-            <ArrowSidebar/>
-          </BaseButtonTertiary>
-        </div>
         <slot name="titulo"></slot>
       </div>
 
-
       <div class="botoes" v-if="$slots.botoes">
-        <slot name="botoes">
-
-        </slot>
+        <slot name="botoes"> </slot>
       </div>
     </div>
-    <div class="breadcrumb">
-      <div class="link-home">
-        <slot name="home"></slot>  
-      </div>
-      <div class="links">
-        <slot name="links"></slot>
-      </div>
 
+    <div class="links">
+      <template v-for="(link, index) in links" :key="index">
+        <span class="breadcrumb-separador" v-if="index !== 0">></span>
+        <component
+          class="breadcrumb-item"
+          :is="componentLink"
+          :class="{ atual: index == links.length - 1 }"
+          size="sm"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="12.56"
+            height="9.767"
+            viewBox="0 0 12.56 9.767"
+            v-if="index === 0"
+          >
+            <path
+              d="M6.113,4.036,2.093,7.347v3.573a.349.349,0,0,0,.349.349l2.443-.006a.349.349,0,0,0,.347-.349V8.827a.349.349,0,0,1,.349-.349h1.4a.349.349,0,0,1,.349.349v2.085a.349.349,0,0,0,.349.35l2.443.007a.349.349,0,0,0,.349-.349V7.345L6.446,4.036A.266.266,0,0,0,6.113,4.036Zm6.35,2.25-1.823-1.5V1.764a.262.262,0,0,0-.262-.262H9.157a.262.262,0,0,0-.262.262V3.347L6.944,1.741a1.047,1.047,0,0,0-1.33,0L.094,6.287a.262.262,0,0,0-.035.368l.556.676a.262.262,0,0,0,.369.036L6.113,3.142a.266.266,0,0,1,.334,0l5.129,4.224a.262.262,0,0,0,.368-.035l.556-.676a.262.262,0,0,0-.037-.369Z"
+              transform="translate(0.001 -1.502)"
+              fill="#939599"
+            />
+          </svg>
+
+          <span class="breadcrumb-nome">{{ link.nome }}</span>
+        </component>
+      </template>
     </div>
 
     <div class="separador"></div>
-
   </div>
 </template>
 
@@ -43,40 +52,58 @@ export default {
   data() {
     return {
       exibirVoltar: this.exibirBtnVoltar,
-    }
+    };
   },
   watch: {
     exibirBtnVoltar(valor) {
-      this.exibirVoltar = valor
-    }
+      this.exibirVoltar = valor;
+    },
   },
   props: {
+    links: {
+      type: Array,
+      default: () => [],
+    },
     exibirBtnVoltar: {
       type: Boolean,
-      default: true
+      default: false,
     },
     homeUrlName: {
       type: String,
-      default: 'dashboard'
-    }
+      default: "dashboard",
+    },
+    padding: {
+      type: String,
+      default: null,
+    },
+    componentLink: {
+      type: String,
+      default: "a",
+    },
   },
-  components: {ArrowSidebar, HomeIcon, BaseButtonTertiary},
+  components: { ArrowSidebar, HomeIcon, BaseButtonTertiary },
   methods: {
     voltar() {
-      this.$emit("voltar")
-    }
+      this.$emit("voltar");
+    },
   },
-  created() {
-
-  }
-}
+  created() {},
+};
 </script>
 
 <style scoped>
 .subheader {
   display: flex;
   flex-direction: column;
-  margin-top: var(--spacing-4);
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  width: 100%;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+
+  background: var(--gray-200);
 }
 
 .subheader-container {
@@ -84,8 +111,8 @@ export default {
   align-items: center;
   flex-wrap: wrap;
   gap: 6px;
-  margin-bottom: 20px;
   justify-content: space-between;
+  margin-bottom: 8px;
 }
 
 .botoes {
@@ -98,7 +125,7 @@ export default {
 .titulo {
   font-size: 20px;
   line-height: 24px;
-  color: #2F3033;
+  color: var(--primary-color-principal);
   font-weight: bold;
   flex-shrink: 0;
 
@@ -108,56 +135,39 @@ export default {
   gap: 8px;
 }
 
-.breadcrumb {
-  display: grid;
-  grid-template-columns: 30px 1fr;
-  gap: 9px;
-}
-
-.link-home :deep(path) {
-  fill: var(--tertiary-color-600);
-}
-
-.link-home:hover :deep(path) {
-  fill: var(--tertiary-color-400);
+.breadcrumb-separador {
+  color: #606266;
 }
 
 .links {
   display: flex;
   align-items: center;
+  gap: 6px;
 }
 
-.links :deep(a) {
+.links .breadcrumb-item {
   font-size: 14px;
   text-decoration: none;
   display: flex;
   align-items: center;
-
+  cursor: pointer;
+  gap: 6px;
 }
 
-.links :deep(a):hover {
+.links .breadcrumb-item:hover {
   opacity: 0.6;
 }
 
-.links :deep(a:not(:first-child):before) {
-  content: ' | ';
-  display: block;
-  margin: 4px;
-  color: #606266 !important;
-}
 
-.links :deep(a:not(:last-child) ) {
+.links .breadcrumb-item:not(:last-child) {
   color: #606266;
 }
 
-.links :deep(a:last-child) {
+.links .atual {
   color: var(--primary-color-principal);
 }
 
-.separador {
-  height: 1px;
-  background: #E1E2E6;
-  opacity: 1;
-  margin: 20px 0px;
+.links .atual path {
+  fill: var(--primary-color-principal);
 }
 </style>
