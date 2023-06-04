@@ -43,7 +43,7 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
     public function store(Request $request)
     {
         $dados = $request->validate([
-            'nome' => 'required|max:255|min:30',
+            'nome' => 'required|max:255|min:3',
             'email' => 'required|email|max:255|unique:organizacoes,email',
             'telefone' => ['nullable', 'max:255', function ($attribute, $value, $fail) {
                 if (!preg_match('/([(][0-9]{2}[)])\s[0-9]{4,5}\-[0-9]{4}/', $value)) {
@@ -80,7 +80,7 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
     public function update(Request $request, int $id)
     {
         $dados = $request->validate([
-            'nome' => 'required|max:255',
+            'nome' => 'required|max:255|min:3',
             'email' => "required|email|max:255|unique:organizacoes,email,{$id}", //permitir burlar o unique para proprio dono
             'telefone' => ['nullable', 'max:255', function ($attribute, $value, $fail) {
                 if (!preg_match('/([(][0-9]{2}[)])\s[0-9]{4,5}\-[0-9]{4}/', $value)) {
