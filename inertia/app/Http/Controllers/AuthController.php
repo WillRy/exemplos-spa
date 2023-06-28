@@ -25,22 +25,16 @@ class AuthController extends Controller
         try {
 
             // autentica na sessão
-            Auth::guard("web")->attempt([
+            $logado = Auth::guard("web")->attempt([
                 'email' => $dados['email'],
                 'senha' => $dados['senha']
             ]);
 
-            // gerar token jwt para ser usado via cookie ou header
-            $token = Auth::guard("api")->attempt([
-                'email' => $dados['email'],
-                'senha' => $dados['senha']
-            ]);
-
-            if (empty($token)) {
+            if (empty($logado)) {
                 return $this->errorAPI(__('auth.failed'), null, null, 401);
             }
 
-            (new Usuario())->retornarCookieToken($token);
+            $token = (new Usuario())->retornarCookieToken(Auth::user());
 
             return $this->successAPI(['token' => $token]);
         } catch (\Exception $e) {

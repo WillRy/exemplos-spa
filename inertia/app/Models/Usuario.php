@@ -3,11 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Auth;
-use Cookie;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 use Laravel\Sanctum\HasApiTokens;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
@@ -50,26 +50,32 @@ class Usuario extends Authenticatable implements JWTSubject
     }
 
 
-    public function retornarCookieToken(string $token = null)
+    /**
+     * Renovando o token para que frontnend consiga usar as rotas de api
+     * @param User $user
+     * @return string
+     */
+    public function retornarCookieToken(Usuario $user)
     {
-        Cookie::queue("token",$token, time() + 86400);
-        // return setcookie('token', $token, [
-        //     'expires' => time() + 86400,
-        //     'path' => '/',
-        //     'secure' => false,
-        //     'httponly' => true,
-        // ]);
+        $token = Auth::guard('api')->login($user);
+        setcookie('token', $token, [
+            'expires' => time() + 86400,
+            'path' => '/',
+            'secure' => false,
+            'httponly' => true,
+        ]);
+
+        return $token;
     }
 
     public function removerCookieToken()
     {
-        Cookie::expire("token");
-        // return setcookie('token', '', [
-        //     'expires' => -1,
-        //     'path' => '/',
-        //     'secure' => false,
-        //     'httponly' => true,
-        // ]);
+        return setcookie('token', '', [
+            'expires' => -1,
+            'path' => '/',
+            'secure' => false,
+            'httponly' => true,
+        ]);
     }
 
     public static function jwt()
@@ -82,7 +88,7 @@ class Usuario extends Authenticatable implements JWTSubject
     public function logout()
     {
         $this->removerCookieToken();
-        if(Auth::check()) {
+        if (Auth::check()) {
             Auth::logout();
         }
     }

@@ -16,15 +16,17 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         if(!$this->app->runningInConsole()) {
-            $telescopeHabilitado = DB::table("config")->where('telescope', 1)->first();
+            // $telescopeHabilitado = DB::table("config")->where('telescope', 1)->first();
 
-            if ($telescopeHabilitado) {
-                config(['telescope.enabled' => true]);
-                $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+            // if ($telescopeHabilitado) {
+            //     config(['telescope.enabled' => true]);
+            //     $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+            //     $this->app->register(TelescopeServiceProvider::class);
+            // } else {
+            //     config(['telescope.enabled' => false]);
+            // }
+            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
                 $this->app->register(TelescopeServiceProvider::class);
-            } else {
-                config(['telescope.enabled' => false]);
-            }
         }
     }
 

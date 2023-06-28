@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ContatoController;
 use App\Http\Controllers\Api\OrganizacaoController;
 use App\Http\Controllers\Api\TagsController;
+use App\Http\Controllers\Api\TesteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,9 +19,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/eloquent', [TesteController::class, 'eloquent'])->name('eloquent');
+Route::get('/query', [TesteController::class, 'query'])->name('query');
 
 Route::group(['middleware' => 'locale'], function(){
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
 
     Route::post('/esqueci-senha', [AuthController::class, 'esqueciSenha'])
         ->name('esqueci-senha');
@@ -29,9 +32,11 @@ Route::group(['middleware' => 'locale'], function(){
         ->name('password.reset');
 
     //rotas privadas
-    Route::group(['middleware' => ['auth:api']], function () {
+    Route::group(['middleware' => ['auth:web']], function () {
         Route::get('/usuario', [AuthController::class, 'usuarioLogado'])->name('usuarioLogado');
-        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+        Route::post('/logout', [AuthController::class, 'logout']);
+
+
 
         Route::group(['prefix' => 'organizacao'], function () {
             Route::get('/', [OrganizacaoController::class, 'index'])->name('organizacao.index');

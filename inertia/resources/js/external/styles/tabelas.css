@@ -159,9 +159,6 @@
   background-color: rgba(200, 200, 200, 0.4);
 }
 
-.overlay:hover {
-  background-color: rgba(200, 200, 200, 0.4) !important;
-}
 
 .loading .overlay {
   display: flex;
@@ -169,6 +166,6 @@
   justify-content: center;
 }
 
-.listras tr:nth-child(odd) {
+.listras tr:not(.overlay):nth-child(odd) {
   background-color: #eff0f2;
 }

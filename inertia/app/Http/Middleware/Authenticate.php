@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Usuario;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Support\Facades\Auth;
 
 class Authenticate extends Middleware
 {
@@ -29,7 +30,7 @@ class Authenticate extends Middleware
         foreach ($guards as $guard) {
             if ($this->auth->guard($guard)->check()) {
 
-                (new Usuario())->retornarCookieToken(Usuario::jwt());
+                (new Usuario())->retornarCookieToken(Auth::user());
 
                 return $this->auth->shouldUse($guard);
             }

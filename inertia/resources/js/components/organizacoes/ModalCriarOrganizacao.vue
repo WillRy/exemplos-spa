@@ -331,8 +331,7 @@ export default {
                     this.fecharModal();
                     this.$emit("onReload");
 
-                    // this.organizacaoState.carregarOrganizacoes();
-                    // this.organizacaoState.buscarQuantidadeOrganizacoes();
+                    this.modalCriarOrganizacaoState.onReload();
 
                     this.loading = false;
                 }

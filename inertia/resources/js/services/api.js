@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { i18n } from '../lang';
+import {i18n} from '../lang';
 
 export let store = null;
 
@@ -28,7 +28,7 @@ api.interceptors.request.use(function (config) {
 api.interceptors.response.use(function (response) {
     return response;
 }, async function (error) {
-    if (401 === error.response.status) {
+    if (401 === error.response.status || 419 === error.response.status) {
         window.localStorage.removeItem("token");
         window.location.href = "/"
     }
