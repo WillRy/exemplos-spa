@@ -8,11 +8,11 @@ export function injectStore(st) {
 }
 
 const api = axios.create({
-    baseURL: 'http://localhost:8000/api'
+    baseURL: '/api'
 });
 
 api.interceptors.request.use(function (config) {
-    config.headers.Authorization = 'Bearer ' + window.localStorage.getItem("token");
+    // config.headers.Authorization = 'Bearer ' + window.localStorage.getItem("token");
     config.headers['Accept-Language'] = i18n.global.locale;
 
     return config;
@@ -31,7 +31,7 @@ api.interceptors.response.use(function (response) {
 }, async function (error) {
     if (401 === error.response.status) {
         window.localStorage.removeItem("token");
-        window.location.href = "/"
+        window.location.href = "/logout"
     }
     return Promise.reject(error);
 });
@@ -39,5 +39,5 @@ export default api;
 
 
 export const endpoint = axios.create({
-    baseURL: 'http://localhost:8000/api'
+    baseURL: '/api'
 });

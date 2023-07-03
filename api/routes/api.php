@@ -22,17 +22,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => 'locale'], function(){
+Route::group(['middleware' => 'locale'], function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/esqueci-senha', [AuthController::class, 'esqueciSenha'])
         ->name('esqueci-senha');
     Route::post('/redefinir-senha', [AuthController::class, 'redefinirSenha'])
         ->name('password.reset');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     //rotas privadas
     Route::group(['middleware' => ['auth:api']], function () {
         Route::get('/usuario', [AuthController::class, 'usuarioLogado'])->name('usuarioLogado');
-        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 
         Route::group(['prefix' => 'organizacao'], function () {
             Route::get('/', [OrganizacaoController::class, 'index'])->name('organizacao.index');
@@ -60,4 +61,3 @@ Route::group(['middleware' => 'locale'], function(){
     });
 
 });
-

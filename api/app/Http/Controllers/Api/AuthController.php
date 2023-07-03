@@ -33,6 +33,8 @@ class AuthController extends Controller
                 return $this->errorAPI(__('auth.failed'), null, null, 401);
             }
 
+            setcookie('token', $token, time() + 86400, '/', null, null, true);
+
             return $this->successAPI(['token' => $token]);
 
         } catch (\Exception $e) {
@@ -61,11 +63,13 @@ class AuthController extends Controller
 
 
             Mail::to($usuario->email)
-                ->send((new EnviaCodigoVerificadorResetSenha(
-                    $token,
-                    1,
-                    $dados['url']
-                )));
+                ->send((
+                    new EnviaCodigoVerificadorResetSenha(
+                        $token,
+                        1,
+                        $dados['url']
+                    )
+                ));
 
             return $this->successAPI([], __('custom.token_reset_senha_enviado'));
 
@@ -134,6 +138,9 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::guard()->logout();
+
+        setcookie('token', null, -1, '/', null, null, true);
+
         return $this->successAPI([]);
     }
 }

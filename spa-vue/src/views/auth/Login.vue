@@ -78,7 +78,7 @@ export default {
 
                     let response = await endpoint.post('/login', this.login);
 
-                    window.localStorage.setItem("token", response.data.data.token);
+                    // window.localStorage.setItem("token", response.data.data.token);
 
                     await this.$router.push({name: 'dashboard'});
 

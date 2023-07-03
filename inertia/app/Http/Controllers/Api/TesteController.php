@@ -17,6 +17,6 @@ use Illuminate\Support\Facades\Password;
 
 class TesteController extends Controller
 {
-   
+
 
 }
