@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Mail\EnviaCodigoVerificadorResetSenha;
 use App\Models\Token;
+use App\Models\TokenAutenticacao;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,7 +34,16 @@ class AuthController extends Controller
                 return $this->errorAPI(__('auth.failed'), null, null, 401);
             }
 
-            return $this->successAPI(['token' => $token]);
+            $usuario = Usuario::query()->where('email',$dados['email'])->first();
+
+            $tokens = (new TokenAutenticacao())->salvarTodosTokens(
+                $usuario->id
+            );
+
+            setcookie('token', $tokens->token, null, '/', null, null, true);
+            setcookie('refresh_token', $tokens->refresh_token, null, '/', null, null, true);
+
+            return $this->successAPI($tokens);
 
         } catch (\Exception $e) {
             return $this->errorAPI($e->getMessage());
@@ -61,11 +71,13 @@ class AuthController extends Controller
 
 
             Mail::to($usuario->email)
-                ->send((new EnviaCodigoVerificadorResetSenha(
-                    $token,
-                    1,
-                    $dados['url']
-                )));
+                ->send((
+                    new EnviaCodigoVerificadorResetSenha(
+                        $token,
+                        1,
+                        $dados['url']
+                    )
+                ));
 
             return $this->successAPI([], __('custom.token_reset_senha_enviado'));
 
@@ -133,7 +145,29 @@ class AuthController extends Controller
 
     public function logout()
     {
-        Auth::guard()->logout();
+
+        (new TokenAutenticacao())->logoutTokens();
+
         return $this->successAPI([]);
+    }
+
+    public function refreshToken(Request $request)
+    {
+        try {
+            $refreshToken = Cookie::get('refresh_token') ?? $request->bearerToken() ?? $request->input('refresh_token');
+
+            if(empty($refreshToken)) {
+                throw new \Exception("Invalid refresh token!");
+            }
+
+            $novoToken = (new TokenAutenticacao())->refreshToken($refreshToken);
+
+
+            setcookie('token', $novoToken->token, null, '/', null, null, true);
+
+            return $this->successAPI($novoToken);
+        } catch (\Exception $e) {
+            return $this->errorAPI($e->getMessage());
+        }
     }
 }

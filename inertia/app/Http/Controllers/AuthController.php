@@ -34,9 +34,7 @@ class AuthController extends Controller
                 return $this->errorAPI(__('auth.failed'), null, null, 401);
             }
 
-            $token = (new Usuario())->retornarCookieToken(Auth::user());
-
-            return $this->successAPI(['token' => $token]);
+            return $this->successAPI([]);
         } catch (\Exception $e) {
             Auth::logout();
 
@@ -58,7 +56,6 @@ class AuthController extends Controller
 
     public function logout()
     {
-        (new Usuario())->removerCookieToken();
         Auth::logout();
 
     }

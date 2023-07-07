@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Usuario;
+
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
-use Illuminate\Support\Facades\Auth;
+use App\Models\TokenAutenticacao;
 
 class Authenticate extends Middleware
 {
@@ -16,7 +16,7 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        if (! $request->expectsJson()) {
+        if (!$request->expectsJson()) {
             return route('login');
         }
     }
@@ -27,16 +27,30 @@ class Authenticate extends Middleware
             $guards = [null];
         }
 
+        $jwt = $request->bearerToken() ?? \Cookie::get('token');
+
         foreach ($guards as $guard) {
-            if ($this->auth->guard($guard)->check()) {
+            $autenticado = $this->auth->guard($guard)->check();
 
-                (new Usuario())->retornarCookieToken(Auth::user());
 
+            if ($guard === 'api' && $autenticado) {
+
+
+                $valido = (new TokenAutenticacao())->tokenValido($jwt);
+
+                if ($valido) {
+                    return $this->auth->shouldUse($guard);
+                }
+
+            }
+
+            if ($guard === 'web' && $autenticado) {
                 return $this->auth->shouldUse($guard);
             }
+
         }
 
-        (new Usuario())->logout();
+        (new TokenAutenticacao())->logoutTokens($jwt);
 
         $this->unauthenticated($request, $guards);
     }

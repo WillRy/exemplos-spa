@@ -50,44 +50,10 @@ class Usuario extends Authenticatable implements JWTSubject
     }
 
 
-    /**
-     * Renovando o token para que frontnend consiga usar as rotas de api
-     * @param User $user
-     * @return string
-     */
-    public function retornarCookieToken(Usuario $user)
-    {
-        $token = Auth::guard('api')->login($user);
-        setcookie('token', $token, [
-            'expires' => time() + 86400,
-            'path' => '/',
-            'secure' => false,
-            'httponly' => true,
-        ]);
-
-        return $token;
-    }
-
-    public function removerCookieToken()
-    {
-        return setcookie('token', '', [
-            'expires' => -1,
-            'path' => '/',
-            'secure' => false,
-            'httponly' => true,
-        ]);
-    }
-
-    public static function jwt()
-    {
-        $tokenHeader = Request::bearerToken() ?? null;
-        $cookie = !empty($_COOKIE['token']) ? $_COOKIE['token'] : null;
-        return $tokenHeader ?? $cookie;
-    }
-
     public function logout()
     {
-        $this->removerCookieToken();
+        (new TokenAutenticacao())->logoutTokens();
+
         if (Auth::check()) {
             Auth::logout();
         }
