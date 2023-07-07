@@ -45,4 +45,6 @@ class Usuario extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Token::class, 'usuario_id', 'id');
     }
+
+
 }
