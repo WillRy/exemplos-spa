@@ -154,7 +154,7 @@ class AuthController extends Controller
     public function refreshToken(Request $request)
     {
         try {
-            $refreshToken = Cookie::get('refresh_token') ?? $request->bearerToken() ?? $request->input('refresh_token');
+            $refreshToken = Cookie::get('refresh_token') ?? $request->input("refresh_token");
 
             if(empty($refreshToken)) {
                 throw new \Exception("Invalid refresh token!");

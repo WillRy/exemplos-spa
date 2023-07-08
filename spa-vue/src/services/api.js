@@ -1,5 +1,5 @@
-import axios, { Axios } from "axios";
-import { i18n } from "../lang";
+import axios, {Axios} from "axios";
+import {i18n} from "../lang";
 
 export let store = null;
 
@@ -30,15 +30,25 @@ api.interceptors.response.use(
     const status = error.response ? error.response.status : null;
 
     if (status === 401) {
-      return axios
-        .post("/api/refresh")
-        .then(() => {
-          return axios.request(error.config);
-        })
-        .catch((error) => {
-          console.log("Error", error)
-          window.location.href = "/logout";
-        });
+      const refreshingLocalStorage = window.localStorage.getItem('refreshing');
+      const refreshingNow = parseInt(refreshingLocalStorage) === 1;
+
+      if (!refreshingNow) {
+        window.localStorage.setItem('refreshing', '1');
+        return endpoint
+          .post("/refresh")
+          .then(() => {
+            return axios.request(error.config);
+          })
+          .catch((error) => {
+            console.log("Error refresh token", error)
+            window.location.href = "/logout";
+          }).finally(() => {
+            window.localStorage.setItem('refreshing', '0');
+          });
+      }
+
+
     }
 
     return Promise.reject(error);

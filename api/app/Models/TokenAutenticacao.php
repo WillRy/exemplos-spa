@@ -26,6 +26,7 @@ class TokenAutenticacao extends Model
 
     public $timestamps = false;
 
+    const SEGUNDOS_TOLERANCIA_REFRESH = 60;
 
 
 
@@ -84,8 +85,8 @@ class TokenAutenticacao extends Model
         $token = self::query()
             ->selectRaw("
             *,
-            (token_expiracao < NOW()) as expirado
-        ")
+            (token_expiracao < DATE_ADD(NOW(), INTERVAL ? SECOND)) as expirado
+        ", [TokenAutenticacao::SEGUNDOS_TOLERANCIA_REFRESH])
             ->where('token', '=', $token)
             ->first();
 
@@ -100,8 +101,8 @@ class TokenAutenticacao extends Model
         $informacaoToken = self::query()
             ->selectRaw("
             *,
-            (refresh_token_expiracao < NOW()) as expirado
-        ")
+            (refresh_token_expiracao < DATE_ADD(NOW(), INTERVAL ? SECOND)) as expirado
+        ", [TokenAutenticacao::SEGUNDOS_TOLERANCIA_REFRESH])
             ->where('refresh_token', '=', $refreshToken)
             ->first();
 
@@ -124,9 +125,8 @@ class TokenAutenticacao extends Model
 
     }
 
-    public function excluirRegistroDeTokenPorTokenPrincipal(
-        string $token
-    ) {
+    public function excluirRegistroDeTokenPorTokenPrincipal(string $token)
+    {
         return self::query()
             ->where('token', '=', $token)
             ->delete();
@@ -136,12 +136,11 @@ class TokenAutenticacao extends Model
     {
         Auth::guard()->logout();
 
-        $token = Cookie::get('refresh_token');
+        $token = Cookie::get('token');
 
         setcookie('token', null, -1, '/', null, null, true);
-        setcookie('refresh_token', null, -1, '/', null, null, true);
 
-        if($token) {
+        if ($token) {
             $this->excluirRegistroDeTokenPorTokenPrincipal($token);
         }
 
