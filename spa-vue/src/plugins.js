@@ -5,8 +5,7 @@ let LaravelError = {
     install: (app, options) => {
         // inject a globally available $translate() method
         app.config.globalProperties.$laravelError = (e, message) => {
-            console.log(app);
-            let response = e.response;
+          let response = e.response;
             if (response && response.status === 422 && response.data.errors) {
                 let erro = Object.keys(response.data.errors)[0];
                 app.config.globalProperties.$toast.open({

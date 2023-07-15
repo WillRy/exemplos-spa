@@ -1,6 +1,7 @@
 import axios, {Axios} from "axios";
 import {i18n} from "../lang";
-
+import {useToast} from 'vue-toast-notification'
+import router from '../router'
 export let store = null;
 
 export function injectStore(st) {
@@ -20,34 +21,63 @@ api.interceptors.request.use(function (config) {
 
 axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
+window.localStorage.setItem('refreshing', 0);
 
 /**
  * DETECTA TOKEN EXPIRADO OU FALHA DE REFRESH TOKEN
+ * E trata race conditions entre abas
  */
+
+function monitorLocalStorage(key, callback, expectedValue) {
+
+  const interval = setInterval(() => {
+    const updatedValue = localStorage.getItem(key);
+    if (updatedValue === expectedValue) {
+      clearInterval(interval)
+      callback();
+    }
+  }, 100); // Define o intervalo de verificação em milissegundos
+}
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
     const status = error.response ? error.response.status : null;
+    const originalRequest = error.config;
+    const refreshing = window.localStorage.getItem('refreshing') === '1';
+
+
+    if(refreshing) {
+      return new Promise((resolve) => {
+        monitorLocalStorage('refreshing', () => {
+          resolve(api(originalRequest));
+        }, '0');
+      });
+
+    }
+
+    // config.retry -= 1;
+
 
     if (status === 401) {
-      const refreshingLocalStorage = window.localStorage.getItem('refreshing');
-      const refreshingNow = parseInt(refreshingLocalStorage) === 1;
 
-      if (!refreshingNow) {
-        window.localStorage.setItem('refreshing', '1');
-        return endpoint
-          .post("/refresh")
-          .then(() => {
-            return axios.request(error.config);
-          })
-          .catch((error) => {
-            console.log("Error refresh token", error)
-            window.location.href = "/logout";
-          }).finally(() => {
-            window.localStorage.setItem('refreshing', '0');
-          });
+      window.localStorage.setItem('refreshing', '1');
+
+
+      try {
+        await endpoint.post("/refresh")
+
+        return api(originalRequest);
+      } catch(refreshError) {
+        window.localStorage.setItem('refreshing', '0');
+        setTimeout(() => {
+          console.log("Error refresh token", error)
+          router.push({path: '/logout'})
+        })
+        return Promise.reject(refreshError);
+
+      } finally {
+        window.localStorage.setItem('refreshing', '0');
       }
-
 
     }
 

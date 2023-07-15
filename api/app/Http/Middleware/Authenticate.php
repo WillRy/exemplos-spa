@@ -5,13 +5,14 @@ namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use App\Models\TokenAutenticacao;
+use Illuminate\Support\Facades\Cookie;
 
 class Authenticate extends Middleware
 {
     /**
      * Get the path the user should be redirected to when they are not authenticated.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return string|null
      */
     protected function redirectTo($request)
@@ -36,7 +37,7 @@ class Authenticate extends Middleware
                     continue;
                 }
 
-                $jwt = $request->bearerToken() ?? \Cookie::get('token');
+                $jwt = Cookie::get('token') ?? $request->bearerToken() ??  null;
 
                 $valido = (new TokenAutenticacao())->tokenValido($jwt);
 
@@ -50,7 +51,6 @@ class Authenticate extends Middleware
             }
 
         }
-
 
 
         $this->unauthenticated($request, $guards);

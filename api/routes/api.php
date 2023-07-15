@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/validar-token', [AuthController::class, 'validarToken'])->name('validarToken');
+
 Route::group(['middleware' => 'locale'], function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/esqueci-senha', [AuthController::class, 'esqueciSenha'])
@@ -30,10 +32,12 @@ Route::group(['middleware' => 'locale'], function () {
         ->name('password.reset');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+
     Route::post('/refresh', [AuthController::class, 'refreshToken'])->name('refreshToken');
 
     //rotas privadas
     Route::group(['middleware' => ['auth:api']], function () {
+
         Route::get('/usuario', [AuthController::class, 'usuarioLogado'])->name('usuarioLogado');
 
 

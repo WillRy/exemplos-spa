@@ -272,7 +272,7 @@ export default {
 
     } catch (error) {
       next((vm) => {
-        vm.$laravelError(error, this.$t('texto.erro_listar_dados'));
+        vm.$laravelError(error, vm.$t('texto.erro_listar_dados'));
       })
     }
   },
