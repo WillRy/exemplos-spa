@@ -16,7 +16,7 @@
         :disabled="disabled"
         class="check"
         type="checkbox"
-        @change="updateValue"
+        @click.stop="updateValue"
       />
 
       <div class="checktoggle"></div>
@@ -48,6 +48,7 @@ import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
 export default {
   name: "BaseToggle",
   inheritAttrs: false,
+  emits: ['toggle'],
   components: { InfoInputIcon, InfoSuccessIcon, InfoErrorIcon },
   props: {
     error: {
@@ -89,20 +90,10 @@ export default {
       if (this.disabled) return;
       let valor = !this.checkedNormalizado;
       console.log(valor);
-      this.$emit("change", valor);
-    },
-    normalizaPrimeiroValor() {
-      if (typeof this.checked === "string" && this.checked === "S") {
-        this.$emit("change", true);
-      }
-      if (typeof this.checked === "string" && this.checked === "N") {
-        this.$emit("change", false);
-      }
+      this.$emit("toggle", valor);
     },
   },
   created() {
-    // console.log('base', this.checked);
-    this.normalizaPrimeiroValor();
   },
 };
 </script>

@@ -107,6 +107,8 @@ img {
   color: var(--primary-color-principal);
   border-radius: 8px;
   outline: 0;
+  font-size: 1rem;
+  flex-shrink: 0;
 }
 
 .dropdown-acoes::v-deep button:hover,
@@ -144,6 +146,10 @@ img {
   border: 0;
   background: transparent;
   cursor: pointer;
+}
+
+.dropdown-acoes-btn :deep(svg path) {
+  fill: var(--primary-color-principal);
 }
 
 .disabled-btn {

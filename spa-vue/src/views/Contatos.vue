@@ -156,7 +156,7 @@ export default {
   },
   setup() {
     useHead({
-      title: "CRM - Organizações",
+      title: "CRM - Contatos",
     });
 
     const modalCriarContatoState = modalCriarContatoStore();

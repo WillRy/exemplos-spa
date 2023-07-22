@@ -15,7 +15,9 @@
             v-if="!open"
         />
       </div>
-      <img :src="iconeEmresaSrc" class="logo-empresa"/>
+      <div class="logo-empresa" v-if="$slots.logo">
+        <slot name="logo"></slot>  
+      </div>
     </div>
 
     <div class="separador"></div>
@@ -52,10 +54,6 @@ export default {
       type: Boolean,
       default: false
     },
-    iconeEmresaSrc: {
-      type: String,
-      default: '/imidiaapp.svg'
-    }
   },
   provide() {
     return {
@@ -163,6 +161,10 @@ export default {
 .logo-empresa {
   visibility: hidden;
   user-select: none;
+}
+
+.logo-empresa :deep(a){
+  display: block;
 }
 
 .open .logo-empresa {

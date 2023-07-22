@@ -101,6 +101,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   line-height: 1;
   position: relative;
+  text-decoration: none;
 }
 
 .btn:hover :deep(.loader path) {
@@ -151,5 +152,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   line-height: 1;
   font-size: 14px;
+}
+
+.btn:disabled :deep(svg path) {
+  fill: var(--gray-300) !important;
+}
+.btn:hover:disabled :deep(svg path) {
+  fill: var(--gray-300) !important;
 }
 </style>

@@ -46,11 +46,27 @@
                     :disabled="disabled"
                     :loading="loading"
                 >
+                    <template v-slot:option="{option}">
+                    <div>
+                        <span>{{ option[textBy] }}</span>
+                    </div>
+                    </template>
+                    <template v-slot:tag="{option, remove}">
+                    <div class="custom-tag">
+                        <span>{{ option[textBy] }}</span>
+                        <button class="custom-tag-excluir" @click="remove(option)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+                        </button>
+                    </div>
+                    </template>
                     <template v-if="noOptions" #noOptions>
                         {{ noOptions }}
                     </template>
                     <template v-if="noResult" #noResult>
                         {{ noResult }}
+                    </template>
+                    <template v-if="maxElements" #maxElements>
+                        {{ maxElements }}
                     </template>
                     <template v-slot:clear="" v-if="modelValue && remover">
                         <button class="btn-remover-select" @click="updateValue(null)">
@@ -127,6 +143,10 @@ export default {
         noOptions: {
             type: String,
             default: "Digite sua pesquisa",
+        },
+        maxElements: {
+            type: String,
+            default: null,
         },
         modelValue: {
             type: Object,
@@ -591,14 +611,14 @@ input::placeholder {
     min-height: var(--md-min-height-input);
     border: 0;
     background: transparent;
-    padding: 8px 40px 0px 12px;
+    padding: 4px 40px 0px 12px;
 }
 
 .lg :deep(.multiselect__tags) {
     min-height: var(--lg-min-height-input);
     border: 0;
     background: transparent;
-    padding: 12px 40px 0px 12px;
+    padding: 7px 40px 0px 12px;
 }
 
 :deep(.multiselect__tag) {
@@ -657,5 +677,50 @@ input::placeholder {
 :deep(.multiselect__placeholder) {
     font-size: 14px;
     color: var(--gray-400);
+    padding-top: 6px;
+}
+
+.custom-tag {
+  box-sizing: border-box;
+  padding: 6px 6px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0px 4px;
+  background: var(--primary-color-principal);
+  color: #fff;
+  gap: 6px;
+}
+
+.custom-tag span {
+    flex-shrink: 0;
+}
+
+.custom-tag-excluir {
+    color: #fff;
+    background: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    width: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-tag-excluir svg {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+}
+
+.custom-tag-excluir svg path {
+    fill: #fff;
+}
+
+:deep(.multiselect__input, .multiselect__single) {
+    padding: 5px 0 0 5px;
 }
 </style>

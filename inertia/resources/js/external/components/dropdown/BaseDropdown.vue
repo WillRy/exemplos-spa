@@ -114,6 +114,7 @@ img {
   color: var(--primary-color-principal);
   border-radius: 8px;
   outline: 0;
+  flex-shrink: 0;
 }
 
 .dropdown-botao::v-deep button:hover,

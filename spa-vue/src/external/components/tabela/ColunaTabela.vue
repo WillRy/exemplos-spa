@@ -1,7 +1,7 @@
 <template>
     <td :style="{width: width }" class="td-oculta-texto">
         <div class="item" :style="{width: width }">
-            <div class="item-query">
+            <div class="item-query" :style="{justifyContent: justify}">
                 <span class="overflow">
                     <slot></slot>
                 </span>
@@ -27,6 +27,10 @@ export default {
         btn: {
             type: Boolean,
             default: false
+        },
+        justify: {
+            type: String,
+            default: 'flex-start'
         }
     },
     methods: {
@@ -38,6 +42,10 @@ export default {
 </script>
 
 <style scoped>
+
+td {
+    vertical-align: middle;
+}
 
 .td-oculta-texto .item {
     display: block;

@@ -15,12 +15,9 @@ export const usuarioStore = defineStore("usuarioStore", {
   },
   actions: {
     async carregarUsuarioLogado() {
-      // const response = await api.get("/usuarioo");
-      // this.usuario = response.data.data;
-      // return this.usuario;
       try {
 
-        const response = await endpoint.get("/usuario");
+        const response = await api.get("/usuario");
         this.usuario = response.data.data;
 
         return true;
@@ -33,7 +30,15 @@ export const usuarioStore = defineStore("usuarioStore", {
 
     },
     async logout() {
-      return endpoint.post("/logout");
+      try {
+
+        endpoint.post("/logout");
+
+        return true;
+
+      } catch(error) {
+        return true;
+      }
     },
   },
 });

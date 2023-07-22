@@ -12,6 +12,9 @@
         :style="{ fill: !corPrincipal }"
       />
     </svg>
+    <p v-if="$slots.default">
+      <slot></slot>
+    </p>
   </div>
 </template>
 
@@ -49,6 +52,7 @@ svg * {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
 .fill-principal {
@@ -63,5 +67,11 @@ svg * {
   100% {
     transform: rotate(360deg);
   }
+}
+
+p {
+  font-size: 16px;
+  text-align: center;
+  margin: 12px 0;
 }
 </style>

@@ -8,6 +8,7 @@
           :is="componentLink"
           :class="{ atual: index == links.length - 1 }"
           size="sm"
+          @click="clicou(link)"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

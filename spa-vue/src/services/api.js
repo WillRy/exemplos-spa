@@ -29,7 +29,6 @@ window.localStorage.setItem('refreshing', 0);
  */
 
 function monitorLocalStorage(key, callback, expectedValue) {
-
   const interval = setInterval(() => {
     const updatedValue = localStorage.getItem(key);
     if (updatedValue === expectedValue) {

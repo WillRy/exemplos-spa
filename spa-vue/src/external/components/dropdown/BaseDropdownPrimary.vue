@@ -21,12 +21,12 @@
 
       <!-- This will be the content of the popover -->
       <template #popper="{ hide }" v-if="$slots.acoes">
-        <div class="dropdown-botao" @click.stop="fechar">
+        <div class="dropdown-botao" @click.stop="fechar" :style="{maxHeight: maxHeight}">
           <slot name="acoes"></slot>
         </div>
       </template>
 
-      <template #popper="{ hide }" v-if="$slots.conteudo">
+      <template #popper="{ hide }" v-if="$slots.conteudo" :style="{maxHeight: maxHeight}">
         <div class="dropdown-conteudo" @click.stop="">
           <slot name="conteudo"></slot>
         </div>
@@ -65,6 +65,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    maxHeight: {
+      type: String,
+      default: '400px',
+    }
   },
   components: {
     VDropdown: Dropdown,
@@ -134,6 +138,11 @@ img {
   display: flex;
   flex-direction: column;
   max-width: 232px;
+  overflow: auto;
+}
+
+.dropdown-conteudo {
+  overflow: auto;
 }
 
 .dropdown-botao::v-deep button,
@@ -158,6 +167,7 @@ img {
   color: var(--primary-color-principal);
   border-radius: 8px;
   outline: 0;
+  flex-shrink: 0;
 }
 
 .dropdown-botao::v-deep button:hover,

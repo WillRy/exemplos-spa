@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="separador"></div>
+    <div class="separador" v-if="separador"></div>
     <div class="paginacao" v-if="total">
       <div class="total">
         Exibindo de
@@ -65,6 +65,10 @@ export default {
     paginaAtual: {
       type: Number,
       default: 1
+    },
+    separador: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {

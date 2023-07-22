@@ -135,7 +135,7 @@ export default {
     const ModalDetalhesTagState = modalDetalhesTagStore();
 
     useHead({
-      title: "CRM - Organizações",
+      title: "CRM - Tags",
     });
 
     return {

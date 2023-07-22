@@ -6,7 +6,10 @@ import Privado from "../layouts/Privado";
 import { usuarioStore } from "../stores/usuario";
 import { useToast } from "vue-toast-notification";
 import NProgress from "nprogress";
-import { idiomasPermitidos, identificarIdioma, i18n } from "../lang";
+
+import { configuraIdioma } from "../middlewares/configuraIdioma";
+import { iniciaLoader, terminaLoader } from "../middlewares/loaders";
+import { verificaPermissao } from "../middlewares/verificaPermissao";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -62,7 +65,6 @@ const router = createRouter({
           name: "logout",
           component: Login,
           async beforeEnter(from, to, next) {
-            debugger;
             const usuarioState = usuarioStore();
             await usuarioState.logout();
             next({ path: "/" });
@@ -82,13 +84,7 @@ const router = createRouter({
         if (logado) {
           return next();
         }
-        const toast = useToast();
-        toast.open({
-          type: "error",
-          message: "Erro ao carregar dados do usuario",
-        });
-        window.localStorage.removeItem("token");
-        next({ name: "login" });
+        return next('/')
       },
       children: [
         {
@@ -130,65 +126,16 @@ const router = createRouter({
   ],
 });
 
-//definir o idioma da aplicação com base na rota
-router.beforeEach((to, from, next) => {
-  const lang = window.localStorage.getItem("@lang");
 
-  const isAllowed = idiomasPermitidos.find((idioma) => idioma === lang);
+router.beforeEach(configuraIdioma);
 
-  if (isAllowed) {
-    document.querySelector("html").setAttribute("lang", lang);
-    i18n.global.locale = lang;
-  } else {
-    const lang = identificarIdioma();
-    window.localStorage.setItem("@lang", lang);
-    document.querySelector("html").setAttribute("lang", lang);
-    i18n.global.locale = lang;
-  }
 
-  next();
-});
+router.beforeEach(iniciaLoader);
 
-//exibir o loader em troca de pagina
-router.beforeEach((to, from, next) => {
-  // If this isn't an initial page load.
-  if (to.name) {
-    // Start the route progress bar.
-    NProgress.start();
-  }
-  next();
-});
 
-//remove o loader em troca de pagina
-router.afterEach(() => {
-  // Complete the animation of the route progress bar.
-  NProgress.done();
-});
+router.afterEach(terminaLoader);
 
-//verifica permissoes de rota
-router.beforeEach((to, from, next) => {
-  let permissoesRotas = to.matched
-    .map((record) => record.meta.permissoes)
-    .reduce((a, b) => a.concat(b), [])
-    .filter(Boolean);
 
-  const usuarioState = usuarioStore();
-  const permissoesUsuario = usuarioState.permissoes;
-
-  const usuarioTemPermissao = permissoesRotas.every((elem) => {
-    return permissoesUsuario.includes(elem);
-  });
-
-  if (usuarioTemPermissao || permissoesRotas.length === 0) {
-    next();
-  } else {
-    const toast = useToast();
-    toast.open({
-      type: "error",
-      message: i18n.global.t("message.rota_sem_permissao"),
-    });
-    next(from);
-  }
-});
+router.beforeEach(verificaPermissao);
 
 export default router;
