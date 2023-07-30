@@ -37,8 +37,9 @@ const router = createRouter({
       component: Publico,
       name: "publico",
       async beforeEnter(from, to, next) {
+        debugger
         const usuarioState = usuarioStore();
-        const logado = await usuarioState.carregarUsuarioLogado();
+        const logado = await usuarioState.carregarUsuarioLogado(false);
         if (logado) {
           return next({ name: "dashboard" });
         }
@@ -79,6 +80,7 @@ const router = createRouter({
         permissoes: [],
       },
       async beforeEnter(from, to, next) {
+        debugger
         const usuarioState = usuarioStore();
         const logado = await usuarioState.carregarUsuarioLogado();
         if (logado) {
@@ -96,11 +98,6 @@ const router = createRouter({
           path: "organizacoes",
           name: "organizacoes",
           component: () => import("../views/Organizacoes"),
-        },
-        {
-          path: "org2",
-          name: "org2",
-          component: () => import("../views/OrganizacoesPinia"),
         },
         {
           path: "contatos",

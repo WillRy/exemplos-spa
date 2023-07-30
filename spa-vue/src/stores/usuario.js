@@ -14,11 +14,17 @@ export const usuarioStore = defineStore("usuarioStore", {
     },
   },
   actions: {
-    async carregarUsuarioLogado() {
+    async carregarUsuarioLogado(makeRefreshToken = true) {
       try {
 
-        const response = await api.get("/usuario");
-        this.usuario = response.data.data;
+        if(makeRefreshToken) {
+          const response = await endpoint.get("/usuario");
+          this.usuario = response.data.data;
+        } else {
+          const response = await axios.get("/api/usuario");
+          this.usuario = response.data.data;
+        }
+
 
         return true;
 
