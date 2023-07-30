@@ -611,14 +611,14 @@ input::placeholder {
     min-height: var(--md-min-height-input);
     border: 0;
     background: transparent;
-    padding: 4px 40px 0px 12px;
+    padding: 4px 40px 4px 12px;
 }
 
 .lg :deep(.multiselect__tags) {
     min-height: var(--lg-min-height-input);
     border: 0;
     background: transparent;
-    padding: 7px 40px 0px 12px;
+    padding: 7px 40px 7px 12px;
 }
 
 :deep(.multiselect__tag) {
@@ -718,9 +718,5 @@ input::placeholder {
 
 .custom-tag-excluir svg path {
     fill: #fff;
-}
-
-:deep(.multiselect__input, .multiselect__single) {
-    padding: 5px 0 0 5px;
 }
 </style>

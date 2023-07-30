@@ -8,17 +8,6 @@ export function injectStore(st) {
   store = st;
 }
 
-const api = axios.create({
-  baseURL: "/api",
-});
-
-api.interceptors.request.use(function (config) {
-  // config.headers.Authorization = 'Bearer ' + window.localStorage.getItem("token");
-  config.headers["Accept-Language"] = i18n.global.locale;
-
-  return config;
-});
-
 axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 window.localStorage.setItem("refreshing", 0);
@@ -58,6 +47,18 @@ async function refreshToken(originalRequest, redirectLogoutIfFail = true) {
     window.localStorage.setItem("refreshing", "0");
   }
 }
+
+const api = axios.create({
+  baseURL: "/api",
+});
+
+api.interceptors.request.use(function (config) {
+  // config.headers.Authorization = 'Bearer ' + window.localStorage.getItem("token");
+  config.headers["Accept-Language"] = i18n.global.locale;
+
+  return config;
+});
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {

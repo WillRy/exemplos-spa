@@ -9,7 +9,7 @@ import { filters, EventBus, LaravelError, ajaxFormError } from "./plugins";
 import App from "./App.vue";
 import router from "./router";
 
-import "./styles/app.css";
+import "./styles/app.scss";
 import Loader from "./external/components/Loader";
 
 import { directive } from "./external/directives/click-away";

@@ -84,7 +84,7 @@
   /* border-top: 1px solid red; */
 }
 
-.tabela tbody tr:hover {
+.tabela:not(.loading) tbody tr:hover {
   background: #e3e3e3;
 }
 
@@ -116,6 +116,7 @@
 .coluna-acoes {
   max-width: 50px;
   width: 50px;
+  vertical-align: middle;
 }
 
 .td-checkbox {
@@ -156,10 +157,6 @@
   top: 0px;
   width: 100%;
   height: calc(100% - 0px);
-  background-color: rgba(200, 200, 200, 0.4);
-}
-
-.overlay:hover {
   background-color: rgba(200, 200, 200, 0.4) !important;
 }
 

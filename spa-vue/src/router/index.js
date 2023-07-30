@@ -39,7 +39,7 @@ const router = createRouter({
       async beforeEnter(from, to, next) {
         debugger
         //indica que foi logout forçado, nao precisa tentar carregar dados do usuario
-        if(to.name === 'logout' || from?.redirectedFrom?.name === 'logout') {
+        if(from?.redirectedFrom?.name === 'logout') {
           return next();
         }
 

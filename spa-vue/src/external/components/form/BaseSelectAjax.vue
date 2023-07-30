@@ -621,18 +621,22 @@ input::placeholder {
     width: calc(100% + 0px);
 }
 
+:deep(.multiselect__input) {
+    padding: 4px 0px 0px 4px !important
+}
+
 .md :deep(.multiselect__tags) {
     min-height: var(--md-min-height-input);
     border: 0;
     background: transparent;
-    padding: 4px 40px 0px 12px;
+    padding: 4px 40px 4px 12px;
 }
 
 .lg :deep(.multiselect__tags) {
     min-height: var(--lg-min-height-input);
     border: 0;
     background: transparent;
-    padding: 7px 40px 0px 12px;
+    padding: 7px 40px 7px 12px;
 }
 
 :deep(.multiselect__tag) {
@@ -677,16 +681,18 @@ input::placeholder {
     min-height: initial;
 }
 
-.md :deep(.multiselect__select) {
-    height: var(--md-min-height-input);
-    right: 1px;
-    top: 0px;
+.md :deep(.multiselect__tags) {
+    min-height: var(--md-min-height-input);
+    border: 0;
+    background: transparent;
+    padding: 4px 40px 4px 12px;
 }
 
-.lg :deep(.multiselect__select) {
-    height: var(--lg-min-height-input);
-    right: 1px;
-    top: 0px;
+.lg :deep(.multiselect__tags) {
+    min-height: var(--lg-min-height-input);
+    border: 0;
+    background: transparent;
+    padding: 7px 40px 7px 12px;
 }
 
 
@@ -734,9 +740,5 @@ input::placeholder {
 
 .custom-tag-excluir svg path {
     fill: #fff;
-}
-
-:deep(.multiselect__input, .multiselect__single) {
-    padding: 5px 0 0 5px;
 }
 </style>

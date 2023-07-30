@@ -1,0 +1,153 @@
+$primary-colors: (
+  50: #c4d8ff,
+  100: #abc7ff,
+  200: #8caff5,
+  300: #678edb,
+  400: #4871c2,
+  500: #2d57a8,
+  600: #18408f,
+  700: #082d75,
+  800: #001f5c,
+  900: #001642,
+);
+
+$second-colors: (
+  "50": #f5e0ff,
+  "100": #edc7ff,
+  "200": #e4adff,
+  "300": #d18df2,
+  "400": #b468d9,
+  "500": #9949bf,
+  "600": #7f2ea6,
+  "700": #67198c,
+  "800": #500973,
+  "900": #3c0059,
+);
+
+$tertiary-colors: (
+  "100": #fff0e3,
+  "200": #ffe3c9,
+  "300": #ffd5b0,
+  "400": #ffc896,
+  "500": #ffba7d,
+  "600": #ffac63,
+  "700": #ff9f4a,
+  "800": #ed872d,
+  "900": #8c4d16,
+);
+
+$success-colors: (
+  "50": #defff3,
+  "100": #c4ffe9,
+  "200": #abffe0,
+  "300": #91ffd7,
+  "400": #6ce6b9,
+  "500": #4bcc9d,
+  "600": #31b383,
+  "700": #1a996a,
+  "800": #098054,
+  "900": #006640,
+);
+
+$warning-colors: (
+  "50": #fff3ba,
+  "100": #ffefa1,
+  "200": #ffeb87,
+  "300": #ffe66e,
+  "400": #ffe254,
+  "500": #ffde3b,
+  "600": #ffd921,
+  "700": #e6c007,
+  "800": #cca900,
+  "900": #b39400,
+);
+
+$error-colors: (
+  "50": #ffc4c4,
+  "100": #ffabab,
+  "200": #ff9191,
+  "300": #ff7878,
+  "400": #f55b5b,
+  "500": #db3b3b,
+  "600": #c22121,
+  "700": #a80c0c,
+  "800": #8f0000,
+  "900": #750000,
+);
+
+$gray: (
+  "50": #ffffff,
+  "100": #eff0f2,
+  "200": #e1e2e6,
+  "300": #adafb3,
+  "400": #939599,
+  "500": #797b80,
+  "600": #606266,
+  "700": #47494d,
+  "800": #2f3033,
+  "900": #000000,
+);
+
+// FUNÇÃO que cria variaveis CSS com as cores
+@mixin create-color-variables($prefix, $color-map) {
+  @each $value, $color in $color-map {
+    --#{"" + $prefix}-color-#{$value}: #{$color};
+  }
+}
+@mixin create-color-simple-variables($prefix, $color-map) {
+  @each $value, $color in $color-map {
+    --#{"" + $prefix}-#{$value}: #{$color};
+  }
+}
+
+//   incluir variaveis no CSS
+:root {
+  @include create-color-variables(primary, $primary-colors);
+  @include create-color-variables(second, $second-colors);
+  @include create-color-variables(tertiary, $tertiary-colors);
+  @include create-color-variables(success, $success-colors);
+  @include create-color-variables(warning, $warning-colors);
+  @include create-color-variables(error, $error-colors);
+  @include create-color-simple-variables(gray, $gray);
+
+  --secondary-color: #7F2EA6;
+  --success-color: #31B383;
+  --warning-color: #FFD921;
+  --error-color: var(--error-color-600);
+
+  --primary-color-principal: var(--primary-color-400);
+  --primary-color-principal-hover: var(--primary-color-300);
+  --primary-color-principal-active: var(--primary-color-700);
+  --primary-color-principal-focus: var(--primary-color-300);
+}
+
+// cria classes de texto e background com as cores
+@mixin create-color-classes($prefix, $color-map) {
+  @each $value, $color in $color-map {
+    .text-#{"" + $prefix}-#{$value} {
+      color: #{$color};
+    }
+
+    .bg-#{"" + $prefix}-#{$value} {
+      background: #{$color};
+    }
+  }
+}
+
+@mixin create-color-simple-classes($prefix, $color-map) {
+  @each $value, $color in $color-map {
+    .text-#{"" + $prefix}-#{$value} {
+      color: #{$color};
+    }
+
+    .bg-#{"" + $prefix}-#{$value} {
+      background: #{$color};
+    }
+  }
+}
+
+@include create-color-classes(primary, $primary-colors);
+@include create-color-classes(success, $success-colors);
+@include create-color-classes(warning, $warning-colors);
+@include create-color-classes(error, $error-colors);
+@include create-color-simple-classes(gray, $gray);
