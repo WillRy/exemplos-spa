@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import api, { endpoint } from "../services/api";
+import api, { apiWithoutLogoutRedirect } from "../services/api";
 
 export const usuarioStore = defineStore("usuarioStore", {
   state: () => {
@@ -14,22 +14,17 @@ export const usuarioStore = defineStore("usuarioStore", {
     },
   },
   actions: {
-    async carregarUsuarioLogado(makeRefreshToken = true) {
+    async carregarUsuarioLogado() {
       try {
 
-        if(makeRefreshToken) {
-          const response = await endpoint.get("/usuario");
-          this.usuario = response.data.data;
-        } else {
-          const response = await axios.get("/api/usuario");
-          this.usuario = response.data.data;
-        }
+        const response = await apiWithoutLogoutRedirect.get("/usuario");
+        this.usuario = response.data.data;
 
 
         return true;
 
       } catch(error) {
-        await this.logout();
+        this.usuario = null;
         return false;
       }
 
@@ -38,7 +33,8 @@ export const usuarioStore = defineStore("usuarioStore", {
     async logout() {
       try {
 
-        endpoint.post("/logout");
+        apiWithoutLogoutRedirect.post("/logout");
+        this.usuario = null;
 
         return true;
 

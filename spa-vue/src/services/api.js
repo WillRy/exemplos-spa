@@ -88,11 +88,11 @@ api.interceptors.response.use(
 
 export default api;
 
-export const endpoint = axios.create({
+export const apiWithoutLogoutRedirect = axios.create({
   baseURL: "/api",
 });
 
-endpoint.interceptors.response.use(
+apiWithoutLogoutRedirect.interceptors.response.use(
   (response) => response,
   async (error) => {
     debugger;
@@ -119,3 +119,8 @@ endpoint.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+
+export const apiWithoutInterceptors = axios.create({
+  baseURL: "/api",
+});

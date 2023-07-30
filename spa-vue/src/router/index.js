@@ -38,8 +38,14 @@ const router = createRouter({
       name: "publico",
       async beforeEnter(from, to, next) {
         debugger
+        //indica que foi logout forçado, nao precisa tentar carregar dados do usuario
+        if(to.name === 'logout' || from?.redirectedFrom?.name === 'logout') {
+          return next();
+        }
+
         const usuarioState = usuarioStore();
-        const logado = await usuarioState.carregarUsuarioLogado(false);
+        const logado = await usuarioState.carregarUsuarioLogado();
+
         if (logado) {
           return next({ name: "dashboard" });
         }
@@ -61,17 +67,18 @@ const router = createRouter({
           name: "redefinir-senha",
           component: () => import("../views/auth/RedefinirSenha"),
         },
-        {
-          path: "logout",
-          name: "logout",
-          component: Login,
-          async beforeEnter(from, to, next) {
-            const usuarioState = usuarioStore();
-            await usuarioState.logout();
-            next({ path: "/" });
-          },
-        },
       ],
+    },
+    {
+      path: "/logout",
+      name: "logout",
+      component: Login,
+      async beforeEnter(from, to, next) {
+        debugger
+        const usuarioState = usuarioStore();
+        await usuarioState.logout();
+        return next({ name: "login"});
+      },
     },
     {
       path: "/painel",
