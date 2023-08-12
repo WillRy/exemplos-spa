@@ -86,6 +86,7 @@
           </template>
         </Tabela>
         <PaginacaoSemRouter
+            class="mt-3"
             :exibir-total="true"
             v-if="contatos"
             :pagina-atual="contatos.current_page"

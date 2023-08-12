@@ -110,6 +110,7 @@
           </template>
         </Tabela>
         <PaginacaoSemRouter
+          class="mt-3"
           :exibir-total="true"
           v-if="organizacoes"
           :pagina-atual="organizacoes.current_page"

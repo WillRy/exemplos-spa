@@ -679,6 +679,7 @@ input::placeholder {
     background: transparent;
     line-height: initial;
     min-height: initial;
+    padding: 5px 0 0 5px;
 }
 
 .md :deep(.multiselect__tags) {

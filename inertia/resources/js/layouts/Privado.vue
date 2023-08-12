@@ -3,8 +3,11 @@
     <Sidebar
       :open="sidebarAberta"
       @change="mudarSidebar"
-      :iconeEmresaSrc="'/fff.webp'"
+
     >
+      <template #logo>
+        <img src="/fff.webp" alt="">
+      </template>
       <SidebarLink href="/painel" is="Link" :active="$page.url.endsWith('painel')">
         <template #texto> Dashboard </template>
         <template #icone>

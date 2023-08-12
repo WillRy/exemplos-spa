@@ -30,7 +30,7 @@ import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrima
 import useVuelidate from '@vuelidate/core'
 import {required, email} from '@vuelidate/validators'
 import axios from "axios";
-import api, {apiWithoutLogoutRedirect} from "../../services/api";
+import api from "../../services/api";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 
 export default {
@@ -56,7 +56,7 @@ export default {
                 const result = await this.v$.$validate();
                 if (result) {
 
-                    await apiWithoutLogoutRedirect.post('/redefinir-senha', {
+                    await api.post('/redefinir-senha', {
                         "senha": this.senha,
                         "token": this.$route.query.token
                     });

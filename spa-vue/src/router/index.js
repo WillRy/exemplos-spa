@@ -74,7 +74,6 @@ const router = createRouter({
       name: "logout",
       component: Login,
       async beforeEnter(from, to, next) {
-        debugger
         const usuarioState = usuarioStore();
         await usuarioState.logout();
         return next({ name: "login"});
@@ -87,7 +86,6 @@ const router = createRouter({
         permissoes: [],
       },
       async beforeEnter(from, to, next) {
-        debugger
         const usuarioState = usuarioStore();
         const logado = await usuarioState.carregarUsuarioLogado();
         if (logado) {

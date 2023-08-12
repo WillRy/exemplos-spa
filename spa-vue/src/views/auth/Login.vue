@@ -37,7 +37,7 @@ import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrima
 import useVuelidate from '@vuelidate/core'
 import {required, email} from '@vuelidate/validators'
 import axios from "axios";
-import api, {apiWithoutLogoutRedirect} from "../../services/api";
+import api from "../../services/api";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import {usuarioStore} from "../../stores/usuario";
 
@@ -76,7 +76,7 @@ export default {
                 const result = await this.v$.$validate();
                 if (result) {
 
-                    let response = await apiWithoutLogoutRedirect.post('/login', this.login);
+                    let response = await api.post('/login', this.login);
 
                     // window.localStorage.setItem("token", response.data.data.token);
 

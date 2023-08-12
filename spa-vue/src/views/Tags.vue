@@ -71,6 +71,7 @@
           </template>
         </Tabela>
         <PaginacaoSemRouter
+            class="mt-3"
             :exibir-total="true"
             v-if="tags"
             :pagina-atual="tags.current_page"

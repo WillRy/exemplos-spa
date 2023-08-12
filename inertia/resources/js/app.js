@@ -7,7 +7,7 @@ import VueTheMask from "vue-the-mask";
 
 import { filters, EventBus, LaravelError, VerificaPermissao, ajaxFormError } from "./plugins";
 
-import "./styles/app.css";
+import "./styles/app.scss";
 import Loader from "./external/components/Loader";
 
 import { directive } from "./external/directives/click-away";
