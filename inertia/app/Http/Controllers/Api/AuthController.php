@@ -40,8 +40,8 @@ class AuthController extends Controller
                 $usuario->id
             );
 
-            setcookie('token', $tokens->token, time() + 60 * 60 * 24 * 30, '/', null, false, true);
-            setcookie('refresh_token', $tokens->refresh_token, time() + 60 * 60 * 24 * 30, '/', null, false, true);
+            setcookie('token', $tokens->token, null, '/', null, null, true);
+            setcookie('refresh_token', $tokens->refresh_token, null, '/', null, null, true);
 
             return $this->successAPI($tokens);
 
@@ -163,8 +163,8 @@ class AuthController extends Controller
             $novoToken = (new TokenAutenticacao())->refreshToken($refreshToken);
 
 
-            setcookie('token', $novoToken->token, time() + 60 * 60 * 24 * 30, '/', null, false, true);
-            setcookie('refresh_token', $novoToken->refresh_token, time() + 60 * 60 * 24 * 30, '/', null, false, true);
+            setcookie('token', $novoToken->token, null, '/', null, null, true);
+            setcookie('refresh_token', $novoToken->refresh_token, null, '/', null, null, true);
 
             return $this->successAPI($novoToken);
         } catch (\Exception $e) {

@@ -79,7 +79,7 @@ export default {
                 const result = await this.v$.$validate();
                 if (result) {
 
-		    await api.post('/logar', this.login);
+                    await axiosWeb.post('/logar', this.login);
 
                     router.visit('/painel')
 
