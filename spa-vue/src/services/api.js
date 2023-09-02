@@ -27,7 +27,7 @@ async function refreshToken() {
   window.localStorage.setItem("refreshing", "1");
 
   try {
-    const response = await api.post("/api/refresh");
+    const response = await api.post("/refresh");
     const token = response.data.token;
 
     return onRefreshed(token);
