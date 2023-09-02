@@ -34,10 +34,10 @@ class AuthController extends Controller
                 return $this->errorAPI(__('auth.failed'), null, null, 401);
             }
 
-            $usuario = Usuario::query()->where('email', $dados['email'])->first();
+            $user = Auth::user();
 
             $tokens = (new TokenAutenticacao())->salvarTodosTokens(
-                $usuario->id
+                $user->id
             );
 
             setcookie('token', $tokens->token, null, '/', null, null, true);
@@ -58,19 +58,19 @@ class AuthController extends Controller
         ]);
 
         try {
-            $usuario = Usuario::where('email', $dados['email'])->first();
+            $user = (new Usuario())->userByEmail($dados['email']);
 
-            if (empty($usuario)) {
+            if (empty($user)) {
                 return $this->errorAPI(__('auth.failed'), null, null, 404);
             }
 
             $token = (new Token())->gerarToken(
-                $usuario->id,
+                $user->id,
                 60 * 1
             );
 
 
-            Mail::to($usuario->email)
+            Mail::to($user->email)
                 ->send((
                 new EnviaCodigoVerificadorResetSenha(
                     $token,
@@ -102,16 +102,17 @@ class AuthController extends Controller
             'token' => 'required'
         ]);
         try {
-            $tokenComUsuario = Token::where('token', $dados['token'])->with('usuario')->first();
+            $tokenModel = new Token();
+            $tokenComUsuario = $tokenModel->tokenComUsuario($dados['token']);
 
             if (empty($tokenComUsuario)) {
                 return $this->errorAPI(__('custom.token_reset_senha_invalido'), null, null, 404);
             }
 
-            $usuario = $tokenComUsuario->usuario;
+            $user = $tokenComUsuario->usuario;
 
-            $temTokenValido = (new Token())->validaToken(
-                $usuario->id,
+            $temTokenValido = $tokenModel->validaToken(
+                $user->id,
                 $dados['token']
             );
 
@@ -124,8 +125,8 @@ class AuthController extends Controller
                 );
             }
 
-            $usuario->senha = Hash::make($dados['senha']);
-            $usuario->save();
+            $user->senha = Hash::make($dados['senha']);
+            $user->save();
 
             return $this->successAPI([], __('custom.senha_redefinida'));
 

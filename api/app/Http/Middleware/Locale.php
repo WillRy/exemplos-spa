@@ -7,27 +7,7 @@ use Illuminate\Http\Request;
 
 class Locale
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
-     */
-    // public function handle(Request $request, Closure $next)
-    // {
-    //     $idiomasSuportados = ['pt_BR','en'];
 
-    //     $lang = !empty($request->header("Accept-Language")) ? str_replace('-','_',$request->header("Accept-Language")) : 'pt_BR';
-
-    //     if(!in_array($lang, $idiomasSuportados)) {
-    //         app()->setLocale('en');
-    //     } else {
-    //         app()->setLocale($lang);
-    //     }
-
-    //     return $next($request);
-    // }
 
     /**
      * Descobrir qual o idioma que o browser aceita ou client da API informou que deseja receber

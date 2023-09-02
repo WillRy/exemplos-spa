@@ -48,4 +48,9 @@ class Token extends Model
 
         return $criado->token;
     }
+
+    public function tokenComUsuario(string $token)
+    {
+        return Token::where('token', $token)->with('usuario')->first();
+    }
 }

@@ -58,4 +58,9 @@ class Usuario extends Authenticatable implements JWTSubject
             Auth::logout();
         }
     }
+
+    public function userByEmail($email)
+    {
+        return Usuario::where('email', $email)->first();
+    }
 }

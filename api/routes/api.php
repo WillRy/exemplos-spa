@@ -66,3 +66,4 @@ Route::group(['middleware' => 'locale'], function(){
     });
 
 });
+
