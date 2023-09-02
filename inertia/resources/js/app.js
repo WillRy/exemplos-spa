@@ -1,5 +1,5 @@
 import { createApp, h } from "vue";
-import { createInertiaApp } from "@inertiajs/vue3";
+import { createInertiaApp, router } from "@inertiajs/vue3";
 import { createPinia } from "pinia";
 
 import VueToast from "vue-toast-notification";
@@ -42,5 +42,18 @@ createInertiaApp({
             .use(filters)
             .use(EventBus)
             .mount(el);
+
+            /** evita bug do inertia **/
+        window.addEventListener('popstate', (event) => {
+            debugger
+            event.stopImmediatePropagation();
+
+            router.reload({
+                preserveState  : false,
+                preserveScroll : false,
+                replace        : true,
+                onError        : () => window.location.href = event.state.url,
+            });
+        });
     },
 });

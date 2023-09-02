@@ -28,31 +28,24 @@ class Authenticate extends Middleware
             $guards = [null];
         }
 
+        $jwt = $request->bearerToken() ?? Cookie::get('token');
+
         foreach ($guards as $guard) {
+            $autenticado = $this->auth->guard($guard)->check();
 
-            if ($guard === 'api') {
-                $autenticado = $this->auth->guard($guard)->check();
+            if ($guard === 'api' && $autenticado) {
 
-                if (!$autenticado) {
-                    continue;
-                }
-
-                $jwt = Cookie::get('token') ?? $request->bearerToken() ??  null;
 
                 $valido = (new TokenAutenticacao())->tokenValido($jwt);
 
-                if (!$valido) {
-                    continue;
+                if ($valido) {
+                    return $this->auth->shouldUse($guard);
                 }
 
-                // token valido, continua request
-                return $this->auth->shouldUse($guard);
-
             }
-
         }
 
-
+        (new TokenAutenticacao())->logoutTokens($jwt);
 
         $this->unauthenticated($request, $guards);
     }
