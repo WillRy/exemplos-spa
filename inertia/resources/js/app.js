@@ -45,7 +45,6 @@ createInertiaApp({
 
             /** evita bug do inertia **/
         window.addEventListener('popstate', (event) => {
-            debugger
             event.stopImmediatePropagation();
 
             router.reload({

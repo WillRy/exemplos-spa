@@ -157,18 +157,18 @@ class AuthController extends Controller
             $refreshToken =  Cookie::get('refresh_token') ?? $request->input("refresh_token");
 
             if (empty($refreshToken)) {
-                throw new \Exception("Invalid refresh token!");
+                return $this->errorAPI("Invalid refresh token!",[],null, 401);
             }
 
             $novoToken = (new TokenAutenticacao())->refreshToken($refreshToken);
 
 
-            setcookie('token', $novoToken->token, time() + 60 * 60 * 24 * 30, '/', null, false, true);
-            setcookie('refresh_token', $novoToken->refresh_token, time() + 60 * 60 * 24 * 30, '/', null, false, true);
+            setcookie('token', $novoToken->token, null, '/', null, null, true);
+            setcookie('refresh_token', $novoToken->refresh_token, null, '/', null, null, true);
 
             return $this->successAPI($novoToken);
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e->getMessage(),[],null, 401);
         }
     }
 }

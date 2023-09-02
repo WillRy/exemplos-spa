@@ -23,7 +23,7 @@ Route::get('/eloquent', [TesteController::class, 'eloquent'])->name('eloquent');
 Route::get('/query', [TesteController::class, 'query'])->name('query');
 
 Route::group(['middleware' => 'locale'], function(){
-    Route::post('/logar', [AuthController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login']);
     Route::post('/refresh', [AuthController::class, 'refreshToken'])->name('refreshToken');
     Route::post('/logout', [AuthController::class, 'logout']);
 

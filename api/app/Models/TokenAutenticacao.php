@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 
 class TokenAutenticacao extends Model
@@ -40,8 +41,7 @@ class TokenAutenticacao extends Model
 
     public function gerarToken(
         int $idUsuario
-    )
-    {
+    ) {
         return auth('api')->setTTL(60)->tokenById($idUsuario);
     }
 
@@ -53,8 +53,7 @@ class TokenAutenticacao extends Model
 
     public function salvarTodosTokens(
         int $idUsuario
-    )
-    {
+    ) {
         $tokensGerados = new \stdClass();
 
         $tokensGerados->token = $this->gerarToken($idUsuario);
@@ -82,8 +81,7 @@ class TokenAutenticacao extends Model
 
     public function tokenValido(
         string $token
-    )
-    {
+    ) {
         $token = self::query()
             ->selectRaw("
             *,
@@ -108,8 +106,7 @@ class TokenAutenticacao extends Model
 
     public function refreshToken(
         string $refreshToken
-    )
-    {
+    ) {
         $informacaoToken = DB::table("refresh_token")
             ->selectRaw("
               *,
@@ -152,13 +149,24 @@ class TokenAutenticacao extends Model
 
 
         return $tokensGerados;
-
     }
 
     public function excluirRegistroDeTokenPorTokenPrincipal(string $token)
     {
-        return self::query()
+        $token = self::query()
             ->where('token', '=', $token)
+            ->first();
+
+        if (empty($token)) {
+            return false;
+        }
+
+        self::query()
+            ->where('id', '=', $token->id)
+            ->delete();
+
+        DB::table('refresh_token')
+            ->where('id', '=', $token->refresh_id)
             ->delete();
     }
 
@@ -166,7 +174,7 @@ class TokenAutenticacao extends Model
     {
         Auth::guard()->logout();
 
-        $token = Cookie::get('token');
+        $token = Request::bearerToken() ?? Cookie::get('token');
 
         setcookie('token', null, -1, '/', null, null, true);
         setcookie('refresh_token', null, -1, '/', null, null, true);
@@ -174,7 +182,5 @@ class TokenAutenticacao extends Model
         if ($token) {
             $this->excluirRegistroDeTokenPorTokenPrincipal($token);
         }
-
-
     }
 }
