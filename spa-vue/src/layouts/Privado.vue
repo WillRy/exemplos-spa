@@ -95,7 +95,7 @@ import Header from "../external/components/header/Header.vue";
 import Sidebar from "../external/components/sidebar/Sidebar.vue";
 import SidebarLink from "../external/components/sidebar/SidebarLink.vue";
 import HomeIcon from "../external/components/icons/HomeIcon.vue";
-import HomeContainer from "../external/components/HomeContainer.vue";
+import HomeContainer from "../external/components/estrutura/HomeContainer.vue";
 import { usuarioStore } from "../stores/usuario";
 import OrganizacaoIcon from "../components/icons/OrganizacaoIcon.vue";
 import ContatoIcon from "../components/icons/ContatoIcon.vue";
