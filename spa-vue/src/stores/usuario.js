@@ -24,7 +24,6 @@ export const usuarioStore = defineStore("usuarioStore", {
         return true;
 
       } catch(error) {
-        await this.logout();
         this.usuario = null;
         return false;
       }

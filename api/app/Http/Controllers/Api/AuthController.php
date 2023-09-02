@@ -34,7 +34,7 @@ class AuthController extends Controller
                 return $this->errorAPI(__('auth.failed'), null, null, 401);
             }
 
-            $user = Auth::user();
+            $user = Usuario::query()->where('email', $dados['email'])->first();
 
             $tokens = (new TokenAutenticacao())->salvarTodosTokens(
                 $user->id
@@ -155,7 +155,7 @@ class AuthController extends Controller
     public function refreshToken(Request $request)
     {
         try {
-            $refreshToken =  Cookie::get('refresh_token') ?? $request->input("refresh_token");
+            $refreshToken =   $request->input("refresh_token") ?? Cookie::get('refresh_token');
 
             if (empty($refreshToken)) {
                 return $this->errorAPI("Invalid refresh token!",[],null, 401);
