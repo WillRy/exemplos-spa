@@ -25,6 +25,7 @@ Route::get('/query', [TesteController::class, 'query'])->name('query');
 Route::group(['middleware' => 'locale'], function(){
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/refresh', [AuthController::class, 'refreshToken'])->name('refreshToken');
+    Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::post('/esqueci-senha', [AuthController::class, 'esqueciSenha'])
         ->name('esqueci-senha');
@@ -35,7 +36,6 @@ Route::group(['middleware' => 'locale'], function(){
     //rotas privadas
     Route::group(['middleware' => ['auth:web,api']], function () {
         Route::get('/usuario', [AuthController::class, 'usuarioLogado'])->name('usuarioLogado');
-        Route::post('/logout', [AuthController::class, 'logout']);
 
 
 

@@ -34,14 +34,14 @@ class AuthController extends Controller
                 return $this->errorAPI(__('auth.failed'), null, null, 401);
             }
 
-            $usuario = Usuario::query()->where('email',$dados['email'])->first();
+            $usuario = Usuario::query()->where('email', $dados['email'])->first();
 
             $tokens = (new TokenAutenticacao())->salvarTodosTokens(
                 $usuario->id
             );
 
-            setcookie('token', $tokens->token, null, '/', null, null, true);
-            setcookie('refresh_token', $tokens->refresh_token, null, '/', null, null, true);
+            setcookie('token', $tokens->token, time() + 60 * 60 * 24 * 30, '/', null, false, true);
+            setcookie('refresh_token', $tokens->refresh_token, time() + 60 * 60 * 24 * 30, '/', null, false, true);
 
             return $this->successAPI($tokens);
 
@@ -72,11 +72,11 @@ class AuthController extends Controller
 
             Mail::to($usuario->email)
                 ->send((
-                    new EnviaCodigoVerificadorResetSenha(
-                        $token,
-                        1,
-                        $dados['url']
-                    )
+                new EnviaCodigoVerificadorResetSenha(
+                    $token,
+                    1,
+                    $dados['url']
+                )
                 ));
 
             return $this->successAPI([], __('custom.token_reset_senha_enviado'));
@@ -154,16 +154,17 @@ class AuthController extends Controller
     public function refreshToken(Request $request)
     {
         try {
-            $refreshToken = Cookie::get('refresh_token') ?? $request->input("refresh_token");
+            $refreshToken =  Cookie::get('refresh_token') ?? $request->input("refresh_token");
 
-            if(empty($refreshToken)) {
+            if (empty($refreshToken)) {
                 throw new \Exception("Invalid refresh token!");
             }
 
             $novoToken = (new TokenAutenticacao())->refreshToken($refreshToken);
 
 
-            setcookie('token', $novoToken->token, null, '/', null, null, true);
+            setcookie('token', $novoToken->token, time() + 60 * 60 * 24 * 30, '/', null, false, true);
+            setcookie('refresh_token', $novoToken->refresh_token, time() + 60 * 60 * 24 * 30, '/', null, false, true);
 
             return $this->successAPI($novoToken);
         } catch (\Exception $e) {

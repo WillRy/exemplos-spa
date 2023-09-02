@@ -35,7 +35,7 @@ class Locale
      */
     public function handle(Request $request, Closure $next)
     {
-        $idiomasSuportados = ['pt-BR','en'];
+        $idiomasSuportados = ['pt_BR','en'];
 
         $session = Session::get("lang");
         if(!empty($session)) {
@@ -55,8 +55,7 @@ class Locale
 
         arsort($result);
 
-       $primeiroIdiomaSuportado = !empty($result) ? array_key_first($result) : 'en';
-       $idiomaFormatadoLaravel = str_replace('-','_', $primeiroIdiomaSuportado);
+       $primeiroIdiomaSuportado = !empty($result) ? str_replace('-','_', array_key_first($result)) : 'en';
 
 
         if(!in_array($primeiroIdiomaSuportado, $idiomasSuportados)) {
@@ -64,7 +63,7 @@ class Locale
         } else if(empty($primeiroIdiomaSuportado)){
             app()->setLocale('en');
         } else {
-            app()->setLocale($idiomaFormatadoLaravel);
+            app()->setLocale($primeiroIdiomaSuportado);
         }
 
         Session::put('lang', str_replace('_','-', app()->getLocale()));

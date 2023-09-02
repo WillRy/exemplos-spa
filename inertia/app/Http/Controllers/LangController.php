@@ -27,6 +27,6 @@ class LangController extends Controller
 
         Session::put('lang', $idiomaFormatadoHTML);
 
-        return redirect()->route('painel');
+        return redirect()->back();
     }
 }

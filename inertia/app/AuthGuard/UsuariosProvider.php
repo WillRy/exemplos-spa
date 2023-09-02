@@ -83,20 +83,9 @@ class UsuariosProvider implements UserProvider
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
-        $senha = !empty($credentials[$this->nomeCampoSenha]) ? $credentials[$this->nomeCampoSenha] : null;
+        $senhaInformada = !empty($credentials[$this->nomeCampoSenha]) ? $credentials[$this->nomeCampoSenha] : null;
+        $senhaUsuarioLogado = !empty($user->{$this->nomeCampoSenha}) ? $user->{$this->nomeCampoSenha} : null;
 
-        if (empty($senha)) return null;
-
-        unset($credentials[$this->nomeCampoSenha]);
-
-        $usuario = (new $this->referenciaClasseModel)->where($credentials)->first();
-
-        if (empty($usuario)) return null;
-
-        $senhaEstaValida = Hash::check($senha, $usuario[$this->nomeCampoSenha]);
-
-        if (!$senhaEstaValida) return null;
-
-        return !empty($usuario);
+        return Hash::check($senhaInformada, $senhaUsuarioLogado);
     }
 }

@@ -171,16 +171,4 @@ class AuthController extends Controller
             return $this->errorAPI($e->getMessage());
         }
     }
-
-    public function validarToken()
-    {
-//        $valido = \auth('api')->check();
-//
-//        if ($valido) {
-//            return $this->successAPI([]);
-//        }
-//
-//        return $this->errorAPI([], null, 403);
-        return $this->successAPI([]);
-    }
 }
