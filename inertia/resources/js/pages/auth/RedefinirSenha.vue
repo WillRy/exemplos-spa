@@ -15,7 +15,7 @@
                 </BaseInput>
             </div>
             <div>
-                <BaseButtonPrimary :loading="loading" style="width: 100%;" class="mb-3">
+                <BaseButtonPrimary :loading="loading" style="width: 100%;" class="mb-3" type="submit">
                   {{$t("login.redefinir")}}
                 </BaseButtonPrimary>
 

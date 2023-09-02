@@ -96,7 +96,7 @@ export default {
 
   text-decoration: none;
   display: flex;
-  border: 1px solid transparent;
+  border: 0px solid transparent;
   outline: 0;
   color: #fff;
 
@@ -175,14 +175,14 @@ export default {
 .sidebar-item-corpo {
   width: 100%;
   display: grid;
-  grid-template-columns: 66px 1fr 20px;
+  grid-template-columns: 60px 1fr 20px;
   align-items: center;
   height: 36px;
-  padding: 0px 10px 0px 0px;
+  padding: 0px 0px 0px 0px;
 }
 
 .sidebar-item-texto {
-  font-size: 14px;
+  font-size: 0.875rem;
   vertical-align: middle;
   flex: 1;
   word-break: keep-all;
@@ -196,7 +196,7 @@ export default {
 
   opacity: 0;
 
-  transition: opacity 0.5s;
+  transition: all 0.8s;
 }
 
 .sidebar-item.active .sidebar-item-texto {

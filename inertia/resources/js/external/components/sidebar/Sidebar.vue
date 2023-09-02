@@ -16,7 +16,7 @@
         />
       </div>
       <div class="logo-empresa" v-if="$slots.logo">
-        <slot name="logo"></slot>  
+        <slot name="logo"></slot>
       </div>
     </div>
 
@@ -98,13 +98,14 @@ export default {
 
 .icon-menu-hamburguer {
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 46px !important;
-  flex-shrink: 0;
-  height: 36px;
-  border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 42px !important;
+    flex-shrink: 0;
+    height: 36px;
+    border-radius: 8px;
+    margin-left: 10px;
 }
 
 
@@ -119,7 +120,7 @@ export default {
 }
 
 .sidebar {
-  width: 70px;
+  width: 60px;
   background-color: var(--primary-color-principal);
   height: auto;
   text-align: center;
@@ -151,7 +152,6 @@ export default {
   gap: 8px;
   /* padding: 24px 12px 24px 12px; */
   /* margin: 0 auto; */
-  margin-left: 12px;
   /* margin-bottom: 5px; */
   /* margin-top: 5px; */
   user-select: none;

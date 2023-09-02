@@ -4,7 +4,7 @@
         <form @submit.prevent="submit">
             <div class="mb-3">
                 <BaseInput
-                    label="Senha"
+                    :label="$t('login.senha')"
                     v-model="senha"
                 >
                     <template v-slot:error v-if="v$.senha.$error">
@@ -15,7 +15,7 @@
                 </BaseInput>
             </div>
             <div>
-                <BaseButtonPrimary :loading="loading" style="width: 100%;" class="mb-3">
+                <BaseButtonPrimary :loading="loading" style="width: 100%;" class="mb-3" type="submit">
                   {{$t("login.redefinir")}}
                 </BaseButtonPrimary>
 

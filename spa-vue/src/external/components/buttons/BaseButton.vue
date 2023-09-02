@@ -12,6 +12,7 @@
     }"
     :disabled="disabled || loading"
     :data-loading="loading"
+    :type="type"
   >
     <Loader
       v-if="loading"
@@ -44,7 +45,7 @@ export default {
     },
     type: {
       type: String,
-      default: "primary",
+      default: "button",
     },
     min: {
       type: Boolean,
@@ -113,19 +114,19 @@ export default {
 }
 
 .btn-sm {
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 6px;
 }
 
 .btn-md {
-  font-size: 14px;
-  padding: 8px 20px;
+  font-size: 0.875rem;
+  padding: 10px 20px;
   min-height: 36px;
 }
 
 .btn-lg {
-  font-size: 16px;
-  padding: 8px 20px;
+  font-size: 1rem;
+  padding: 10px 20px;
   min-height: 42px;
 }
 
@@ -151,7 +152,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .btn:disabled :deep(svg path) {

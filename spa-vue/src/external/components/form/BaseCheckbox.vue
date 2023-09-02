@@ -149,65 +149,58 @@ label.disabled {
 
 
 .legenda {
-    display: flex;
-    padding-left: var(--padding-text);
-    font-size: 12px;
-    color: var(--gray-400);
-    line-height: 24px;
-    margin: 0;
-}
-
-.legenda:deep(*){
-    margin: 0;
+  display: flex;
+  font-size: 0.75rem;
+  line-height: 0.9975rem;
+  font-weight: normal;
+  margin: 0;
+  font-style: italic;
+  color: var(--gray-400);
+  padding-left: var(--padding-text);
+  margin-top: var(--spacing-1);
 }
 
 .legenda > svg {
     flex-shrink: 0;
+    width: 14px;
     margin-right: 8px;
-    margin-top: 4px;
 }
 
 
 .errorMessage {
   display: flex;
-  align-items: center;
-
-  padding-left: var(--padding-text);
-  font-size: 12px;
+  font-size: 0.75rem;
+  line-height: 0.9975rem;
+  font-weight: normal;
+  margin: 0;
+  font-style: italic;
   color: var(--error-color-600);
-  line-height: 24px;
-  margin: 0;
-}
-
-.errorMessage:deep(*){
-  margin: 0;
+  padding-left: var(--padding-text);
+  margin-top: var(--spacing-1);
 }
 
 .errorMessage > svg {
-  display: block;
-  width: 14px;
-  margin-right: 2px;
+    flex-shrink: 0;
+    width: 14px;
+    margin-right: 8px;
 }
 
 .successMessage {
   display: flex;
-  align-items: center;
-
-  padding-left: var(--padding-text);
-  font-size: 12px;
+  font-size: 0.75rem;
+  line-height: 0.9975rem;
+  font-weight: normal;
+  margin: 0;
+  font-style: italic;
   color: var(--success-color-600);
-  line-height: 24px;
-  margin: 0;
-}
-
-.successMessage:deep(*){
-  margin: 0;
+  padding-left: var(--padding-text);
+  margin-top: var(--spacing-1);
 }
 
 .successMessage > svg {
-  display: block;
-  width: 14px;
-  margin-right: 2px;
+    flex-shrink: 0;
+    width: 14px;
+    margin-right: 8px;
 }
 
 

@@ -24,7 +24,7 @@
                 </BaseInput>
             </div>
             <div>
-                <BaseButtonPrimary :loading="loading" style="width: 100%;" class="mb-3">{{$t('login.login')}}</BaseButtonPrimary>
+                <BaseButtonPrimary :loading="loading" style="width: 100%;" class="mb-3" type="submit">{{$t('login.login')}}</BaseButtonPrimary>
                 <Link href="/esqueci-senha">{{$t('login.esqueci_senha')}}</Link>
             </div>
         </form>
@@ -79,7 +79,7 @@ export default {
                 const result = await this.v$.$validate();
                 if (result) {
 
-                    await axiosWeb.post('/logar', this.login);
+		    await api.post('/logar', this.login);
 
                     router.visit('/painel')
 

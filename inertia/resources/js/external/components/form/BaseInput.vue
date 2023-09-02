@@ -133,7 +133,7 @@ export default {
 :deep(label) {
     line-height: 24px;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 0.75rem;
 
     color: var(--label-color);
     margin-bottom: var(--label-margin-bottom);
@@ -226,6 +226,7 @@ export default {
     border: 1px solid var(--focus-color);
 }
 
+
 .form-group-container:not(.borda):hover {
     border-radius: 8px 8px 0 0;
     border-top: var(--border) solid transparent;
@@ -268,7 +269,7 @@ export default {
 
 input {
     cursor: inherit;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: #444444;
     border: 0;
     width: 100%;
@@ -291,7 +292,7 @@ input:-webkit-autofill:active {
 
 
 .lg input {
-    font-size: 16px;
+    font-size: 1rem;
 }
 
 input:focus {
@@ -300,7 +301,7 @@ input:focus {
 
 
 input::placeholder {
-    font-size: 16px;
+    font-size: 0.875rem;
     color: var(--gray-400);
 }
 
@@ -311,63 +312,59 @@ input::placeholder {
 
 .legenda {
     display: flex;
-    padding-left: var(--padding-text);
-    font-size: 12px;
+    font-size: 0.75rem;
+    line-height: 0.9975rem;
+    font-weight: normal;
+    margin: 0;
+    font-style: italic;
     color: var(--gray-400);
-    line-height: 24px;
-    margin: 0;
-}
-
-.legenda:deep(*){
-    margin: 0;
+    padding-left: var(--padding-text);
+    margin-top: var(--spacing-1);
 }
 
 .legenda > svg {
     flex-shrink: 0;
+    width: 14px;
     margin-right: 8px;
-    margin-top: 4px;
 }
+
 
 .errorMessage {
     display: flex;
-    align-items: center;
-
-    padding-left: var(--padding-text);
-    font-size: 12px;
-    color: var(--error-color-600);
-    line-height: 24px;
+    font-size: 0.75rem;
+    line-height: 0.9975rem;
+    font-weight: normal;
     margin: 0;
+    font-style: italic;
+    color: var(--error-color-600);
+    padding-left: var(--padding-text);
+    margin-top: var(--spacing-1);
 }
 
-.errorMessage:deep(*){
-  margin: 0;
-}
 
 .errorMessage > svg {
-    display: block;
+    flex-shrink: 0;
     width: 14px;
-    margin-right: 2px;
+    margin-right: 8px;
 }
 
 .successMessage {
     display: flex;
-    align-items: center;
-
-    padding-left: var(--padding-text);
-    font-size: 12px;
-    color: var(--success-color-600);
-    line-height: 24px;
+    font-size: 0.75rem;
+    line-height: 0.9975rem;
+    font-weight: normal;
     margin: 0;
+    font-style: italic;
+    color: var(--success-color-600);
+    padding-left: var(--padding-text);
+    margin-top: var(--spacing-1);
 }
 
-.successMessage:deep(*){
-  margin: 0;
-}
 
 .successMessage > svg {
-    display: block;
+    flex-shrink: 0;
     width: 14px;
-    margin-right: 2px;
+    margin-right: 8px;
 }
 
 

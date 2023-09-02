@@ -18,7 +18,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
-* {
+*:not(g,text,tspan) {
   font-family: "Roboto", sans-serif;
   box-sizing: border-box;
 }
@@ -53,9 +53,14 @@ textarea {
   background: var(--error-color-600);
 }
 
+.v-toast__item--warning {
+  background: var(--warning-color);
+  color: var(--gray-800);
+}
+
 .v-toast__item .v-toast__text {
   padding: 8px;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .v-toast__item .v-toast__icon {

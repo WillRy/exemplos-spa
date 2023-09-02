@@ -15,7 +15,7 @@
               />
             </div>
             <div class="col-auto">
-              <BaseButtonPrimary :loading="loading">
+              <BaseButtonPrimary :loading="loading" type="submit">
                 {{ $t('palavras.pesquisar') }}
               </BaseButtonPrimary>
             </div>
@@ -61,12 +61,12 @@
                   {{ dado.cor_texto }}
                 </div>
               </ColunaTabela>
-              <th class="coluna-acoes">
+              <ColunaTabela width="50px" justify="flex-end">
                 <DropdownAcoes :fundoClaro="true">
                   <button @click="abrirEdicao(dado)">{{ $t('palavras.editar') }}</button>
                   <button @click="abrirExclusao(dado)">{{ $t('palavras.excluir') }}</button>
                 </DropdownAcoes>
-              </th>
+              </ColunaTabela>
             </tr>
           </template>
         </Tabela>

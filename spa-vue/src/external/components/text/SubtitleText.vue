@@ -26,6 +26,7 @@ export default {
 <style scoped>
 .subtitle-text {
   margin: 0;
+  color: var(--text-color);
 }
 
 .lg {
@@ -44,11 +45,13 @@ export default {
 @media all and (max-width: 786px) {
     .lg {
         font-size: 1.5rem;
+        font-weight: normal;
         line-height: 1.995rem;
     }
 
     .sm {
         font-size: 1.25rem;
+        font-weight: normal;
         line-height: 1.5rem;
     }
 }

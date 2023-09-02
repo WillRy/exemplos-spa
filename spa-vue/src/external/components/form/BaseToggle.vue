@@ -8,7 +8,7 @@
     </div>
 
     <label>
-      {{ label ? label : "" }}
+      <ActionText size="sm" v-if="label">{{ label }}</ActionText>
       <input
         ref="checkbox"
         v-bind="$attrs"
@@ -44,12 +44,13 @@
 import InfoErrorIcon from "../icons/InfoErrorIcon.vue";
 import InfoInputIcon from "../icons/InfoInputIcon.vue";
 import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
+import ActionText from "../text/ActionText.vue";
 
 export default {
   name: "BaseToggle",
   inheritAttrs: false,
   emits: ['toggle'],
-  components: { InfoInputIcon, InfoSuccessIcon, InfoErrorIcon },
+  components: { InfoInputIcon, InfoSuccessIcon, InfoErrorIcon, ActionText },
   props: {
     error: {
       type: String,
@@ -101,11 +102,6 @@ export default {
 <style scoped>
 :deep(label) {
   line-height: 24px;
-  font-weight: 400;
-  font-size: 12px;
-
-  color: #707070;
-
   display: flex;
   align-items: center;
   gap: 14px;
@@ -118,65 +114,56 @@ export default {
 }
 
 .legenda {
-    display: flex;
-    padding-left: var(--padding-text);
-    font-size: 12px;
-    color: var(--gray-400);
-    line-height: 24px;
-    margin: 0;
-}
-
-.legenda:deep(*){
-    margin: 0;
+  display: flex;
+  font-size: 0.75rem;
+  line-height: 0.9975rem;
+  font-weight: normal;
+  margin: 0;
+  font-style: italic;
+  color: var(--gray-400);
+  padding-left: var(--padding-text);
 }
 
 .legenda > svg {
     flex-shrink: 0;
+    width: 14px;
     margin-right: 8px;
-    margin-top: 4px;
 }
 
 
 .errorMessage {
-  display: flex;
-  align-items: center;
-
-  padding-left: var(--padding-text);
-  font-size: 12px;
-  color: var(--error-color-600);
-  line-height: 24px;
-  margin: 0;
-}
-
-.errorMessage:deep(*){
-  margin: 0;
+    display: flex;
+    font-size: 0.75rem;
+    line-height: 0.9975rem;
+    font-weight: normal;
+    margin: 0;
+    font-style: italic;
+    color: var(--error-color-600);
+    padding-left: var(--padding-text);
 }
 
 .errorMessage > svg {
-  display: block;
-  width: 14px;
-  margin-right: 2px;
+    flex-shrink: 0;
+    width: 14px;
+    margin-right: 8px;
 }
 
 .successMessage {
   display: flex;
-  align-items: center;
-
-  padding-left: var(--padding-text);
-  font-size: 12px;
+  font-size: 0.75rem;
+  line-height: 0.9975rem;
+  font-weight: normal;
+  margin: 0;
+  font-style: italic;
   color: var(--success-color-600);
-  line-height: 24px;
-  margin: 0;
+  padding-left: var(--padding-text);
 }
 
-.successMessage:deep(*){
-  margin: 0;
-}
 
 .successMessage > svg {
-  display: block;
-  width: 14px;
-  margin-right: 2px;
+    flex-shrink: 0;
+    width: 14px;
+    margin-right: 8px;
 }
 
 .check-container {
@@ -186,7 +173,7 @@ export default {
 .check-container .on {
   visibility: hidden;
   color: #fff;
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 0;
   user-select: none;
   margin-left: 12px;
@@ -195,7 +182,7 @@ export default {
 .check-container .off {
   visibility: hidden;
   color: #a3a3a3;
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 0;
   user-select: none;
   margin-right: 12px;
@@ -224,7 +211,7 @@ export default {
 }
 
 .checktoggle {
-  background-color: #e2e0db;
+  background-color: var(--gray-300);
   color: #bbbfc4;
   border-radius: 24px;
   cursor: pointer;

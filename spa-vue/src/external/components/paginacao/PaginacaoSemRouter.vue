@@ -86,6 +86,10 @@ export default {
       return offsetNormalizado + 1;
     },
     numElementoFinal() {
+      if(this.paginasTotal === this.paginaAtual) {
+        return this.total;
+      }
+      
       return this.paginaAtual * this.porPagina;
     },
     paginas() {

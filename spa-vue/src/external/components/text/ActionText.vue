@@ -27,17 +27,18 @@ export default {
 
 .action-text {
   margin: 0;
+  color: var(--text-color);
 }
 
 .lg {
-    font-size: 1rem;
     font-weight: bold;
+    font-size: 1rem;
     line-height: 1.5rem;
 }
 
 .sm {
+    font-weight: normal;
     font-size: 0.875rem;
     line-height: 1.0063rem;
-    font-weight: normal;
 }
 </style>

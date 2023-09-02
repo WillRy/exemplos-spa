@@ -13,22 +13,10 @@ export default {
     name: "Publico",
     data() {
         return {
-            loading: true
+            loading: false
         }
     },
-    async created() {
-        console.log("publico")
-        try {
-            let token = window.localStorage.getItem("token");
-            if (token) {
-                await this.$router.push({name: "dashboard"});
-            }
-        } catch (error) {
 
-        } finally {
-            this.loading = false;
-        }
-    },
 }
 </script>
 

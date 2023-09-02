@@ -15,7 +15,7 @@
                 </BaseInput>
             </div>
             <div>
-                <BaseButtonPrimary :loading="loading" style="width: 100%;" class="mb-3">{{ $t('login.recuperar') }}</BaseButtonPrimary>
+                <BaseButtonPrimary :loading="loading" style="width: 100%;" class="mb-3" type="submit">{{ $t('login.recuperar') }}</BaseButtonPrimary>
 
             </div>
         </form>
@@ -57,7 +57,7 @@ export default {
 
                     await api.post('/esqueci-senha', {
                         email: this.email,
-                        "url": window.location.origin + "/" + this.$i18n.locale +'/' + "redefinir-senha"
+                        "url": window.location.origin + "/" + "redefinir-senha"
                     });
 
                     this.$toast.open({

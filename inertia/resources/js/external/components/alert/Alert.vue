@@ -32,6 +32,8 @@ export default {
           return 'success'
         case 'info':
           return 'info'
+        case 'warning':
+          return 'warning'
         default:
           return 'success'
       }
@@ -60,7 +62,7 @@ export default {
 
           acao.click();
 
-          if(acao.fecharNoClick) this.fecharModal();
+          if(acao.fecharNoClick === undefined || acao.fecharNoClick) this.fecharModal();
 
         }
         
@@ -82,23 +84,14 @@ export default {
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-4);
-  font-size: 14px;
+  font-size: 0.875rem;
   border-radius: 8px;
 
 
 }
 
 
-.alert :deep(a:visited) {
-  color: #fff;
-  text-decoration: underline;
-}
 
-.alert :deep(a) {
-  color: #fff;
-  text-decoration: underline;
-  font-weight: bold;
-}
 
 .alert.error {
   background: var(--error-color-600);
@@ -114,6 +107,28 @@ export default {
   background: var(--primary-color-800);
   color: #fff;
 }
+
+.alert.warning {
+  background: var(--warning-color);
+  color: var(--gray-800);
+}
+
+.alert.warning svg path {
+  fill: var(--gray-800);
+}
+
+
+.alert :deep(a:visited) {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.alert :deep(a) {
+  color: inherit;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
 
 .alert-item-container.error {
   width: 100%;

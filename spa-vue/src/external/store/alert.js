@@ -67,6 +67,21 @@ export const useAlertStore = defineStore("alert", {
         acoes: acoes,
       });
     },
+    warning({ title, mensagem, id = null, acoes = null }) {
+      const idAlert = id ? id : idNotificacao++;
+
+      const exists = this.alerts.find((alert) => alert.id === id);
+
+      if (exists) return;
+
+      this.alerts.push({
+        tipo: "warning",
+        title: title,
+        mensagem,
+        id: idAlert,
+        acoes: acoes,
+      });
+    },
     removeAlert(id) {
       this.alerts = this.alerts.filter((alert) => alert.id !== id);
     },

@@ -56,7 +56,7 @@
 
 <script>
 import {DatePicker} from 'v-calendar';
-import {format, parseISO, parseJSON} from "date-fns";
+import {format} from "date-fns";
 import InfoInputIcon from '../icons/InfoInputIcon.vue';
 import InfoSuccessIcon from '../icons/InfoSuccessIcon.vue';
 import InfoErrorIcon from '../icons/InfoErrorIcon.vue';
@@ -125,57 +125,56 @@ export default {
         },
         data: {
             set(valor) {
-                if (valor) {
-                    let normalizarDataUtc = new Date(valor);
-
-                    let objeto =
-                        typeof valor === "object"
-                            ? valor
-                            : new Date(
-                                  normalizarDataUtc.getUTCFullYear(),
-                                  normalizarDataUtc.getUTCMonth(),
-                                  normalizarDataUtc.getUTCDate(),
-                                  normalizarDataUtc.getUTCHours(),
-                                  normalizarDataUtc.getUTCMinutes(),
-                                  normalizarDataUtc.getUTCSeconds()
-                              );
-
-                    let string = format(objeto, "yyyy-MM-dd");
-                    this.$emit("update:modelValue", objeto);
-                    this.$emit("update:formatado", string);
+                if (!valor) {
+                    return null;
                 }
+
+                let valorNormalizado = valor;
+
+                if (typeof valor !== "object") {
+                    let normalizarDataUtc = new Date(valor);
+                    valorNormalizado = new Date(
+                        normalizarDataUtc.getUTCFullYear(),
+                        normalizarDataUtc.getUTCMonth(),
+                        normalizarDataUtc.getUTCDate(),
+                        normalizarDataUtc.getUTCHours(),
+                        normalizarDataUtc.getUTCMinutes(),
+                        normalizarDataUtc.getUTCSeconds()
+                    );
+                }
+
+                let string = format(valorNormalizado, "yyyy-MM-dd");
+                this.$emit("update:modelValue", valorNormalizado);
+                this.$emit("update:formatado", string);
+
                 return null;
             },
             get() {
-                return this.modelValue;
+                if (!this.modelValue) {
+                    return null;
+                }
+
+                if (typeof this.modelValue === "object") {
+                    return this.modelValue;
+                }
+
+                let normalizarDataUtc = new Date(this.modelValue);
+
+                return new Date(
+                    normalizarDataUtc.getUTCFullYear(),
+                    normalizarDataUtc.getUTCMonth(),
+                    normalizarDataUtc.getUTCDate(),
+                    normalizarDataUtc.getUTCHours(),
+                    normalizarDataUtc.getUTCMinutes(),
+                    normalizarDataUtc.getUTCSeconds()
+                );
             },
         },
     },
     methods: {
-        emitirData() {
-            if (this.data) {
-                let normalizarDataUtc = new Date(this.data);
-
-                let objeto =
-                    typeof this.data === "object"
-                        ? this.data
-                        : new Date(
-                            normalizarDataUtc.getUTCFullYear(),
-                            normalizarDataUtc.getUTCMonth(),
-                            normalizarDataUtc.getUTCDate(),
-                            normalizarDataUtc.getUTCHours(),
-                            normalizarDataUtc.getUTCMinutes(),
-                            normalizarDataUtc.getUTCSeconds()
-                        );
-
-                let string = format(objeto, "yyyy-MM-dd HH:mm:ss");
-                this.$emit("update:modelValue", objeto);
-                this.$emit("update:formatado", string);
-            }
-        },
+        
     },
     created() {
-        this.emitirData();
     },
 };
 </script>
@@ -214,7 +213,7 @@ export default {
 :deep(label) {
     line-height: 24px;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 0.75rem;
 
     color: var(--label-color);
     margin-bottom: var(--label-margin-bottom);
@@ -350,7 +349,7 @@ export default {
 
 input {
     cursor: inherit;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: #444444;
     border: 0;
     width: 100%;
@@ -373,7 +372,7 @@ input:-webkit-autofill:active {
 
 
 .lg input {
-    font-size: 16px;
+    font-size: 1rem;
 }
 
 input:focus {
@@ -382,7 +381,7 @@ input:focus {
 
 
 input::placeholder {
-    font-size: 16px;
+    font-size: 0.875rem;
     color: var(--gray-400);
 }
 
@@ -393,64 +392,58 @@ input::placeholder {
 
 .legenda {
     display: flex;
-    padding-left: var(--padding-text);
-    font-size: 12px;
+    font-size: 0.75rem;
+    line-height: 0.9975rem;
+    font-weight: normal;
+    margin: 0;
+    font-style: italic;
     color: var(--gray-400);
-    line-height: 24px;
-    margin: 0;
-}
-
-.legenda:deep(*){
-    margin: 0;
+    padding-left: var(--padding-text);
+    margin-top: var(--spacing-1);
 }
 
 .legenda > svg {
     flex-shrink: 0;
+    width: 14px;
     margin-right: 8px;
-    margin-top: 4px;
 }
 
 
 .errorMessage {
   display: flex;
-  align-items: center;
-
-  padding-left: var(--padding-text);
-  font-size: 12px;
+  font-size: 0.75rem;
+  line-height: 0.9975rem;
+  font-weight: normal;
+  margin: 0;
+  font-style: italic;
   color: var(--error-color-600);
-  line-height: 24px;
-  margin: 0;
-}
-
-.errorMessage:deep(*){
-  margin: 0;
+  padding-left: var(--padding-text);
+  margin-top: var(--spacing-1);
 }
 
 .errorMessage > svg {
-  display: block;
-  width: 14px;
-  margin-right: 2px;
+    flex-shrink: 0;
+    width: 14px;
+    margin-right: 8px;
 }
 
 .successMessage {
-  display: flex;
-  align-items: center;
-
-  padding-left: var(--padding-text);
-  font-size: 12px;
-  color: var(--success-color-600);
-  line-height: 24px;
-  margin: 0;
+    display: flex;
+    font-size: 0.75rem;
+    line-height: 0.9975rem;
+    font-weight: normal;
+    margin: 0;
+    font-style: italic;
+    color: var(--success-color-600);
+    padding-left: var(--padding-text);
+    margin-top: var(--spacing-1);
 }
 
-.successMessage:deep(*){
-  margin: 0;
-}
 
 .successMessage > svg {
-  display: block;
-  width: 14px;
-  margin-right: 2px;
+    flex-shrink: 0;
+    width: 14px;
+    margin-right: 8px;
 }
 
 

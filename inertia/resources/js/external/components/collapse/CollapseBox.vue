@@ -125,7 +125,7 @@ export default {
 .collapse-action:deep(button) {
   background: none;
   border: none;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: bold;
 }
 </style>

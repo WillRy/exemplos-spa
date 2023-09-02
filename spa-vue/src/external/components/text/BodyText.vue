@@ -26,6 +26,7 @@ export default {
 <style scoped>
 .body-text {
   margin: 0;
+  color: var(--text-color);
 }
 
 

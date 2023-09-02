@@ -5,22 +5,43 @@ export const usuarioStore = defineStore("usuarioStore", {
   state: () => {
     return {
       usuario: null,
-      permissoes: []
+      permissoes: [],
     };
   },
   getters: {
     temPermissao: (state) => {
-      return (permissao) => state.permissoes.includes(permissao)
+      return (permissao) => state.permissoes.includes(permissao);
     },
   },
   actions: {
     async carregarUsuarioLogado() {
-        // const response = await api.get("/usuarioo");
-        // this.usuario = response.data.data;
-        // return this.usuario;
-        return api.get("/usuario").then((response) => {
-          this.usuario = response.data.data;
-        });
+      try {
+
+        const response = await api.get("/usuario");
+        this.usuario = response.data.data;
+
+
+        return true;
+
+      } catch(error) {
+        await this.logout();
+        this.usuario = null;
+        return false;
+      }
+
+
+    },
+    async logout() {
+      try {
+
+        api.post("/logout");
+        this.usuario = null;
+
+        return true;
+
+      } catch(error) {
+        return true;
+      }
     },
   },
 });

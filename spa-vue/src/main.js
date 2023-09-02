@@ -4,7 +4,7 @@ import { createPinia } from "pinia";
 import VueToast from "vue-toast-notification";
 import VueTheMask from "vue-the-mask";
 
-import { filters, EventBus, LaravelError, ajaxFormError } from "./plugins";
+import { filters, EventBus, LaravelError, LaravelAlert, VerificaPermissao, toasts } from "./plugins";
 
 import App from "./App.vue";
 import router from "./router";
@@ -31,15 +31,18 @@ export const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 app.use(VueToast);
-app.use(LaravelError);
-app.use(filters);
-app.use(EventBus);
 app.use(VueTheMask);
-app.use(ajaxFormError);
 app.use(i18n);
 app.use(drag);
 app.use(createHead());
 app.directive("click-away", directive);
 app.component("Loader", Loader);
+
+app.use(VerificaPermissao)
+app.use(LaravelError)
+app.use(LaravelAlert)
+app.use(toasts)
+app.use(filters)
+app.use(EventBus)
 
 app.mount("#app");

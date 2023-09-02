@@ -8,7 +8,7 @@
         </div>
 
 
-        <div style="display: flex; align-items: center">
+        <div style="display: flex;">
             <div class="form-group-container" :class="{ borda: borda, btn: $slots.btn }">
                 <div v-if="$slots.icon" class="form-group-icon">
                     <slot name="icon"></slot>
@@ -49,9 +49,10 @@
                         </div>
                     </template>
                     <template v-slot:option="{option}">
-                    <div>
-                        <span>{{ option[textBy] }}</span>
-                    </div>
+                        <div class="option-select">
+                            <!-- <span v-tooltip="{content: option[textBy]}">{{ option[textBy] }}</span> -->
+                            <span>{{ option[textBy] }}</span>
+                        </div>
                     </template>
                     <template v-slot:tag="{option, remove}">
                     <div class="custom-tag">
@@ -100,7 +101,7 @@
             <slot name="success" v-if="$slots.success"></slot>
             <template v-else>{{ success }}</template>
         </div>
-        <div v-if="$slots.error || error"  class="errorMessage">
+        <div v-if="$slots.error || error" class="errorMessage">
             <InfoErrorIcon size="14px" class="icone-footer"/>
             <slot name="error" v-if="$slots.error"></slot>
             <template v-else>{{ error }}</template>
@@ -121,23 +122,23 @@ export default {
         VueMultiselect,
         InfoInputIcon,
         InfoSuccessIcon,
-        InfoErrorIcon
+        InfoErrorIcon,
     },
     props: {
         disabled: {
             type: Boolean,
-            default: false
+            default: false,
         },
         borda: {
             type: Boolean,
-            default: true
+            default: true,
         },
         size: {
             type: String,
-            default: 'md',
+            default: "md",
             validator(value) {
-                return ['md', 'lg'].includes(value)
-            }
+                return ["md", "lg"].includes(value);
+            },
         },
         label: {
             type: String,
@@ -212,6 +213,10 @@ export default {
         },
     },
     methods: {
+        remove() {
+            this.$emit("update:modelValue", null);
+            this.$emit("change", null);
+        },
         updateValue(event) {
             this.$emit("update:modelValue", event);
             this.$emit("change", event);
@@ -254,7 +259,7 @@ export default {
 :deep(label) {
     line-height: 24px;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 0.75rem;
 
     color: var(--label-color);
     margin-bottom: var(--label-margin-bottom);
@@ -265,7 +270,7 @@ export default {
 
 .form-group-container {
     position: relative;
-    flex: 1;
+    width: 100%;
 }
 
 .form-group-icon {
@@ -390,7 +395,7 @@ export default {
 
 input {
     cursor: inherit;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: #444444;
     border: 0;
     width: 100%;
@@ -413,7 +418,7 @@ input:-webkit-autofill:active {
 
 
 .lg input {
-    font-size: 16px;
+    font-size: 1rem;
 }
 
 input:focus {
@@ -422,7 +427,7 @@ input:focus {
 
 
 input::placeholder {
-    font-size: 16px;
+    font-size: 0.875rem;
     color: var(--gray-400);
 }
 
@@ -433,11 +438,14 @@ input::placeholder {
 
 .legenda {
     display: flex;
-    padding-left: var(--padding-text);
-    font-size: 12px;
-    color: var(--gray-400);
-    line-height: 24px;
+    font-size: 0.75rem;
+    line-height: 0.9975rem;
+    font-weight: normal;
     margin: 0;
+    font-style: italic;
+    color: var(--gray-400);
+    padding-left: var(--padding-text);
+    margin-top: var(--spacing-1);
 }
 
 .legenda:deep(*){
@@ -446,139 +454,47 @@ input::placeholder {
 
 .legenda > svg {
     flex-shrink: 0;
+    width: 14px;
     margin-right: 8px;
-    margin-top: 4px;
 }
 
 
 .errorMessage {
-  display: flex;
-  align-items: center;
-
-  padding-left: var(--padding-text);
-  font-size: 12px;
-  color: var(--error-color-600);
-  line-height: 24px;
-  margin: 0;
+    display: flex;
+    font-size: 0.75rem;
+    line-height: 0.9975rem;
+    font-weight: normal;
+    margin: 0;
+    font-style: italic;
+    color: var(--error-color-600);
+    padding-left: var(--padding-text);
+    margin-top: var(--spacing-1);
 }
 
-.errorMessage:deep(*){
-  margin: 0;
-}
 
 .errorMessage > svg {
-  display: block;
-  width: 14px;
-  margin-right: 2px;
+    flex-shrink: 0;
+    width: 14px;
+    margin-right: 8px;
 }
 
 .successMessage {
-  display: flex;
-  align-items: center;
-
-  padding-left: var(--padding-text);
-  font-size: 12px;
-  color: var(--success-color-600);
-  line-height: 24px;
-  margin: 0;
+    display: flex;
+    font-size: 0.75rem;
+    line-height: 0.9975rem;
+    font-weight: normal;
+    margin: 0;
+    font-style: italic;
+    color: var(--success-color-600);
+    padding-left: var(--padding-text);
+    margin-top: var(--spacing-1);
 }
 
-.successMessage:deep(*){
-  margin: 0;
-}
 
 .successMessage > svg {
-  display: block;
-  width: 14px;
-  margin-right: 2px;
-}
-
-
-.md .form-group-btn {
-    height: var(--md-min-height-btn);
-}
-
-.lg .form-group-btn {
-    height: var(--lg-min-height-btn);
-}
-
-.form-group-btn :deep(button) {
-    padding: 13px 20px;
     flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    outline: 0;
-    gap: 10px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    line-height: 1;
-    position: relative;
-    background: var(--primary-color-principal);
-    color: #fff;
-
-    border-radius: 0 8px 8px 0;
-}
-
-
-.form-group-btn :deep(button) {
-  background: var(--primary-button-background);
-  color:  var(--primary-button-color);
-  border: 1px solid transparent;
-}
-
-.form-group-btn :deep(button:hover) {
-  background: var(--primary-button-hover-background);
-  color: var(--primary-button-hover-color);
-}
-
-.form-group-btn :deep(button:focus) {
-  box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--primary-button-focus-shadow);
-  background: var(--primary-button-focus-background);
-  color: var(--primary-button-focus-color);
-}
-
-.form-group-btn :deep(button:active) {
-  background: var(--primary-button-active-background);
-  color: var(--primary-button-active-color);
-}
-
-.form-group-btn :deep(button:disabled) {
-  background: var(--gray-200);
-  color: var(--gray-300);
-  cursor: not-allowed;
-  border: none;
-}
-
-.form-group-btn :disabled :deep(path) {
-  fill: var(--gray-300);
-}
-
-.form-group-btn  :deep(path) {
-  fill: var(--primary-button-color);
-}
-
-.form-group-btn :hover :deep(path) {
-  fill: var(--primary-button-hover-color);
-}
-
-.form-group-btn :focus :deep(path) {
-  fill: var(--primary-button-focus-color);
-}
-
-.form-group-btn :active :deep(path) {
-  fill: var(--primary-button-active-color);
-}
-
-.form-group-container.borda:focus-within ~ .form-group-btn :deep(button:not(:active)) {
-    box-shadow: var(--primary-color-principal) 0px 0px 0px var(--border);
-}
-
-.form-group-container.borda:focus-within ~ .form-group-btn :deep(button:hover) {
-    box-shadow: var(--primary-color-principal-hover) 0px 0px 0px var(--border);
+    width: 14px;
+    margin-right: 8px;
 }
 
 
@@ -605,121 +521,6 @@ input::placeholder {
 }
 
 
-.md :deep(.multiselect),
-.md :deep(.multiselect__input),
-.md :deep(.multiselect__single) {
-    font-size: 14px !important;
-}
-
-.lg :deep(.multiselect),
-.lg :deep(.multiselect__input),
-.lg :deep(.multiselect__single) {
-    font-size: 16px !important;
-}
-
-:deep(.multiselect__content-wrapper) {
-    width: calc(100% + 0px);
-}
-
-:deep(.multiselect__input) {
-    padding: 4px 0px 0px 4px !important
-}
-
-.md :deep(.multiselect__tags) {
-    min-height: var(--md-min-height-input);
-    border: 0;
-    background: transparent;
-    padding: 4px 40px 4px 12px;
-}
-
-.lg :deep(.multiselect__tags) {
-    min-height: var(--lg-min-height-input);
-    border: 0;
-    background: transparent;
-    padding: 7px 40px 7px 12px;
-}
-
-:deep(.multiselect__tag) {
-    margin-bottom: 0;
-}
-
-:deep(.multiselect__tag-icon) {
-    background: #d3d3d3;
-    border-radius: 0px;
-}
-
-
-.md :deep(.multiselect) {
-    min-height: var(--md-min-height-input);
-}
-
-.lg :deep(.multiselect) {
-    min-height: var(--lg-min-height-input);
-}
-
-:deep(.multiselect__spinner) {
-    position: absolute;
-    right: 1px;
-    top: 1px;
-    width: 48px;
-    height: calc(100% - 1px);
-    background: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-:deep(.multiselect--disabled .multiselect__current),
-:deep(.multiselect--disabled .multiselect__select) {
-    background: transparent;
-}
-
-:deep(.multiselect__input),
-:deep(.multiselect__single) {
-    background: transparent;
-    line-height: initial;
-    min-height: initial;
-    padding: 5px 0 0 5px;
-}
-
-.md :deep(.multiselect__tags) {
-    min-height: var(--md-min-height-input);
-    border: 0;
-    background: transparent;
-    padding: 4px 40px 4px 12px;
-}
-
-.lg :deep(.multiselect__tags) {
-    min-height: var(--lg-min-height-input);
-    border: 0;
-    background: transparent;
-    padding: 7px 40px 7px 12px;
-}
-
-
-:deep(.multiselect__placeholder) {
-    font-size: 14px;
-    color: var(--gray-400);
-    padding-top: 6px;
-}
-
-.custom-tag {
-  box-sizing: border-box;
-  padding: 6px 6px;
-  border-radius: 4px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0px 4px;
-  background: var(--primary-color-principal);
-  color: #fff;
-  gap: 6px;
-}
-
-.custom-tag span {
-    flex-shrink: 0;
-}
-
 .custom-tag-excluir {
     color: #fff;
     background: none;
@@ -741,5 +542,185 @@ input::placeholder {
 
 .custom-tag-excluir svg path {
     fill: #fff;
+}
+
+
+
+
+/**
+Ellipsis das options
+*/
+.option-select {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+:deep(.multiselect__content) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+:deep(.multiselect__single) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+
+.custom-tag {
+  box-sizing: border-box;
+  padding: 6px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0px 4px 4px 0px;
+  background: var(--primary-color-principal);
+  color: #fff;
+  gap: 6px;
+  max-width: 100%;
+}
+
+.custom-tag span {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.md :deep(.multiselect) {
+    min-height: var(--md-min-height-input);
+    box-sizing: content-box;
+}
+
+.lg :deep(.multiselect) {
+    min-height: var(--lg-min-height-input);
+    box-sizing: content-box;
+}
+
+
+.md :deep(.multiselect__tags) {
+    min-height: var(--md-min-height-input);
+    border-radius: 8px;
+    border: 0px solid transparent;
+    padding: 4px 40px 0 14px;
+}
+
+.lg :deep(.multiselect__tags) {
+    min-height: var(--lg-min-height-input);
+    border-radius: 8px;
+    border: 0px solid transparent;
+    padding: 7px 40px 0 14px;
+}
+
+.md :deep(.multiselect__single) {
+    padding-top: 4px;
+    margin-bottom: 6px;
+    font-size: 0.875rem !important;
+}
+
+.lg :deep(.multiselect__single) {
+    padding-top: 6px;
+    margin-bottom: 6px;
+    font-size: 0.875rem !important;
+}
+
+:deep(.multiselect__input, .multiselect__single) {
+    margin-bottom: 6px;
+    padding: 0px;
+}
+
+.md :deep(.multiselect__placeholder) {
+    padding-top: 6px;
+}
+
+.lg :deep(.multiselect__placeholder) {
+    padding-top: 6px;
+}
+
+.md :deep(.multiselect__input:focus) {
+    padding-top: 3px;
+}
+
+.lg :deep(.multiselect__input:focus) {
+    padding-top: 3px;
+}
+
+:deep(.multiselect__input) {
+    font-size: 0.875rem !important;
+}
+
+:deep(.multiselect__select) {
+    height: 100%;
+}
+.md :deep(.multiselect) {
+    min-height: var(--md-min-height-input);
+    box-sizing: content-box;
+}
+
+.lg :deep(.multiselect) {
+    min-height: var(--lg-min-height-input);
+    box-sizing: content-box;
+}
+
+
+.md :deep(.multiselect__tags) {
+    min-height: var(--md-min-height-input);
+    border-radius: 8px;
+    border: 0px solid transparent;
+    padding: 4px 40px 0 14px;
+}
+
+.lg :deep(.multiselect__tags) {
+    min-height: var(--lg-min-height-input);
+    border-radius: 8px;
+    border: 0px solid transparent;
+    padding: 7px 40px 0 14px;
+}
+
+.md :deep(.multiselect__single) {
+    padding-top: 4px;
+    margin-bottom: 6px;
+    font-size: 0.875rem !important;
+}
+
+.lg :deep(.multiselect__single) {
+    padding-top: 6px;
+    margin-bottom: 6px;
+    font-size: 0.875rem !important;
+}
+
+:deep(.multiselect__input, .multiselect__single) {
+    margin-bottom: 6px;
+    padding: 0px;
+}
+
+.md :deep(.multiselect__placeholder) {
+    padding-top: 6px;
+}
+
+.lg :deep(.multiselect__placeholder) {
+    padding-top: 6px;
+}
+
+.md :deep(.multiselect__input:focus) {
+    padding-top: 3px;
+}
+
+.lg :deep(.multiselect__input:focus) {
+    padding-top: 3px;
+}
+
+:deep(.multiselect__input) {
+    font-size: 0.875rem !important;
+}
+
+:deep(.multiselect__select) {
+    height: 100%;
 }
 </style>

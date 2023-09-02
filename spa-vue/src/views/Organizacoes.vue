@@ -41,7 +41,7 @@
               </BaseSelectAjax>
             </div>
             <div class="col-auto">
-              <BaseButtonPrimary :loading="loading">
+              <BaseButtonPrimary :loading="loading" type="submit">
                 {{ $t('palavras.pesquisar') }}
               </BaseButtonPrimary>
             </div>
@@ -99,13 +99,13 @@
                   {{ tag.nome }}
                 </span>
               </ColunaTabela>
-              <th class="coluna-acoes">
+              <ColunaTabela width="50px" justify="flex-end">
                 <DropdownAcoes :fundoClaro="true">
                   <button @click="abrirEdicao(dado)">{{ $t('palavras.editar') }}</button>
                   <button @click="abrirExclusao(dado)">{{ $t('palavras.excluir') }}</button>
                   <button @click="abrirDetalhes(dado)">{{ $t('palavras.detalhes') }}</button>
                 </DropdownAcoes>
-              </th>
+              </ColunaTabela>
             </tr>
           </template>
         </Tabela>

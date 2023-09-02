@@ -4,7 +4,7 @@
       :triggers="[]"
       :shown="open"
       :distance="4"
-      placement="bottom-center"
+      placement="bottom-start"
     >
       <button
         class="dropdown-acoes-btn"

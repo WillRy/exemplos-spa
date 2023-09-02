@@ -85,7 +85,7 @@
 }
 
 .tabela:not(.loading) tbody tr:hover {
-  background: #e3e3e3;
+  background: var(--gray-200);
 }
 
 .tabela a {
@@ -116,7 +116,6 @@
 .coluna-acoes {
   max-width: 50px;
   width: 50px;
-  vertical-align: middle;
 }
 
 .td-checkbox {

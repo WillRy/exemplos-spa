@@ -253,7 +253,7 @@ export default {
 .base-modal-title h3 {
   margin: 0;
   color: var(--primary-color-principal);
-  font-size: 20px;
+  font-size: 1.25rem;
   word-break: break-word;
   line-height: 24px;
   font-weight: bold;

@@ -22,5 +22,8 @@ export default {
     line-height: 0.9975rem;
     font-weight: normal;
     margin: 0;
+    font-style: italic;
+
+    color: var(--text-color);
 }
 </style>

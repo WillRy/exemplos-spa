@@ -33,7 +33,7 @@
             />
           </svg>
 
-          <span class="breadcrumb-nome">{{ link.nome }}</span>
+          <CaptionText class="breadcrumb-nome">{{ link.nome }}</CaptionText>
         </component>
       </template>
     </div>
@@ -44,6 +44,7 @@
 
 <script>
 import BaseButtonTertiary from "../buttons/BaseButtonTertiary.vue";
+import CaptionText from "../text/CaptionText.vue";
 import HomeIcon from "../icons/HomeIcon.vue";
 import ArrowSidebar from "../sidebar/ArrowSidebar.vue";
 
@@ -81,7 +82,7 @@ export default {
       default: "a",
     },
   },
-  components: { ArrowSidebar, HomeIcon, BaseButtonTertiary },
+  components: { ArrowSidebar, HomeIcon, BaseButtonTertiary, CaptionText },
   methods: {
     voltar() {
       this.$emit("voltar");
@@ -123,7 +124,7 @@ export default {
 }
 
 .titulo {
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 24px;
   color: var(--primary-color-principal);
   font-weight: bold;
@@ -146,7 +147,7 @@ export default {
 }
 
 .links .breadcrumb-item {
-  font-size: 14px;
+  font-size: 0.875rem;
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -163,8 +164,9 @@ export default {
   color: #606266;
 }
 
-.links .atual {
-  color: var(--primary-color-principal);
+.links .atual *,
+.links .atual :deep(*){
+  color: var(--primary-color-principal) !important;
 }
 
 .links .atual path {

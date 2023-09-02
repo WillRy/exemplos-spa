@@ -30,7 +30,7 @@
               </BaseSelectAjax>
             </div>
             <div class="col-auto">
-              <BaseButtonPrimary :loading="loading">
+              <BaseButtonPrimary :loading="loading" type="submit">
                 <font-awesome-icon :icon="faMagnifyingGlass"></font-awesome-icon>
                 {{ $t('palavras.pesquisar') }}
               </BaseButtonPrimary>
@@ -75,13 +75,13 @@
               <ColunaTabela>{{ dado.email }}</ColunaTabela>
               <ColunaTabela>{{ dado.telefone }}</ColunaTabela>
               <ColunaTabela>{{ dado.organizacao }}</ColunaTabela>
-              <th class="coluna-acoes">
+              <ColunaTabela width="50px" justify="flex-end">
                 <DropdownAcoes :fundoClaro="true">
                   <button @click="abrirEdicao(dado)">{{ $t('palavras.editar') }}</button>
                   <button @click="abrirExclusao(dado)">{{ $t('palavras.excluir') }}</button>
                   <button @click="abrirDetalhes(dado)">{{ $t('palavras.detalhes') }}</button>
                 </DropdownAcoes>
-              </th>
+              </ColunaTabela>
             </tr>
           </template>
         </Tabela>

@@ -336,7 +336,6 @@ export default {
                     this.loading = false;
                 }
             } catch (e) {
-                this.errors = this.$ajaxFormError(this.form, e);
                 this.$laravelError(
                     e,
                     this.$t("textos.erro_cadastrar_organizacao")

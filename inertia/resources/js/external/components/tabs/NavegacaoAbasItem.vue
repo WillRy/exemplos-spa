@@ -33,7 +33,7 @@ export default {
   outline: 0;
   background: none;
   max-height: 36px;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .navegacao-abas-item {

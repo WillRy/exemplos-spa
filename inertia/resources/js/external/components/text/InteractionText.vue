@@ -26,6 +26,7 @@ export default {
 <style scoped>
 .heading-text {
   margin: 0;
+  color: var(--text-color);
 }
 
 .lg {

@@ -1,5 +1,5 @@
 <template>
-    <component :is="is" class="overline-text">
+    <component :is="is" :class="[size, 'overline-text']">
         <slot></slot>
     </component>
 </template>
@@ -11,7 +11,14 @@ export default {
         is: {
             type: String,
             default: 'span'
-        }
+        },
+        size: {
+            type: String,
+            default: 'sm',
+            validator(value) {
+                return ["sm", "lg"].includes(value);
+            }
+        },
     }
 }
 </script>
@@ -19,9 +26,20 @@ export default {
 <style scoped>
 .overline-text {
     vertical-align: super;
+    margin: 0;
+    color: var(--text-color);
+}
+
+.lg {
+    font-weight: bold;
     font-size: 0.75rem;
     line-height: 0.9975rem;
-    font-weight: bold;
-    margin: 0;
+    
+}
+
+.sm {
+    font-weight: normal;
+    font-size: 0.75rem;
+    line-height: 0.9975rem;
 }
 </style>

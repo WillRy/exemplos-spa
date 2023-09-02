@@ -88,6 +88,9 @@ $gray: (
   "900": #000000,
 );
 
+$text-color: #2F3033;
+$warning-color: #ffd921;
+
 // FUNÇÃO que cria variaveis CSS com as cores
 @mixin create-color-variables($prefix, $color-map) {
   @each $value, $color in $color-map {
@@ -110,9 +113,11 @@ $gray: (
   @include create-color-variables(error, $error-colors);
   @include create-color-simple-variables(gray, $gray);
 
+  --text-color: #{$text-color};
+  
   --secondary-color: #7F2EA6;
   --success-color: #31B383;
-  --warning-color: #FFD921;
+  --warning-color: #{$warning-color};
   --error-color: var(--error-color-600);
 
   --primary-color-principal: var(--primary-color-400);
@@ -147,6 +152,8 @@ $gray: (
 }
 
 @include create-color-classes(primary, $primary-colors);
+@include create-color-classes(second, $second-colors);
+@include create-color-classes(tertiary, $tertiary-colors);
 @include create-color-classes(success, $success-colors);
 @include create-color-classes(warning, $warning-colors);
 @include create-color-classes(error, $error-colors);

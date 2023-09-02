@@ -24,7 +24,7 @@
                 </BaseInput>
             </div>
             <div>
-                <BaseButtonPrimary :loading="loading" style="width: 100%;" class="mb-3">{{$t('login.login')}}</BaseButtonPrimary>
+                <BaseButtonPrimary :loading="loading" style="width: 100%;" class="mb-3" type="submit">{{$t('login.login')}}</BaseButtonPrimary>
                 <router-link to="/esqueci-senha">{{$t('login.esqueci_senha')}}</router-link>
             </div>
         </form>
@@ -76,9 +76,7 @@ export default {
                 const result = await this.v$.$validate();
                 if (result) {
 
-                    let response = await api.post('/login', this.login);
-
-                    // window.localStorage.setItem("token", response.data.data.token);
+		    await api.post('/login', this.login);
 
                     await this.$router.push({name: 'dashboard'});
 

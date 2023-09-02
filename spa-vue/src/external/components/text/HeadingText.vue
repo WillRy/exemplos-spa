@@ -16,7 +16,7 @@ export default {
             type: String,
             default: 'md',
             validator(value) {
-                return ["md", "lg", "xl", "xxl", "xxxl"].includes(value);
+                return ["sm","md", "lg", "xl", "xxl", "xxxl"].includes(value);
             }
         },
     }
@@ -26,6 +26,7 @@ export default {
 <style scoped>
 .heading-text {
   margin: 0;
+  color: var(--text-color);
 }
 
 .xxxl {
@@ -58,6 +59,12 @@ export default {
     line-height: 1.995rem;
 }
 
+.sm {
+    font-size: 1.25rem;
+    font-weight: bold;
+    line-height: 1.5rem;
+}
+
 
 @media all and (max-width: 786px) {
     .xxxl {
@@ -75,6 +82,7 @@ export default {
     .xl {
         font-size: 2rem;
         font-weight: bold;
+        line-height: 2.66rem;
     }
 
     .lg {
@@ -89,6 +97,11 @@ export default {
         line-height: 1.5rem;
     }
 
+    .sm {
+        font-size: 1rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
 }
 
 </style>

@@ -226,18 +226,18 @@ img {
 }
 
 .btn-sm {
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 6px;
 }
 
 .btn-md {
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 10px 20px;
   min-height: 36px;
 }
 
 .btn-lg {
-  font-size: 16px;
+  font-size: 1rem;
   padding: 10px 20px;
   min-height: 42px;
 }

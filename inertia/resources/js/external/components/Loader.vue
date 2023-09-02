@@ -70,7 +70,7 @@ svg * {
 }
 
 p {
-  font-size: 16px;
+  font-size: 1rem;
   text-align: center;
   margin: 12px 0;
 }
