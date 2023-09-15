@@ -28,7 +28,7 @@ import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrima
 import useVuelidate from '@vuelidate/core'
 import {required, email} from '@vuelidate/validators'
 import axios from "axios";
-import api from "../../services/api";
+import api, {apiPublic} from "../../services/api";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import {i18n} from "../../lang";
 
@@ -55,7 +55,7 @@ export default {
                 const result = await this.v$.$validate();
                 if (result) {
 
-                    await api.post('/esqueci-senha', {
+                    await apiPublic.post('/esqueci-senha', {
                         email: this.email,
                         "url": window.location.origin + "/" + "redefinir-senha"
                     });

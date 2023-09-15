@@ -41,7 +41,7 @@
               </BaseSelectAjax>
             </div>
             <div class="col-auto">
-              <BaseButtonPrimary :loading="loading" type="submit">
+              <BaseButtonPrimary  type="submit">
                 {{ $t('palavras.pesquisar') }}
               </BaseButtonPrimary>
             </div>

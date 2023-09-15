@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('token_autenticacao', function (Blueprint $table) {
-            $table->bigInteger('refresh_id')->unsigned()->nullable();
-            $table->foreign('refresh_id')->references('id')->on('refresh_token')->onDelete("CASCADE");
+        Schema::create('token_sessions', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('usuarios')->onDelete("CASCADE");
+            $table->timestamps();
         });
     }
 
@@ -26,8 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('token_autenticacao', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('refresh_id');
-        });
+        Schema::dropIfExists('token_sessions');
     }
 };

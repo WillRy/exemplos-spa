@@ -5,14 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Mail\EnviaCodigoVerificadorResetSenha;
 use App\Models\Token;
-use App\Models\TokenAutenticacao;
 use App\Models\Usuario;
+use App\Service\Autenticacao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Password;
 
 class AuthController extends Controller
 {
@@ -36,7 +35,7 @@ class AuthController extends Controller
 
             $user = Usuario::query()->where('email', $dados['email'])->first();
 
-            $tokens = (new TokenAutenticacao())->salvarTodosTokens(
+            $tokens = (new Autenticacao())->gerarAutenticacao(
                 $user->id
             );
 
@@ -44,7 +43,6 @@ class AuthController extends Controller
             setcookie('refresh_token', $tokens->refresh_token, null, '/', null, null, true);
 
             return $this->successAPI($tokens);
-
         } catch (\Exception $e) {
             return $this->errorAPI($e->getMessage());
         }
@@ -71,16 +69,13 @@ class AuthController extends Controller
 
 
             Mail::to($user->email)
-                ->send((
-                new EnviaCodigoVerificadorResetSenha(
+                ->send(new EnviaCodigoVerificadorResetSenha(
                     $token,
                     1,
                     $dados['url']
-                )
                 ));
 
             return $this->successAPI([], __('custom.token_reset_senha_enviado'));
-
         } catch (\Exception $e) {
             return $this->errorAPI($e->getMessage());
         }
@@ -129,7 +124,6 @@ class AuthController extends Controller
             $user->save();
 
             return $this->successAPI([], __('custom.senha_redefinida'));
-
         } catch (\Exception $e) {
             return $this->errorAPI($e->getMessage());
         }
@@ -147,7 +141,7 @@ class AuthController extends Controller
     public function logout()
     {
 
-        (new TokenAutenticacao())->logoutTokens();
+        (new Autenticacao())->logoutTokens();
 
         return $this->successAPI([]);
     }
@@ -155,13 +149,13 @@ class AuthController extends Controller
     public function refreshToken(Request $request)
     {
         try {
-            $refreshToken =   $request->input("refresh_token") ?? Cookie::get('refresh_token');
+            $refreshToken = $request->input("refresh_token") ?? Cookie::get('refresh_token');
 
             if (empty($refreshToken)) {
-                return $this->errorAPI("Invalid refresh token!",[],null, 401);
+                return $this->errorAPI("Invalid refresh token!", [], null, 401);
             }
 
-            $novoToken = (new TokenAutenticacao())->refreshToken($refreshToken);
+            $novoToken = (new Autenticacao())->refreshToken($refreshToken);
 
 
             setcookie('token', $novoToken->token, null, '/', null, null, true);
@@ -169,7 +163,7 @@ class AuthController extends Controller
 
             return $this->successAPI($novoToken);
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage(),[],null, 401);
+            return $this->errorAPI($e->getMessage(), [], null, 401);
         }
     }
 }

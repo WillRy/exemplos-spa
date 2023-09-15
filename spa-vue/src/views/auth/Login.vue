@@ -37,7 +37,7 @@ import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrima
 import useVuelidate from '@vuelidate/core'
 import {required, email} from '@vuelidate/validators'
 import axios from "axios";
-import api from "../../services/api";
+import api, {apiPublic} from "../../services/api";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import {usuarioStore} from "../../stores/usuario";
 
@@ -76,9 +76,9 @@ export default {
                 const result = await this.v$.$validate();
                 if (result) {
 
-		    await api.post('/login', this.login);
+                  await apiPublic.post('/login', this.login);
 
-                    await this.$router.push({name: 'dashboard'});
+                  await this.$router.push({name: 'dashboard'});
 
                 }
             } catch (e) {
