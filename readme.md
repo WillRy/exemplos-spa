@@ -3,11 +3,15 @@
 Uma aplicação de exemplo com o objetivo de demonstrar:
 
 - autenticação
+    - jwt
+    - refresh token
+    - tratamento de race condition em refresh token rotativo
 - estruturação de rotas publicas e privadas
 - CRUD
 - comunicação entre componentes
 - internacionalização
 - validações
+
 
 ## Telas e seus exemplos
 
