@@ -27,9 +27,22 @@ Tela com carregamento inteiro feito antes da exibição da tela
 
 ## Como executar?
 
+### Com docker
 
+**pasta: api**
+```shell
+docker-compose up -d
+```
 
-## Como executar?
+**pasta: spa-vue**
+
+```shell
+npm install
+
+npm run dev
+```
+
+### Sem docker
 
 **pasta: api**
 ```shell
@@ -48,9 +61,3 @@ npm install
 
 npm run dev
 ```
-
-
-## Credenciais
-
-usuário: admin@admin.com
-senha: 123456
