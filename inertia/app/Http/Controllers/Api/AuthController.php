@@ -31,7 +31,7 @@ class AuthController extends Controller
             ]);
 
             if (empty($token)) {
-                return $this->errorAPI(__('auth.failed'), null, null, 401);
+                throw new \Exception(__('auth.failed'), 401);
             }
 
             $user = Auth::user();
@@ -46,7 +46,7 @@ class AuthController extends Controller
             return $this->successAPI($tokens);
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 
@@ -61,7 +61,7 @@ class AuthController extends Controller
             $user = (new Usuario())->userByEmail($dados['email']);
 
             if (empty($user)) {
-                return $this->errorAPI(__('auth.failed'), null, null, 404);
+                return $this->errorAPI(__('auth.failed'), 404);
             }
 
             $token = (new Token())->gerarToken(
@@ -82,7 +82,7 @@ class AuthController extends Controller
             return $this->successAPI([], __('custom.token_reset_senha_enviado'));
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 
@@ -106,7 +106,7 @@ class AuthController extends Controller
             $tokenComUsuario = $tokenModel->tokenComUsuario($dados['token']);
 
             if (empty($tokenComUsuario)) {
-                return $this->errorAPI(__('custom.token_reset_senha_invalido'), null, null, 404);
+                return $this->errorAPI(__('custom.token_reset_senha_invalido'), 404);
             }
 
             $user = $tokenComUsuario->usuario;
@@ -119,8 +119,6 @@ class AuthController extends Controller
             if (!$temTokenValido) {
                 return $this->errorAPI(
                     __('custom.token_reset_senha_invalido'),
-                    null,
-                    null,
                     403
                 );
             }
@@ -131,7 +129,7 @@ class AuthController extends Controller
             return $this->successAPI([], __('custom.senha_redefinida'));
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 
@@ -140,7 +138,7 @@ class AuthController extends Controller
         try {
             return $this->successAPI(Auth::user());
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 
@@ -169,7 +167,7 @@ class AuthController extends Controller
 
             return $this->successAPI($novoToken);
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage(),[],null, 401);
+            return $this->errorAPI($e, 401);
         }
     }
 }

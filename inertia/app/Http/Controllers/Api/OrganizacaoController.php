@@ -20,7 +20,7 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
             return $this->successAPI($organizacoes);
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 
@@ -30,13 +30,13 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
             $organizacaoExiste = Organizacao::with("tags")->find($id);
 
             if (empty($organizacaoExiste)) {
-                return $this->errorAPI(__('custom.organizacao_inexistente'), null, null, 404);
+                return $this->errorAPI(__('custom.organizacao_inexistente'), 404);
             }
 
             return $this->successAPI($organizacaoExiste);
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 
@@ -73,7 +73,7 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
             return $this->successAPI($organizacao, __('custom.organizacao_criado_com_sucesso'));
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 
@@ -107,7 +107,7 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
             $organizacaoExiste = Organizacao::find($id);
 
             if (empty($organizacaoExiste)) {
-                return $this->errorAPI(__('custom.organizacao_inexistente'), null, null, 404);
+                return $this->errorAPI(__('custom.organizacao_inexistente'), 404);
             }
 
             $organizacao = (new Organizacao())->editar($id, $dados);
@@ -115,7 +115,7 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
             return $this->successAPI($organizacao, __('custom.organizacao_editado_com_sucesso'));
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 
@@ -125,7 +125,7 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
             $organizacaoExiste = Organizacao::find($id);
 
             if (empty($organizacaoExiste)) {
-                return $this->errorAPI(__('custom.organizacao_inexistente'), null, null, 404);
+                return $this->errorAPI(__('custom.organizacao_inexistente'), 404);
             }
 
             (new Organizacao())->deletar($id);
@@ -133,7 +133,7 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
             return $this->successAPI(null, __('custom.organizacao_excluido_com_sucesso'));
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 }

@@ -40,9 +40,9 @@ class Handler extends ExceptionHandler
 
     public function isAjax()
     {
-        $isApi = str_contains(Request::route()->getPrefix(), 'api');
-        $isJSON = Request::expectsJson() || Request::isJson();
-        $isAjax = ($isApi || $isJSON) && !Request::header('X-Inertia');
+        $isApi = str_contains(\Illuminate\Support\Facades\Request::route()->getPrefix(), 'api');
+        $isJSON = \Illuminate\Support\Facades\Request::expectsJson() || \Illuminate\Support\Facades\Request::isJson();
+        $isAjax = ($isApi || $isJSON) && !\Illuminate\Support\Facades\Request::header('X-Inertia');
 
         return $isAjax;
     }

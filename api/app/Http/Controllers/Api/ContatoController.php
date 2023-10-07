@@ -19,7 +19,7 @@ class ContatoController extends \App\Http\Controllers\Controller
             return $this->successAPI($contatos);
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 
@@ -29,13 +29,13 @@ class ContatoController extends \App\Http\Controllers\Controller
             $organizacaoExiste = Contato::with("organizacao")->find($id);
 
             if (empty($organizacaoExiste)) {
-                return $this->errorAPI(__('contato_inexistente'), null, null, 404);
+                return $this->errorAPI(__('contato_inexistente'), 404);
             }
 
             return $this->successAPI($organizacaoExiste);
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 
@@ -74,7 +74,7 @@ class ContatoController extends \App\Http\Controllers\Controller
             return $this->successAPI($organizacao, __('custom.contato_criado_com_sucesso'));
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 
@@ -110,7 +110,7 @@ class ContatoController extends \App\Http\Controllers\Controller
             $organizacaoExiste = Contato::find($id);
 
             if (empty($organizacaoExiste)) {
-                return $this->errorAPI(__('custom.contato_inexistente'), null, null, 404);
+                return $this->errorAPI(__('custom.contato_inexistente'), 404);
             }
 
             $organizacao = (new Contato())->editar($id, $dados);
@@ -118,7 +118,7 @@ class ContatoController extends \App\Http\Controllers\Controller
             return $this->successAPI($organizacao, __('custom.contato_editado_com_sucesso'));
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 
@@ -128,7 +128,7 @@ class ContatoController extends \App\Http\Controllers\Controller
             $organizacaoExiste = Contato::find($id);
 
             if (empty($organizacaoExiste)) {
-                return $this->errorAPI(__('custom.contato_inexistente'), null, null, 404);
+                return $this->errorAPI(__('custom.contato_inexistente'), 404);
             }
 
             (new Contato())->deletar($id);
@@ -136,7 +136,7 @@ class ContatoController extends \App\Http\Controllers\Controller
             return $this->successAPI(null, __('custom.contato_excluido_com_sucesso'));
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 }

@@ -22,7 +22,7 @@ class TagsController extends Controller
             return $this->successAPI($organizacoes);
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 
@@ -32,13 +32,13 @@ class TagsController extends Controller
             $tag = Tag::find($tagId);
 
             if (empty($tag)) {
-                return $this->errorAPI(__('custom.tag_inexistente'), null, null, 404);
+                return $this->errorAPI(__('custom.tag_inexistente'), 404);
             }
 
             return $this->successAPI($tag);
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 
@@ -70,7 +70,7 @@ class TagsController extends Controller
             return $this->successAPI($tag, __('custom.tag_criada_com_sucesso'));
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 
@@ -99,7 +99,7 @@ class TagsController extends Controller
             $tag = Tag::find($tagId);
 
             if (empty($tag)) {
-                return $this->errorAPI(__('custom.tag_inexistente'), null, null, 404);
+                return $this->errorAPI(__('custom.tag_inexistente'), 404);
             }
 
 
@@ -109,7 +109,7 @@ class TagsController extends Controller
             return $this->successAPI($tag, __('custom.tag_editada_com_sucesso'));
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 
@@ -120,7 +120,7 @@ class TagsController extends Controller
             $tag = Tag::find($tagId);
 
             if (empty($tag)) {
-                return $this->errorAPI(__('custom.tag_inexistente'), null, null, 404);
+                return $this->errorAPI(__('custom.tag_inexistente'), 404);
             }
 
             $tag->delete();
@@ -128,7 +128,7 @@ class TagsController extends Controller
             return $this->successAPI($tag, __('custom.tag_excluida_com_sucesso'));
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e->getMessage());
+            return $this->errorAPI($e);
         }
     }
 }
