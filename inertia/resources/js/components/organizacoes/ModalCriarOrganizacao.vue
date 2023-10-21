@@ -18,19 +18,10 @@
                         >
                             <template
                                 v-slot:error
-                                v-if="v$.form.nome.$error || errors.nome"
+                                v-if="v$.form.nome.$error"
                             >
-                                <p
-                                    v-if="
-                                        v$.form.nome.required.$invalid ||
-                                        errors.nome
-                                    "
-                                >
-                                    {{
-                                        $t("validacao.required", {
-                                            field: $t("palavras.nome"),
-                                        })
-                                    }}
+                                <p>
+                                    {{ v$.form.nome.$errors[0].$message }}
                                 </p>
                             </template>
                         </BaseInput>
@@ -43,19 +34,8 @@
                             type="email"
                         >
                             <template v-slot:error v-if="v$.form.email.$error">
-                                <p v-if="v$.form.email.required.$invalid">
-                                    {{
-                                        $t("validacao.required", {
-                                            field: $t("palavras.email"),
-                                        })
-                                    }}
-                                </p>
-                                <p v-if="v$.form.email.email.$invalid">
-                                    {{
-                                        $t("validacao.required", {
-                                            field: $t("palavras.email"),
-                                        })
-                                    }}
+                                <p>
+                                    {{ v$.form.email.$errors[0].$message }}
                                 </p>
                             </template>
                         </BaseInput>
@@ -198,7 +178,7 @@ import {
     modalCriarOrganizacaoStore,
     organizacaoStore,
 } from "../../stores/organizacao";
-import { email, required } from "@vuelidate/validators";
+import {email, required, helpers} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import axios from "axios";
 
@@ -246,8 +226,13 @@ export default {
     validations() {
         return {
             form: {
-                nome: { required },
-                email: { email, required },
+                nome: {
+                    required: helpers.withMessage(this.$t("validacao.required", {field: this.$t("palavras.nome")}), required)
+                },
+                email: {
+                    email: helpers.withMessage(this.$t("validacao.email", {field: this.$t("palavras.email")}), email),
+                    required: helpers.withMessage(this.$t("validacao.required", {field: this.$t("palavras.email")}), required),
+                },
                 telefone: {},
                 cep: {},
                 endereco: {},
@@ -263,7 +248,7 @@ export default {
     computed: {},
     methods: {
         pesquisarTag(pesquisa) {
-            api.get(`/tag`, { params: { pesquisa: pesquisa } }).then(
+            api.get(`/tag`, {params: {pesquisa: pesquisa}}).then(
                 (response) => {
                     this.resultadoPesquisaTag = response.data.data.data;
                 }
@@ -275,7 +260,7 @@ export default {
                 axios
                     .get(`https://viacep.com.br/ws/${this.form.cep}/json/`)
                     .then((r) => {
-                        const { data } = r;
+                        const {data} = r;
 
                         if (data.erro) {
                             this.pesquisouCep = true;
@@ -345,8 +330,10 @@ export default {
             }
         },
     },
-    beforeUnmount() {},
-    created() {},
+    beforeUnmount() {
+    },
+    created() {
+    },
 };
 </script>
 

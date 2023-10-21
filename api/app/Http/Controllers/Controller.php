@@ -14,25 +14,23 @@ class Controller extends BaseController
 
     public function errorAPI(string|\Exception|null $message = null, $statusCode = null, $errors = [], $data = [])
     {
-        $allowedStatus = [
-            100, 101, 200, 201, 202, 203, 204, 205, 206, 300, 301, 302, 303, 304, 305, 306, 307, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 500, 501, 502, 503, 504, 505
-        ];
+        $allowedStatus = [100, 101, 200, 201, 202, 203, 204, 205, 206, 300, 301, 302, 303, 304, 305, 306, 307, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 500, 501, 502, 503, 504, 505];
 
-        $finalStatusCode = 500;
+        $httpStatus = 500;
 
         $msg = null;
         if ($message instanceof CustomException) {
             $msg = $message->getMessage();
-            $finalStatusCode = in_array($message->getStatusCode(), $allowedStatus) ? $message->getStatusCode() : $finalStatusCode;
+            $httpStatus = in_array($message->getStatusCode(), $allowedStatus) ? $message->getStatusCode() : $httpStatus;
         } else if ($message instanceof \Exception) {
             $msg = $message->getMessage();
-            $finalStatusCode = in_array($message->getCode(), $allowedStatus) ? $message->getCode() : $finalStatusCode;
+            $httpStatus = in_array($message->getCode(), $allowedStatus) ? $message->getCode() : $httpStatus;
         } else {
             $msg = $message;
         }
 
-        if ($statusCode && $statusCode !== $finalStatusCode) {
-            $finalStatusCode = $statusCode;
+        if ($statusCode && $statusCode !== $httpStatus) {
+            $httpStatus = $statusCode;
         }
 
         return response()->json([
@@ -40,7 +38,7 @@ class Controller extends BaseController
             'message' => $msg,
             'errors' => $errors,
             "data" => $data,
-        ], $finalStatusCode);
+        ], $httpStatus);
     }
 
     public function successAPI($data, $message = null, $statusCode = 200)

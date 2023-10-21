@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tag;
+use App\Service\ResponseJSON;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
@@ -13,16 +14,16 @@ class TagsController extends Controller
     public function index(Request $request)
     {
         try {
-            $organizacoes = (new Tag())->pesquisar(
+            $tags = (new Tag())->pesquisar(
                 $request->input("pesquisa", ''),
                 $request->input("sortName", "id"),
                 $request->input("sortOrder", "desc")
             );
 
-            return $this->successAPI($organizacoes);
+            return (new ResponseJSON())->setData($tags)->render();
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e);
+            return (new ResponseJSON())->setError($e)->render();
         }
     }
 
@@ -32,13 +33,12 @@ class TagsController extends Controller
             $tag = Tag::find($tagId);
 
             if (empty($tag)) {
-                return $this->errorAPI(__('custom.tag_inexistente'), 404);
+                throw new \Exception(__('custom.tag_inexistente'), 404);
             }
 
-            return $this->successAPI($tag);
-
+            return (new ResponseJSON())->setData($tag)->render();
         } catch (\Exception $e) {
-            return $this->errorAPI($e);
+            return (new ResponseJSON())->setError($e)->render();
         }
     }
 
@@ -47,12 +47,12 @@ class TagsController extends Controller
         $dados = $request->validate([
             'nome' => 'required|max:255|unique:tags,nome',
             'cor_fundo' => ['required', 'max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i',$value)) {
+                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i', $value)) {
                     $fail(__('cor_fundo_invalida'));
                 }
             }],
             'cor_texto' => ['required', 'max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i',$value)) {
+                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i', $value)) {
                     $fail(__('cor_texto_invalida'));
                 }
             }],
@@ -67,10 +67,9 @@ class TagsController extends Controller
 
             $tag = Tag::create($dados);
 
-            return $this->successAPI($tag, __('custom.tag_criada_com_sucesso'));
-
+            return (new ResponseJSON())->setData($tag)->setMessage(__('custom.tag_criada_com_sucesso'))->render();
         } catch (\Exception $e) {
-            return $this->errorAPI($e);
+            return (new ResponseJSON())->setError($e)->render();
         }
     }
 
@@ -79,12 +78,12 @@ class TagsController extends Controller
         $dados = $request->validate([
             'nome' => "required|max:255|unique:tags,nome,{$tagId}",
             'cor_fundo' => ['required', 'max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i',$value)) {
+                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i', $value)) {
                     $fail(__('cor_fundo_invalida'));
                 }
             }],
             'cor_texto' => ['required', 'max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i',$value)) {
+                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i', $value)) {
                     $fail(__('cor_texto_invalida'));
                 }
             }],
@@ -99,17 +98,17 @@ class TagsController extends Controller
             $tag = Tag::find($tagId);
 
             if (empty($tag)) {
-                return $this->errorAPI(__('custom.tag_inexistente'), 404);
+                throw new \Exception(__('custom.tag_inexistente'), 404);
             }
 
 
             $tag->fill($dados);
             $tag->save();
 
-            return $this->successAPI($tag, __('custom.tag_editada_com_sucesso'));
+            return (new ResponseJSON())->setData($tag)->setMessage(__('custom.tag_editada_com_sucesso'))->render();
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e);
+            return (new ResponseJSON())->setError($e)->render();
         }
     }
 
@@ -120,15 +119,15 @@ class TagsController extends Controller
             $tag = Tag::find($tagId);
 
             if (empty($tag)) {
-                return $this->errorAPI(__('custom.tag_inexistente'), 404);
+                throw new \Exception(__('custom.tag_inexistente'), 404);
             }
 
             $tag->delete();
 
-            return $this->successAPI($tag, __('custom.tag_excluida_com_sucesso'));
+            return (new ResponseJSON())->setData($tag)->setMessage(__('custom.tag_excluida_com_sucesso'))->render();
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e);
+            return (new ResponseJSON())->setError($e)->render();
         }
     }
 }

@@ -15,9 +15,10 @@ export default {
 .home {
   min-height: 100vh;
   top: 0;
-  padding-left: 60px;
   transition: all 0.5s ease;
   z-index: var(--z-index-1);
+  padding-bottom: 20px;
+  padding-left: 60px;
   padding-top: 60px;
 }
 

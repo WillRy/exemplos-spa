@@ -18,6 +18,8 @@
           :is="componentLink"
           :class="{ atual: index == links.length - 1 }"
           size="sm"
+          :href="link.link"
+          :to="link.link"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +81,10 @@ export default {
     },
     componentLink: {
       type: String,
-      default: "a",
+      default: "Link",
+      validator(value) {
+        return ["a","Link","router-link"].includes(value);
+      },
     },
   },
   components: { ArrowSidebar, HomeIcon, BaseButtonTertiary, CaptionText },

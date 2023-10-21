@@ -156,6 +156,7 @@ import ModalEditarOrganizacao from "../components/organizacoes/ModalEditarOrgani
 import ModalExcluirOrganizacao from "../components/organizacoes/ModalExcluirOrganizacao";
 import ModalDetalhesOrganizacao from "../components/organizacoes/ModalDetalhesOrganizacao";
 import {useHead} from "@unhead/vue";
+import { emitter } from "../plugins";
 
 export default {
   name: "Organizacaos",

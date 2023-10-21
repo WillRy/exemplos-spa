@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Organizacao;
+use App\Service\ResponseJSON;
 use Illuminate\Http\Request;
 
 class OrganizacaoController extends \App\Http\Controllers\Controller
@@ -17,10 +18,10 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
                 $request->input("id_tags", [])
             );
 
-            return $this->successAPI($organizacoes);
+            return (new ResponseJSON())->setData($organizacoes)->render();
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e);
+            return (new ResponseJSON())->setError($e)->render();
         }
     }
 
@@ -30,13 +31,13 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
             $organizacaoExiste = Organizacao::with("tags")->find($id);
 
             if (empty($organizacaoExiste)) {
-                return $this->errorAPI(__('custom.organizacao_inexistente'), 404);
+                throw new \Exception(__('custom.organizacao_inexistente'), 404);
             }
 
-            return $this->successAPI($organizacaoExiste);
+            return (new ResponseJSON())->setData($organizacaoExiste)->render();
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e);
+            return (new ResponseJSON())->setError($e)->render();
         }
     }
 
@@ -70,10 +71,11 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
 
             $organizacao = (new Organizacao())->criar($dados);
 
-            return $this->successAPI($organizacao, __('custom.organizacao_criado_com_sucesso'));
+            return (new ResponseJSON())->setData($organizacao)->setMessage(__('custom.organizacao_criado_com_sucesso'))->render();
+
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e);
+            return (new ResponseJSON())->setError($e)->render();
         }
     }
 
@@ -107,15 +109,16 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
             $organizacaoExiste = Organizacao::find($id);
 
             if (empty($organizacaoExiste)) {
-                return $this->errorAPI(__('custom.organizacao_inexistente'), 404);
+                throw new \Exception(__('custom.organizacao_inexistente'), 404);
             }
 
             $organizacao = (new Organizacao())->editar($id, $dados);
 
-            return $this->successAPI($organizacao, __('custom.organizacao_editado_com_sucesso'));
+            return (new ResponseJSON())->setData($organizacao)->setMessage(__('custom.organizacao_editado_com_sucesso'))->render();
+
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e);
+            return (new ResponseJSON())->setError($e)->render();
         }
     }
 
@@ -125,15 +128,16 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
             $organizacaoExiste = Organizacao::find($id);
 
             if (empty($organizacaoExiste)) {
-                return $this->errorAPI(__('custom.organizacao_inexistente'), 404);
+                throw new \Exception(__('custom.organizacao_inexistente'), 404);
             }
 
             (new Organizacao())->deletar($id);
 
-            return $this->successAPI(null, __('custom.organizacao_excluido_com_sucesso'));
+            return (new ResponseJSON())->setData([])->setMessage(__('custom.organizacao_excluido_com_sucesso'))->render();
+
 
         } catch (\Exception $e) {
-            return $this->errorAPI($e);
+            return (new ResponseJSON())->setError($e)->render();
         }
     }
 }

@@ -1,6 +1,6 @@
 <template>
     <td :style="{width: width }" class="td-oculta-texto">
-        <div class="item" :style="{width: width }">
+        <div class="item" :style="{width: width }" v-if="esconderTexto">
             <div class="item-query" :style="{justifyContent: justify}">
                 <span class="overflow">
                     <slot></slot>
@@ -9,6 +9,9 @@
                     <EyeIcon/>
                 </button>
             </div>
+        </div>
+        <div v-else :style="{width: width }">
+            <slot></slot>
         </div>
     </td>
 </template>
@@ -31,6 +34,10 @@ export default {
         justify: {
             type: String,
             default: 'flex-start'
+        },
+        esconderTexto: {
+            type: Boolean,
+            default: true
         }
     },
     methods: {

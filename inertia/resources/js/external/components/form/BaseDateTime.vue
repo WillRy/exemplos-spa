@@ -17,7 +17,7 @@
                     <slot name="prefix"></slot>
                 </div>
 
-                <DatePicker v-model="data" v-bind="attrs" is24hr mode="dateTime" first-day-of-week="1.0">
+                <DatePicker v-model="data" v-bind="attrs" is24hr mode="dateTime" :first-day-of-week="1" :popover="{visibility: visibility}">
                     <template v-slot="{ inputValue, inputEvents }">
                         <input
                             v-if="!disabled"
@@ -116,6 +116,12 @@ export default {
         timezone: {
             default: "America/Sao_Paulo",
         },
+        visibility: {
+            default: 'click',
+            validator(value) {
+                return ['click', 'hover'].includes(value)
+            }
+        }
     },
     computed: {
         attrs() {
@@ -336,6 +342,9 @@ export default {
     border-bottom-right-radius: 0;
 }
 
+.form-group-btn {
+    flex-shrink: 0;
+}
 
 .form-group-btn > :deep(button) {
     height: 100%;

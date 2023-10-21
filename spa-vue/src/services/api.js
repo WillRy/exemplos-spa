@@ -13,7 +13,7 @@ axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 
 let refreshing = false;
-window.localStorage.setItem("refreshing", 0);
+window.localStorage.setItem("refreshing", '0');
 
 let refreshSubscribers = [];
 const subscribeTokenRefresh = (cb) => refreshSubscribers.push(cb);
@@ -33,33 +33,25 @@ function monitorLocalStorage(key, callback, expectedValue) {
   }, 100); // Define o intervalo de verificação em milissegundos
 }
 
-function monitorRefresh(callback, expectedValue) {
-  const interval = setInterval(() => {
-    const updatedValue = refreshing;
-    if (updatedValue === expectedValue) {
-      clearInterval(interval);
-      callback();
-    }
-  }, 100); // Define o intervalo de verificação em milissegundos
-}
-
 
 async function refreshToken() {
-  refreshing = 1;
+  window.localStorage.setItem("refreshing", '1');
 
   try {
-    const response = await api.post("/refresh");
+    await api.post("/refresh");
 
 
-    refreshing = 0;
+    window.localStorage.setItem("refreshing", "0");
+
+
 
     return true;
   } catch (error) {
     console.error("Erro durante o refresh do token:", error);
-    refreshing = 0;
+    window.localStorage.setItem("refreshing", "0");
     return false;
   } finally {
-    refreshing = 0;
+    window.localStorage.setItem("refreshing", "0");
   }
 }
 
@@ -83,6 +75,7 @@ api.interceptors.response.use((response) => {
 }, function (error) {
   const originalRequest = error.config;
   const errorFromRefresh = error.config.url.includes('refresh');
+  const refreshing = window.localStorage.getItem('refreshing') === '1'
 
   //erro de refresh token deve sofrer logout
   if(errorFromRefresh) {
@@ -93,18 +86,19 @@ api.interceptors.response.use((response) => {
 
   if (error.response.status === 401 && !originalRequest._retry) {
     //monitorar que o refresh token acabou para refazer requests
-    monitorRefresh(
+    monitorLocalStorage(
+      "refreshing",
       () => {
         onRefreshed();
       },
-      0
+      "0"
     );
 
     originalRequest._retry = true;
 
-    // if (!refreshing) {
+    if (!refreshing) {
       refreshToken();
-    // }
+    }
 
     //enfileirar requests para serem executadas novamente depois do refresh
     return new Promise(resolve => {

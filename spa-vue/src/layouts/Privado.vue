@@ -111,6 +111,7 @@ import {
   organizacaoStore,
 } from "../stores/organizacao";
 import { definirIdioma } from "../lang";
+import { emitter } from "../plugins";
 
 export default {
   name: "Privado",

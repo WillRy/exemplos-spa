@@ -382,6 +382,9 @@ export default {
     border-bottom-right-radius: 0;
 }
 
+.form-group-btn {
+    flex-shrink: 0;
+}
 
 .form-group-btn > :deep(button) {
     height: 100%;
@@ -721,6 +724,11 @@ Ellipsis das options
 }
 
 :deep(.multiselect__select) {
+    height: 100%;
+}
+
+:deep(.multiselect__spinner) {
+    top: 0px;
     height: 100%;
 }
 </style>

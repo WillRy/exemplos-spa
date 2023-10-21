@@ -85,7 +85,8 @@ export default {
       'confirmar_excluir_tag': "Do you want to delete the tag",
     },
     validacao: {
-      required: '{field} is required'
+      required: '{field} is required',
+      email: '{field} must be a valid e-mail',
     }
   },
 };

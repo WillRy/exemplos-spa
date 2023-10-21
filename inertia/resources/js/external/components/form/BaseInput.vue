@@ -17,6 +17,9 @@
                     <slot name="prefix"></slot>
                 </div>
                 <input v-bind="attrs" :value="modelValue" @input="updateValue" :disabled="disabled"/>
+                <div v-if="$slots.btnFlutuante" class="form-group-btn-flutuante">
+                    <slot name="btnFlutuante"></slot>
+                </div>
             </div>
             <div v-if="$slots.btn" class="form-group-btn">
                 <slot name="btn"></slot>
@@ -255,7 +258,9 @@ export default {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
-
+.form-group-btn {
+    flex-shrink: 0;
+}
 
 .form-group-btn > :deep(button) {
     height: 100%;
@@ -376,5 +381,29 @@ input::placeholder {
     height: var(--lg-min-height-btn);
 }
 
+.form-group-btn-flutuante {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 8px;
+    gap: 12px;
+}
 
+.form-group-btn-flutuante :deep(button) {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.form-group-btn-flutuante :deep(button:hover) {
+    opacity: 0.6;
+}
+
+.form-group-btn-flutuante :deep(button svg path) {
+    fill: var(--primary-color-principal);
+}
+
+.form-group-container:focus-within .form-group-btn-flutuante :deep(button path) {
+    fill: var(--focus-color)
+}
 </style>
