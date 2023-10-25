@@ -1,7 +1,11 @@
 import {format, parseISO} from 'date-fns'
 import mitt from 'mitt'
 import {useAlertStore} from './external/store/alert'
+import { useToast } from 'vue-toast-notification'
 
+const toast = useToast();
+
+const emitter = mitt();
 let LaravelError = {
     install: (app, options) => {
         // inject a globally available $translate() method
@@ -181,7 +185,7 @@ let toasts = {
                 ...options
             }
 
-            app.config.globalProperties.$toast.open(config);
+            toast.open(config);
         }
         app.config.globalProperties.$toasts = {
             success: (mensagem,  options = {}) => open({type: 'success',message: mensagem, ...options}),
@@ -213,7 +217,7 @@ let filters = {
 
 let EventBus = {
     install: (app, options) => {
-        const emitter = mitt();
+
         app.config.globalProperties.$eventBus = {
             $on: (...args) => emitter.on(...args),
             $once: (...args) => emitter.once(...args),
@@ -240,5 +244,6 @@ export {
     LaravelAlert,
     getError,
     toasts,
-    VerificaPermissao
+    VerificaPermissao,
+    emitter
 }

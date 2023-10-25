@@ -16,10 +16,7 @@
                             :label="$t('palavras.nome') + '*'"
                             :placeholder="$t('palavras.nome') + '*'"
                         >
-                            <template
-                                v-slot:error
-                                v-if="v$.form.nome.$error"
-                            >
+                            <template v-slot:error v-if="v$.form.nome.$error">
                                 <p>
                                     {{ v$.form.nome.$errors[0].$message }}
                                 </p>
@@ -178,7 +175,7 @@ import {
     modalCriarOrganizacaoStore,
     organizacaoStore,
 } from "../../stores/organizacao";
-import {email, required, helpers} from "@vuelidate/validators";
+import { email, required, helpers } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import axios from "axios";
 
@@ -227,11 +224,26 @@ export default {
         return {
             form: {
                 nome: {
-                    required: helpers.withMessage(this.$t("validacao.required", {field: this.$t("palavras.nome")}), required)
+                    required: helpers.withMessage(
+                        this.$t("validacao.required", {
+                            field: this.$t("palavras.nome"),
+                        }),
+                        required
+                    ),
                 },
                 email: {
-                    email: helpers.withMessage(this.$t("validacao.email", {field: this.$t("palavras.email")}), email),
-                    required: helpers.withMessage(this.$t("validacao.required", {field: this.$t("palavras.email")}), required),
+                    email: helpers.withMessage(
+                        this.$t("validacao.email", {
+                            field: this.$t("palavras.email"),
+                        }),
+                        email
+                    ),
+                    required: helpers.withMessage(
+                        this.$t("validacao.required", {
+                            field: this.$t("palavras.email"),
+                        }),
+                        required
+                    ),
                 },
                 telefone: {},
                 cep: {},
@@ -248,7 +260,7 @@ export default {
     computed: {},
     methods: {
         pesquisarTag(pesquisa) {
-            api.get(`/tag`, {params: {pesquisa: pesquisa}}).then(
+            api.get(`/tag`, { params: { pesquisa: pesquisa } }).then(
                 (response) => {
                     this.resultadoPesquisaTag = response.data.data.data;
                 }
@@ -260,7 +272,7 @@ export default {
                 axios
                     .get(`https://viacep.com.br/ws/${this.form.cep}/json/`)
                     .then((r) => {
-                        const {data} = r;
+                        const { data } = r;
 
                         if (data.erro) {
                             this.pesquisouCep = true;
@@ -306,18 +318,20 @@ export default {
                 this.loading = true;
 
                 const result = await this.v$.$validate();
-                if (result) {
-                    const data = {
-                        ...this.form,
-                    };
-
-                    await api.post(`/organizacao`, data);
-
-                    this.fecharModal();
-                    this.$emit("onReload");
-
-                    this.modalCriarOrganizacaoState.onReload();
+                if (!result) {
+                    return;
                 }
+
+                const data = {
+                    ...this.form,
+                };
+
+                await api.post(`/organizacao`, data);
+
+                this.fecharModal();
+                this.$emit("onReload");
+
+                this.modalCriarOrganizacaoState.onReload();
             } catch (e) {
                 this.$laravelError(
                     e,
@@ -328,10 +342,8 @@ export default {
             }
         },
     },
-    beforeUnmount() {
-    },
-    created() {
-    },
+    beforeUnmount() {},
+    created() {},
 };
 </script>
 

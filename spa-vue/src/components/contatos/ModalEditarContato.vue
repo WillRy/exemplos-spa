@@ -16,7 +16,7 @@
             ></Loader>
             <form @submit.prevent="submit" v-if="!loadingDados">
                 <div class="row mb-3 gy-3">
-                    <div class="col-12 ">
+                    <div class="col-12">
                         <BaseSelectAjax
                             :label="$t('palavras.empresa')"
                             :placeholder="$t('textos.pesquise_as_empresas')"
@@ -33,23 +33,20 @@
                         >
                         </BaseSelectAjax>
                     </div>
-                    <div class="col-12 ">
+                    <div class="col-12">
                         <BaseInput
                             v-model="form.nome"
                             :label="$t('palavras.nome') + '*'"
                             :placeholder="$t('palavras.nome') + '*'"
                         >
-                            <template
-                                v-slot:error
-                                v-if="v$.form.nome.$error"
-                            >
+                            <template v-slot:error v-if="v$.form.nome.$error">
                                 <p>
                                     {{ v$.form.nome.$errors[0].$message }}
                                 </p>
                             </template>
                         </BaseInput>
                     </div>
-                    <div class="col-md-6 ">
+                    <div class="col-md-6">
                         <BaseInput
                             v-model="form.email"
                             label="E-mail *"
@@ -63,7 +60,7 @@
                             </template>
                         </BaseInput>
                     </div>
-                    <div class="col-md-6 ">
+                    <div class="col-md-6">
                         <BaseInput
                             v-model="form.telefone"
                             :label="$t('palavras.telefone')"
@@ -74,7 +71,7 @@
                     </div>
                 </div>
                 <div class="row gy-3">
-                    <div class="col-md-12 ">
+                    <div class="col-md-12">
                         <BaseInput
                             v-model="form.cep"
                             :label="$t('palavras.cep')"
@@ -83,7 +80,7 @@
                             @change="tratarCep"
                         />
                     </div>
-                    <div class="col-md-4 ">
+                    <div class="col-md-4">
                         <BaseInput
                             v-model="form.endereco"
                             :label="$t('palavras.endereco')"
@@ -92,7 +89,7 @@
                             :disabled="!pesquisouCep"
                         />
                     </div>
-                    <div class="col-md-4 ">
+                    <div class="col-md-4">
                         <BaseInput
                             v-model="form.bairro"
                             :label="$t('palavras.bairro')"
@@ -101,7 +98,7 @@
                             :disabled="!pesquisouCep"
                         />
                     </div>
-                    <div class="col-md-4 ">
+                    <div class="col-md-4">
                         <BaseInput
                             v-model="form.numero"
                             :label="$t('palavras.numero')"
@@ -109,7 +106,7 @@
                             type="number"
                         />
                     </div>
-                    <div class="col-md-4 ">
+                    <div class="col-md-4">
                         <BaseInput
                             v-model="form.complemento"
                             :label="$t('palavras.complemento')"
@@ -117,7 +114,7 @@
                             type="text"
                         />
                     </div>
-                    <div class="col-md-4 ">
+                    <div class="col-md-4">
                         <BaseInput
                             v-model="form.cidade"
                             :label="$t('palavras.cidade')"
@@ -126,7 +123,7 @@
                             :disabled="!pesquisouCep"
                         />
                     </div>
-                    <div class="col-md-4 ">
+                    <div class="col-md-4">
                         <BaseInput
                             v-model="form.estado"
                             :label="$t('palavras.estado')"
@@ -157,8 +154,8 @@ import BaseModal from "../../external/components/modal/BaseModal";
 import BaseSelectAjax from "../../external/components/form/BaseSelectAjax";
 import BaseInput from "../../external/components/form/BaseInput";
 import BaseDate from "../../external/components/form/BaseDate";
-import {modalEditarContatoStore} from "../../stores/contato";
-import {email, helpers, required} from "@vuelidate/validators";
+import { modalEditarContatoStore } from "../../stores/contato";
+import { email, helpers, required } from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import axios from "axios";
 
@@ -204,11 +201,26 @@ export default {
         return {
             form: {
                 nome: {
-                    required: helpers.withMessage(this.$t("validacao.required", {field: this.$t("palavras.nome")}), required)
+                    required: helpers.withMessage(
+                        this.$t("validacao.required", {
+                            field: this.$t("palavras.nome"),
+                        }),
+                        required
+                    ),
                 },
                 email: {
-                    email: helpers.withMessage(this.$t("validacao.email", {field: this.$t("palavras.email")}), email),
-                    required: helpers.withMessage(this.$t("validacao.required", {field: this.$t("palavras.email")}), required),
+                    email: helpers.withMessage(
+                        this.$t("validacao.email", {
+                            field: this.$t("palavras.email"),
+                        }),
+                        email
+                    ),
+                    required: helpers.withMessage(
+                        this.$t("validacao.required", {
+                            field: this.$t("palavras.email"),
+                        }),
+                        required
+                    ),
                 },
                 telefone: {},
                 cep: {},
@@ -230,7 +242,7 @@ export default {
                 axios
                     .get(`https://viacep.com.br/ws/${this.form.cep}/json/`)
                     .then((r) => {
-                        const {data} = r;
+                        const { data } = r;
 
                         if (data.erro) {
                             this.pesquisouCep = true;
@@ -252,11 +264,11 @@ export default {
             }
         },
         pesquisarEmpresa(pesquisa) {
-            api
-                .get(`/organizacao`, {params: {pesquisa: pesquisa}})
-                .then((response) => {
+            api.get(`/organizacao`, { params: { pesquisa: pesquisa } }).then(
+                (response) => {
                     this.resultadoPesquisaEmpresa = response.data.data.data;
-                });
+                }
+            );
         },
         async carregarFormulario() {
             // this.loadingDados = true;
@@ -281,33 +293,33 @@ export default {
                 this.loading = true;
 
                 const result = await this.v$.$validate();
-                if (result) {
-                    const data = {
-                        ...this.form,
-                        organizacao_id: this.form.organizacao_id
-                            ? this.form.organizacao_id.id
-                            : null,
-                    };
-
-                    await api.put(
-                        `/contato/${this.modalEditarContatoState.payload.id}`,
-                        data
-                    );
-
-                    this.fecharModal();
-                    this.modalEditarContatoState.onReload();
+                if (!result) {
+                    return;
                 }
+
+                const data = {
+                    ...this.form,
+                    organizacao_id: this.form.organizacao_id
+                        ? this.form.organizacao_id.id
+                        : null,
+                };
+
+                await api.put(
+                    `/contato/${this.modalEditarContatoState.payload.id}`,
+                    data
+                );
+
+                this.fecharModal();
+                this.modalEditarContatoState.onReload();
             } catch (e) {
-                this.$laravelError(e, this.$t('textos.erro_editar_contato'));
+                this.$laravelError(e, this.$t("textos.erro_editar_contato"));
             } finally {
                 this.loading = false;
             }
         },
     },
-    beforeUnmount() {
-    },
-    created() {
-    },
+    beforeUnmount() {},
+    created() {},
 };
 </script>
 
