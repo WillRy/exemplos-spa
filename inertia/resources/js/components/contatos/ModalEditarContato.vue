@@ -296,7 +296,6 @@ export default {
 
                     this.fecharModal();
                     this.modalEditarContatoState.onReload();
-                    this.loading = false;
                 }
             } catch (e) {
                 this.$laravelError(e, this.$t('textos.erro_editar_contato'));

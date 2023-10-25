@@ -306,7 +306,6 @@ export default {
 
                     this.fecharModal();
                     this.modalEditarOrganizacaoState.onReload();
-                    this.loading = false;
                 }
             } catch (e) {
                 this.$laravelError(e, this.$t('textos.erro_editar_organizacao'));

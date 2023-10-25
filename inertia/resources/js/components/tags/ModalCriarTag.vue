@@ -147,7 +147,6 @@ export default {
 
                     this.fecharModal();
                     this.modalCriarTagState.onReload();
-                    this.loading = false;
                 }
             } catch (e) {
                 this.$laravelError(e, this.$t('textos.erro_cadastrar_tag'));

@@ -317,8 +317,6 @@ export default {
                     this.$emit("onReload");
 
                     this.modalCriarOrganizacaoState.onReload();
-
-                    this.loading = false;
                 }
             } catch (e) {
                 this.$laravelError(

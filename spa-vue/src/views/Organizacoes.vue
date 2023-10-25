@@ -41,7 +41,7 @@
               </BaseSelectAjax>
             </div>
             <div class="col-auto">
-              <BaseButtonPrimary  type="submit">
+              <BaseButtonPrimary :loading="loading" type="submit">
                 {{ $t('palavras.pesquisar') }}
               </BaseButtonPrimary>
             </div>
@@ -99,7 +99,7 @@
                   {{ tag.nome }}
                 </span>
               </ColunaTabela>
-              <ColunaTabela width="50px" justify="flex-end">
+              <ColunaTabela width="50px" justify="flex-end" class="coluna-acoes">
                 <DropdownAcoes :fundoClaro="true">
                   <button @click="abrirEdicao(dado)">{{ $t('palavras.editar') }}</button>
                   <button @click="abrirExclusao(dado)">{{ $t('palavras.excluir') }}</button>
@@ -124,7 +124,7 @@
         />
       </Box>
     </div>
-    <ModalCriarOrganizacao @onReload="buscarDados"/>
+    <ModalCriarOrganizacao/>
     <ModalEditarOrganizacao/>
     <ModalExcluirOrganizacao/>
     <ModalDetalhesOrganizacao/>
@@ -276,8 +276,6 @@ export default {
           },
         })
         .then((r) => {
-          if (!r.data.success) return;
-
           this.organizacoes = r.data.data;
         })
         .catch((e) => {

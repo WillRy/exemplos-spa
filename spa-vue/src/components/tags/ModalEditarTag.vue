@@ -19,8 +19,8 @@
                     <div class="col-12 ">
                         <BaseInput
                             v-model="form.nome"
-                            :label="`${$t('palavras.nome')} *`"
-                            :placeholder="`${$t('palavras.nome')} *`"
+                            :label="$t('palavras.nome') + '*'"
+                            :placeholder="$t('palavras.nome') + '*'"
                         >
                             <template v-slot:error v-if="v$.form.nome.$error">
                                 <p>
@@ -32,8 +32,8 @@
                     <div class="col-md-6 ">
                         <BaseInput
                             v-model="form.cor_fundo"
-                            :label="`${$t('palavras.cor_fundo')} *`"
-                            :placeholder="`${$t('palavras.cor_fundo')} *`"
+                            :label="$t('palavras.cor_fundo') + '*'"
+                            :placeholder="$t('palavras.cor_fundo') + '*'"
                             type="color"
                         >
                             <template v-slot:error v-if="v$.form.cor_fundo.$error">
@@ -46,8 +46,8 @@
                     <div class="col-md-6 ">
                         <BaseInput
                             v-model="form.cor_texto"
-                            :label="`${$t('palavras.cor_texto')} *`"
-                            :placeholder="`${$t('palavras.cor_texto')} *`"
+                            :label="$t('palavras.cor_texto') + '*'"
+                            :placeholder="$t('palavras.cor_texto') + '*'"
                             type="color"
                         >
                             <template v-slot:error v-if="v$.form.cor_texto.$error">
@@ -158,7 +158,6 @@ export default {
 
                     this.fecharModal();
                     this.modalEditarTagState.onReload();
-                    this.loading = false;
                 }
             } catch (e) {
                 this.$laravelError(e, this.$t('textos.erro_editar_tag'));

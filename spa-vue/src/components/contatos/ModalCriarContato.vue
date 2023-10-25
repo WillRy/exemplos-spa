@@ -286,7 +286,6 @@ export default {
 
                     this.fecharModal();
                     this.modalCriarContatoState.onReload();
-                    this.loading = false;
                 }
             } catch (e) {
                 this.$laravelError(e, this.$t('textos.erro_cadastrar_contato'));

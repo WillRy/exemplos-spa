@@ -253,8 +253,6 @@ export default {
             },
           })
           .then((r) => {
-            if (!r.data.success) return;
-
             this.contatos = r.data.data;
           })
           .catch((e) => {

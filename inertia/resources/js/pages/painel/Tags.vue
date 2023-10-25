@@ -208,8 +208,6 @@ export default {
             },
           })
           .then((r) => {
-            if (!r.data.success) return;
-
             this.tags = r.data.data;
           })
           .catch((e) => {

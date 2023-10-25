@@ -80,7 +80,6 @@ export default {
 
         this.fecharModal();
         this.modalExcluirTagState.onReload();
-        this.loading = false;
 
       } catch (e) {
         this.$laravelError(e, $t('textos.erro_excluir_tag'));

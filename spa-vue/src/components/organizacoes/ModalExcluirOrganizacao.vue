@@ -79,7 +79,6 @@ export default {
 
         this.fecharModal();
         this.modalExcluirOrganizacaoState.onReload();
-        this.loading = false;
 
       } catch (e) {
         this.$laravelError(e, this.$t('textos.erro_excluir_organizacao'));

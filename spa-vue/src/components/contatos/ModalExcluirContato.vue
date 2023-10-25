@@ -80,7 +80,6 @@ export default {
 
         this.fecharModal();
         this.modalExcluirContatoState.onReload();
-        this.loading = false;
 
       } catch (e) {
         this.$laravelError(e, this.$t('textos.erro_excluir_contato'));

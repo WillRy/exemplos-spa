@@ -124,7 +124,7 @@
         />
       </Box>
     </div>
-    <ModalCriarOrganizacao @onReload="buscarDados"/>
+    <ModalCriarOrganizacao/>
     <ModalEditarOrganizacao/>
     <ModalExcluirOrganizacao/>
     <ModalDetalhesOrganizacao/>
@@ -273,8 +273,6 @@ export default {
           },
         })
         .then((r) => {
-          if (!r.data.success) return;
-
           this.organizacoes = r.data.data;
         })
         .catch((e) => {
