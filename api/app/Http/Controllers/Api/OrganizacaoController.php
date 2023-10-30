@@ -109,7 +109,7 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
             $organizacaoExiste = Organizacao::find($id);
 
             if (empty($organizacaoExiste)) {
-                return $this->errorAPI(__('custom.organizacao_inexistente'), 404);
+                throw new \Exception(__('custom.organizacao_inexistente'), 404);
             }
 
             $organizacao = (new Organizacao())->editar($id, $dados);

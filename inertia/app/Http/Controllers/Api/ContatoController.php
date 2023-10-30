@@ -134,6 +134,7 @@ class ContatoController extends \App\Http\Controllers\Controller
 
             if (empty($organizacaoExiste)) {
                 throw new Exception(__('custom.contato_inexistente'), 404);
+
             }
 
             (new Contato())->deletar($id);

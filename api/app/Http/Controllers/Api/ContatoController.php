@@ -31,7 +31,7 @@ class ContatoController extends \App\Http\Controllers\Controller
             $organizacaoExiste = Contato::with("organizacao")->find($id);
 
             if (empty($organizacaoExiste)) {
-                return $this->errorAPI(__('contato_inexistente'), 404);
+                throw new \Exception(__('custom.contato_inexistente'), 404);
             }
 
             return (new ResponseJSON())->setData($organizacaoExiste)->render();
@@ -47,13 +47,13 @@ class ContatoController extends \App\Http\Controllers\Controller
         $dados = $request->validate([
             'nome' => 'required|max:255|min:3',
             'email' => 'required|email|max:255|unique:contatos,email',
-            'telefone' => ['nullable','max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/([(][0-9]{2}[)])\s[0-9]{4,5}\-[0-9]{4}/',$value)) {
+            'telefone' => ['nullable', 'max:255', function ($attribute, $value, $fail) {
+                if (!preg_match('/([(][0-9]{2}[)])\s[0-9]{4,5}\-[0-9]{4}/', $value)) {
                     $fail(__('custom.validacao_telefone_valido'));
                 }
             }],
-            'cep' => ['nullable','max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/^[0-9]{5,5}([- ]?[0-9]{3,3})?$/',$value)) {
+            'cep' => ['nullable', 'max:255', function ($attribute, $value, $fail) {
+                if (!preg_match('/^[0-9]{5,5}([- ]?[0-9]{3,3})?$/', $value)) {
                     $fail(__('custom.validacao_cep_valido'));
                 }
             }],
@@ -87,13 +87,13 @@ class ContatoController extends \App\Http\Controllers\Controller
         $dados = $request->validate([
             'nome' => 'required|max:255|min:3',
             'email' => "required|email|max:255|unique:contatos,email,{$id}", //permitir burlar o unique para proprio dono
-            'telefone' => ['nullable','max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/([(][0-9]{2}[)])\s[0-9]{4,5}\-[0-9]{4}/',$value)) {
+            'telefone' => ['nullable', 'max:255', function ($attribute, $value, $fail) {
+                if (!preg_match('/([(][0-9]{2}[)])\s[0-9]{4,5}\-[0-9]{4}/', $value)) {
                     $fail(__('custom.validacao_telefone_valido'));
                 }
             }],
-            'cep' => ['nullable','max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/^[0-9]{5,5}([- ]?[0-9]{3,3})?$/',$value)) {
+            'cep' => ['nullable', 'max:255', function ($attribute, $value, $fail) {
+                if (!preg_match('/^[0-9]{5,5}([- ]?[0-9]{3,3})?$/', $value)) {
                     $fail(__('custom.validacao_cep_valido'));
                 }
             }],

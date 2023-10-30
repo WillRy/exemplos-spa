@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('token_autenticacao', function (Blueprint $table) {
-            $table->bigInteger('refresh_id')->unsigned()->nullable();
-            $table->foreign('refresh_id')->references('id')->on('refresh_token')->onDelete("CASCADE");
+        Schema::table('refresh_token', function (Blueprint $table) {
+            $table->dateTime('usado_em')->nullable();
+            $table->unsignedBigInteger('refresh_id_pai')->nullable();
         });
     }
 
@@ -26,8 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('token_autenticacao', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('refresh_id');
+        Schema::table('refresh_token', function (Blueprint $table) {
+            $table->dropColumn('usado_em');
+            $table->dropColumn('refresh_id_pai');
         });
     }
 };
