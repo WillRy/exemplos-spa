@@ -1,7 +1,7 @@
 <template>
   <div class="radio-button-group" :class="{disabled: disabled}">
     <label class='label' v-if="label">{{ label }}</label>
-    <div class="option-container">
+    <div class="option-container" :class="{horizontal: horizontal}">
       <label
         :for="option[identificadorResposta]"
         v-for="option in options"
@@ -12,11 +12,11 @@
           :value="option[identificadorResposta]"
           class="radio"
           :checked="
-            value &&
-            option[identificadorResposta] === value[identificadorResposta]
+            modelValue &&
+            option[identificadorResposta] === modelValue[identificadorResposta]
           "
           :id="option[identificadorResposta]"
-          @change="$emit('selecionou', option)"
+          @change="() => atualizar(option)"
           :disabled="disabled"
         />
         <div class="control__indicator"></div>
@@ -75,7 +75,7 @@ export default {
       required: true,
       type: String,
     },
-    value: {
+    modelValue: {
       required: false,
       type: Object,
     },
@@ -88,11 +88,19 @@ export default {
     legenda: {
       type: String,
     },
+    horizontal: {
+      type: Boolean,
+      default: true
+    }
   },
   components: { InfoInputIcon, InfoSuccessIcon, InfoErrorIcon, ActionText },
   setup() {},
   computed: {},
-  methods: {},
+  methods: {
+    atualizar(option) {
+      this.$emit('update:modelValue', option)
+    }
+  },
   directives: {
     tooltip: VTooltip
   }
@@ -123,9 +131,13 @@ export default {
 
 .option-container {
   display: flex;
-  justify-content: space-between;
-  gap: var(--spacing-2);
+  flex-direction: column;
+  gap: var(--spacing-3);
   margin-bottom: var(--spacing-2);
+}
+
+.option-container.horizontal {
+  flex-direction: row;
 }
 
 .control {

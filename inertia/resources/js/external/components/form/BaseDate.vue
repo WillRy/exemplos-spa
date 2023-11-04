@@ -142,6 +142,8 @@ export default {
         data: {
             set(valor) {
                 if (!valor) {
+                    this.$emit("update:modelValue", null);
+                    this.$emit("update:formatado", null);
                     return null;
                 }
 

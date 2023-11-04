@@ -84,7 +84,11 @@
         >
           <template v-slot:colunas="{ dados }">
             <tr v-for="(dado, index) in dados" :key="index">
-              <ColunaTabela>{{ dado.id }}</ColunaTabela>
+              <ColunaTabela>
+                  <span style="font-weight: bold; color: var(--primary-color-principal);">
+                      {{ dado.id }}
+                  </span>
+              </ColunaTabela>
               <ColunaTabela>{{ dado.nome }}</ColunaTabela>
               <ColunaTabela>{{ dado.email }}</ColunaTabela>
               <ColunaTabela>{{ dado.telefone }}</ColunaTabela>
@@ -183,9 +187,6 @@ export default {
     const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore();
     const modalDetalhesOrganizacaoState = modalDetalhesOrganizacaoStore();
 
-    useHead({
-      title: "CRM - Organizações",
-    });
 
     return {
       modalDetalhesOrganizacaoState,
