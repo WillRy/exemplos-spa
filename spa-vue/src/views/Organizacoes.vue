@@ -1,7 +1,9 @@
 <template>
   <div class="organizacoes">
     <HeaderPage :titulo="$t('palavras.organizacoes')">
-      <BaseButtonPrimary @click="abrirCriar"> {{ $t("palavras.criar") }}</BaseButtonPrimary>
+      <BaseButtonPrimary @click="abrirCriar">
+        {{ $t("palavras.criar") }}</BaseButtonPrimary
+      >
     </HeaderPage>
     <div class="container-fluid">
       <Box>
@@ -21,28 +23,40 @@
                 v-model="form.tag_id"
                 track-by="id"
                 text-by="nome"
-                :options="resultadoPesquisaTag"
+                :options="resultadoPesquisaTag.dados"
                 @search-change="pesquisarEmpresa"
                 :noOptions="$t('textos.pesquise_as_tags')"
                 :empty="true"
                 :remover="true"
                 :multiple="true"
               >
-                <template v-slot:option="{option}">
-                  <div class="custom-tag" :style="{background: option['cor_fundo'], color: option['cor_texto']}">
-                    {{ option['nome'] }}
+                <template v-slot:option="{ option }">
+                  <div
+                    class="custom-tag"
+                    :style="{
+                      background: option['cor_fundo'],
+                      color: option['cor_texto'],
+                    }"
+                  >
+                    {{ option["nome"] }}
                   </div>
                 </template>
-                <template v-slot:tag="{option}">
-                  <div class="custom-tag" :style="{background: option['cor_fundo'], color: option['cor_texto']}">
-                    {{ option['nome'] }}
+                <template v-slot:tag="{ option }">
+                  <div
+                    class="custom-tag"
+                    :style="{
+                      background: option['cor_fundo'],
+                      color: option['cor_texto'],
+                    }"
+                  >
+                    {{ option["nome"] }}
                   </div>
                 </template>
               </BaseSelectAjax>
             </div>
             <div class="col-auto">
               <BaseButtonPrimary :loading="loading" type="submit">
-                {{ $t('palavras.pesquisar') }}
+                {{ $t("palavras.pesquisar") }}
               </BaseButtonPrimary>
             </div>
           </div>
@@ -73,10 +87,10 @@
             {
               nome: 'tags',
               texto: $t('palavras.tags'),
-              disabled: true
+              disabled: true,
             },
           ]"
-          :dados="organizacoes && organizacoes.data"
+          :dados="organizacoes.dados && organizacoes.dados.data"
           :sort-name="sortName"
           :sort-order="sortOrder"
           @onSort="sortBy"
@@ -85,9 +99,14 @@
           <template v-slot:colunas="{ dados }">
             <tr v-for="(dado, index) in dados" :key="index">
               <ColunaTabela>
-                  <span style="font-weight: bold; color: var(--primary-color-principal);">
-                      {{ dado.id }}
-                  </span>
+                <span
+                  style="
+                    font-weight: bold;
+                    color: var(--primary-color-principal);
+                  "
+                >
+                  {{ dado.id }}
+                </span>
               </ColunaTabela>
               <ColunaTabela>{{ dado.nome }}</ColunaTabela>
               <ColunaTabela>{{ dado.email }}</ColunaTabela>
@@ -98,16 +117,29 @@
                   class="custom-tag"
                   v-for="tag in dado.tags"
                   :key="tag.id"
-                  :style="{background: tag['cor_fundo'], color: tag['cor_texto']}"
+                  :style="{
+                    background: tag['cor_fundo'],
+                    color: tag['cor_texto'],
+                  }"
                 >
                   {{ tag.nome }}
                 </span>
               </ColunaTabela>
-              <ColunaTabela width="50px" justify="flex-end" class="coluna-acoes">
+              <ColunaTabela
+                width="50px"
+                justify="flex-end"
+                class="coluna-acoes"
+              >
                 <DropdownAcoes :fundoClaro="true">
-                  <button @click="abrirEdicao(dado)">{{ $t('palavras.editar') }}</button>
-                  <button @click="abrirExclusao(dado)">{{ $t('palavras.excluir') }}</button>
-                  <button @click="abrirDetalhes(dado)">{{ $t('palavras.detalhes') }}</button>
+                  <button @click="abrirEdicao(dado)">
+                    {{ $t("palavras.editar") }}
+                  </button>
+                  <button @click="abrirExclusao(dado)">
+                    {{ $t("palavras.excluir") }}
+                  </button>
+                  <button @click="abrirDetalhes(dado)">
+                    {{ $t("palavras.detalhes") }}
+                  </button>
                 </DropdownAcoes>
               </ColunaTabela>
             </tr>
@@ -116,26 +148,26 @@
         <PaginacaoSemRouter
           class="mt-3"
           :exibir-total="true"
-          v-if="organizacoes"
-          :pagina-atual="organizacoes.current_page"
-          :total="organizacoes.total"
-          :porPagina="organizacoes.per_page"
+          v-if="organizacoes.dados"
+          :pagina-atual="organizacoes.dados.current_page"
+          :total="organizacoes.dados.total"
+          :porPagina="organizacoes.dados.per_page"
           @onChange="updatePagina($event)"
           :textoTotal="$t('palavras.total')"
-          :textoResultados="$tc('palavras.resultados', organizacoes.total)"
+          :textoResultados="$t('palavras.resultados', organizacoes.dados.total)"
           :tituloPrimeiraPagina="$t('palavras.primeira')"
           :tituloUltimaPagina="$t('palavras.ultima')"
         />
       </Box>
     </div>
-    <ModalCriarOrganizacao/>
-    <ModalEditarOrganizacao/>
-    <ModalExcluirOrganizacao/>
-    <ModalDetalhesOrganizacao/>
+    <ModalCriarOrganizacao />
+    <ModalEditarOrganizacao />
+    <ModalExcluirOrganizacao />
+    <ModalDetalhesOrganizacao />
   </div>
 </template>
 
-<script>
+<script setup>
 import HeaderPage from "../components/pages/HeaderPage";
 import BaseButtonPrimary from "../external/components/buttons/BaseButtonPrimary";
 import PageContent from "../components/pages/PageContent";
@@ -159,140 +191,124 @@ import useVuelidate from "@vuelidate/core";
 import ModalEditarOrganizacao from "../components/organizacoes/ModalEditarOrganizacao";
 import ModalExcluirOrganizacao from "../components/organizacoes/ModalExcluirOrganizacao";
 import ModalDetalhesOrganizacao from "../components/organizacoes/ModalDetalhesOrganizacao";
-import {useHead} from "@unhead/vue";
+import { useHead } from "@unhead/vue";
 import { emitter } from "../plugins";
 
-export default {
-  name: "Organizacaos",
-  components: {
-    ModalDetalhesOrganizacao,
-    ModalExcluirOrganizacao,
-    ModalEditarOrganizacao,
-    ModalCriarOrganizacao,
-    PaginacaoSemRouter,
-    DropdownAcoes,
-    ColunaTabela,
-    Tabela,
-    BaseSelectAjax,
-    BaseInput,
-    ContentTable,
-    PageContent,
-    BaseButtonPrimary,
-    HeaderPage,
-    Box
-  },
-  setup() {
-    const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
-    const modalEditarOrganizacaoState = modalEditarOrganizacaoStore();
-    const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore();
-    const modalDetalhesOrganizacaoState = modalDetalhesOrganizacaoStore();
+import { reactive, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import { useBackendToast } from "../external/hooks/useBackendToast";
 
+const { t: $t } = useI18n();
+const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
+const modalEditarOrganizacaoState = modalEditarOrganizacaoStore();
+const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore();
+const modalDetalhesOrganizacaoState = modalDetalhesOrganizacaoStore();
 
-    return {
-      modalDetalhesOrganizacaoState,
-      modalCriarOrganizacaoState,
-      modalEditarOrganizacaoState,
-      modalExcluirOrganizacaoState,
-    };
-  },
-  watch: {
-    "modalCriarOrganizacaoState.reload": {
-      handler() {
-        this.buscarDados();
-      },
-    },
-    "modalEditarOrganizacaoState.reload": {
-      handler() {
-        this.buscarDados();
-      },
-    },
-    "modalExcluirOrganizacaoState.reload": {
-      handler() {
-        this.buscarDados();
-      },
-    },
-  },
-  data() {
-    return {
-      form: {
-        pesquisa: "",
-        tag_id: [],
-      },
-      loading: false,
-      sortName: "id",
-      sortOrder: "desc",
-      page: 1,
-      organizacoes: null,
-      resultadoPesquisaTag: [],
-    };
-  },
-  methods: {
-    pesquisarEmpresa(pesquisa) {
-      api
-        .get(`/tag`, {params: {pesquisa: pesquisa}})
-        .then((response) => {
-          this.resultadoPesquisaTag = response.data.data.data;
-        });
-    },
-    abrirCriar() {
-      this.modalCriarOrganizacaoState.abrir();
-    },
-    abrirEdicao(usuario) {
-      this.modalEditarOrganizacaoState.abrir(usuario);
-    },
-    abrirExclusao(usuario) {
-      this.modalExcluirOrganizacaoState.abrir(usuario);
-    },
-    abrirDetalhes(usuario) {
-      this.modalDetalhesOrganizacaoState.abrir(usuario);
-    },
-    sortBy({sortName, sortOrder}) {
-      console.log(sortName, sortOrder);
-      this.sortName = sortName;
-      this.sortOrder = sortOrder;
-      this.buscarDados();
-    },
-    updatePagina(pagina) {
-      this.page = pagina;
-      this.buscarDados();
-    },
-    pesquisar() {
-      this.page = 1;
-      this.buscarDados();
-    },
-    buscarDados() {
-      this.loading = true;
+// Data
+const form = reactive({
+  pesquisa: "",
+  tag_id: [],
+});
+const loading = ref(false);
+const sortName = ref("id");
+const sortOrder = ref("desc");
+const page = ref(1);
+const organizacoes = reactive({
+  dados: [],
+});
+const resultadoPesquisaTag = reactive({
+  dados: [],
+});
 
-      const id_tags = this.form.tag_id ? this.form.tag_id.map((tag) => tag.id) : [];
-      api
-        .get("/organizacao", {
-          params: {
-            ...(this.form.pesquisa ? {pesquisa: this.form.pesquisa} : {}),
-            ...(id_tags
-              ? {id_tags: id_tags}
-              : {}),
-            ...(this.page ? {page: this.page} : {}),
-            sortOrder: this.sortOrder,
-            sortName: this.sortName,
-          },
-        })
-        .then((r) => {
-          this.organizacoes = r.data.data;
-        })
-        .catch((e) => {
-          this.$laravelError(e, this.$t('texto.erro_listar_dados'));
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-  },
-  beforeUnmount() {
-  },
-  created() {
-    this.buscarDados();
-  },
+// Methods
+const pesquisarEmpresa = function (pesquisa) {
+  api.get(`/tag`, { params: { pesquisa: pesquisa } }).then((response) => {
+    resultadoPesquisaTag.dados = response.data.data.data;
+  });
 };
+
+const abrirCriar = function () {
+  modalCriarOrganizacaoState.abrir();
+};
+
+const abrirEdicao = function (usuario) {
+  modalEditarOrganizacaoState.abrir(usuario);
+};
+
+const abrirExclusao = function (usuario) {
+  modalExcluirOrganizacaoState.abrir(usuario);
+};
+
+const abrirDetalhes = function (usuario) {
+  modalDetalhesOrganizacaoState.abrir(usuario);
+};
+
+const sortBy = function (ordem) {
+  sortName.value = ordem.sortName;
+  sortOrder.value = ordem.sortOrder;
+  buscarDados();
+};
+
+const updatePagina = function (pagina) {
+  page.value = pagina;
+  buscarDados();
+};
+
+const pesquisar = function () {
+  page.value = 1;
+  buscarDados();
+};
+
+const buscarDados = function () {
+  loading.value = true;
+
+  const id_tags = form.tag_id ? form.tag_id.map((tag) => tag.id) : [];
+  api
+    .get("/organizacao", {
+      params: {
+        ...(form.pesquisa ? { pesquisa: form.pesquisa } : {}),
+        ...(id_tags ? { id_tags: id_tags } : {}),
+        ...(page.value ? { page: page.value } : {}),
+        sortOrder: sortOrder.value,
+        sortName: sortName.value,
+      },
+    })
+    .then((r) => {
+      organizacoes.dados = r.data.data;
+    })
+    .catch((e) => {
+      backendToastError(e, this.$t("texto.erro_listar_dados"));
+    })
+    .finally(() => {
+      loading.value = false;
+    });
+};
+
+// Watch
+watch(
+  () => modalCriarOrganizacaoState.reload,
+  function () {
+    buscarDados();
+  }
+);
+
+watch(
+  () => modalEditarOrganizacaoState.reload,
+  function () {
+    buscarDados();
+  }
+);
+
+watch(
+  () => modalExcluirOrganizacaoState.reload,
+  function () {
+    buscarDados();
+  }
+);
+
+// Created
+buscarDados();
 </script>
 
 <style scoped>
@@ -305,6 +321,5 @@ export default {
   align-items: center;
   justify-content: space-between;
   margin: 0px 4px;
-
 }
 </style>

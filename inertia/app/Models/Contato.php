@@ -34,20 +34,21 @@ class Contato extends Model
 
     public function pesquisar(
         ?string $pesquisa,
+        ?string $organizacao_id = null,
         ?string $sortName = "id",
         ?string $sortOrder = "desc"
     )
     {
         return self::query()
             ->select('*')
-            //subquery para permitir ordenar query principal junto a subquery de relacionamento
-            ->selectRaw("
-                (select nome as organizacao from organizacoes as org where org.id = contatos.organizacao_id) as organizacao
-            ")
+            ->with('organizacao')
             ->when(!empty($pesquisa), function ($query) use ($pesquisa) {
                 $query->where("id", "=", $pesquisa);
                 $query->where("nome", "like", "%$pesquisa%");
                 $query->orWhere("email", "like", "%$pesquisa%");
+            })
+            ->when(!empty($organizacao_id), function ($query) use ($organizacao_id) {
+                $query->where("organizacao_id", "=", $organizacao_id);
             })
             ->orderBy($sortName, $sortOrder)
             ->paginate(15);

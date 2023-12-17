@@ -13,6 +13,7 @@ const messages = {
 export const i18n = createI18n({
   locale: identificarIdioma(),
   messages, // set locale messages
+  legacy: false,
 });
 
 

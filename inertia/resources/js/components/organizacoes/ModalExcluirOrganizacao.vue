@@ -24,7 +24,7 @@
   </BaseModal>
 </template>
 
-<script>
+<script setup>
 
 import api from "../../services/api";
 import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
@@ -35,63 +35,53 @@ import BaseInput from "../../external/components/form/BaseInput";
 import BaseDate from "../../external/components/form/BaseDate";
 import {modalExcluirOrganizacaoStore} from "../../stores/organizacao";
 import BaseButtonDanger from "../../external/components/buttons/BaseButtonDanger";
+import { ref, computed } from 'vue';
+import { useI18n } from "vue-i18n";
+import { useBackendToast } from "../../external/hooks/useBackendToast";
 
-export default {
-  name: "ModalExcluirOrganizacao",
-  setup() {
-    const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore();
-    return {
-      modalExcluirOrganizacaoState
-    };
-  },
-  components: {
-    BaseButtonDanger,
-    BaseDate,
-    BaseInput,
-    BaseSelectAjax,
-    BaseModal,
-    BaseButtonTertiary,
-    BaseButtonPrimary,
-  },
-  data() {
-    return {
-      loading: false,
-      loadingDados: false
-    }
-  },
-  computed: {},
-  methods: {
-    async carregarFormulario() {
-      this.loadingDados = true;
 
-      await api.get(`/organizacao/${this.modalExcluirOrganizacaoState.payload.id}`);
+// Data
+const loading = ref(false);
+const loadingDados = ref(false);
 
-      this.loadingDados = false;
-    },
-    fecharModal() {
-      this.modalExcluirOrganizacaoState.fechar()
-      this.$emit("onClose");
-    },
-    async submit() {
-      try {
-        this.loading = true;
-        await api.delete(`/organizacao/${this.modalExcluirOrganizacaoState.payload.id}`);
+const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore();
+const { t: $t } = useI18n();
+const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const $emit = defineEmits(["onClose","onReload"]);
+// Computed
 
-        this.fecharModal();
-        this.modalExcluirOrganizacaoState.onReload();
+// Methods
+const carregarFormulario = async function() {
+	loadingDados.value = true;
 
-      } catch (e) {
-        this.$laravelError(e, this.$t('textos.erro_excluir_organizacao'));
-      } finally {
-        this.loading = false;
-      }
-    },
-  },
-  beforeUnmount() {
-  },
-  created() {
-  },
+	await api.get(`/organizacao/${modalExcluirOrganizacaoState.payload.id}`);
+
+	loadingDados.value = false;
 }
+
+const fecharModal = function() {
+	modalExcluirOrganizacaoState.fechar()
+	$emit("onClose");
+}
+
+const submit = async function() {
+	try {
+		loading.value = true;
+		await api.delete(`/organizacao/${modalExcluirOrganizacaoState.payload.id}`);
+
+		fecharModal();
+		modalExcluirOrganizacaoState.onReload();
+
+	} catch (e) {
+		backendToastError(e, $t('textos.erro_excluir_organizacao'));
+	} finally {
+		loading.value = false;
+	}
+}
+
+
+// Created
+
 </script>
 
 <style scoped>

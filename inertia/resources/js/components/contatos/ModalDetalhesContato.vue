@@ -52,65 +52,57 @@
   </BaseModal>
 </template>
 
-<script>
+<script setup>
 
 import api from "../../services/api";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import BaseModal from "../../external/components/modal/BaseModal";
 import {modalDetalhesContatoStore} from "../../stores/contato";
+import { reactive, ref, computed } from 'vue';
+import { useI18n } from "vue-i18n";
 
-export default {
-  name: "ModalDetalhesContato",
-  setup() {
-    const modalDetalhesContatoState = modalDetalhesContatoStore();
-    return {
-      modalDetalhesContatoState
-    };
-  },
-  components: {
-    BaseModal,
-    BaseButtonTertiary,
-  },
-  data() {
-    return {
-      form: {
-        nome: '',
-        email: '',
-        telefone: '',
-        cep: '',
-        endereco: '',
-        numero: '',
-        complemento: '',
-        cidade: '',
-        estado: '',
-        organizacao_id: null,
-      },
-      loadingDados: false
-    }
-  },
-  computed: {},
-  methods: {
-    async carregarFormulario() {
-      // this.loadingDados = true;
+const $emit = defineEmits(['onClose']);
+const modalDetalhesContatoState = modalDetalhesContatoStore();
+const { t: $t } = useI18n();
 
-      // const response = await api.get(`/contato/${this.modalDetalhesContatoState.payload.id}`);
-      // const dados = response.data.data;
-      // Object.assign(this.form, dados);
-      // this.form.organizacao_id = dados.organizacao;
+// Data
+const form = reactive({
+	nome: '',
+	email: '',
+	telefone: '',
+	cep: '',
+	endereco: '',
+	numero: '',
+	complemento: '',
+	cidade: '',
+	estado: '',
+	organizacao_id: null,
+});
+const loadingDados = ref(false);
 
-      // this.loadingDados = false;
-      Object.assign(this.form, this.modalDetalhesContatoState.payload);
-    },
-    fecharModal() {
-      this.modalDetalhesContatoState.fechar()
-      this.$emit("onClose");
-    },
-  },
-  beforeUnmount() {
-  },
-  created() {
-  },
+// Computed
+
+// Methods
+const carregarFormulario = async function() {
+	// loadingDados.value = true;
+
+	// const response = await api.get(`/contato/${this.modalDetalhesContatoState.payload.id}`);
+	// const dados = response.data.data;
+	// Object.assign(form, dados);
+	// form.organizacao_id = dados.organizacao;
+
+	// loadingDados.value = false;
+	Object.assign(form, modalDetalhesContatoState.payload);
 }
+
+const fecharModal = function() {
+	modalDetalhesContatoState.fechar()
+	$emit("onClose");
+}
+
+
+// Created
+
 </script>
 
 <style scoped>

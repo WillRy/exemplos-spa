@@ -29,7 +29,7 @@ export default defineConfig({
         }),
     ],
     resolve: {
-        extensions: ['.js', '.json', '.vue'],
+        extensions: ['.js', '.json', '.vue','.ts'],
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url)),
         }

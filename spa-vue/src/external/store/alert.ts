@@ -1,16 +1,21 @@
 import { defineStore } from "pinia";
+import { alertParams, RootState } from "../types/";
 
 let idNotificacao = 1;
+
+
+
+
 
 export const useAlertStore = defineStore("alert", {
   state: () => ({
     alerts: [],
-  }),
+  } as RootState),
   actions: {
-    setAlert({ tipo, title, mensagem, id = null, acoes = null }) {
+    setAlert({ tipo, title, mensagem, id = null, acoes = null }: alertParams) {
       const idAlert = id ? id : idNotificacao++;
 
-      const exists = this.alerts.find((alert) => alert.id === id);
+      const exists = this.alerts.find((alert) => alert.id === idAlert);
 
       if (exists) return;
 
@@ -22,7 +27,7 @@ export const useAlertStore = defineStore("alert", {
         acoes: acoes,
       });
     },
-    error({ title, mensagem, id = null, acoes = null }) {
+    error({ title, mensagem, id = null, acoes = null }: alertParams) {
       const idAlert = id ? id : idNotificacao++;
 
       const exists = this.alerts.find((alert) => alert.id === id);
@@ -37,7 +42,7 @@ export const useAlertStore = defineStore("alert", {
         acoes: acoes,
       });
     },
-    success({ title, mensagem, id = null, acoes = null }) {
+    success({ title, mensagem, id = null, acoes = null }: alertParams) {
       const idAlert = id ? id : idNotificacao++;
 
       const exists = this.alerts.find((alert) => alert.id === id);
@@ -52,7 +57,7 @@ export const useAlertStore = defineStore("alert", {
         acoes: acoes,
       });
     },
-    info({ title, mensagem, id = null, acoes = null }) {
+    info({ title, mensagem, id = null, acoes = null }: alertParams) {
       const idAlert = id ? id : idNotificacao++;
 
       const exists = this.alerts.find((alert) => alert.id === id);
@@ -67,7 +72,7 @@ export const useAlertStore = defineStore("alert", {
         acoes: acoes,
       });
     },
-    warning({ title, mensagem, id = null, acoes = null }) {
+    warning({ title, mensagem, id = null, acoes = null }: alertParams) {
       const idAlert = id ? id : idNotificacao++;
 
       const exists = this.alerts.find((alert) => alert.id === id);
@@ -82,7 +87,7 @@ export const useAlertStore = defineStore("alert", {
         acoes: acoes,
       });
     },
-    removeAlert(id) {
+    removeAlert(id: any) {
       this.alerts = this.alerts.filter((alert) => alert.id !== id);
     },
   },

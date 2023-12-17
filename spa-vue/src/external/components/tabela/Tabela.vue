@@ -136,12 +136,12 @@ export default {
         },
         dadosAgrupados() {
 
-            debugger
+
             let resultado = [];
             this.dados.forEach((dado) => {
                 let dadosRow = []
 
-                debugger
+
                 for (const coluna of this.colunasComCheckbox) {
 
                     const valor = dado[coluna.nome]

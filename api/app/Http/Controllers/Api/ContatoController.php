@@ -14,6 +14,7 @@ class ContatoController extends \App\Http\Controllers\Controller
         try {
             $contatos = (new Contato())->pesquisar(
                 $request->input("pesquisa", null),
+                $request->input("empresa_id", null),
                 $request->input("sortName", "id"),
                 $request->input("sortOrder", "desc")
             );

@@ -1,32 +1,37 @@
 <template>
   <BaseModal
-      :aberta="modalExcluirTagState.open"
-      @onClose="fecharModal"
-      @onOpen="carregarFormulario"
+    :aberta="modalExcluirTagState.open"
+    @onClose="fecharModal"
+    @onOpen="carregarFormulario"
   >
     <template #title>
       <h3>{{ $t("textos.exclusao_tag") }}</h3>
     </template>
     <template #body>
-      <Loader width="60px" height="60px" :cor-principal="true" v-if="loadingDados"/>
+      <Loader
+        width="60px"
+        height="60px"
+        :cor-principal="true"
+        v-if="loadingDados"
+      />
       <p v-else>
-        {{ $t('textos.confirmar_excluir_tag') }}
-        <strong>{{ modalExcluirTagState.payload.nome }}</strong>?
+        {{ $t("textos.confirmar_excluir_tag") }}
+        <strong>{{ modalExcluirTagState.payload.nome }}</strong
+        >?
       </p>
     </template>
     <template #footerDireito>
       <BaseButtonTertiary @click.prevent="fecharModal">
-        {{ $t('palavras.cancelar') }}
+        {{ $t("palavras.cancelar") }}
       </BaseButtonTertiary>
       <BaseButtonDanger @click.prevent="submit" :loading="loading">
-        {{ $t('palavras.excluir') }}
+        {{ $t("palavras.excluir") }}
       </BaseButtonDanger>
     </template>
   </BaseModal>
 </template>
 
-<script>
-
+<script setup>
 import api from "../../services/api";
 import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
@@ -35,66 +40,46 @@ import BaseSelectAjax from "../../external/components/form/BaseSelectAjax";
 import BaseInput from "../../external/components/form/BaseInput";
 import BaseDate from "../../external/components/form/BaseDate";
 import BaseButtonDanger from "../../external/components/buttons/BaseButtonDanger";
-import {modalExcluirTagStore} from "../../stores/tag";
+import { modalExcluirTagStore } from "../../stores/tag";
 
-export default {
-  name: "ModalExcluirOrganizacao",
-  setup() {
-    const modalExcluirTagState = modalExcluirTagStore();
-    return {
-      modalExcluirTagState
-    };
-  },
-  components: {
-    BaseButtonDanger,
-    BaseDate,
-    BaseInput,
-    BaseSelectAjax,
-    BaseModal,
-    BaseButtonTertiary,
-    BaseButtonPrimary,
-  },
-  data() {
-    return {
-      loading: false,
-      loadingDados: false
-    }
-  },
-  computed: {},
-  methods: {
-    async carregarFormulario() {
-      this.loadingDados = true;
+import { ref, computed } from "vue";
+import { useI18n } from "vue-i18n";
+import { useBackendToast } from "../../external/hooks/useBackendToast";
 
-      await api.get(`/tag/${this.modalExcluirTagState.payload.id}`);
+// Data
+const modalExcluirTagState = modalExcluirTagStore();
+const { t: $t } = useI18n();
+const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const $emit = defineEmits(["onClose", "onReload"]);
 
-      this.loadingDados = false;
-    },
-    fecharModal() {
-      this.modalExcluirTagState.fechar()
-      this.$emit("onClose");
-    },
-    async submit() {
-      try {
-        this.loading = true;
-        await api.delete(`/tag/${this.modalExcluirTagState.payload.id}`);
+const loading = ref(false);
+const loadingDados = ref(false);
 
-        this.fecharModal();
-        this.modalExcluirTagState.onReload();
+// Computed
 
-      } catch (e) {
-        this.$laravelError(e, $t('textos.erro_excluir_tag'));
-      } finally {
-        this.loading = false;
-      }
-    },
-  },
-  beforeUnmount() {
-  },
-  created() {
-  },
-}
+// Methods
+const carregarFormulario = async function () {};
+
+const fecharModal = function () {
+  modalExcluirTagState.fechar();
+  $emit("onClose");
+};
+
+const submit = async function () {
+  try {
+    loading.value = true;
+    await api.delete(`/tag/${modalExcluirTagState.payload.id}`);
+
+    fecharModal();
+    modalExcluirTagState.onReload();
+  } catch (e) {
+    backendToastError(e, $t("textos.erro_excluir_tag"));
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Created
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

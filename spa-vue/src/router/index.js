@@ -36,26 +36,26 @@ const router = createRouter({
       path: "/",
       component: Publico,
       name: "publico",
-      async beforeEnter(from, to, next) {
-        debugger
-        //indica que foi logout forçado, nao precisa tentar carregar dados do usuario
-        if(from?.redirectedFrom?.name === 'logout') {
-          return next();
-        }
-
-        const usuarioState = usuarioStore();
-        const logado = await usuarioState.carregarUsuarioLogado();
-
-        if (logado) {
-          return next({ name: "dashboard" });
-        }
-        return next();
-      },
       children: [
         {
           path: "",
           name: "login",
           component: Login,
+          async beforeEnter(from, to, next) {
+
+            //indica que foi logout forçado, nao precisa tentar carregar dados do usuario
+            if(from?.redirectedFrom?.name === 'logout') {
+              return next();
+            }
+
+            const usuarioState = usuarioStore();
+            const logado = await usuarioState.carregarUsuarioLogado();
+
+            if (logado) {
+              return next({ name: "dashboard" });
+            }
+            return next();
+          },
         },
         {
           path: "esqueci-senha",

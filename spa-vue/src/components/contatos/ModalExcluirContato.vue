@@ -24,7 +24,7 @@
   </BaseModal>
 </template>
 
-<script>
+<script setup>
 
 import api from "../../services/api";
 import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
@@ -35,64 +35,49 @@ import BaseInput from "../../external/components/form/BaseInput";
 import BaseDate from "../../external/components/form/BaseDate";
 import {modalExcluirContatoStore} from "../../stores/contato";
 import BaseButtonDanger from "../../external/components/buttons/BaseButtonDanger";
+import { ref, computed } from 'vue';
+import { useI18n } from "vue-i18n";
+import { useBackendToast } from "../../external/hooks/useBackendToast";
 
-export default {
-  name: "ModalExcluirContato",
-  setup() {
-    const modalExcluirContatoState = modalExcluirContatoStore();
-    return {
-      modalExcluirContatoState
-    };
-  },
-  components: {
-    BaseButtonDanger,
-    BaseDate,
-    BaseInput,
-    BaseSelectAjax,
-    BaseModal,
-    BaseButtonTertiary,
-    BaseButtonPrimary,
-  },
-  data() {
-    return {
-      loading: false,
-      loadingDados: false
-    }
-  },
-  computed: {},
-  methods: {
-    async carregarFormulario() {
-      // this.loadingDados = true;
+const { t: $t } = useI18n();
+const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const $emit = defineEmits(["onClose","onReload"]);
 
-      // await api.get(`/contato/${this.modalExcluirContatoState.payload.id}`);
+// Data
+const loading = ref(false);
+const loadingDados = ref(false);
 
-      // this.loadingDados = false;
-      Object.assign(this.form, this.modalEditarContatoState.payload);
-    },
-    fecharModal() {
-      this.modalExcluirContatoState.fechar()
-      this.$emit("onClose");
-    },
-    async submit() {
-      try {
-        this.loading = true;
-        await api.delete(`/contato/${this.modalExcluirContatoState.payload.id}`);
+// Computed
+const modalExcluirContatoState = modalExcluirContatoStore();
 
-        this.fecharModal();
-        this.modalExcluirContatoState.onReload();
+// Methods
+const carregarFormulario = async function() {
 
-      } catch (e) {
-        this.$laravelError(e, this.$t('textos.erro_excluir_contato'));
-      } finally {
-        this.loading = false;
-      }
-    },
-  },
-  beforeUnmount() {
-  },
-  created() {
-  },
 }
+
+const fecharModal = function() {
+	modalExcluirContatoState.fechar()
+	$emit("onClose");
+}
+
+const submit = async function() {
+	try {
+		loading.value = true;
+		await api.delete(`/contato/${modalExcluirContatoState.payload.id}`);
+
+		fecharModal();
+		modalExcluirContatoState.onReload();
+
+	} catch (e) {
+    backendToastError(e, $t('textos.erro_excluir_contato'))
+	} finally {
+		loading.value = false;
+	}
+}
+
+
+// Created
+
 </script>
 
 <style scoped>

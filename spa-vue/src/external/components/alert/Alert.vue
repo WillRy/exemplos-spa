@@ -50,7 +50,7 @@ export default {
     Array.from(anchors).forEach(anchor => {
       anchor.addEventListener('click', (e) => {
         e.preventDefault();
-        debugger
+
         const alertIdentificadorAcao = e.currentTarget.getAttribute('data-identificador');
 
         if(this.alert.acoes) {
@@ -65,7 +65,7 @@ export default {
           if(acao.fecharNoClick === undefined || acao.fecharNoClick) this.fecharModal();
 
         }
-        
+
 
       })
 

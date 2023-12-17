@@ -24,10 +24,9 @@ export default defineConfig({
     }),
   ],
   resolve: {
-    extensions: [".js", ".json", ".vue"],
+    extensions: [".js", ".json", ".vue",".ts"],
     alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
-      "vue-i18n": "vue-i18n/dist/vue-i18n.cjs.js",
+      "@": fileURLToPath(new URL("./src", import.meta.url))
     },
   },
   build: {

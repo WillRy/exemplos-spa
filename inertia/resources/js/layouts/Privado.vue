@@ -14,7 +14,7 @@
           <HomeIcon />
         </template>
       </SidebarLink>
-      <SidebarLink href="/painel/organizacoes" is="Link" :active="$page.url.endsWith('organizacoes')">
+      <SidebarLink href="/organizacoes" is="Link" :active="$page.url.endsWith('organizacoes')">
         <template #texto>
           {{ $t("palavras.organizacoes") }}
         </template>
@@ -22,7 +22,7 @@
           <OrganizacaoIcon />
         </template>
       </SidebarLink>
-      <SidebarLink href="/painel/contatos" is="Link" :active="$page.url.endsWith('contatos')">
+      <SidebarLink href="/contatos" is="Link" :active="$page.url.endsWith('contatos')">
         <template #texto>
           {{ $t("palavras.contatos") }}
         </template>
@@ -30,7 +30,7 @@
           <ContatoIcon />
         </template>
       </SidebarLink>
-      <SidebarLink href="/painel/tags" is="Link" :active="$page.url.endsWith('tags')">
+      <SidebarLink href="/tags" is="Link" :active="$page.url.endsWith('tags')">
         <template #texto>
           {{ $t("palavras.tags") }}
         </template>

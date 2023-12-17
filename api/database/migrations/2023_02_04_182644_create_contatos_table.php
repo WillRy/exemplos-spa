@@ -26,7 +26,7 @@ return new class extends Migration {
             $table->string('estado', 255)->nullable();
 
             $table->bigInteger('organizacao_id')->unsigned()->nullable();
-            $table->foreign('organizacao_id')->references('id')->on('organizacoes');
+            $table->foreign('organizacao_id')->references('id')->on('organizacoes')->onDelete('CASCADE')->onUpdate('CASCADE');
 
 
             $table->timestamps();

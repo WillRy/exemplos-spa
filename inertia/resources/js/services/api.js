@@ -10,7 +10,7 @@ export function injectStore(st) {
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 const api = axios.create({
-    baseURL: '/api'
+    baseURL: '/'
 });
 
 api.interceptors.request.use(function (config) {
@@ -19,21 +19,6 @@ api.interceptors.request.use(function (config) {
     return config;
 });
 
-/**
- * @important
- *
- * Detecta automaticamente a expiração do token
- * e leva o usuário para a tela de login
- */
-api.interceptors.response.use(function (response) {
-    return response;
-}, async function (error) {
-    if (401 === error.response.status || 419 === error.response.status) {
-        window.localStorage.removeItem("token");
-        window.location.href = "/"
-    }
-    return Promise.reject(error);
-});
 export default api;
 
 
