@@ -1,13 +1,11 @@
 <?php
 
-use App\Http\Controllers\Api\TagsController;
 use App\Http\Controllers\OrganizacaoController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContatoController;
 use App\Http\Controllers\LangController;
 use App\Http\Controllers\PainelController;
 use App\Http\Controllers\TagController;
-use App\Models\Organizacao;
 use Illuminate\Support\Facades\Route;
 
 /*

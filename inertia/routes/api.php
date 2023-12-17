@@ -26,10 +26,5 @@ Route::group(['middleware' => 'locale'], function(){
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/refresh', [AuthController::class, 'refreshToken'])->name('refreshToken');
     Route::post('/logout', [AuthController::class, 'logout']);
-
-
-    //rotas privadas
-
-
 });
 
