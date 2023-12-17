@@ -9,6 +9,12 @@
       placement="bottom-start"
       v-bind="$attrs"
     >
+      <div class="label-container" v-if="$slots.label">
+        <slot name="label" v-if="$slots.label" @click.stop=""></slot>
+      </div>
+      <div class="label-container" v-if="label">
+        <label>{{ label }}</label>
+      </div>
       <BaseButtonTertiary
         class="dropdown-btn"
         @click.stop.prevent="toggle"
@@ -21,13 +27,21 @@
 
       <!-- This will be the content of the popover -->
       <template #popper="{ hide }" v-if="$slots.acoes">
-        <div class="dropdown-botao" @click.stop="fechar" :style="{maxHeight: maxHeight}">
+        <div
+          class="dropdown-botao"
+          @click.stop="fechar"
+          :style="{ maxHeight: maxHeight }"
+        >
           <slot name="acoes"></slot>
         </div>
       </template>
 
       <template #popper="{ hide }" v-if="$slots.conteudo">
-        <div class="dropdown-conteudo" @click.stop="" :style="{maxHeight: maxHeight}">
+        <div
+          class="dropdown-conteudo"
+          @click.stop=""
+          :style="{ maxHeight: maxHeight }"
+        >
           <slot name="conteudo"></slot>
         </div>
       </template>
@@ -42,7 +56,7 @@ import ArrowDownIcon from "../icons/ArrowDownIcon.vue";
 import { directive } from "../../directives/click-away";
 import BaseButton from "../buttons/BaseButton.vue";
 import ArrowDownSolidIcon from "../icons/ArrowDownSolidIcon.vue";
-import  BaseButtonTertiary  from "../buttons/BaseButtonTertiary.vue";
+import BaseButtonTertiary from "../buttons/BaseButtonTertiary.vue";
 
 export default {
   name: "BaseDropdownTertiary",
@@ -62,13 +76,16 @@ export default {
       default: true,
     },
     disabled: {
-      type: Boolean,
       default: false,
     },
     maxHeight: {
       type: String,
-      default: '400px',
-    }
+      default: "400px",
+    },
+    label: {
+      type: String,
+      default: "",
+    },
   },
   components: {
     VDropdown: Dropdown,
@@ -76,8 +93,8 @@ export default {
     ArrowDownIcon,
     BaseButton,
     ArrowDownSolidIcon,
-    BaseButtonTertiary
-},
+    BaseButtonTertiary,
+  },
   directives: {
     "click-away": directive,
   },
@@ -122,6 +139,30 @@ export default {
 </script>
 
 <style scoped>
+* {
+  box-sizing: border-box;
+
+  --label-color: var(--gray-400);
+  --label-margin-bottom: 2px;
+
+  /* cor usada para destaque no focus */
+  --focus-color: var(--primary-color-principal-focus);
+
+  /* espaçamento do texto/label */
+  --padding-text: 16px;
+}
+
+:deep(label) {
+  line-height: 24px;
+  font-weight: 400;
+  font-size: 0.75rem;
+
+  color: var(--label-color);
+  margin-bottom: var(--label-margin-bottom);
+  display: block;
+  padding-left: var(--padding-text);
+}
+
 .dropdown-container {
   display: inline-block;
 }
@@ -202,54 +243,13 @@ img {
   justify-content: space-between;
   gap: 12px;
 
-  background: var(--tertiary-button-background);
-  color: var(--tertiary-button-color);
-  border: 1px solid var(--tertiary-button-border);
+  background: none;
+  color: var(--primary-color-principal);
+  border: 1px solid transparent;
 }
 
 .dropdown-btn svg {
   transition: rotate 100ms;
-}
-
-.dropdown-btn svg :deep(path) {
-  fill: var(--primary-color-principal);
-}
-
-.dropdown-btn:hover {
-  background: var(--primary-color-50);
-  color: var(--primary-color-principal-hover);
-  border: 1px solid transparent;
-}
-
-.dropdown-btn:focus-within {
-  color: var(--primary-color-principal-hover);
-  border: 1px solid var(--primary-color-principal-hover);
-  background: var(--primary-color-50);
-}
-
-.dropdown-btn:active {
-  background: var(--tertiary-button-active-background);
-  color: #fff;
-  border: 1px solid transparent;
-}
-
-.dropdown-btn:disabled {
-  background: var(--gray-200);
-  color: var(--gray-300);
-  cursor: not-allowed;
-  border: none;
-}
-
-.dropdown-btn:deep(path) {
-  fill: var(--tertiary-button-color);
-}
-
-.dropdown-btn:hover :deep(path) {
-  fill: var(--tertiary-button-color);
-}
-
-.dropdown-btn.active :deep(path) {
-  fill: #fff;
 }
 
 :global(.v-popper__inner) {

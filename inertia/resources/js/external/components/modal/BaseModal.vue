@@ -83,7 +83,6 @@ export default {
       default: "20px",
     },
     aberta: {
-      type: Boolean,
       default: false,
     },
     fecharClickOutside: {
@@ -104,13 +103,30 @@ export default {
         return ["sm", "md", "lg", "xl", "xxl"].includes(value);
       },
     },
+    autoFocusSelector: {
+      default: () => ['.btn-primary','.btn-danger'],
+      required: false,
+      type: Array
+    }
   },
-  watch: {
-    aberta(valor) {
-      if (valor) {
-        this.$emit("onOpen");
+  watch:{
+    aberta(foiAberta){
+      if(foiAberta){
+        this.$emit('onOpen')
+
+        setTimeout(() => {
+          this.autoFocusSelector.forEach((item) => {
+            const autoFocus = this.$el.querySelector(item);
+            if(autoFocus) {
+              autoFocus.focus();
+            }
+
+            return;
+          });
+        });
+       
       }
-    },
+    }
   },
   computed: {
     tamanhoClass() {

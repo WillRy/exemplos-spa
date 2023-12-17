@@ -58,12 +58,13 @@ th button {
   background: none;
   border: none;
   cursor: pointer;
+  padding: 0px;
 }
 
 th span {
   color: var(--gray-700);
   font-weight: bold;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.5rem;
   white-space: nowrap;
   display: flex;
   align-items: center;

@@ -1,9 +1,17 @@
 <template>
-  <button :class="{active: active, disabled: disabled}" class="navegacao-abas-item" @click="navegar">
+  <button
+    :class="{ active: active, disabled: disabled }"
+    class="navegacao-abas-item"
+    @click="navegar"
+  >
     <slot name="antes"></slot>
     <span class="conteudo">
-            <slot></slot>
-        </span>
+      <slot></slot>
+    </span>
+
+    <div class="contador" :class="{ active: active }" v-if="contador && exibirContador">
+      {{ contador }}
+    </div>
     <slot name="depois"></slot>
   </button>
 </template>
@@ -11,14 +19,28 @@
 <script>
 export default {
   name: "NavegacaoAbasItem",
-  props: ["active", 'disabled'],
+  props: ["active", "disabled", "contador","exibirContador"],
+  props: {
+    active: {
+      default: false,
+    },
+    disabled: {
+      default: false,
+    },
+    contador: {
+      default: null
+    },
+    exibirContador: {
+      default: true
+    }
+  },
   methods: {
     navegar() {
       if (this.disabled) return;
       this.$emit("navegar");
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -34,6 +56,7 @@ export default {
   background: none;
   max-height: 36px;
   font-size: 0.875rem;
+  gap: 12px;
 }
 
 .navegacao-abas-item {
@@ -70,7 +93,6 @@ export default {
     fill: #fff;
 } */
 
-
 .navegacao-abas-item:not(.active):hover {
   background: var(--primary-color-principal-hover);
   color: #fff;
@@ -93,7 +115,6 @@ export default {
   white-space: nowrap;
 }
 
-
 .navegacao-abas-item::v-deep(.conteudo img) {
   margin-right: 8px;
 }
@@ -105,5 +126,21 @@ export default {
 .disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.contador {
+  background: #fff;
+  color: var(--primary-color-principal);
+  padding: 6px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.contador.active {
+  background: var(--primary-color-principal);
+  color: #fff;
+  padding: 6px;
+  border-radius: 8px;
+  font-weight: bold;
 }
 </style>

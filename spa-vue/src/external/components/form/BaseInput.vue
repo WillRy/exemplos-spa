@@ -56,7 +56,6 @@ export default {
     components: {InfoInputIcon, InfoSuccessIcon, InfoErrorIcon},
     props: {
         disabled: {
-            type: Boolean,
             default: false
         },
         borda: {

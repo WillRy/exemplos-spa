@@ -8,7 +8,7 @@ function getFormError(e: string|Error|AxiosError) {
 
   let response = axios.isAxiosError(e) ? e?.response : null;
   const json: errosBackend | null = response && response.data ? response.data as errosBackend : null;
-
+  
 
   if (response && response.status === 422) {
     if (json && json.errors) {
@@ -55,7 +55,7 @@ export function useBackendToast() {
 
   function backendToastError(e: string|Error|AxiosError, message:string|null = null) {
 
-
+    debugger
     let response = axios.isAxiosError(e) ? e?.response : null;
     const data: errosBackend | null = response && response.data ? response.data as errosBackend : null;
 

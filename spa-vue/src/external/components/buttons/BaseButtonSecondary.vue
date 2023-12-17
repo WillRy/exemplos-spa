@@ -33,27 +33,28 @@ export default {
 
 <style scoped>
 .btn-secondary {
-  background: var(--secondary-button-background);
-  color: var(--secondary-button-color);
-  border: 1px solid var(--secondary-button-border);
+  background: none;
+  color: var(--primary-color-principal);
+  border: 1px solid var(--primary-color-principal);
 }
 
 .btn-secondary:hover {
-  border: 1px solid var(--secondary-button-hover-border);
-  color: var(--secondary-button-hover-color);
-  background: var(--secondary-button-hover-background);
+  background: var(--primary-color-50);
+  color: var(--primary-color-600);
+  border: 1px solid var(--primary-color-500);
 }
 
 .btn-secondary:focus:not(:active) {
-  border: 1px solid var(--secondary-button-focus-border);
-  background: var(--secondary-button-focus-background);
-  box-shadow: 0 0 0 1px var(--secondary-button-focus-shadow);
+  background: var(--primary-color-50);
+  color: var(--primary-color-500);
+  border: 1px solid #fff;
+  box-shadow: 0 0 0 1px var(--primary-color-500);
 }
 
 .btn-secondary:active {
-  background: var(--secondary-button-active-background);
-  color: var(--secondary-button-active-color);
-  border: 1px solid var(--secondary-button-active-border);
+  background: var(--primary-color-400);
+  color: #fff;
+  border: 1px solid var(--primary-color-400);
 }
 
 .btn-secondary:disabled {
@@ -68,18 +69,18 @@ export default {
 }
 
 .btn-secondary :deep(path) {
-  fill: var(--secondary-button-color);
+  fill: var(--primary-color-principal);
 }
 
 .btn-secondary:hover :deep(path) {
-  fill: var(--secondary-button-hover-color);
+  fill: var(--primary-color-500);
 }
 
 .btn-secondary:focus :deep(path) {
-  fill: var(--secondary-button-color);
+  fill: var(--primary-color-principal);
 }
 
 .btn-secondary:active :deep(path) {
-  fill: var(--secondary-button-active-color);
+  fill: #fff;
 }
 </style>

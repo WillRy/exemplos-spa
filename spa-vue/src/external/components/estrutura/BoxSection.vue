@@ -70,9 +70,16 @@ export default {
   margin-left: var(--spacing-3) !important;
 }
 
+.painel-agrupamento {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .painel-agrupamento-borda {
   border: 1px solid #eff0f2;
   border-radius: 8px;
+  flex: 1;
 }
 
 .painel-agrupamento-header {

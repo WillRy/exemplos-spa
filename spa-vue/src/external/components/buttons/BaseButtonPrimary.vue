@@ -33,25 +33,25 @@ export default {
 
 <style scoped>
 .btn-primary {
-  background: var(--primary-button-background);
-  color:  var(--primary-button-color);
+  background: var(--primary-color-principal);
+  color: #fff;
   border: 1px solid transparent;
 }
 
 .btn-primary:hover {
-  background: var(--primary-button-hover-background);
-  color: var(--primary-button-hover-color);
+  background: var(--primary-color-principal-hover);
+  color: #fff;
 }
 
 .btn-primary:focus:not(:active) {
-  box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--primary-button-focus-shadow);
-  background: var(--primary-button-focus-background);
-  color: var(--primary-button-focus-color);
+  box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--primary-color-principal-focus);
+  background: var(--primary-color-principal-focus);
+  color: #fff;
 }
 
 .btn-primary:active {
-  background: var(--primary-button-active-background);
-  color: var(--primary-button-active-color);
+  background: var(--primary-color-principal-active);
+  color: #fff;
 }
 
 .btn-primary:disabled {
@@ -67,19 +67,19 @@ export default {
 }
 
 .btn-primary :deep(path) {
-  fill: var(--primary-button-color);
+  fill: #fff;
 }
 
 .btn-primary:hover :deep(path) {
-  fill: var(--primary-button-hover-color);
+  fill: #fff;
 }
 
 .btn-primary:focus :deep(path) {
-  fill: var(--primary-button-focus-color);
+  fill: #fff;
 }
 
 .btn-primary:active :deep(path) {
-  fill: var(--primary-button-active-color);
+  fill: #fff;
 }
 
 </style>

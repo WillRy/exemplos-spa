@@ -7,8 +7,6 @@
         :disabled="disabled"
         v-model="localValue"
         v-bind="attrs"
-        @click.stop=""
-        ref="checkbox"
       />
       <span class="checkmark"></span>
       <template v-if="label">{{ label }}</template>
@@ -41,7 +39,6 @@ export default {
   inheritAttrs: false,
   props: {
     disabled: {
-      type: Boolean,
       default: false,
     },
     label: {
@@ -70,7 +67,6 @@ export default {
     localValue: {
       set(valor) {
         this.$emit("update:modelValue", valor);
-        this.$emit("onCheckChange", valor);
       },
       get() {
         return this.modelValue;

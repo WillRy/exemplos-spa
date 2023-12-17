@@ -9,6 +9,12 @@
       placement="bottom-start"
       v-bind="$attrs"
     >
+      <div class="label-container" v-if="$slots.label">
+        <slot name="label" v-if="$slots.label" @click.stop=""></slot>
+      </div>
+      <div class="label-container" v-if="label">
+        <label>{{ label }}</label>
+      </div>
       <BaseButtonSecondary
         class="btn-primary dropdown-btn"
         @click.stop.prevent="toggle"
@@ -21,12 +27,20 @@
 
       <!-- This will be the content of the popover -->
       <template #popper="{ hide }" v-if="$slots.acoes">
-        <div class="dropdown-botao" @click.stop="fechar" :style="{maxHeight: maxHeight}">
+        <div
+          class="dropdown-botao"
+          @click.stop="fechar"
+          :style="{ maxHeight: maxHeight }"
+        >
           <slot name="acoes"></slot>
         </div>
       </template>
 
-      <template #popper="{ hide }" v-if="$slots.conteudo" :style="{maxHeight: maxHeight}">
+      <template
+        #popper="{ hide }"
+        v-if="$slots.conteudo"
+        :style="{ maxHeight: maxHeight }"
+      >
         <div class="dropdown-conteudo" @click.stop="">
           <slot name="conteudo"></slot>
         </div>
@@ -60,13 +74,16 @@ export default {
       default: true,
     },
     disabled: {
-      type: Boolean,
       default: false,
     },
     maxHeight: {
       type: String,
-      default: '400px',
-    }
+      default: "400px",
+    },
+    label: {
+      type: String,
+      default: "",
+    },
   },
   components: {
     VDropdown: Dropdown,
@@ -119,6 +136,30 @@ export default {
 </script>
 
 <style scoped>
+* {
+  box-sizing: border-box;
+
+  --label-color: var(--gray-400);
+  --label-margin-bottom: 2px;
+
+  /* cor usada para destaque no focus */
+  --focus-color: var(--primary-color-principal-focus);
+
+  /* espaçamento do texto/label */
+  --padding-text: 16px;
+}
+
+:deep(label) {
+  line-height: 24px;
+  font-weight: 400;
+  font-size: 0.75rem;
+
+  color: var(--label-color);
+  margin-bottom: var(--label-margin-bottom);
+  display: block;
+  padding-left: var(--padding-text);
+}
+
 .dropdown-container {
   display: inline-block;
 }
@@ -198,51 +239,15 @@ img {
   justify-content: space-between;
   gap: 12px;
 
-  background: var(--secondary-button-background);
-  color: var(--secondary-button-color);
-  border: 1px solid var(--secondary-button-border);
+  background: none;
+  color: var(--primary-color-principal);
+  border: 1px solid var(--primary-color-principal);
 }
 
 .dropdown-btn svg {
   transition: rotate 100ms;
 }
 
-.dropdown-btn svg :deep(path) {
-  fill: var(--primary-color-principal);
-}
-
-.dropdown-btn:hover {
-  border: 1px solid var(--secondary-button-hover-border);
-  color: var(--secondary-button-hover-color);
-  background: var(--secondary-button-hover-background);
-}
-
-.dropdown-btn:focus-within {
-  border: 1px solid var(--secondary-button-focus-border);
-  background: var(--secondary-button-focus-background);
-  box-shadow: 0 0 0 1px var(--secondary-button-focus-shadow);
-}
-
-.dropdown-btn:active {
-  background: var(--secondary-button-active-background);
-  color: var(--secondary-button-active-color);
-  border: 1px solid var(--secondary-button-active-border);
-}
-
-.dropdown-btn:disabled {
-  background: var(--gray-200);
-  color: var(--gray-300);
-  cursor: not-allowed;
-  border: none;
-}
-
-.dropdown-btn :deep(path) {
-  fill: var(--secondary-button-color);
-}
-
-.dropdown-btn:hover :deep(path) {
-  fill: var(--secondary-button-color);
-}
 
 :global(.v-popper__inner) {
   background: #fff;

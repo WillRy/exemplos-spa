@@ -33,27 +33,27 @@ export default {
 
 <style scoped>
 .btn-tertiary {
-  background: var(--tertiary-button-background);
-  color: var(--tertiary-button-color);
-  border: 1px solid var(--tertiary-button-border);
+  background: none;
+  color: var(--primary-color-principal);
+  border: 1px solid transparent;
 }
 
 .btn-tertiary:hover {
-  background: var(--tertiary-button-hover-background);
-  color: var(--tertiary-button-hover-color);
-  border: 1px solid var(--tertiary-button-hover-border);
+  background: none;
+  color: var(--primary-color-500);
+  border: 1px solid var(--primary-color-500);
 }
 
 .btn-tertiary:focus:not(:active) {
-  color: var(--tertiary-button-focus-color);
-  border: 1px solid var(--tertiary-button-focus-border);
-  background: var(--tertiary-button-focus-background);
+  background: none;
+  color: var(--primary-color-500);
+  border: 1px solid var(--primary-color-500);
 }
 
 .btn-tertiary:active {
-  background: var(--tertiary-button-active-background);
-  color: var(--tertiary-button-active-color);
-  border: 1px solid var(--tertiary-button-active-border);
+  background: var(--primary-color-400);
+  color: #fff;
+  border: 1px solid var(transparent);
 }
 
 .btn-tertiary:disabled {
@@ -68,19 +68,19 @@ export default {
 }
 
 .btn-tertiary :deep(path) {
-  fill: var(--tertiary-button-color);
+  fill: var(--primary-color-principal);
 }
 
 .btn-tertiary:hover :deep(path) {
-  fill: var(--tertiary-button-hover-color);
+  fill: var(--primary-color-500);
 }
 
 .btn-tertiary:focus :deep(path) {
-  fill: var(--tertiary-button-focus-color);
+  fill: var(--primary-color-500);
 }
 
 .btn-tertiary:active :deep(path) {
-  fill: var(--tertiary-button-active-color);
+  fill: #fff;
 }
 
 </style>

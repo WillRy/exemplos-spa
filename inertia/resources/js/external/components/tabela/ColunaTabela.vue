@@ -1,5 +1,5 @@
 <template>
-    <td :style="{width: width }" class="td-oculta-texto">
+    <td :style="{width: width, padding: paddingColuna }" class="td-oculta-texto">
         <div class="item" :style="{width: width }" v-if="esconderTexto">
             <div class="item-query" :style="{justifyContent: justify}">
                 <span class="overflow">
@@ -10,7 +10,7 @@
                 </button>
             </div>
         </div>
-        <div v-else :style="{width: width }">
+        <div v-else>
             <slot></slot>
         </div>
     </td>
@@ -24,6 +24,9 @@ export default {
     components: {EyeIcon},
     emits: ['onVer'],
     props: {
+        paddingColuna: {
+            default: '0.5rem 0.5rem'
+        },
         width: {
             default: null
         },

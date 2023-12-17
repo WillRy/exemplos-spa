@@ -9,6 +9,12 @@
       placement="bottom-start"
       v-bind="$attrs"
     >
+      <div class="label-container" v-if="$slots.label">
+        <slot name="label" v-if="$slots.label" @click.stop=""></slot>
+      </div>
+      <div class="label-container" v-if="label">
+        <label>{{ label }}</label>
+      </div>
       <BaseButtonPrimary
         class="btn-primary dropdown-btn"
         @click.stop.prevent="toggle"
@@ -21,12 +27,20 @@
 
       <!-- This will be the content of the popover -->
       <template #popper="{ hide }" v-if="$slots.acoes">
-        <div class="dropdown-botao" @click.stop="fechar" :style="{maxHeight: maxHeight}">
+        <div
+          class="dropdown-botao"
+          @click.stop="fechar"
+          :style="{ maxHeight: maxHeight }"
+        >
           <slot name="acoes"></slot>
         </div>
       </template>
 
-      <template #popper="{ hide }" v-if="$slots.conteudo" :style="{maxHeight: maxHeight}">
+      <template
+        #popper="{ hide }"
+        v-if="$slots.conteudo"
+        :style="{ maxHeight: maxHeight }"
+      >
         <div class="dropdown-conteudo" @click.stop="">
           <slot name="conteudo"></slot>
         </div>
@@ -42,7 +56,7 @@ import ArrowDownIcon from "../icons/ArrowDownIcon.vue";
 import { directive } from "../../directives/click-away";
 import BaseButton from "../buttons/BaseButton.vue";
 import ArrowDownSolidIcon from "../icons/ArrowDownSolidIcon.vue";
-import  BaseButtonPrimary  from "../buttons/BaseButtonPrimary.vue";
+import BaseButtonPrimary from "../buttons/BaseButtonPrimary.vue";
 
 export default {
   name: "BaseDropdownPrimary",
@@ -62,13 +76,16 @@ export default {
       default: true,
     },
     disabled: {
-      type: Boolean,
       default: false,
     },
     maxHeight: {
       type: String,
-      default: '400px',
-    }
+      default: "400px",
+    },
+    label: {
+      type: String,
+      default: "",
+    },
   },
   components: {
     VDropdown: Dropdown,
@@ -76,8 +93,8 @@ export default {
     ArrowDownIcon,
     BaseButton,
     ArrowDownSolidIcon,
-    BaseButtonPrimary
-},
+    BaseButtonPrimary,
+  },
   directives: {
     "click-away": directive,
   },
@@ -122,6 +139,30 @@ export default {
 </script>
 
 <style scoped>
+* {
+  box-sizing: border-box;
+
+  --label-color: var(--gray-400);
+  --label-margin-bottom: 2px;
+
+  /* cor usada para destaque no focus */
+  --focus-color: var(--primary-color-principal-focus);
+
+  /* espaçamento do texto/label */
+  --padding-text: 16px;
+}
+
+:deep(label) {
+  line-height: 24px;
+  font-weight: 400;
+  font-size: 0.75rem;
+
+  color: var(--label-color);
+  margin-bottom: var(--label-margin-bottom);
+  display: block;
+  padding-left: var(--padding-text);
+}
+
 .dropdown-container {
   display: inline-block;
 }
@@ -272,56 +313,13 @@ img {
   justify-content: space-between;
   gap: 12px;
 
-  background: var(--primary-button-background);
-  color: var(--primary-button-color);
+  background: var(--primary-color-principal);
+  color: #fff;
   border: 1px solid transparent;
 }
 
 .dropdown-btn svg {
   transition: rotate 100ms;
-}
-
-.dropdown-btn svg :deep(path) {
-  fill: #fff !important;
-}
-
-.dropdown-btn:hover {
-  background: var(--primary-button-hover-background);
-  color: var(--primary-button-hover-color);
-}
-
-.dropdown-btn:focus:not(:active) {
-  box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--primary-button-focus-shadow);
-  background: var(--primary-button-focus-background);
-  color: var(--primary-button-focus-color);
-}
-
-.dropdown-btn:active {
-  background: var(--primary-button-active-background);
-  color: var(--primary-button-active-color);
-}
-
-.dropdown-btn:disabled {
-  background: var(--gray-200);
-  color: var(--gray-300);
-  cursor: not-allowed;
-  border: none;
-}
-
-.dropdown-btn :deep(.fill path) {
-  fill: #fff;
-}
-
-.dropdown-btn:hover :deep(.fill path) {
-  fill: #fff;
-}
-
-.dropdown-btn :deep(.stroke path) {
-  stroke: #fff;
-}
-
-.dropdown-btn:hover :deep(.stroke path) {
-  stroke: #fff;
 }
 
 :global(.v-popper__inner) {

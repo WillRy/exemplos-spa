@@ -5,6 +5,7 @@
       <label
         :for="option[identificadorResposta]"
         v-for="option in options"
+        :key="option[identificadorResposta]"
         class="control control--radio"
       >
         <input

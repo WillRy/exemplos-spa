@@ -2,15 +2,7 @@
   <div>
     <div class="separador" v-if="separador"></div>
     <div class="paginacao" v-if="total">
-      <div class="total">
-        Exibindo de
-        <span>{{ numElementoInicial }}</span>
-        a
-        <span>{{ numElementoFinal }}</span>
-        de
-        <span>{{ total }}</span>
-        {{ total > 1 ? 'resultados' : 'resultado' }}
-      </div>
+      <div class="total" v-html=textoPaginacao></div>
       <div class="paginas">
         <div class="paginas-container" v-if="paginasTotal > 1">
           <button
@@ -69,6 +61,10 @@ export default {
     separador: {
       type: Boolean,
       default: false
+    },
+    texto: {
+      type: String,
+      default: 'Exibindo [INICIO] a [FIM] de [TOTAL] [TXT_RESULTADO]'
     }
   },
   methods: {
@@ -80,6 +76,13 @@ export default {
     }
   },
   computed: {
+    textoPaginacao() {
+      return this.texto
+        .replace('[INICIO]', `<span>${this.numElementoInicial}</span>`)
+        .replace('[FIM]', `<span>${this.numElementoFinal}</span>`)
+        .replace('[TOTAL]', `<span>${this.total}</span>`)
+        .replace('[TXT_RESULTADO]', this.total > 1 ? 'resultados' : 'resultado');
+    },
     numElementoInicial() {
       const offset = (this.paginaAtual - 1);
       const offsetNormalizado = this.paginaAtual * this.porPagina - this.porPagina;
@@ -141,7 +144,7 @@ export default {
   width: 42px;
   height: 42px;
   border: 1px solid #EFF0F2;
-  color: var(--primary-color-principal-hover);
+  color: var(--primary-color-principal);
   cursor: pointer;
   padding: 10px;
   user-select: none;
@@ -159,8 +162,14 @@ export default {
   cursor: not-allowed;
 }
 
-.pagina.router-link-exact-active, .pagina:hover:not(:disabled), .active {
+.pagina:hover:not(:disabled):not(.active) {
   background: var(--primary-color-principal-hover);
+  color: #fff;
+  border: none;
+}
+
+.pagina.router-link-exact-active,  .active {
+  background: var(--primary-color-principal-active);
   color: #fff;
   border: none;
 }
@@ -172,7 +181,7 @@ export default {
 }
 
 .pagina-arrow:first-of-type :deep(path) {
-  fill: var(--primary-color-principal-hover);
+  fill: var(--primary-color-principal);
 }
 
 .pagina-arrow:first-of-type:hover:not(:disabled) :deep(path) {
@@ -194,7 +203,7 @@ export default {
 }
 
 .pagina-arrow:last-of-type :deep(path) {
-  fill: var(--primary-color-principal-hover);
+  fill: var(--primary-color-principal);
 }
 
 .pagina-arrow:last-of-type:hover:not(:disabled) :deep(path) {
@@ -211,7 +220,7 @@ export default {
 
 
 .total:not(span) {
-  color: var(--primary-color-principal-active);
+  color: var(--text-color);
 }
 
 .total span {

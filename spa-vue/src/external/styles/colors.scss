@@ -114,7 +114,7 @@ $warning-color: #ffd921;
   @include create-color-simple-variables(gray, $gray);
 
   --text-color: #{$text-color};
-  
+
   --secondary-color: #7F2EA6;
   --success-color: #31B383;
   --warning-color: #{$warning-color};
