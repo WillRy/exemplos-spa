@@ -146,7 +146,6 @@ import {
     modalExcluirContatoStore,
 } from "../stores/contato";
 import ModalCriarContato from "../components/contatos/ModalCriarContato";
-import useVuelidate from "@vuelidate/core";
 import ModalEditarContato from "../components/contatos/ModalEditarContato";
 import ModalExcluirContato from "../components/contatos/ModalExcluirContato";
 import ModalDetalhesContato from "../components/contatos/ModalDetalhesContato";

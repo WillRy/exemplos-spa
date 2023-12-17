@@ -1,24 +1,29 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["resources/**/*.ts", "resources/**/*.d.ts", "resources/**/*.vue"],
+  "include": [
+      "src/**/*.ts",
+      "src/**/*.d.ts",
+      "src/**/*.vue"
+  ],
   "exclude": ["node_modules", "public"],
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": false,
-    "skipLibCheck": true,
-    "jsx": "preserve",
-    "sourceMap": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "allowJs": true,
-    "lib": ["esnext", "dom"],
-    "baseUrl": ".",
-    "types": ["vite/client"],
-    "paths": {
-      "@/*": ["./resources/js/*"]
-    },
-    "outDir": "./public/build/assets"
+      "verbatimModuleSyntax": false,
+      "target": "esnext",
+      "module": "esnext",
+      "moduleResolution": "node",
+      "strict": false,
+      "skipLibCheck": true,
+      "jsx": "preserve",
+      "sourceMap": true,
+      "resolveJsonModule": true,
+      "esModuleInterop": true,
+      "allowJs": true,
+      "lib": ["esnext", "dom"],
+      "baseUrl": ".",
+      "types": ["vite/client"],
+      "paths": {
+          "@/*": ["./src*"]
+      },
+      "outDir": "./dist"
   }
 }

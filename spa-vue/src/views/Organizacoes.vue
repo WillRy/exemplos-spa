@@ -187,7 +187,6 @@ import {
   modalExcluirOrganizacaoStore,
 } from "../stores/organizacao";
 import ModalCriarOrganizacao from "../components/organizacoes/ModalCriarOrganizacao";
-import useVuelidate from "@vuelidate/core";
 import ModalEditarOrganizacao from "../components/organizacoes/ModalEditarOrganizacao";
 import ModalExcluirOrganizacao from "../components/organizacoes/ModalExcluirOrganizacao";
 import ModalDetalhesOrganizacao from "../components/organizacoes/ModalDetalhesOrganizacao";
