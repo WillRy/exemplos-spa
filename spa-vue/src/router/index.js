@@ -1,12 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Publico from "../layouts/Publico";
-import Login from "../views/auth/Login";
-import NaoEncontrado from "../views/NaoEncontrado";
-import Privado from "../layouts/Privado";
 import { usuarioStore } from "../stores/usuario";
-import { useToast } from "vue-toast-notification";
-import NProgress from "nprogress";
-
 import { configuraIdioma } from "../middlewares/configuraIdioma";
 import { iniciaLoader, terminaLoader } from "../middlewares/loaders";
 import { verificaPermissao } from "../middlewares/verificaPermissao";
@@ -34,13 +27,13 @@ const router = createRouter({
     },
     {
       path: "/",
-      component: Publico,
+      component: () => import("../layouts/Publico"),
       name: "publico",
       children: [
         {
           path: "",
           name: "login",
-          component: Login,
+          component: () => import('../views/auth/Login'),
           async beforeEnter(from, to, next) {
 
             //indica que foi logout forçado, nao precisa tentar carregar dados do usuario
@@ -72,7 +65,7 @@ const router = createRouter({
     {
       path: "/logout",
       name: "logout",
-      component: Login,
+      component: () => import('../views/auth/Login'),
       async beforeEnter(from, to, next) {
         const usuarioState = usuarioStore();
         await usuarioState.logout();
@@ -81,7 +74,7 @@ const router = createRouter({
     },
     {
       path: "/painel",
-      component: Privado,
+      component: () => import("../layouts/Privado"),
       meta: {
         permissoes: [],
       },
@@ -124,7 +117,7 @@ const router = createRouter({
         },
       ],
     },
-    { path: "/:pathMatch(.*)*", name: "not-found", component: NaoEncontrado },
+    { path: "/:pathMatch(.*)*", name: "not-found", component: () => import("../views/NaoEncontrado") },
   ],
 });
 

@@ -168,6 +168,7 @@ export default {
   },
   methods: {
     mudarIdioma(lang) {
+      this.$i18n.locale = lang;
       definirIdioma(lang);
     },
     mudarSidebar() {
