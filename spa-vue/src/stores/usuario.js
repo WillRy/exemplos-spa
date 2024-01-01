@@ -16,29 +16,25 @@ export const usuarioStore = defineStore("usuarioStore", {
   actions: {
     async carregarUsuarioLogado() {
       try {
-
         const response = await api.get("/usuario");
         this.usuario = response.data.data;
 
-
         return true;
-
-      } catch(error) {
+      } catch (error) {
         this.usuario = null;
         return false;
       }
-
-
     },
     async logout() {
       try {
-
         api.post("/logout");
         this.usuario = null;
 
-        return true;
+        window.localStorage.removeItem("token");
+        window.localStorage.removeItem("refresh_token");
 
-      } catch(error) {
+        return true;
+      } catch (error) {
         return true;
       }
     },

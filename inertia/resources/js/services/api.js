@@ -19,6 +19,15 @@ api.interceptors.request.use(function (config) {
     return config;
 });
 
+api.interceptors.response.use(function (response) {
+    return response;
+}, async function (error) {
+    if (401 === error.response.status) {
+        window.location.href = "/"
+    }
+    return Promise.reject(error);
+});
+
 export default api;
 
 
@@ -28,6 +37,15 @@ axiosWeb.interceptors.request.use(function (config) {
     config.headers['Accept-Language'] = i18n.global.locale;
 
     return config;
+});
+
+axiosWeb.interceptors.response.use(function (response) {
+    return response;
+}, async function (error) {
+    if (401 === error.response.status) {
+        window.location.href = "/"
+    }
+    return Promise.reject(error);
 });
 
 export {
