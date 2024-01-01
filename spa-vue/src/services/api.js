@@ -5,6 +5,8 @@ import router from "../router";
 
 export let store = null;
 
+let isRefreshing = false;
+
 export function injectStore(st) {
   store = st;
 }
@@ -12,7 +14,6 @@ export function injectStore(st) {
 axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 
-let refreshing = false;
 window.localStorage.setItem("refreshing", '0');
 
 let refreshSubscribers = [];
@@ -35,23 +36,26 @@ function monitorLocalStorage(key, callback, expectedValue) {
 
 
 async function refreshToken() {
-  window.localStorage.setItem("refreshing", '1');
+  isRefreshing = 1
 
   try {
-    await api.post("/refresh");
+    const r = await api.post("/refresh");
 
 
-    window.localStorage.setItem("refreshing", "0");
+    isRefreshing = 0
+
+    // window.localStorage.setItem("token", r.data.data.token);
+    // window.localStorage.setItem("refresh_token", r.data.data.refresh_token);
 
 
 
     return true;
   } catch (error) {
     console.error("Erro durante o refresh do token:", error);
-    window.localStorage.setItem("refreshing", "0");
+    isRefreshing = 0
     return false;
   } finally {
-    window.localStorage.setItem("refreshing", "0");
+    isRefreshing = 0
   }
 }
 
@@ -65,6 +69,7 @@ const api = axios.create({
 
 api.interceptors.request.use(function (config) {
   config.headers["Accept-Language"] = i18n.global.locale;
+  // config.headers["Authorization"] = "Bearer " + window.localStorage.getItem("token");
   return config;
 });
 
@@ -103,6 +108,7 @@ api.interceptors.response.use((response) => {
     //enfileirar requests para serem executadas novamente depois do refresh
     return new Promise(resolve => {
       subscribeTokenRefresh(token => {
+        // originalRequest.headers["Authorization"] = "Bearer " + token;
         resolve(api(originalRequest));
       });
     });
@@ -110,7 +116,7 @@ api.interceptors.response.use((response) => {
 
   //request que está sendo executada novamente por erro de autenticação e deu erro novamente, deve causar logout
   if (error.response.status === 401 && originalRequest._retry) {
-    refreshSubscribers = [];
+      refreshSubscribers = [];
       router.push({ name: "logout" });
       return Promise.reject(error);
   }
