@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
-use App\Models\TokenAutenticacao;
+use App\Service\Autenticacao;
 use Illuminate\Support\Facades\Cookie;
 
 class Authenticate extends Middleware
@@ -33,9 +33,8 @@ class Authenticate extends Middleware
 
 
             if ($guard === 'api' && $autenticado) {
-                $jwt = $request->bearerToken() ?? Cookie::get('token');
 
-                $valido = (new TokenAutenticacao())->tokenValido($jwt);
+                $valido = (new Autenticacao())->tokenValido(Autenticacao::tokenRequest());
 
                 if ($valido) {
                     return $this->auth->shouldUse($guard);
@@ -49,7 +48,7 @@ class Authenticate extends Middleware
 
         }
 
-        (new TokenAutenticacao())->logoutTokens();
+        (new Autenticacao())->logoutTokens();
 
         $this->unauthenticated($request, $guards);
     }

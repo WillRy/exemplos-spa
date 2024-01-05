@@ -1,15 +1,10 @@
 import axios from "axios";
 import { i18n } from "../lang";
-import { useToast } from "vue-toast-notification";
 import router from "../router";
 
 export let store = null;
 
 let isRefreshing = false;
-
-export function injectStore(st) {
-  store = st;
-}
 
 axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
@@ -24,17 +19,6 @@ const onRefreshed = (token) => {
       refreshSubscribers = [];
 };
 
-function monitorLocalStorage(key, callback, expectedValue) {
-  const interval = setInterval(() => {
-    const updatedValue = localStorage.getItem(key);
-    if (updatedValue === expectedValue) {
-      clearInterval(interval);
-      callback();
-    }
-  }, 100); // Define o intervalo de verificação em milissegundos
-}
-
-
 async function refreshToken() {
   isRefreshing = 1
 
@@ -46,7 +30,7 @@ async function refreshToken() {
 
     // window.localStorage.setItem("token", r.data.data.token);
     // window.localStorage.setItem("refresh_token", r.data.data.refresh_token);
-
+    onRefreshed(r.data.data.token);
 
 
     return true;
@@ -60,11 +44,13 @@ async function refreshToken() {
 }
 
 export const apiPublic = axios.create({
-  baseURL: "/api",
+  baseURL: "http://localhost:8000/api/",
+  withCredentials: true
 });
 
 const api = axios.create({
-  baseURL: "/api",
+  baseURL: "http://localhost:8000/api/",
+  withCredentials: true
 });
 
 api.interceptors.request.use(function (config) {
@@ -74,34 +60,33 @@ api.interceptors.request.use(function (config) {
 });
 
 
+function redirectLogout() {
+  return router.push({
+    name: "login",
+    query: {
+      logout: 1
+    }
+  });
+}
 // Response interceptor for API calls
 api.interceptors.response.use((response) => {
   return response
 }, function (error) {
   const originalRequest = error.config;
   const errorFromRefresh = error.config.url.includes('refresh');
-  const refreshing = window.localStorage.getItem('refreshing') === '1'
 
   //erro de refresh token deve sofrer logout
   if(errorFromRefresh) {
     refreshSubscribers = [];
-    router.push({ name: "logout" });
+    redirectLogout();
     return Promise.reject(error);
   }
 
   if (error.response.status === 401 && !originalRequest._retry) {
-    //monitorar que o refresh token acabou para refazer requests
-    monitorLocalStorage(
-      "refreshing",
-      () => {
-        onRefreshed();
-      },
-      "0"
-    );
 
     originalRequest._retry = true;
 
-    if (!refreshing) {
+    if (!isRefreshing) {
       refreshToken();
     }
 
@@ -117,7 +102,7 @@ api.interceptors.response.use((response) => {
   //request que está sendo executada novamente por erro de autenticação e deu erro novamente, deve causar logout
   if (error.response.status === 401 && originalRequest._retry) {
       refreshSubscribers = [];
-      router.push({ name: "logout" });
+      redirectLogout();
       return Promise.reject(error);
   }
 

@@ -36,8 +36,8 @@ const router = createRouter({
           component: () => import('../views/auth/Login'),
           async beforeEnter(from, to, next) {
 
-            //indica que foi logout forçado, nao precisa tentar carregar dados do usuario
-            if(from?.redirectedFrom?.name === 'logout') {
+            //indica que foi logout forçado, pois não conseguiu recuperar uma sessão ativa
+            if(from.query.logout || to.query.logout) {
               return next();
             }
 

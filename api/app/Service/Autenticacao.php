@@ -165,7 +165,7 @@ class Autenticacao
         return $tokensGerados;
     }
 
-    public function excluirRegistroDeTokenPorTokenPrincipal(string $token): bool
+    public function excluirLoginPorToken(string $token): bool
     {
         $token = DB::table('token_autenticacao')
             ->where('token', '=', $token)
@@ -190,7 +190,7 @@ class Autenticacao
         setcookie('refresh_token', null, -1, '/', null, null, true);
 
         if ($token) {
-            $this->excluirRegistroDeTokenPorTokenPrincipal($token);
+            $this->excluirLoginPorToken($token);
         }
     }
 
@@ -216,28 +216,17 @@ class Autenticacao
             ->delete();
     }
 
-    public function retornaRefreshTokenAindaValido(int $tokenSessionId)
-    {
-        return DB::table('refresh_token')
-            ->where('id_token_session', '=', $tokenSessionId)
-            ->whereRaw('TIMESTAMPDIFF(SECOND, NOW(), token_expiracao) > 60')
-            ->first();
-    }
-
-    public function retornaAccessTokenAindaValido(int $tokenSessionId)
-    {
-        return DB::table('token_autenticacao')
-            ->where('id_token_session', '=', $tokenSessionId)
-            ->whereRaw('TIMESTAMPDIFF(SECOND, NOW(), token_expiracao) > 60')
-            ->first();
-    }
-
-    public function retornaRefreshFilhoAindaValido(int $idRefreshPai)
+    public function retornaRefreshFilhoAindaValido(int $idRefreshPai): object
     {
         return DB::table('refresh_token')
             ->where('refresh_id_pai', '=', $idRefreshPai)
             ->whereRaw('(token_expiracao > now())')
             ->orderBy('id','desc')
             ->first();
+    }
+
+    public static function tokenRequest(): ?string
+    {
+        return Request::bearerToken() ?? Cookie::get('token');
     }
 }

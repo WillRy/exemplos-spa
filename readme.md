@@ -1,6 +1,6 @@
 # Aplicação de exemplo - Mini CRM
 
-Uma aplicação de exemplo com o objetivo de demonstrar:
+2 aplicações de exemplo com o objetivo de demonstrar:
 
 - autenticação
     - jwt
@@ -9,19 +9,10 @@ Uma aplicação de exemplo com o objetivo de demonstrar:
 - estruturação de rotas publicas e privadas
 - CRUD
 - comunicação entre componentes
+    - pinia
+    - técnicas de reload de dados
 - internacionalização
 - validações
-
-
-## Telas e seus exemplos
-
-### CRUD de organizações e tags
-
-Tela com carregamento inteiro feito posterior a exibição da tela
-
-### CRUD de contatos
-
-Tela com carregamento inteiro feito antes da exibição da tela
 
 
 ## Usuário e senha
@@ -29,9 +20,26 @@ Tela com carregamento inteiro feito antes da exibição da tela
 - usuario: admin@admin.com
 - senha: 123456
 
+
+## Divisão das aplicações
+
+Existem 2 modelos
+
+
+### 1° modelo
+
+Backend e front end separados, através da pasta **api** e a pasta **spa-vue** com o front
+
+### 2° modelo
+
+Aplicação monolítica usando inertia.js
+
 ## Como executar?
 
-### Com docker
+Depende do modelo que deseja executar
+
+
+### Executar 1° modelo
 
 **pasta: api**
 ```shell
@@ -46,21 +54,13 @@ npm install
 npm run dev
 ```
 
-### Sem docker
+### Executar 2° modelo
 
-**pasta: api**
+
+**pasta: inertia**
 ```shell
-composer install
+docker-compose up -d
 
-#configurar credenciais do banco dentro do .env
-cp -r .env.example .env
-
-php artisan migrate:fresh --seed
-```
-
-**pasta: spa-vue**
-
-```shell
 npm install
 
 npm run dev

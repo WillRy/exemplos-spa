@@ -33,9 +33,6 @@
                         </div>
                         <div class="col-auto">
                             <BaseButtonPrimary :loading="loading" type="submit">
-                                <font-awesome-icon
-                                    :icon="faMagnifyingGlass"
-                                ></font-awesome-icon>
                                 {{ $t("palavras.pesquisar") }}
                             </BaseButtonPrimary>
                         </div>
@@ -128,8 +125,6 @@
 <script setup>
 import HeaderPage from "../components/pages/HeaderPage";
 import BaseButtonPrimary from "../external/components/buttons/BaseButtonPrimary";
-import PageContent from "../components/pages/PageContent";
-import ContentTable from "../components/pages/ContentTable";
 import BaseInput from "../external/components/form/BaseInput";
 import BaseSelectAjax from "../external/components/form/BaseSelectAjax";
 import BaseCheckbox from "../external/components/form/BaseCheckbox";
@@ -149,9 +144,6 @@ import ModalCriarContato from "../components/contatos/ModalCriarContato";
 import ModalEditarContato from "../components/contatos/ModalEditarContato";
 import ModalExcluirContato from "../components/contatos/ModalExcluirContato";
 import ModalDetalhesContato from "../components/contatos/ModalDetalhesContato";
-import {useHead} from "@unhead/vue";
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import { reactive, ref, watch } from 'vue';
 import { useBackendToast } from "../external/hooks/useBackendToast";
