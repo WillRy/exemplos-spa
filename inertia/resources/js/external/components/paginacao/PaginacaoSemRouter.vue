@@ -2,39 +2,39 @@
   <div>
     <div class="separador" v-if="separador"></div>
     <div class="paginacao" v-if="total">
-      <div class="total" v-html=textoPaginacao></div>
+      <div class="total" v-html="textoPaginacao"></div>
       <div class="paginas">
         <div class="paginas-container" v-if="paginasTotal > 1">
           <button
-              @click.prevent="query(1)"
-              :disabled="paginaEstaAtiva(1)"
-              title="Primeira"
-              class="pagina pagina-arrow"
+            @click.prevent="query(1)"
+            :disabled="paginaEstaAtiva(1)"
+            title="Primeira"
+            class="pagina pagina-arrow"
           >
-            <ArrowLeftIcon/>
+            <ArrowLeftIcon />
           </button>
 
           <button
-              v-for="pagina in paginas" :key="pagina"
-              @click.prevent="query(pagina)"
-              :class="{active: paginaEstaAtiva(pagina)}"
-              class="pagina"
+            v-for="pagina in paginas"
+            :key="pagina"
+            @click.prevent="query(pagina)"
+            :class="{ active: paginaEstaAtiva(pagina) }"
+            class="pagina"
           >
             {{ pagina }}
           </button>
           <button
-              @click.prevent="query(paginasTotal)"
-              :disabled="paginaEstaAtiva(paginasTotal)"
-              title="Última"
-              class="pagina pagina-arrow"
+            @click.prevent="query(paginasTotal)"
+            :disabled="paginaEstaAtiva(paginasTotal)"
+            title="Última"
+            class="pagina pagina-arrow"
           >
-            <ArrowRightIcon/>
+            <ArrowRightIcon />
           </button>
         </div>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -43,29 +43,28 @@ import ArrowRightIcon from "../icons/ArrowRightIcon.vue";
 
 export default {
   name: "PaginacaoSemRouter",
-  components: {ArrowRightIcon, ArrowLeftIcon},
+  components: { ArrowRightIcon, ArrowLeftIcon },
   props: {
     exibirTotal: false,
     porPagina: {
       type: Number,
-      default: 1
+      default: 1,
     },
     total: {
       type: Number,
-      default: 1
+      default: 1,
     },
     paginaAtual: {
       type: Number,
-      default: 1
+      default: 1,
     },
     separador: {
       type: Boolean,
-      default: false
+      default: false,
     },
     texto: {
       type: String,
-      default: 'Exibindo [INICIO] a [FIM] de [TOTAL] [TXT_RESULTADO]'
-    }
+    },
   },
   methods: {
     query(pagina) {
@@ -73,26 +72,64 @@ export default {
     },
     paginaEstaAtiva(pagina) {
       return pagina === this.paginaAtual;
-    }
+    },
   },
   computed: {
+    textoInformado() {
+      const ptBr =
+        "Exibindo [INICIO] a [FIM] de [TOTAL] [TXT_RESULTADO=resultado|resultados]";
+      const en =
+        "Displaying [INICIO] to [FIM] of [TOTAL] [TXT_RESULTADO=result|results]";
+
+      let textoFinal = this.texto;
+
+      const isBrowser = window !== undefined;
+      if (isBrowser && !textoFinal) {
+        const idioma = document.documentElement.lang;
+
+        textoFinal = ptBr;
+
+        if (idioma.includes("en")) {
+          textoFinal = en;
+        }
+
+        if (idioma.includes("pt-BR")) {
+          textoFinal = ptBr;
+        }
+      }
+
+      return textoFinal;
+    },
     textoPaginacao() {
-      return this.texto
-        .replace('[INICIO]', `<span>${this.numElementoInicial}</span>`)
-        .replace('[FIM]', `<span>${this.numElementoFinal}</span>`)
-        .replace('[TOTAL]', `<span>${this.total}</span>`)
-        .replace('[TXT_RESULTADO]', this.total > 1 ? 'resultados' : 'resultado');
+      let textoSendoTradado = this.textoInformado
+        .replace("[INICIO]", `<span>${this.numElementoInicial}</span>`)
+        .replace("[FIM]", `<span>${this.numElementoFinal}</span>`)
+        .replace("[TOTAL]", `<span>${this.total}</span>`);
+
+      // Use regex para extrair o valor após o sinal de igual em [TXT_RESULTADO=resultado|resultados]
+      let matchResultado = /\[TXT_RESULTADO=([^|\]]+)\|([^|\]]+)\]/.exec(
+        textoSendoTradado
+      );
+
+      // Se houver uma correspondência, substitua [TXT_RESULTADO=resultado|resultados] pelo valor correto
+      if (matchResultado) {
+        let valorResultado = this.total <= 1 ? matchResultado[1] : matchResultado[2];
+        textoSendoTradado = textoSendoTradado.replace(matchResultado[0],valorResultado);
+      }
+
+      return textoSendoTradado;
     },
     numElementoInicial() {
-      const offset = (this.paginaAtual - 1);
-      const offsetNormalizado = this.paginaAtual * this.porPagina - this.porPagina;
+      const offset = this.paginaAtual - 1;
+      const offsetNormalizado =
+        this.paginaAtual * this.porPagina - this.porPagina;
       return offsetNormalizado + 1;
     },
     numElementoFinal() {
-      if(this.paginasTotal === this.paginaAtual) {
+      if (this.paginasTotal === this.paginaAtual) {
         return this.total;
       }
-      
+
       return this.paginaAtual * this.porPagina;
     },
     paginas() {
@@ -115,8 +152,10 @@ export default {
       const total = this.total / this.porPagina;
       return total !== Infinity ? Math.ceil(total) : 0;
     },
-  }
-}
+    idiomaAutomatico() {},
+  },
+  created() {},
+};
 </script>
 
 <style scoped>
@@ -143,7 +182,7 @@ export default {
 .pagina {
   width: 42px;
   height: 42px;
-  border: 1px solid #EFF0F2;
+  border: 1px solid #eff0f2;
   color: var(--primary-color-principal);
   cursor: pointer;
   padding: 10px;
@@ -154,7 +193,6 @@ export default {
   align-items: center;
   justify-content: center;
 }
-
 
 .pagina:disabled {
   background: var(--gray-200);
@@ -168,7 +206,8 @@ export default {
   border: none;
 }
 
-.pagina.router-link-exact-active,  .active {
+.pagina.router-link-exact-active,
+.active {
   background: var(--primary-color-principal-active);
   color: #fff;
   border: none;
@@ -218,7 +257,6 @@ export default {
   border-left: 0;
 }
 
-
 .total:not(span) {
   color: var(--text-color);
 }
@@ -230,8 +268,7 @@ export default {
 
 .separador {
   height: 1px;
-  background: #EFF0F2;
+  background: #eff0f2;
   margin: 20px 0;
 }
-
 </style>

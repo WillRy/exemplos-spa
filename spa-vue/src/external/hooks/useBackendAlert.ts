@@ -1,5 +1,6 @@
-import axios, { Axios, AxiosError, AxiosResponse } from "axios";
-import { alertParams, errosBackend, errosTratados, jsonBackend } from "../types";
+import axios from "axios";
+import type { Axios, AxiosError, AxiosResponse } from "axios";
+import type { alertParams, errosBackend, errosTratados, jsonBackend } from "../types";
 import { useAlertStore } from "../store/alert";
 
 

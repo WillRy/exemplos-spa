@@ -56,7 +56,7 @@ export default {
   background: none;
   max-height: 36px;
   font-size: 0.875rem;
-  gap: 12px;
+  gap: 6px;
 }
 
 .navegacao-abas-item {
@@ -129,18 +129,16 @@ export default {
 }
 
 .contador {
-  background: #fff;
-  color: var(--primary-color-principal);
-  padding: 6px;
-  border-radius: 8px;
-  font-weight: bold;
+    background: #fff;
+    color: var(--primary-color-principal);
+    padding: 4px;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 14px;
 }
 
 .contador.active {
   background: var(--primary-color-principal);
   color: #fff;
-  padding: 6px;
-  border-radius: 8px;
-  font-weight: bold;
 }
 </style>

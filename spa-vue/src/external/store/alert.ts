@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { alertParams, RootState } from "../types/";
+import type { alertParams, RootState } from '../types';
 
 let idNotificacao = 1;
 

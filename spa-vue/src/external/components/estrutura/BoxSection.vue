@@ -12,7 +12,7 @@
         classeFundoCinza,
         classePadding,
       ]"
-      :style="{maxHeight: alturaMaxima, overflow: alturaMaxima ? 'auto' : ''}"
+      :style="{minHeight: alturaMinima, maxHeight: alturaMaxima, overflow: alturaMaxima ? 'auto' : ''}"
     >
       <slot></slot>
     </div>
@@ -42,7 +42,12 @@ export default {
       type: String,
       default: null,
       required: false
-    }
+    },
+    alturaMinima: {
+      type: String,
+      default: null,
+      required: false
+    },
   },
   computed: {
     classeFundoCinza() {

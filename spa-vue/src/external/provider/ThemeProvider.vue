@@ -1,52 +1,126 @@
+<template>
+  <div class="themeprovider">
+    <slot :thema="thema"></slot>
+  </div>
+</template>
+
+<script setup>
+import {
+  defineProps,
+  computed,
+  reactive,
+  ref,
+  onBeforeMount,
+  watch,
+} from "vue";
+import {
+  lighten,
+  darken,
+  shade,
+  setHue,
+  setSaturation,
+  tint,
+  adjustHue,
+  setLightness,
+  readableColor,
+  getContrast,
+} from "polished";
+
+const props = defineProps({
+  corThemaPrincipal: {
+    type: String,
+    required: false,
+  },
+});
+
+const dados = reactive({
+    corThemaPrincipal: props.corThemaPrincipal
+})
+
+const thema = reactive({
+  primaryColor: {
+    50: "#c4d8ff",
+    100: "#abc7ff",
+    200: "#8caff5",
+    300: "#678edb",
+    400: "#4871c2",
+    500: "#2d57a8",
+    600: "#18408f",
+    700: "#082d75",
+    800: "#001f5c",
+    900: "#001642",
+  },
+  warningColor: {
+    50: "#fff3ba",
+    100: "#ffefa1",
+    200: "#ffeb87",
+    300: "#ffe66e",
+    400: "#ffe254",
+    500: "#ffde3b",
+    600: "#ffd921",
+    700: "#e6c007",
+    800: "#cca900",
+    900: "#b39400",
+  },
+});
+
+function gerarEscala(cor) {
+
+    const corDireta = cor;
+
+    const corMaisEscura = shade(0.4, corDireta);
+
+    const corEscuraReforcada = readableColor(corMaisEscura) === "#fff"  ? corMaisEscura : corMaisEscura;
+
+    const contrasteRuim = getContrast(corDireta, "#fff") < 3 ? true : false;
+
+    const corSelecionada = contrasteRuim ? corEscuraReforcada : corDireta;
+
+
+  let novaEscala = {
+    primaryColor: {
+      50: tint(0.4, corSelecionada),
+      100: tint(0.3, corSelecionada),
+      200: tint(0.2, corSelecionada),
+      300: tint(0.1, corSelecionada),
+      400: corSelecionada,
+      500: shade(0.1, corSelecionada),
+      600: shade(0.2, corSelecionada),
+      700: shade(0.3, corSelecionada),
+      800: shade(0.4, corSelecionada),
+      900: shade(0.5, corSelecionada),
+    },
+  };
+
+  Object.assign(thema, novaEscala);
+}
+
+watch(() => props.corThemaPrincipal, () => {
+  if (props.corThemaPrincipal) {
+    dados.corThemaPrincipal = props.corThemaPrincipal;
+    gerarEscala(props.corThemaPrincipal);
+  }
+});
+
+onBeforeMount(() => {
+  if (props.corThemaPrincipal) {
+    dados.corThemaPrincipal = props.corThemaPrincipal;
+    gerarEscala(props.corThemaPrincipal);
+  }
+});
+</script>
+<style scoped lang="scss">
 $primary-colors: (
-  50: #B9CFFC,
-  100: #A3C4F8,
-  200: #7BAAF2,
-  300: #3E94DA,
-  400: #007DC2,
-  500: #0D6495,
-  600: #1A4B69,
-  700: #0B2C40,
-  800: #071E29,
-  900: #05171E,
-);
-
-$second-colors: (
-  "50": #f5e0ff,
-  "100": #edc7ff,
-  "200": #e4adff,
-  "300": #d18df2,
-  "400": #b468d9,
-  "500": #9949bf,
-  "600": #7f2ea6,
-  "700": #67198c,
-  "800": #500973,
-  "900": #3c0059,
-);
-
-$tertiary-colors: (
-  "100": #fff0e3,
-  "200": #ffe3c9,
-  "300": #ffd5b0,
-  "400": #ffc896,
-  "500": #ffba7d,
-  "600": #ffac63,
-  "700": #ff9f4a,
-  "800": #ed872d,
-  "900": #8c4d16,
-);
-
-$success-colors: (
-  "50": #defff3,
-  "100": #c4ffe9,
-  "200": #abffe0,
-  "300": #91ffd7,
-  "400": #6ce6b9,
-  "500": #4bcc9d,
-  "600": #31b383,
-  "700": #1a996a,
-  "800": #098054,
-  "900": #006640,
+  50: v-bind("thema.primaryColor[50]"),
+  100: v-bind("thema.primaryColor[100]"),
+  200: v-bind("thema.primaryColor[200]"),
+  300: v-bind("thema.primaryColor[300]"),
+  400: v-bind("thema.primaryColor[400]"),
+  500: v-bind("thema.primaryColor[500]"),
+  600: v-bind("thema.primaryColor[600]"),
+  700: v-bind("thema.primaryColor[700]"),
+  800: v-bind("thema.primaryColor[800]"),
+  900: v-bind("thema.primaryColor[900]"),
 );
 
 $warning-colors: (
@@ -88,7 +162,7 @@ $gray: (
   "900": #000000,
 );
 
-$text-color: #2F3033;
+$text-color: #2f3033;
 $warning-color: #ffd921;
 
 // FUNÇÃO que cria variaveis CSS com as cores
@@ -104,26 +178,23 @@ $warning-color: #ffd921;
 }
 
 //   incluir variaveis no CSS
-:root {
+:deep(*) {
   @include create-color-variables(primary, $primary-colors);
-  @include create-color-variables(second, $second-colors);
-  @include create-color-variables(tertiary, $tertiary-colors);
-  @include create-color-variables(success, $success-colors);
   @include create-color-variables(warning, $warning-colors);
   @include create-color-variables(error, $error-colors);
   @include create-color-simple-variables(gray, $gray);
 
   --text-color: #{$text-color};
-  
-  --secondary-color: #7F2EA6;
-  --success-color: #31B383;
+
+  --secondary-color: #7f2ea6;
+  --success-color: #31b383;
   --warning-color: #{$warning-color};
   --error-color: var(--error-color-600);
 
-  --primary-color-principal: var(--primary-color-600);
-  --primary-color-principal-hover: var(--primary-color-500);
-  --primary-color-principal-active: var(--primary-color-400);
-  --primary-color-principal-focus: var(--primary-color-500);
+  --primary-color-principal: var(--primary-color-400);
+  --primary-color-principal-hover: var(--primary-color-300);
+  --primary-color-principal-active: var(--primary-color-700);
+  --primary-color-principal-focus: var(--primary-color-300);
 }
 
 // cria classes de texto e background com as cores
@@ -152,24 +223,13 @@ $warning-color: #ffd921;
 }
 
 @include create-color-classes(primary, $primary-colors);
-@include create-color-classes(second, $second-colors);
-@include create-color-classes(tertiary, $tertiary-colors);
-@include create-color-classes(success, $success-colors);
 @include create-color-classes(warning, $warning-colors);
 @include create-color-classes(error, $error-colors);
 @include create-color-simple-classes(gray, $gray);
 
 
 
-
-
-
-
-
-
-
-
-:root {
+:deep(*) {
   /* variaveis botões primarios */
   --primary-button-background: var(--primary-color-principal);
   --primary-button-color: #fff;
@@ -291,3 +351,5 @@ $warning-color: #ffd921;
   --danger-tertiary-button-active-background: var(--error-color-500);
   --danger-tertiary-button-active-color: #fff;
 }
+
+</style>

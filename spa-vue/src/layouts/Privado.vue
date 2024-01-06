@@ -5,7 +5,7 @@
       @change="mudarSidebar"
     >
       <template #logo>
-        <img src="/fff.webp" alt="">
+        <img src="/logo.png" alt="">
       </template>
       <SidebarLink :to="{ name: 'dashboard' }">
         <template #texto> Dashboard </template>

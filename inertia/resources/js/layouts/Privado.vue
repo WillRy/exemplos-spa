@@ -6,7 +6,7 @@
 
     >
       <template #logo>
-        <img src="/fff.webp" alt="">
+        <img src="/logo.png" alt="">
       </template>
       <SidebarLink href="/painel" is="Link" :active="$page.url.endsWith('painel')">
         <template #texto> Dashboard </template>
