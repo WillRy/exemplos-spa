@@ -9,7 +9,7 @@ function getFormError(e: string|Error|AxiosError) {
 
   let response = axios.isAxiosError(e) ? e?.response : null;
   const json: errosBackend | null = response && response.data ? response.data as errosBackend : null;
-  
+
 
   if (response && response.status === 422) {
     if (json && json.errors) {
@@ -30,21 +30,16 @@ function getFormError(e: string|Error|AxiosError) {
 
 export function useBackendAlert() {
   const alertState = useAlertStore();
-  
+
   function backendAlertError(e: string|Error|AxiosError, message:string|null, objAlert: alertParams = {}) {
     let response = axios.isAxiosError(e) ? e?.response : null;
     const data: errosBackend | null = response && response.data ? response.data as errosBackend : null;
-    
+
     if (response && response.status === 422 && data && data.errors) {
       let erro: string = Object.keys(response.data.errors)[0];
       alertState.error({
         ...objAlert,
         mensagem: data.errors[erro][0],
-      });
-    } else if (response && response.status === 401 && response.data.message) {
-      alertState.error({
-        ...objAlert,
-        mensagem: response.data.message,
       });
     } else if (response && response.data && response.data.message) {
       alertState.error({

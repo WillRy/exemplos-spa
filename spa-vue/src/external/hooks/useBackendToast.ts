@@ -9,7 +9,7 @@ function getFormError(e: string|Error|AxiosError) {
 
   let response = axios.isAxiosError(e) ? e?.response : null;
   const json: errosBackend | null = response && response.data ? response.data as errosBackend : null;
-  
+
 
   if (response && response.status === 422) {
     if (json && json.errors) {
@@ -56,7 +56,6 @@ export function useBackendToast() {
 
   function backendToastError(e: string|Error|AxiosError, message:string|null = null) {
 
-    debugger
     let response = axios.isAxiosError(e) ? e?.response : null;
     const data: errosBackend | null = response && response.data ? response.data as errosBackend : null;
 
@@ -64,11 +63,6 @@ export function useBackendToast() {
       let erro = Object.keys(response.data.errors)[0];
       toast.open({
         message: response.data.errors[erro][0],
-        type: "error",
-      });
-    } else if (response && response.status === 401 && response.data.message) {
-      toast.open({
-        message: response.data.message,
         type: "error",
       });
     } else if (response && response.data && response.data.message) {
