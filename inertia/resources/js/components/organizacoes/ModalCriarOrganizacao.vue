@@ -15,13 +15,8 @@
               v-model="nome"
               :label="$t('palavras.nome') + '*'"
               :placeholder="$t('palavras.nome') + '*'"
-            >
-              <template v-slot:error v-if="errors.nome">
-                <p>
-                  {{ errors.nome }}
-                </p>
-              </template>
-            </BaseInput>
+              :error="errors.nome"
+            ></BaseInput>
           </div>
           <div class="col-md-6">
             <BaseInput
@@ -29,13 +24,8 @@
               :label="$t('palavras.email') + '*'"
               :placeholder="$t('palavras.email') + '*'"
               type="email"
-            >
-              <template v-slot:error v-if="errors.email">
-                <p>
-                  {{ errors.email }}
-                </p>
-              </template>
-            </BaseInput>
+              :error="errors.email"
+            ></BaseInput>
           </div>
           <div class="col-md-6">
             <BaseInput
@@ -193,7 +183,7 @@ const resultadoPesquisaTag = reactive({
 
 const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
 const { t: $t } = useI18n();
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const { backendToastError, backendToastSuccess, toastObj, setErrors } = useBackendToast();
 const $emit = defineEmits(["onClose","onReload"]);
 
 const { errors, validate, defineField, resetForm, values } = useForm({
@@ -296,7 +286,8 @@ const submit = async function () {
 
     modalCriarOrganizacaoState.onReload();
   } catch (e) {
-    backendToastError(e, $t("textos.erro_cadastrar_organizacao"));
+    const errors = backendToastError(e, $t("textos.erro_cadastrar_organizacao"));
+    setErrors(errors);
   } finally {
     loading.value = false;
   }

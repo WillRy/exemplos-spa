@@ -15,13 +15,8 @@
               v-model="nome"
               :label="$t('palavras.nome') + '*'"
               :placeholder="$t('palavras.nome') + '*'"
-            >
-              <template v-slot:error v-if="errors.nome">
-                <p>
-                  {{ errors.nome }}
-                </p>
-              </template>
-            </BaseInput>
+              :error="errors.nome"
+            ></BaseInput>
           </div>
           <div class="col-md-6">
             <BaseInput
@@ -29,13 +24,8 @@
               :label="$t('palavras.cor_fundo') + '*'"
               :placeholder="$t('palavras.cor_fundo') + '*'"
               type="color"
-            >
-              <template v-slot:error v-if="errors.cor_fundo">
-                <p>
-                  {{ errors.cor_fundo }}
-                </p>
-              </template>
-            </BaseInput>
+              :error="errors.cor_fundo"
+            ></BaseInput>
           </div>
           <div class="col-md-6">
             <BaseInput
@@ -43,13 +33,8 @@
               :label="$t('palavras.cor_texto') + '*'"
               :placeholder="$t('palavras.cor_texto') + '*'"
               type="color"
-            >
-              <template v-slot:error v-if="errors.cor_texto">
-                <p>
-                  {{ errors.cor_texto }}
-                </p>
-              </template>
-            </BaseInput>
+              :error="errors.cor_texto"
+            ></BaseInput>
           </div>
         </div>
       </form>
@@ -88,7 +73,7 @@ const $emit = defineEmits(["onClose", "onReload"]);
 
 const loading = ref(false);
 
-const { errors, validate, defineField, resetForm, values, setValues } = useForm(
+const { errors, validate, defineField, resetForm, values, setValues, setErrors} = useForm(
   {
     validationSchema: yup.object({
       nome: yup
@@ -154,7 +139,8 @@ const submit = async function () {
     fecharModal();
     modalCriarTagState.onReload();
   } catch (e) {
-    backendToastError(e, $t("textos.erro_cadastrar_tag"));
+    const errors =  backendToastError(e, $t("textos.erro_cadastrar_tag"));
+    setErrors(errors);
   } finally {
     loading.value = false;
   }

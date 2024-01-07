@@ -207,7 +207,7 @@ const buscarDados = function () {
       tags.dados = r.data.data;
     })
     .catch((e) => {
-      backendToastError(e, this.$t("texto.erro_listar_dados"));
+      backendToastError(e, $t("texto.erro_listar_dados"));
     })
     .finally(() => {
       loading.value = false;

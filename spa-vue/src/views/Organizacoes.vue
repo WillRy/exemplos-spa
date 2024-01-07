@@ -126,7 +126,6 @@
                 </span>
               </ColunaTabela>
               <ColunaTabela
-                width="50px"
                 justify="flex-end"
                 class="coluna-acoes"
               >
@@ -277,7 +276,7 @@ const buscarDados = function () {
       organizacoes.dados = r.data.data;
     })
     .catch((e) => {
-      backendToastError(e, this.$t("texto.erro_listar_dados"));
+      backendToastError(e, $t("texto.erro_listar_dados"));
     })
     .finally(() => {
       loading.value = false;

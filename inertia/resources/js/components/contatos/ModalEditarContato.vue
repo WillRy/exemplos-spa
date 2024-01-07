@@ -38,13 +38,8 @@
               v-model="nome"
               :label="$t('palavras.nome') + '*'"
               :placeholder="$t('palavras.nome') + '*'"
-            >
-              <template v-slot:error v-if="errors.nome">
-                <p>
-                  {{ errors.nome }}
-                </p>
-              </template>
-            </BaseInput>
+              :error="errors.nome"
+            ></BaseInput>
           </div>
           <div class="col-md-6">
             <BaseInput
@@ -52,13 +47,8 @@
               label="E-mail *"
               placeholder="E-mail"
               type="email"
-            >
-              <template v-slot:error v-if="errors.email">
-                <p>
-                  {{ errors.email }}
-                </p>
-              </template>
-            </BaseInput>
+              :error="errors.email"
+            ></BaseInput>
           </div>
           <div class="col-md-6">
             <BaseInput
@@ -179,7 +169,7 @@ const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
 const $emit = defineEmits(["onClose","onReload"]);
 
 
-const { errors, validate, defineField, resetForm, values, setValues } = useForm(
+const { errors, validate, defineField, resetForm, values, setValues,setErrors } = useForm(
   {
     validationSchema: yup.object({
       nome: yup
@@ -286,7 +276,8 @@ const submit = async function () {
     fecharModal();
     modalEditarContatoState.onReload();
   } catch (e) {
-    useBackendToast(e, $t("textos.erro_editar_contato"));
+    const errors = backendToastError(e, $t("textos.erro_editar_contato"));
+    setErrors(errors);
   } finally {
     loading.value = false;
   }

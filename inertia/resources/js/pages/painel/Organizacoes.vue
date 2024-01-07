@@ -126,7 +126,6 @@
                 </span>
               </ColunaTabela>
               <ColunaTabela
-                width="50px"
                 justify="flex-end"
                 class="coluna-acoes"
               >

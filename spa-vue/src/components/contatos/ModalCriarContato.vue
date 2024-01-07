@@ -31,12 +31,8 @@
               v-model="nome"
               :label="$t('palavras.nome') + '*'"
               :placeholder="$t('palavras.nome') + '*'"
+              :error="errors.nome"
             >
-              <template v-slot:error v-if="errors.nome">
-                <p>
-                  {{ errors.nome }}
-                </p>
-              </template>
             </BaseInput>
           </div>
           <div class="col-md-6">
@@ -45,12 +41,8 @@
               :label="$t('palavras.email') + '*'"
               :placeholder="$t('palavras.email') + '*'"
               type="email"
+              :error="errors.email"
             >
-              <template v-slot:error v-if="errors.email">
-                <p>
-                  {{ errors.email }}
-                </p>
-              </template>
             </BaseInput>
           </div>
           <div class="col-md-6">
@@ -169,7 +161,7 @@ const { t: $t } = useI18n();
 const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
 const $emit = defineEmits(["onClose","onReload"]);
 
-const { errors, validate, defineField, resetForm, values } = useForm({
+const { errors, validate, defineField, resetForm, values, setErrors } = useForm({
   validationSchema: yup.object({
     nome: yup
       .string()
@@ -269,7 +261,8 @@ const submit = async function () {
     fecharModal();
     modalCriarContatoState.onReload();
   } catch (e) {
-    backendToastError(e, $t("textos.erro_cadastrar_contato"));
+    const errors = backendToastError(e, $t("textos.erro_cadastrar_contato"));
+    setErrors(errors);
   } finally {
     loading.value = false;
   }

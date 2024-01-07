@@ -82,8 +82,11 @@
                             <ColunaTabela>{{ dado.nome }}</ColunaTabela>
                             <ColunaTabela>{{ dado.email }}</ColunaTabela>
                             <ColunaTabela>{{ dado.telefone }}</ColunaTabela>
-                            <ColunaTabela>{{ dado.organizacao.nome }}</ColunaTabela>
-                            <th class="coluna-acoes">
+                            <ColunaTabela>{{ dado.organizacao?.nome }}</ColunaTabela>
+                            <ColunaTabela
+                              justify="flex-end"
+                              class="coluna-acoes"
+                            >
                                 <DropdownAcoes :fundoClaro="true">
                                     <button @click="abrirEdicao(dado)">
                                         {{ $t("palavras.editar") }}
@@ -95,7 +98,7 @@
                                         {{ $t("palavras.detalhes") }}
                                     </button>
                                 </DropdownAcoes>
-                            </th>
+                              </ColunaTabela>
                         </tr></template
                     >
                 </Tabela>
@@ -233,7 +236,7 @@ const buscarDados = function() {
 			contatos.dados = r.data.data;
 		})
 		.catch((e) => {
-			backendToastError(e, this.$t("texto.erro_listar_dados"));
+			backendToastError(e, $t("texto.erro_listar_dados"));
 		})
 		.finally(() => {
 			loading.value = false;

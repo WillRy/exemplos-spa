@@ -2,14 +2,9 @@ import axios from "axios";
 import { i18n } from "../lang";
 import router from "../router";
 
-export let store = null;
-
 let isRefreshing = false;
 
 axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
-
-
-window.localStorage.setItem("refreshing", '0');
 
 let refreshSubscribers = [];
 const subscribeTokenRefresh = (cb) => refreshSubscribers.push(cb);
