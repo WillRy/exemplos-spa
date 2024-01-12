@@ -42,7 +42,7 @@ class Authenticate extends Middleware
             }
         }
 
-        (new Autenticacao())->logoutTokens();
+
 
         $this->unauthenticated($request, $guards);
     }

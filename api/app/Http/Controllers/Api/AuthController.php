@@ -165,6 +165,9 @@ class AuthController extends Controller
 
             return (new ResponseJSON())->setData($novoToken)->render();
         } catch (\Exception $e) {
+
+            (new Autenticacao())->logoutTokens();
+
             return (new ResponseJSON())->setError($e)->setStatusCode(401)->render();
         }
     }

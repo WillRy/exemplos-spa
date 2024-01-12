@@ -3,49 +3,18 @@ import { i18n } from "../lang";
 import router from "../router";
 
 let isRefreshing = false;
+let failedRequestsQueue = [];
 
 axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
-let refreshSubscribers = [];
-const subscribeTokenRefresh = (cb) => refreshSubscribers.push(cb);
-const onRefreshed = (token) => {
-  console.log("refreshing ", refreshSubscribers.length, " subscribers");
-      refreshSubscribers.map(cb => cb(token));
-      refreshSubscribers = [];
-};
-
-async function refreshToken() {
-  isRefreshing = 1
-
-  try {
-    const r = await api.post("/refresh");
-
-
-    isRefreshing = 0
-
-    // window.localStorage.setItem("token", r.data.data.token);
-    // window.localStorage.setItem("refresh_token", r.data.data.refresh_token);
-    onRefreshed(r.data.data.token);
-
-
-    return true;
-  } catch (error) {
-    console.error("Erro durante o refresh do token:", error);
-    isRefreshing = 0
-    return false;
-  } finally {
-    isRefreshing = 0
-  }
-}
-
 export const apiPublic = axios.create({
   baseURL: "http://localhost:8000/api/",
-  withCredentials: true
+  withCredentials: true,
 });
 
 const api = axios.create({
   baseURL: "http://localhost:8000/api/",
-  withCredentials: true
+  withCredentials: true,
 });
 
 api.interceptors.request.use(function (config) {
@@ -54,56 +23,68 @@ api.interceptors.request.use(function (config) {
   return config;
 });
 
-
 function redirectLogout() {
   return router.push({
     name: "login",
     query: {
-      logout: 1
-    }
+      logout: 1,
+    },
   });
 }
-// Response interceptor for API calls
-api.interceptors.response.use((response) => {
-  return response
-}, function (error) {
-  const originalRequest = error.config;
-  const errorFromRefresh = error.config.url.includes('refresh');
 
-  //erro de refresh token deve sofrer logout
-  if(errorFromRefresh) {
-    refreshSubscribers = [];
-    redirectLogout();
-    return Promise.reject(error);
-  }
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    const originalConfig = error.config;
+    const errorFromRefresh = error.config.url.includes("refresh");
+    const status = error.response.status;
 
-  if (error.response.status === 401 && !originalRequest._retry) {
-
-    originalRequest._retry = true;
-
-    if (!isRefreshing) {
-      refreshToken();
+    if (errorFromRefresh) {
+      redirectLogout();
     }
 
-    //enfileirar requests para serem executadas novamente depois do refresh
-    return new Promise(resolve => {
-      subscribeTokenRefresh(token => {
-        // originalRequest.headers["Authorization"] = "Bearer " + token;
-        resolve(api(originalRequest));
+    if (status === 401 && !errorFromRefresh) {
+      if (!isRefreshing) {
+        isRefreshing = true;
+
+        api
+          .post("/refresh")
+          .then((response) => {
+            const token = response.data.data.token;
+
+            // api.defaults.headers['Authorization'] = `Bearer ${token}`;
+
+            failedRequestsQueue.forEach((request) => request.onSuccess(token));
+            failedRequestsQueue = [];
+          })
+          .catch((err) => {
+            failedRequestsQueue.forEach((request) => request.onFailure(err));
+            failedRequestsQueue = [];
+
+            redirectLogout();
+          })
+          .finally(() => {
+            isRefreshing = false;
+          });
+      }
+
+      return new Promise((resolve, reject) => {
+        failedRequestsQueue.push({
+          onSuccess: (token) => {
+            // originalConfig.headers['Authorization'] = `Bearer ${token}`
+            resolve(api(originalConfig));
+          },
+          onFailure: (err) => {
+            reject(err);
+          },
+        });
       });
-    });
+    }
+
+    return Promise.reject(error);
   }
-
-  //request que está sendo executada novamente por erro de autenticação e deu erro novamente, deve causar logout
-  if (error.response.status === 401 && originalRequest._retry) {
-      refreshSubscribers = [];
-      redirectLogout();
-      return Promise.reject(error);
-  }
-
-  return Promise.reject(error);
-});
-
+);
 
 export default api;
-

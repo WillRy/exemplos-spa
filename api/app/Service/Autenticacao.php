@@ -216,7 +216,7 @@ class Autenticacao
             ->delete();
     }
 
-    public function retornaRefreshFilhoAindaValido(int $idRefreshPai): object
+    public function retornaRefreshFilhoAindaValido(int $idRefreshPai): ?object
     {
         return DB::table('refresh_token')
             ->where('refresh_id_pai', '=', $idRefreshPai)
