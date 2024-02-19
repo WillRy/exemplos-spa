@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\InitCustomCSRF;
 use App\Http\Middleware\Locale;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 class Kernel extends HttpKernel
@@ -39,6 +40,8 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
+            InitCustomCSRF::class,
+            // \Illuminate\Session\Middleware\StartSession::class,
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,

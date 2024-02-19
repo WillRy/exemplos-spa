@@ -1,6 +1,11 @@
 # Aplicação de exemplo - Mini CRM
 
-2 aplicações de exemplo com o objetivo de demonstrar:
+Um software que foi criado em 2 arquiteturas:
+
+- Monolítica com Inertia.JS, Laravel e Vue.JS
+- Back e Front separados por API(Laravel) e Front (Vue.JS)
+
+Ambos os modelos contemplam:
 
 - autenticação
     - jwt

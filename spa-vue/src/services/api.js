@@ -17,9 +17,17 @@ const api = axios.create({
   withCredentials: true,
 });
 
-api.interceptors.request.use(function (config) {
+api.interceptors.request.use(async function (config) {
   config.headers["Accept-Language"] = i18n.global.locale;
   // config.headers["Authorization"] = "Bearer " + window.localStorage.getItem("token");
+  const requestMethod = config.method.toUpperCase();
+
+  if(requestMethod !== 'GET') {
+    //axios get csrf
+    const response = await api.get('/csrf');
+    config.headers["X-CSRF-TOKEN"] = response.data.csrf;
+
+  }
   return config;
 });
 
@@ -36,13 +44,13 @@ api.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error) => {
+  async (error) => {
     const originalConfig = error.config;
     const errorFromRefresh = error.config.url.includes("refresh");
     const status = error.response.status;
 
     if (errorFromRefresh) {
-      redirectLogout();
+      await redirectLogout();
     }
 
     if (status === 401 && !errorFromRefresh) {
@@ -59,11 +67,11 @@ api.interceptors.response.use(
             failedRequestsQueue.forEach((request) => request.onSuccess(token));
             failedRequestsQueue = [];
           })
-          .catch((err) => {
+          .catch(async (err) => {
             failedRequestsQueue.forEach((request) => request.onFailure(err));
             failedRequestsQueue = [];
 
-            redirectLogout();
+            await redirectLogout();
           })
           .finally(() => {
             isRefreshing = false;

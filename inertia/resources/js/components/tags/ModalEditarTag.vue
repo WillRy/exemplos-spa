@@ -74,14 +74,14 @@ import * as yup from "yup";
 
 const modalEditarTagState = modalEditarTagStore();
 const { t: $t } = useI18n();
-const { backendToastError, backendToastSuccess, toastObj, setErrors } = useBackendToast();
+const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
 const $emit = defineEmits(["onClose", "onReload"]);
 
 const loading = ref(false);
 const loadingDados = ref(false);
 
 // Data
-const { errors, validate, defineField, resetForm, values, setValues } = useForm(
+const { errors, validate, defineField, resetForm, values, setValues, setErrors } = useForm(
   {
     validationSchema: yup.object({
       nome: yup

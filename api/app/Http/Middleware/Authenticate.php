@@ -33,7 +33,7 @@ class Authenticate extends Middleware
 
             if ($guard === 'api' && $autenticado) {
 
-                $valido = (new Autenticacao())->tokenValido(Autenticacao::tokenRequest());
+                $valido = (new Autenticacao())->isLogged(Autenticacao::tokenRequest());
 
                 if ($valido) {
                     return $this->auth->shouldUse($guard);

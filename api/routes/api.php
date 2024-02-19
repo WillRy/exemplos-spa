@@ -4,8 +4,10 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ContatoController;
 use App\Http\Controllers\Api\OrganizacaoController;
 use App\Http\Controllers\Api\TagsController;
+use App\Service\Autenticacao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +24,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => 'locale'], function(){
+Route::get('/csrf', function (Request $request) {
+    return response()->json(['csrf' => (new Autenticacao)->iniciarCSRF()]);
+});
+
+Route::group(['middleware' => 'locale'], function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/refresh', [AuthController::class, 'refreshToken'])->name('refreshToken');
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -30,7 +36,7 @@ Route::group(['middleware' => 'locale'], function(){
     Route::post('/esqueci-senha', [AuthController::class, 'esqueciSenha'])
         ->name('esqueci-senha');
 
-        Route::post('/redefinir-senha', [AuthController::class, 'redefinirSenha'])
+    Route::post('/redefinir-senha', [AuthController::class, 'redefinirSenha'])
         ->name('password.reset');
 
     //rotas privadas
@@ -64,6 +70,4 @@ Route::group(['middleware' => 'locale'], function(){
             Route::delete('/{id}', [TagsController::class, 'destroy'])->name('tag.destroy');
         });
     });
-
 });
-

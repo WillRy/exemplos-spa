@@ -187,10 +187,10 @@ const resultadoPesquisaTag = reactive({
 
 const modalEditarOrganizacaoState = modalEditarOrganizacaoStore();
 const { t: $t } = useI18n();
-const { backendToastError, backendToastSuccess, toastObj, setErrors } = useBackendToast();
+const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
 const $emit = defineEmits(["onClose","onReload"]);
 
-const { errors, validate, defineField, resetForm, values, setValues } = useForm(
+const { errors, validate, defineField, resetForm, values, setValues, setErrors } = useForm(
   {
     validationSchema: yup.object({
       nome: yup

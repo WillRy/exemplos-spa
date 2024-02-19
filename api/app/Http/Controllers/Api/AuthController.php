@@ -40,8 +40,6 @@ class AuthController extends Controller
                 $user->id
             );
 
-            setcookie('token', $tokens->token, null, '/', null, null, true);
-            setcookie('refresh_token', $tokens->refresh_token, null, '/', null, null, true);
 
             return (new ResponseJSON())->setData($tokens)->setMessage('Bem vindo!')->render();
 
@@ -154,14 +152,11 @@ class AuthController extends Controller
             $refreshToken = $request->input("refresh_token") ?? Cookie::get('refresh_token');
 
             if (empty($refreshToken)) {
-                return $this->errorAPI("Invalid refresh token!", 401);
+                throw new \Exception("Invalid refresh token!", 401);
             }
 
             $novoToken = (new Autenticacao())->refreshToken($refreshToken);
 
-
-            setcookie('token', $novoToken->token, null, '/', null, null, true);
-            setcookie('refresh_token', $novoToken->refresh_token, null, '/', null, null, true);
 
             return (new ResponseJSON())->setData($novoToken)->render();
         } catch (\Exception $e) {
