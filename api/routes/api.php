@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ContatoController;
 use App\Http\Controllers\Api\OrganizacaoController;
 use App\Http\Controllers\Api\TagsController;
 use App\Service\Autenticacao;
+use App\Service\CustomCSRF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -25,7 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/csrf', function (Request $request) {
-    return response()->json(['csrf' => (new Autenticacao)->iniciarCSRF()]);
+    return response()->json(['csrf' => (new CustomCSRF())->iniciarCSRF()]);
 });
 
 Route::group(['middleware' => 'locale'], function () {

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Service\Autenticacao;
+use App\Service\CustomCSRF;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
@@ -18,19 +19,19 @@ class InitCustomCSRF
      */
     public function handle(Request $request, Closure $next)
     {
-        $autenticacao = new Autenticacao();
-
-        if($autenticacao->hasOrigin()) {
+        if ((new CustomCSRF())->hasOrigin()) {
             return (new Pipeline(app()))->send($request)->through([
+                \App\Http\Middleware\EncryptCookies::class,
+                \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
                 \Illuminate\Session\Middleware\StartSession::class,
             ])->then(function ($request) use ($next) {
+
+                (new CustomCSRF())->tratarCSRF();
+
                 return $next($request);
             });
         }
 
         return $next($request);
-
-
-
     }
 }

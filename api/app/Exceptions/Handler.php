@@ -58,6 +58,24 @@ class Handler extends ExceptionHandler
             //
         });
 
+        // Redireciona para a a página anterior caso o CSRF TOKEN tenha expirado
+        $this->renderable(function (\Exception $e, $request) {
+            $is419 = $e instanceof \Symfony\Component\HttpKernel\Exception\HttpException && $e->getStatusCode() === 419 || $e->getCode() === 419;
+            if (!$this->isAjax() && $is419 && $request->method() !== 'GET') {
+                return redirect()->back(303)->with('error', 'Sua sessão expirou, por favor, tente novamente.');
+            }
+
+            if($is419) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Sua sessão expirou, por favor, tente novamente.',
+                    'errors' => null,
+                    'error_code' => null,
+                    "data" => [],
+                ], 419);
+            }
+        });
+
         $this->renderable(function (\Illuminate\Auth\AuthenticationException $e, \Illuminate\Http\Request $request) {
             if ($this->isAjax()) {
                 $error = str_replace(' (and 1 more error)', '', $e->getMessage());

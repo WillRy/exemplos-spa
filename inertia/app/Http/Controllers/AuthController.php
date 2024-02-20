@@ -42,6 +42,11 @@ class AuthController extends Controller
                 return $this->errorAPI(__('auth.failed'), null, null, 401);
             }
 
+            (new Autenticacao())->gerarAutenticacao(
+                auth()->user()->id
+            );
+
+
             return $this->successAPI([]);
         } catch (\Exception $e) {
             Auth::logout();

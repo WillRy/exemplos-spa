@@ -1,32 +1,80 @@
-import axios from 'axios';
-import {i18n} from '../lang';
+import axios from "axios";
+import { i18n } from "../lang";
 
-export let store = null;
+let isRefreshing = false;
+let failedRequestsQueue = [];
 
-export function injectStore(st) {
-    store = st;
-}
+axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 const api = axios.create({
-    baseURL: '/'
+  baseURL: "/",
+  withCredentials: true,
 });
 
 api.interceptors.request.use(function (config) {
-    config.headers['Accept-Language'] = i18n.global.locale;
-
-    return config;
+  config.headers["Accept-Language"] = i18n.global.locale;
+  return config;
 });
 
-api.interceptors.response.use(function (response) {
+function redirectLogout() {
+  return window.location.href = '/logout';
+}
+
+api.interceptors.response.use(
+  (response) => {
     return response;
-}, async function (error) {
-    if (401 === error.response.status) {
-        window.location.href = "/"
+  },
+  (error) => {
+    const originalConfig = error.config;
+    const errorFromRefresh = error.config.url.includes("refresh");
+    const status = error?.response?.status;
+
+    if (errorFromRefresh) {
+      redirectLogout();
     }
+
+    if (status === 401 && !errorFromRefresh) {
+      if (!isRefreshing) {
+        isRefreshing = true;
+
+        api
+          .post("/api/refresh")
+          .then((response) => {
+            const token = response.data.data.token;
+
+
+            failedRequestsQueue.forEach((request) => request.onSuccess(token));
+            failedRequestsQueue = [];
+          })
+          .catch((err) => {
+            failedRequestsQueue.forEach((request) => request.onFailure(err));
+            failedRequestsQueue = [];
+
+            redirectLogout();
+          })
+          .finally(() => {
+            isRefreshing = false;
+          });
+      }
+
+      return new Promise((resolve, reject) => {
+        failedRequestsQueue.push({
+          onSuccess: () => {
+            resolve(api(originalConfig));
+          },
+          onFailure: (err) => {
+            reject(err);
+          },
+        });
+      });
+    }
+
     return Promise.reject(error);
-});
+  }
+);
+
+window.api = api;
 
 export default api;
 

@@ -17,6 +17,13 @@ const api = axios.create({
   withCredentials: true,
 });
 
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 api.interceptors.request.use(async function (config) {
   config.headers["Accept-Language"] = i18n.global.locale;
   // config.headers["Authorization"] = "Bearer " + window.localStorage.getItem("token");
@@ -24,8 +31,13 @@ api.interceptors.request.use(async function (config) {
 
   if(requestMethod !== 'GET') {
     //axios get csrf
+
+    if(getCookie('XSRF-TOKEN')) {
+      config.headers["X-XSRF-TOKEN"] = getCookie('XSRF-TOKEN');
+    } else {
     const response = await api.get('/csrf');
-    config.headers["X-CSRF-TOKEN"] = response.data.csrf;
+    config.headers["X-XSRF-TOKEN"] = response.data.csrf;
+}
 
   }
   return config;

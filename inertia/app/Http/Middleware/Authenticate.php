@@ -31,10 +31,9 @@ class Authenticate extends Middleware
         foreach ($guards as $guard) {
             $autenticado = $this->auth->guard($guard)->check();
 
-
             if ($guard === 'api' && $autenticado) {
 
-                $valido = (new Autenticacao())->tokenValido(Autenticacao::tokenRequest());
+                $valido = (new Autenticacao())->isLogged(Autenticacao::tokenRequest());
 
                 if ($valido) {
                     return $this->auth->shouldUse($guard);
@@ -48,7 +47,6 @@ class Authenticate extends Middleware
 
         }
 
-        (new Autenticacao())->logoutTokens();
 
         $this->unauthenticated($request, $guards);
     }

@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use stdClass;
 
@@ -18,7 +17,7 @@ class Autenticacao
     const SEGUNDOS_REFRESH_TOKEN_VALIDO = 25200; //7 hours
     const SEGUNDOS_RETORNAR_TOKENS_AINDA_VALIDOS = 300; //5 minutes
 
-    const SECRET_KEY = "748e6c60fb51c9b9a388e18ee1803a11ab67d8a32fda9094e7487996b15dbf0e";
+
 
 
     /**
@@ -39,14 +38,14 @@ class Autenticacao
         return Str::random(64);
     }
 
-    public function setCookie(string $name, string $value, bool $forceExpire = false)
+    public function setCookie(string $name, string $value, bool $forceExpire = false, bool $httpOnly = true)
     {
         setcookie($name, $value, [
             'expires' => $forceExpire ? time() - 3600 : null,
             'path' => '/',
             'domain' => null,
             'secure' => true,
-            'httponly' => true,
+            'httponly' => $httpOnly,
             'samesite' => 'Lax'
         ]);
     }
@@ -100,7 +99,7 @@ class Autenticacao
     public function isLogged(string $token): bool
     {
         $isTokenValid = $this->tokenValido($token);
-        $isCSRFValid = $this->tratarCSRF();
+        $isCSRFValid = true;
 
         return $isTokenValid && $isCSRFValid;
     }
@@ -255,7 +254,7 @@ class Autenticacao
         //set cookie lax
         $this->setCookie('token', '', true);
         $this->setCookie('refresh_token', '', true);
-        $this->setCookie('X-CSRF-TOKEN', '', true);
+        $this->setCookie(CustomCSRF::$cookieName, '', true);
 
 
         if ($token) {
@@ -320,162 +319,4 @@ class Autenticacao
 
 
 
-    public function sessionIsStarted()
-    {
-        if (!Session::isStarted()) {
-            return Session::start();
-        }
-
-        if (session_status() === PHP_SESSION_NONE) {
-            return session_start();
-        }
-    }
-
-    public function hasOrigin(): bool
-    {
-        return isset($_SERVER['HTTP_ORIGIN']);
-    }
-
-    /**
-     * Indica se deve usar sessão ou cookie para o CSRF
-     */
-    public function useSession()
-    {
-        return false;
-    }
-
-    /**
-     * Verifica se deve ou não proteger a request
-     * com CSRF
-     */
-    public function shouldCheckCSRF()
-    {
-        // Protects POST, PUT, DELETE, PATCH
-        $method           = strtoupper($_SERVER['REQUEST_METHOD']);
-        $methodsToProtect = ['POST', 'PUT', 'DELETE', 'PATCH'];
-        if (!in_array($method, $methodsToProtect, true)) {
-            return false;
-        }
-
-        //protects only browser requests
-        if (!$this->hasOrigin()) {
-            return false;
-        }
-
-        //protects only if user is logged in
-        if (!$this->getCurrentSessionId()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Retorna o csrf token que o usuário informou na request
-     */
-    public function getPostedCSRF()
-    {
-        $csrf = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? null;
-
-        if (empty($csrf)) {
-            $csrf = $_COOKIE['X-CSRF-TOKEN'] ?? null;
-        }
-
-        if (empty($csrf)) {
-            $csrf = $_REQUEST['csrf_token'] ?? null;
-        }
-
-        return $csrf;
-    }
-
-    /**
-     * Retorna o csrf token que o servidor
-     * usa para comparar posteriormente com o do usuário
-     */
-    public function getServerCSRF()
-    {
-        if (!$this->useSession()) {
-            return hash_hmac('sha256', $this->getCurrentSessionId(), self::SECRET_KEY);
-        }
-
-        return session()->get('csrf');
-    }
-
-    /**
-     * Gera o csrf token e salva na sessão ou cookie
-     */
-    public function generateCSRF()
-    {
-        $csrf = null;
-
-        if (!$this->useSession()) {
-            $csrf = hash_hmac('sha256', $this->getCurrentSessionId(), self::SECRET_KEY);
-
-            $this->setCookie('X-CSRF-TOKEN', $csrf);
-
-            return $csrf;
-        }
-
-        $csrf = md5(uniqid(rand(), true));
-
-        session()->put('csrf', $csrf);
-
-        return $csrf;
-    }
-
-
-
-    /**
-     * Inicializa a proteção de CSRF
-     * somente se necessário
-     */
-    public function iniciarCSRF(): string
-    {
-
-        $this->sessionIsStarted();
-
-        if ($this->useSession()) {
-            $csrf = $this->getServerCSRF();
-        } else {
-            $csrf = $this->getPostedCSRF();
-        }
-
-        if (empty($csrf)) {
-            $csrf = $this->generateCSRF();
-            return $csrf;
-        }
-
-        return $csrf;
-    }
-
-
-
-    /**
-     * CSRF customizado
-     *
-     * Para ter CSRF para a API SOMENTE QUANDO estiver em browser
-     * e não ter CSRF quando chamado via API diretamente
-     */
-    public function tratarCSRF()
-    {
-        if (!$this->shouldCheckCSRF()) {
-            return true;
-        }
-
-
-        $this->sessionIsStarted();
-
-        $postedCsrf = $this->getPostedCSRF();
-
-        $serverCSRF = $this->getServerCSRF();
-
-
-        $checkCsrf = $postedCsrf === $serverCSRF;
-
-        if (!$checkCsrf) {
-            throw new \Exception("CSRF Token inválido!", 419);
-        }
-
-        return true;
-    }
 }
