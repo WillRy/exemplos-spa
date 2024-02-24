@@ -154,7 +154,7 @@
 </template>
 
 <script setup>
-import api from "../../services/api";
+import axiosWeb from "../../services/axiosWeb";
 import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import BaseModal from "../../external/components/modal/BaseModal";
@@ -254,7 +254,7 @@ const tratarCep = function () {
 };
 
 const pesquisarTag = function (pesquisa) {
-  api.get(`/tag`, { params: { pesquisa: pesquisa } }).then((response) => {
+  axiosWeb.get(`/tag`, { params: { pesquisa: pesquisa } }).then((response) => {
     resultadoPesquisaTag.lista = response.data.data.data;
   });
 };
@@ -279,7 +279,7 @@ const submit = async function () {
       ...values,
     };
 
-    await api.post(`/organizacao`, data);
+    await axiosWeb.post(`/organizacao`, data);
 
     fecharModal();
     $emit("onReload");

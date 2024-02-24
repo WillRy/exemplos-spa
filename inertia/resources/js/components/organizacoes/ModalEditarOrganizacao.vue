@@ -161,7 +161,7 @@
 </template>
 
 <script setup>
-import api from "../../services/api";
+import axiosWeb from "../../services/axiosWeb";
 import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import BaseModal from "../../external/components/modal/BaseModal";
@@ -232,7 +232,7 @@ const [tags] = defineField("tags");
 const carregarFormulario = async function () {
   loadingDados.value = true;
 
-  const response = await api.get(
+  const response = await axiosWeb.get(
     `/organizacao/${modalEditarOrganizacaoState.payload.id}`
   );
   const dados = response.data.data;
@@ -276,7 +276,7 @@ const tratarCep = function () {
 };
 
 const pesquisarTag = function (pesquisa) {
-  api.get(`/tag`, { params: { pesquisa: pesquisa } }).then((response) => {
+  axiosWeb.get(`/tag`, { params: { pesquisa: pesquisa } }).then((response) => {
     resultadoPesquisaTag.lista = response.data.data.data;
   });
 };
@@ -300,7 +300,7 @@ const submit = async function () {
       ...values,
     };
 
-    await api.put(
+    await axiosWeb.put(
       `/organizacao/${modalEditarOrganizacaoState.payload.id}`,
       data
     );

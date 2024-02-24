@@ -498,7 +498,7 @@ input::placeholder {
     right: 34px;
     top: 50%;
     transform: translate(0,-50%);
-    z-index: 9;
+    z-index: 2;
     background: var(--error-color-600);
     color: #fff;
     font-weight: bold;
@@ -726,46 +726,46 @@ Ellipsis das options
     height: 100%;
 }
 
-.multiselect__spinner:after,
-.multiselect__spinner:before {
+:deep(.multiselect__spinner:after),
+:deep(.multiselect__spinner:before) {
   border-color: var(--primary-color-principal-active) transparent transparent;
 }
 
-.multiselect__tag {
+:deep(.multiselect__tag) {
   background: var(--primary-color-principal-active);
 }
 
-.multiselect__placeholder {
+:deep(.multiselect__placeholder) {
   color: var(--gray-color-700);
 }
 
-.multiselect__option--highlight {
+:deep(.multiselect__option--highlight) {
   background: var(--primary-color-principal-active);
   outline: none;
   color: #fff;
 }
 
-.multiselect__option--highlight:after {
+:deep(.multiselect__option--highlight:after) {
   background: var(--primary-color-principal-active);
   color: #fff;
 }
 
-.multiselect__option--selected.multiselect__option--highlight {
+:deep(.multiselect__option--selected.multiselect__option--highlight) {
   background: var(--primary-color-principal-active);
   color: #fff;
 }
 
-.multiselect__option--selected.multiselect__option--highlight:after {
+:deep(.multiselect__option--selected.multiselect__option--highlight:after) {
   background: var(--primary-color-principal-active);
   color: #fff;
 }
 
-.multiselect__option--group-selected.multiselect__option--highlight {
+:deep(.multiselect__option--group-selected.multiselect__option--highlight) {
   background: var(--primary-color-principal-active);
   color: #fff;
 }
 
-.multiselect__option--group-selected.multiselect__option--highlight:after {
+:deep(.multiselect__option--group-selected.multiselect__option--highlight:after) {
   background: var(--primary-color-principal-active);
   color: #fff;
 }

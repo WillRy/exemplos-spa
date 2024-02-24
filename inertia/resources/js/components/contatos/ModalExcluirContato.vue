@@ -26,7 +26,7 @@
 
 <script setup>
 
-import api from "../../services/api";
+import axiosWeb from "../../services/axiosWeb";
 import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import BaseModal from "../../external/components/modal/BaseModal";
@@ -63,7 +63,7 @@ const fecharModal = function() {
 const submit = async function() {
 	try {
 		loading.value = true;
-		await api.delete(`/contato/${modalExcluirContatoState.payload.id}`);
+		await axiosWeb.delete(`/contato/${modalExcluirContatoState.payload.id}`);
 
 		fecharModal();
 		modalExcluirContatoState.onReload();

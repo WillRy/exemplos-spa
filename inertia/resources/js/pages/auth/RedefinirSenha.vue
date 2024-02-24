@@ -29,7 +29,7 @@
 import BaseInput from "../../external/components/form/BaseInput";
 import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
 import axios from "axios";
-import api, { axiosWeb } from "../../services/api";
+import axiosWeb from "../../services/axiosWeb";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 
 import { ref } from "vue";

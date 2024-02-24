@@ -17,29 +17,38 @@ const api = axios.create({
   withCredentials: true,
 });
 
-
 function getCookie(name) {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
+  if (parts.length === 2) return parts.pop().split(";").shift();
 }
 
+const interceptorCSRF = async (config) => {
+  const requestMethod = config.method.toUpperCase();
+
+  if (requestMethod !== "GET") {
+    //axios get csrf
+
+    if (getCookie("CSRF-TOKEN")) {
+      config.headers["CSRF-TOKEN"] = getCookie("CSRF-TOKEN");
+    } else {
+      const response = await api.get("/csrf");
+      config.headers["CSRF-TOKEN"] = response.data.csrf;
+    }
+  }
+
+  return config;
+}
+
+//enviar csrf token gerado manualmente
+apiPublic.interceptors.request.use(interceptorCSRF);
+
+//enviar idioma ou token da localstorage(caso use)
 api.interceptors.request.use(async function (config) {
   config.headers["Accept-Language"] = i18n.global.locale;
   // config.headers["Authorization"] = "Bearer " + window.localStorage.getItem("token");
-  const requestMethod = config.method.toUpperCase();
 
-  if(requestMethod !== 'GET') {
-    //axios get csrf
-
-    if(getCookie('XSRF-TOKEN')) {
-      config.headers["X-XSRF-TOKEN"] = getCookie('XSRF-TOKEN');
-    } else {
-    const response = await api.get('/csrf');
-    config.headers["X-XSRF-TOKEN"] = response.data.csrf;
-}
-
-  }
+  await interceptorCSRF(config);
   return config;
 });
 

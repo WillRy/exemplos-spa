@@ -54,7 +54,7 @@
 
 <script setup>
 
-import api from "../../services/api";
+import axiosWeb from "../../services/axiosWeb";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import BaseModal from "../../external/components/modal/BaseModal";
 import {modalDetalhesOrganizacaoStore} from "../../stores/organizacao";
@@ -90,7 +90,7 @@ const loadingDados = ref(false);
 const carregarFormulario = async function() {
 	loadingDados.value = true;
 
-	const response = await api.get(`/organizacao/${modalDetalhesOrganizacaoState.payload.id}`);
+	const response = await axiosWeb.get(`/organizacao/${modalDetalhesOrganizacaoState.payload.id}`);
 	const dados = response.data.data;
 	Object.assign(form, dados);
 	form.organizacao_id = dados.organizacao;

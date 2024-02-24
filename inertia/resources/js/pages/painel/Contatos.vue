@@ -139,7 +139,7 @@ import ColunaTabela from "../../external/components/tabela/ColunaTabela";
 import DropdownAcoes from "../../external/components/dropdown/BaseDropdownAction";
 import PaginacaoSemRouter from "../../external/components/paginacao/PaginacaoSemRouter";
 import Box from "../../external/components/estrutura/Box";
-import api from "../../services/api";
+import axiosWeb from "../../services/axiosWeb";
 import {
     modalCriarContatoStore,
     modalEditarContatoStore,
@@ -185,7 +185,7 @@ const resultadoPesquisaEmpresa = reactive({
 
 // Methods
 const pesquisarEmpresa = function(pesquisa) {
-	api.get(`/organizacao`, {params: {pesquisa: pesquisa}}).then(
+	axiosWeb.get(`/organizacao`, {params: {pesquisa: pesquisa}}).then(
 		(response) => {
 			resultadoPesquisaEmpresa.dados = response.data.data.data;
 		}
@@ -226,8 +226,8 @@ const pesquisar = function() {
 
 const buscarDados = function() {
 	loading.value = true;
-	return api
-		.get("/contato", {
+	return axiosWeb.
+		get("/contato", {
 			params: {
 				...(form.pesquisa
 					? {pesquisa: form.pesquisa}

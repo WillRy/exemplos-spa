@@ -26,7 +26,7 @@
 
 <script setup>
 
-import api from "../../services/api";
+import axiosWeb from "../../services/axiosWeb";
 import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import BaseModal from "../../external/components/modal/BaseModal";
@@ -54,7 +54,7 @@ const $emit = defineEmits(["onClose","onReload"]);
 const carregarFormulario = async function() {
 	loadingDados.value = true;
 
-	await api.get(`/organizacao/${modalExcluirOrganizacaoState.payload.id}`);
+	await axiosWeb.get(`/organizacao/${modalExcluirOrganizacaoState.payload.id}`);
 
 	loadingDados.value = false;
 }
@@ -67,7 +67,7 @@ const fecharModal = function() {
 const submit = async function() {
 	try {
 		loading.value = true;
-		await api.delete(`/organizacao/${modalExcluirOrganizacaoState.payload.id}`);
+		await axiosWeb.delete(`/organizacao/${modalExcluirOrganizacaoState.payload.id}`);
 
 		fecharModal();
 		modalExcluirOrganizacaoState.onReload();

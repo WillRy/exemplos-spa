@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import api from "../../services/api";
+import axiosWeb from "../../services/axiosWeb";
 import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import BaseModal from "../../external/components/modal/BaseModal";
@@ -134,7 +134,7 @@ const submit = async function () {
       ...values,
     };
 
-    await api.post(`/tag`, data);
+    await axiosWeb.post(`/tag`, data);
 
     fecharModal();
     modalCriarTagState.onReload();

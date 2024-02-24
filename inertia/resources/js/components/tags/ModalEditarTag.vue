@@ -57,7 +57,7 @@
 </template>
 
 <script setup>
-import api from "../../services/api";
+import axiosWeb from "../../services/axiosWeb";
 import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import BaseModal from "../../external/components/modal/BaseModal";
@@ -115,7 +115,7 @@ const [cor_texto] = defineField("cor_texto");
 const carregarFormulario = async function () {
   loadingDados.value = true;
 
-  const response = await api.get(`/tag/${modalEditarTagState.payload.id}`);
+  const response = await axiosWeb.get(`/tag/${modalEditarTagState.payload.id}`);
   const dados = response.data.data;
 
   setValues({...dados}, false);
@@ -142,7 +142,7 @@ const submit = async function () {
       ...values,
     };
 
-    await api.put(`/tag/${modalEditarTagState.payload.id}`, data);
+    await axiosWeb.put(`/tag/${modalEditarTagState.payload.id}`, data);
 
     fecharModal();
     modalEditarTagState.onReload();

@@ -179,7 +179,7 @@ import ColunaTabela from "../../external/components/tabela/ColunaTabela";
 import DropdownAcoes from "../../external/components/dropdown/BaseDropdownAction";
 import PaginacaoSemRouter from "../../external/components/paginacao/PaginacaoSemRouter";
 import Box from "../../external/components/estrutura/Box";
-import api from "../../services/api";
+import axiosWeb from "../../services/axiosWeb";
 import {
   modalCriarOrganizacaoStore,
   modalEditarOrganizacaoStore,
@@ -224,7 +224,7 @@ const resultadoPesquisaTag = reactive({
 
 // Methods
 const pesquisarEmpresa = function (pesquisa) {
-  api.get(`/tag`, { params: { pesquisa: pesquisa } }).then((response) => {
+  axiosWeb.get(`/tag`, { params: { pesquisa: pesquisa } }).then((response) => {
     resultadoPesquisaTag.dados = response.data.data.data;
   });
 };
@@ -265,7 +265,7 @@ const buscarDados = function () {
   loading.value = true;
 
   const id_tags = form.tag_id ? form.tag_id.map((tag) => tag.id) : [];
-  api
+  axiosWeb
     .get("/organizacao", {
       params: {
         ...(form.pesquisa ? { pesquisa: form.pesquisa } : {}),

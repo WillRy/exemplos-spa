@@ -54,7 +54,6 @@
 
 <script setup>
 
-import api from "../../services/api";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import BaseModal from "../../external/components/modal/BaseModal";
 import {modalDetalhesContatoStore} from "../../stores/contato";
@@ -86,7 +85,7 @@ const loadingDados = ref(false);
 const carregarFormulario = async function() {
 	// loadingDados.value = true;
 
-	// const response = await api.get(`/contato/${this.modalDetalhesContatoState.payload.id}`);
+	// const response = await axiosWeb.get(`/contato/${this.modalDetalhesContatoState.payload.id}`);
 	// const dados = response.data.data;
 	// Object.assign(form, dados);
 	// form.organizacao_id = dados.organizacao;

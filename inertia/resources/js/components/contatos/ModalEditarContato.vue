@@ -137,7 +137,7 @@
 </template>
 
 <script setup>
-import api from "../../services/api";
+import axiosWeb from "../../services/axiosWeb";
 import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import BaseModal from "../../external/components/modal/BaseModal";
@@ -244,7 +244,7 @@ const tratarCep = function () {
 };
 
 const pesquisarEmpresa = function (pesquisa) {
-  api
+  axiosWeb
     .get(`/organizacao`, { params: { pesquisa: pesquisa } })
     .then((response) => {
       resultadoPesquisaEmpresa.lista = response.data.data.data;
@@ -271,7 +271,7 @@ const submit = async function () {
       organizacao_id: values.organizacao_id ? values.organizacao_id.id : null,
     };
 
-    await api.put(`/contato/${modalEditarContatoState.payload.id}`, data);
+    await axiosWeb.put(`/contato/${modalEditarContatoState.payload.id}`, data);
 
     fecharModal();
     modalEditarContatoState.onReload();

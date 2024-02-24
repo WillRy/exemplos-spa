@@ -100,7 +100,7 @@ import BaseDropdownPrimary from "../external/components/dropdown/BaseDropdownPri
 import BaseButtonSecondary from "../external/components/buttons/BaseButtonSecondary";
 import BaseDropdownSecondary from "../external/components/dropdown/BaseDropdownSecondary";
 import TagIcon from "../components/icons/TagIcon";
-import api from "../services/api";
+import axiosWeb from "../services/axiosWeb";
 import {
   modalCriarOrganizacaoStore,
   modalEditarOrganizacaoStore,
@@ -169,7 +169,7 @@ export default {
       this.sidebarAberta = !this.sidebarAberta;
     },
     buscarQuantidadeOrganizacoes() {
-      api.get("/organizacao").then((r) => {
+      axiosWeb.get("/organizacao").then((r) => {
         this.qtdOrganizacoes = r.data.data.total;
       });
     },

@@ -146,7 +146,7 @@ import ColunaTabela from "../../external/components/tabela/ColunaTabela";
 import DropdownAcoes from "../../external/components/dropdown/BaseDropdownAction";
 import PaginacaoSemRouter from "../../external/components/paginacao/PaginacaoSemRouter";
 import Box from "../../external/components/estrutura/Box";
-import api from "../../services/api";
+import axiosWeb from "../../services/axiosWeb";
 import { useHead } from "@unhead/vue";
 import ModalCriarTag from "../../components/tags/ModalCriarTag";
 import {
@@ -169,7 +169,7 @@ const { t: $t } = useI18n();
 const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
 const modalCriarTagState = modalCriarTagStore();
 const modalEditarTagState = modalEditarTagStore();
-const ModalExcluirTagState = modalExcluirTagStore();
+const modalExcluirTagState = modalExcluirTagStore();
 
 // Data
 const form = reactive({
@@ -193,7 +193,7 @@ const abrirEdicao = function (tag) {
 };
 
 const abrirExclusao = function (tag) {
-  ModalExcluirTagState.abrir(tag);
+  modalExcluirTagState.abrir(tag);
 };
 
 const sortBy = function (ordem) {
@@ -214,8 +214,8 @@ const pesquisar = function () {
 
 const buscarDados = function () {
   loading.value = true;
-  api
-    .get("/tag", {
+  axiosWeb.
+    get("/tag", {
       params: {
         ...(form.pesquisa ? { pesquisa: form.pesquisa } : {}),
         ...(page.value ? { page: page.value } : {}),
@@ -250,7 +250,7 @@ watch(
 );
 
 watch(
-  () => modalExcluirTagStore.reload,
+  () => modalExcluirTagState.reload,
   function () {
     buscarDados();
   }

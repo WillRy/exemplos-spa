@@ -15,9 +15,9 @@ class CustomCSRF
 
     protected $csrfType = 'cookie'; // 'session' or 'cookie
 
-    public static $cookieName = 'XSRF-TOKEN';
+    public static $cookieName = 'CSRF-TOKEN';
 
-    public static $headerName = 'X-XSRF-TOKEN';
+    public static $headerName = 'CSRF-TOKEN';
 
     public static $hash = '';
 
@@ -150,13 +150,7 @@ class CustomCSRF
 
         $this->sessionIsStarted();
 
-        $this->generateCSRF();
-
-        if ($this->csrfType === self::TYPE_SESSION) {
-            $csrf = $this->getServerCSRF();
-        } else {
-            $csrf = $this->getPostedCSRF();
-        }
+        $csrf = $this->generateCSRF();
 
         return $csrf;
     }
