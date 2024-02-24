@@ -4,7 +4,7 @@
   </BaseButton>
 </template>
 
-<script>
+<script lang="ts">
 import BaseButton from "./BaseButton.vue";
 
 export default {
@@ -37,53 +37,53 @@ export default {
 
 <style scoped>
 .btn-danger-secondary {
-  background: var(--danger-secondary-button-background);
-  color: var(--danger-secondary-button-color);
-  border: 1px solid var(--danger-secondary-button-border);
+  background: transparent;
+  color: var(--error-color-600);
+  border: 1px solid var(--error-color-600);;
 }
 
 .btn-danger-secondary:hover {
-  background: var(--danger-secondary-button-hover-background);
-  color: var(--danger-secondary-button-hover-color);
-  border: 1px solid var(--danger-secondary-button-hover-border);
+  background: var(--error-color-400);;
+  color: #fff;
+  border: 1px solid  var(--error-color-600);
 }
 
 .btn-danger-secondary:focus:not(:active) {
-  box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--danger-secondary-button-focus-shadow);
-  background: var(--danger-secondary-button-focus-background);
-  color: var(--danger-secondary-button-focus-color);
+  box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--error-color-400);;
+  background: var(--error-color-400);
+  color: #fff;
 }
 
 .btn-danger-secondary:active {
-  background: var(--danger-secondary-button-active-background);
-  color: var(--danger-secondary-button-active-color);
-  border: 1px solid var(--danger-secondary-button-active-border);
+  background: var(--error-color-500);
+  color: #fff;
+  border: 1px solid var(--error-color-700);
 }
 
 .btn-danger-secondary:disabled {
-  background: var(--gray-200);
-  color: var(--gray-300);
+  background: var(--gray-color-200);
+  color: var(--gray-color-300);
   cursor: not-allowed;
   border: none;
 }
 
 .btn-danger-secondary:disabled :deep(path) {
-  fill: var(--gray-300);
+  fill: var(--gray-color-300);
 }
 
 .btn-danger-secondary :deep(path) {
-  fill: var(--danger-secondary-button-color);
+  fill: var(--error-color-600);
 }
 
 .btn-danger-secondary:hover :deep(path) {
-  fill: var(--danger-secondary-button-hover-color);
+  fill: #fff;
 }
 
 .btn-danger-secondary:focus :deep(path) {
-  fill: var(--danger-secondary-button-focus-color);
+  fill: #fff;
 }
 
 .btn-danger-secondary:active :deep(path) {
-  fill: var(--danger-secondary-button-active-color);
+  fill: #fff;
 }
 </style>

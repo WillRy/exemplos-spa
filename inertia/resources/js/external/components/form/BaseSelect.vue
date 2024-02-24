@@ -100,7 +100,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import VueMultiselect from "vue-multiselect";
 import InfoErrorIcon from "../icons/InfoErrorIcon.vue";
 import InfoInputIcon from "../icons/InfoInputIcon.vue";
@@ -132,7 +132,7 @@ export default {
         size: {
             type: String,
             default: "md",
-            validator(value) {
+            validator(value: string) {
                 return ["md", "lg"].includes(value);
             },
         },
@@ -160,12 +160,14 @@ export default {
         },
         trackBy: {
             type: String,
+            default: 'id'
         },
         textBy: {
             type: String,
+            default: 'text'
         },
         options: {
-            type: Array,
+            type: Array<object>,
         },
         search: {
             type: Boolean,
@@ -235,7 +237,7 @@ export default {
     --lg-min-height-btn: calc(42px);
 
 
-    --label-color: var(--gray-400);
+    --label-color: var(--gray-color-400);
     --label-margin-bottom: 2px;
 
     /* cor usada para destaque no focus */
@@ -303,13 +305,13 @@ export default {
 
 .form-group-container.borda {
     background: #ffffff;
-    border: var(--border) solid var(--gray-400);
+    border: var(--border) solid var(--gray-color-400);
     border-radius: 8px;
 }
 
 .form-group-container:not(.borda) {
-    background: var(--gray-100);
-    border-bottom: var(--border) solid var(--gray-800);
+    background: var(--gray-color-100);
+    border-bottom: var(--border) solid var(--gray-color-800);
     border-radius: 8px 8px 0 0;
 }
 
@@ -362,7 +364,7 @@ export default {
 .disabled .form-group-container,
 .disabled .form-group-container:hover,
 .disabled .form-group-container:focus {
-    background: var(--gray-100) !important;
+    background: var(--gray-color-100) !important;
     cursor: not-allowed;
 }
 
@@ -420,7 +422,7 @@ input:focus {
 
 input::placeholder {
     font-size: 0.875rem;
-    color: var(--gray-400);
+    color: var(--gray-color-400);
 }
 
 .icone-footer {
@@ -435,7 +437,7 @@ input::placeholder {
     font-weight: normal;
     margin: 0;
     font-style: italic;
-    color: var(--gray-400);
+    color: var(--gray-color-400);
     padding-left: var(--padding-text);
     margin-top: var(--spacing-1);
 }
@@ -583,6 +585,11 @@ Ellipsis das options
     text-overflow: ellipsis;
 }
 
+/**
+* Personaliza o CSS da lib VueMultiselect
+**/
+
+
 .md :deep(.multiselect) {
     min-height: var(--md-min-height-input);
     box-sizing: content-box;
@@ -718,4 +725,49 @@ Ellipsis das options
     top: 0px;
     height: 100%;
 }
+
+.multiselect__spinner:after,
+.multiselect__spinner:before {
+  border-color: var(--primary-color-principal-active) transparent transparent;
+}
+
+.multiselect__tag {
+  background: var(--primary-color-principal-active);
+}
+
+.multiselect__placeholder {
+  color: var(--gray-color-700);
+}
+
+.multiselect__option--highlight {
+  background: var(--primary-color-principal-active);
+  outline: none;
+  color: #fff;
+}
+
+.multiselect__option--highlight:after {
+  background: var(--primary-color-principal-active);
+  color: #fff;
+}
+
+.multiselect__option--selected.multiselect__option--highlight {
+  background: var(--primary-color-principal-active);
+  color: #fff;
+}
+
+.multiselect__option--selected.multiselect__option--highlight:after {
+  background: var(--primary-color-principal-active);
+  color: #fff;
+}
+
+.multiselect__option--group-selected.multiselect__option--highlight {
+  background: var(--primary-color-principal-active);
+  color: #fff;
+}
+
+.multiselect__option--group-selected.multiselect__option--highlight:after {
+  background: var(--primary-color-principal-active);
+  color: #fff;
+}
+
 </style>

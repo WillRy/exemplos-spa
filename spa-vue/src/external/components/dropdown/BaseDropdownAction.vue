@@ -29,7 +29,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Dropdown } from "floating-vue";
 import BaseButtonSecondary from "../buttons/BaseButtonSecondary.vue";
 import ArrowDownIcon from "../icons/ArrowDownIcon.vue";

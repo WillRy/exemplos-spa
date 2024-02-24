@@ -11,6 +11,9 @@
         <div style="display: flex; align-items: center" class="form-all-container">
             <div class="form-group-container" :class="{ borda: borda, btn: $slots.btn, icon: $slots.icon }">
                 <textarea v-bind="attrs" :value="modelValue" @input="updateValue" :disabled="disabled"></textarea>
+                <div v-if="$slots.btnFlutuante" class="form-group-btn-flutuante">
+                    <slot name="btnFlutuante"></slot>
+                </div>
             </div>
         </div>
 
@@ -33,7 +36,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import InfoErrorIcon from '../icons/InfoErrorIcon.vue';
 import InfoInputIcon from '../icons/InfoInputIcon.vue';
 import InfoSuccessIcon from '../icons/InfoSuccessIcon.vue';
@@ -67,7 +70,7 @@ export default {
         size: {
             type: String,
             default: "md",
-            validator(value) {
+            validator(value: string) {
                 return ["md", "lg"].includes(value);
             }
         }
@@ -110,7 +113,7 @@ export default {
     --lg-min-height-btn: calc(42px);
 
 
-    --label-color: var(--gray-400);
+    --label-color: var(--gray-color-400);
     --label-margin-bottom: 2px;
 
     /* cor usada para destaque no focus */
@@ -141,18 +144,19 @@ export default {
     box-sizing: border-box;
     border: var(--border) solid transparent;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    padding: 8px;
 }
 
 .form-group-container.borda {
     background: #ffffff;
-    border: var(--border) solid var(--gray-400);
+    border: var(--border) solid var(--gray-color-400);
     border-radius: 8px;
 }
 
 .form-group-container:not(.borda) {
-    background: var(--gray-100);
-    border-bottom: var(--border) solid var(--gray-800);
+    background: var(--gray-color-100);
+    border-bottom: var(--border) solid var(--gray-color-800);
     border-radius: 8px 8px 0 0;
 }
 
@@ -188,7 +192,7 @@ export default {
 .disabled .form-group-container,
 .disabled .form-group-container:hover,
 .disabled .form-group-container:focus {
-    background: var(--gray-100) !important;
+    background: var(--gray-color-100) !important;
     cursor: not-allowed;
 }
 
@@ -216,7 +220,6 @@ textarea {
     width: 100%;
     background: transparent;
     border-radius: var(--radius-principal);
-    padding: var(--padding-text);
     outline: none;
     resize: vertical;
 }
@@ -237,7 +240,31 @@ textarea:focus {
 
 textarea::placeholder {
     font-size: 1rem;
-    color: var(--gray-400);
+    color: var(--gray-color-400);
+}
+.form-group-btn-flutuante {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.form-group-btn-flutuante :deep(button) {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.form-group-btn-flutuante :deep(button:hover) {
+    opacity: 0.6;
+}
+
+.form-group-btn-flutuante :deep(button svg path) {
+    fill: var(--primary-color-principal);
+}
+
+.form-group-container:focus-within .form-group-btn-flutuante :deep(button path) {
+    fill: var(--focus-color)
 }
 
 .icone-footer {
@@ -252,7 +279,7 @@ textarea::placeholder {
     font-weight: normal;
     margin: 0;
     font-style: italic;
-    color: var(--gray-400);
+    color: var(--gray-color-400);
     padding-left: var(--padding-text);
     margin-top: var(--spacing-1);
 }

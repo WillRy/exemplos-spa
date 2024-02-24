@@ -49,7 +49,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Dropdown } from "floating-vue";
 import BaseButtonSecondary from "../buttons/BaseButtonSecondary.vue";
 import ArrowDownIcon from "../icons/ArrowDownIcon.vue";
@@ -57,6 +57,9 @@ import { directive } from "../../directives/click-away";
 import BaseButton from "../buttons/BaseButton.vue";
 import ArrowDownSolidIcon from "../icons/ArrowDownSolidIcon.vue";
 import BaseButtonTertiary from "../buttons/BaseButtonTertiary.vue";
+import { PropType } from "vue";
+
+type TriggerEvent = 'hover' | 'click' | 'focus' | 'touch';
 
 export default {
   name: "BaseDropdownTertiary",
@@ -64,7 +67,7 @@ export default {
   inheritAttrs: false,
   props: {
     triggers: {
-      type: Array,
+      type: Array as PropType<TriggerEvent[]>,
       default: () => [],
     },
     size: {
@@ -142,7 +145,7 @@ export default {
 * {
   box-sizing: border-box;
 
-  --label-color: var(--gray-400);
+  --label-color: var(--gray-color-color-400);
   --label-margin-bottom: 2px;
 
   /* cor usada para destaque no focus */

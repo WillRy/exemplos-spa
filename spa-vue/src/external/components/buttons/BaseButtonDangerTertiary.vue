@@ -4,7 +4,7 @@
   </BaseButton>
 </template>
 
-<script>
+<script lang="ts">
 import BaseButton from "./BaseButton.vue";
 
 export default {
@@ -38,51 +38,51 @@ export default {
 <style scoped>
 
 .btn-danger-tertiary {
-  background: var(--danger-tertiary-button-background);
-  color: var(--danger-tertiary-button-color);
+  background: transparent;
+  color: var(--error-color-600);
   border: 1px solid transparent;
 }
 
 .btn-danger-tertiary:hover {
-  background: var(--danger-tertiary-button-hover-background);
-  color: var(--danger-tertiary-button-hover-color);
+  background:var(--error-color-400);
+  color: #fff;
 }
 
 .btn-danger-tertiary:focus:not(:active) {
-  border: 1px solid var(--danger-tertiary-button-focus-border);
-  background: var(--danger-tertiary-button-focus-background);
-  color: var(--danger-tertiary-button-focus-color);
+  border: 1px solid var(--error-color-600);
+  background: var(--error-color-400);
+  color: #fff;
 }
 
 .btn-danger-tertiary:active {
-  background: var(--danger-tertiary-button-active-background);
-  color: var(--danger-tertiary-button-active-color);
+  background: var(--error-color-500);
+  color: #fff;
 }
 
 .btn-danger-tertiary:disabled {
-  background: var(--gray-200);
-  color: var(--gray-300);
+  background: var(--gray-color-200);
+  color: var(--gray-color-300);
   cursor: not-allowed;
   border: none;
 }
 
 .btn-danger-tertiary:disabled :deep(path) {
-  fill: var(--gray-300);
+  fill: var(--gray-color-300);
 }
 
 .btn-danger-tertiary :deep(path) {
-  fill: var(--danger-tertiary-button-color);
+  fill: var(--error-color-600);
 }
 
 .btn-danger-tertiary:hover :deep(path) {
-  fill: var(--danger-tertiary-button-hover-color);
+  fill: #fff;
 }
 
 .btn-danger-tertiary:focus :deep(path) {
-  fill: var(--danger-tertiary-button-focus-color);
+  fill: #fff;
 }
 
 .btn-danger-tertiary:active :deep(path) {
-  fill: var(--danger-tertiary-button-active-color);
+  fill: #fff;
 }
 </style>

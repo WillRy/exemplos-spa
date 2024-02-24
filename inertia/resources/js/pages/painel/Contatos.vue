@@ -99,8 +99,8 @@
                                     </button>
                                 </DropdownAcoes>
                               </ColunaTabela>
-                        </tr></template
-                    >
+                        </tr>
+                      </template>
                 </Tabela>
                 <PaginacaoSemRouter
                     class="mt-3"
@@ -169,105 +169,102 @@ defineOptions({ layout: Privado });
 
 // Data
 const form = reactive({
-    pesquisa: "",
-    empresa_id: null,
+	pesquisa: "",
+	empresa_id: null,
 });
 const loading = ref(false);
-const sortName = ref("id");
-const sortOrder = ref("desc");
+const sortName = ref('id');
+const sortOrder = ref('desc');
 const page = ref(1);
 const contatos = reactive({
-    dados: [],
+  dados: []
 });
 const resultadoPesquisaEmpresa = reactive({
-    dados: [],
+  dados: []
 });
 
 // Methods
-const pesquisarEmpresa = function (pesquisa) {
-    api.get(`/organizacao`, { params: { pesquisa: pesquisa } }).then(
-        (response) => {
-            resultadoPesquisaEmpresa.dados = response.data.data.data;
-        }
-    );
-};
+const pesquisarEmpresa = function(pesquisa) {
+	api.get(`/organizacao`, {params: {pesquisa: pesquisa}}).then(
+		(response) => {
+			resultadoPesquisaEmpresa.dados = response.data.data.data;
+		}
+	);
+}
 
-const abrirCriar = function () {
-    modalCriarContatoState.abrir();
-};
+const abrirCriar = function() {
+	modalCriarContatoState.abrir();
+}
 
-const abrirEdicao = function (usuario) {
-    modalEditarContatoState.abrir(usuario);
-};
+const abrirEdicao = function(usuario) {
+	modalEditarContatoState.abrir(usuario);
+}
 
-const abrirExclusao = function (usuario) {
-    modalExcluirContatoState.abrir(usuario);
-};
+const abrirExclusao = function(usuario) {
+	modalExcluirContatoState.abrir(usuario);
+}
 
-const abrirDetalhes = function (usuario) {
-    modalDetalhesContatoState.abrir(usuario);
-};
+const abrirDetalhes = function(usuario) {
+	modalDetalhesContatoState.abrir(usuario);
+}
 
 const sortBy = function (ordem) {
-    sortName.value = ordem.sortName;
-    sortOrder.value = ordem.sortOrder;
-    buscarDados();
+  sortName.value = ordem.sortName;
+  sortOrder.value = ordem.sortOrder;
+  buscarDados();
 };
 
-const updatePagina = function (pagina) {
-    page.value = pagina;
-    buscarDados();
-};
+const updatePagina = function(pagina) {
+	page.value = pagina;
+	buscarDados();
+}
 
-const pesquisar = function () {
-    page.value = 1;
-    buscarDados();
-};
+const pesquisar = function() {
+	page.value = 1;
+	buscarDados();
+}
 
-const buscarDados = function () {
-    loading.value = true;
-    return api
-        .get("/contato", {
-            params: {
-                ...(form.pesquisa ? { pesquisa: form.pesquisa } : {}),
-                ...(form.empresa_id ? { empresa_id: form.empresa_id.id } : {}),
-                ...(page.value ? { page: page.value } : {}),
-                sortOrder: sortOrder.value,
-                sortName: sortName.value,
-            },
-        })
-        .then((r) => {
-            contatos.dados = r.data.data;
-        })
-        .catch((e) => {
-            backendToastError(e, $t("texto.erro_listar_dados"));
-        })
-        .finally(() => {
-            loading.value = false;
-        });
-};
+const buscarDados = function() {
+	loading.value = true;
+	return api
+		.get("/contato", {
+			params: {
+				...(form.pesquisa
+					? {pesquisa: form.pesquisa}
+					: {}),
+				...(form.empresa_id
+					? {empresa_id: form.empresa_id.id}
+					: {}),
+				...(page.value ? {page: page.value} : {}),
+				sortOrder: sortOrder.value,
+				sortName: sortName.value,
+			},
+		})
+		.then((r) => {
+			contatos.dados = r.data.data;
+		})
+		.catch((e) => {
+			backendToastError(e, $t("texto.erro_listar_dados"));
+		})
+		.finally(() => {
+			loading.value = false;
+		});
+}
+
 
 // Watch
-watch(
-    () => modalCriarContatoState.reload,
-    function () {
-        buscarDados();
-    }
-);
+watch(() => modalCriarContatoState.reload, function () {
+	buscarDados();
+})
 
-watch(
-    () => modalEditarContatoState.reload,
-    function () {
-        buscarDados();
-    }
-);
+watch(() => modalEditarContatoState.reload, function () {
+	buscarDados();
+})
 
-watch(
-    () => modalExcluirContatoState.reload,
-    function () {
-        buscarDados();
-    }
-);
+watch(() => modalExcluirContatoState.reload, function () {
+	buscarDados();
+})
+
 
 // Created
 buscarDados();

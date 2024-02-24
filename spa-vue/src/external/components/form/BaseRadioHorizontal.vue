@@ -44,7 +44,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import InfoErrorIcon from "../icons/InfoErrorIcon.vue";
 import InfoInputIcon from "../icons/InfoInputIcon.vue";
 import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
@@ -58,15 +58,15 @@ export default {
   props: {
     disabled: {
         required: false,
-        type: Boolean  
+        type: Boolean
     },
     label: {
         required: false,
-        type: String  
+        type: String
     },
     options: {
       required: true,
-      type: Array,
+      type: Array<object>,
     },
     identificadorResposta: {
       required: true,
@@ -111,7 +111,7 @@ export default {
 <style scoped>
 * {
     box-sizing: border-box;
-    --label-color: var(--gray-400);
+    --label-color: var(--gray-color-400);
     --label-margin-bottom: 2px;
 }
 
@@ -256,7 +256,7 @@ export default {
   font-weight: normal;
   margin: 0;
   font-style: italic;
-  color: var(--gray-400);
+  color: var(--gray-color-400);
   padding-left: var(--padding-text);
 }
 

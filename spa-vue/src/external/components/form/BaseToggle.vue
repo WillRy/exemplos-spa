@@ -40,7 +40,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import InfoErrorIcon from "../icons/InfoErrorIcon.vue";
 import InfoInputIcon from "../icons/InfoInputIcon.vue";
 import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
@@ -120,7 +120,7 @@ export default {
   font-weight: normal;
   margin: 0;
   font-style: italic;
-  color: var(--gray-400);
+  color: var(--gray-color-400);
   padding-left: var(--padding-text);
 }
 
@@ -211,7 +211,7 @@ export default {
 }
 
 .checktoggle {
-  background-color: var(--gray-300);
+  background-color: var(--gray-color-300);
   color: #bbbfc4;
   border-radius: 24px;
   cursor: pointer;

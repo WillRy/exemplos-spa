@@ -37,7 +37,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import ArrowLeftIcon from "../icons/ArrowLeftIcon.vue";
 import ArrowRightIcon from "../icons/ArrowRightIcon.vue";
 
@@ -45,7 +45,10 @@ export default {
   name: "PaginacaoSemRouter",
   components: { ArrowRightIcon, ArrowLeftIcon },
   props: {
-    exibirTotal: false,
+    exibirTotal: {
+        type: Boolean,
+        default: false
+    },
     porPagina: {
       type: Number,
       default: 1,
@@ -64,6 +67,7 @@ export default {
     },
     texto: {
       type: String,
+      default: ''
     },
   },
   methods: {
@@ -75,7 +79,7 @@ export default {
     },
   },
   computed: {
-    textoInformado() {
+    textoInformado() :string {
       const ptBr =
         "Exibindo [INICIO] a [FIM] de [TOTAL] [TXT_RESULTADO=resultado|resultados]";
       const en =
@@ -137,7 +141,7 @@ export default {
       const range = 9;
       const offset = Math.ceil(range / 2);
       const total = this.paginasTotal;
-      const pagesArray = [];
+      const pagesArray: Array<number> = [];
 
       for (let i = 1; i <= total; i++) {
         pagesArray.push(i);
@@ -195,8 +199,8 @@ export default {
 }
 
 .pagina:disabled {
-  background: var(--gray-200);
-  color: var(--gray-300);
+  background: var(--gray-color-200);
+  color: var(--gray-color-300);
   cursor: not-allowed;
 }
 
@@ -228,7 +232,7 @@ export default {
 }
 
 .pagina-arrow:first-of-type:disabled :deep(path) {
-  fill: var(--gray-300);
+  fill: var(--gray-color-300);
 }
 
 .pagina-arrow:first-of-type:disabled {
@@ -250,7 +254,7 @@ export default {
 }
 
 .pagina-arrow:last-of-type:disabled :deep(path) {
-  fill: var(--gray-300);
+  fill: var(--gray-color-300);
 }
 
 .pagina-arrow:last-of-type:disabled {

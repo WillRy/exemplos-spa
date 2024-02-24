@@ -10,7 +10,7 @@
   </BaseButton>
 </template>
 
-<script>
+<script lang="ts">
 import BaseButton from "./BaseButton.vue";
 
 export default {
@@ -59,8 +59,8 @@ export default {
 }
 
 .btn-warning:disabled {
-  background: var(--gray-200);
-  color: var(--gray-300);
+  background: var(--gray-color-200);
+  color: var(--gray-color-300);
   cursor: not-allowed;
   border: none;
 }

@@ -63,8 +63,9 @@
     </div>
   </transition>
 </template>
-<script>
+<script lang="ts">
 import CloseIcon from "../icons/CloseIcon.vue";
+
 
 export default {
   name: "BaseModal",
@@ -84,6 +85,7 @@ export default {
     },
     aberta: {
       default: false,
+      type: [Boolean, String, Number, Object],
     },
     fecharClickOutside: {
       type: Boolean,
@@ -99,7 +101,7 @@ export default {
     },
     tamanho: {
       default: "sm",
-      validator(value) {
+      validator(value: string) {
         return ["sm", "md", "lg", "xl", "xxl"].includes(value);
       },
     },
@@ -124,7 +126,7 @@ export default {
             return;
           });
         });
-       
+
       }
     }
   },

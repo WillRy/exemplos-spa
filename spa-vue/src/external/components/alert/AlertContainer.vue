@@ -1,23 +1,25 @@
 <template>
-  <div class="alert-container" :class="{shakeContainer: temAlertQueDeveTremer}" @click="clickContainer">
-    <Alert
-        v-for="alert in alertState.alerts"
-        :key="alert.id"
-        :alert="alert"
-    />
+  <div
+    class="alert-container"
+    :class="{ shakeContainer: temAlertQueDeveTremer }"
+    @click="clickContainer"
+  >
+    <Alert v-for="alert in alertState.alerts" :key="alert.id" :alert="alert" />
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {useAlertStore} from "../../store/alert";
 import Alert from "./Alert.vue";
+
 
 export default {
   name: "AlertContainer",
   components: {Alert},
   setup() {
-    const alertState = useAlertStore();
-    return {alertState};
+    return {
+        alertState: useAlertStore()
+    }
   },
   data() {
     return {
@@ -43,7 +45,10 @@ export default {
         el.classList.add("shaking")
 
         el.addEventListener("animationend", (event) => {
-          event.currentTarget.classList.remove('shaking')
+            if(event && event.currentTarget) {
+                (event.currentTarget as HTMLElement).classList.remove('shaking')
+            }
+
         })
       })
 

@@ -45,7 +45,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import InfoErrorIcon from '../icons/InfoErrorIcon.vue';
 import InfoInputIcon from '../icons/InfoInputIcon.vue';
 import InfoSuccessIcon from '../icons/InfoSuccessIcon.vue';
@@ -79,7 +79,7 @@ export default {
         size: {
             type: String,
             default: "md",
-            validator(value) {
+            validator(value: string) {
                 return ["md", "lg"].includes(value);
             }
         }
@@ -122,7 +122,7 @@ export default {
     --lg-min-height-btn: calc(42px);
 
 
-    --label-color: var(--gray-400);
+    --label-color: var(--gray-color-400);
     --label-margin-bottom: 2px;
 
     /* cor usada para destaque no focus */
@@ -190,13 +190,13 @@ export default {
 
 .form-group-container.borda {
     background: #ffffff;
-    border: var(--border) solid var(--gray-400);
+    border: var(--border) solid var(--gray-color-400);
     border-radius: 8px;
 }
 
 .form-group-container:not(.borda) {
-    background: var(--gray-100);
-    border-bottom: var(--border) solid var(--gray-800);
+    background: var(--gray-color-100);
+    border-bottom: var(--border) solid var(--gray-color-800);
     border-radius: 8px 8px 0 0;
 }
 
@@ -249,7 +249,7 @@ export default {
 .disabled .form-group-container,
 .disabled .form-group-container:hover,
 .disabled .form-group-container:focus {
-    background: var(--gray-100) !important;
+    background: var(--gray-color-100) !important;
     cursor: not-allowed;
 }
 
@@ -306,7 +306,7 @@ input:focus {
 
 input::placeholder {
     font-size: 0.875rem;
-    color: var(--gray-400);
+    color: var(--gray-color-400);
 }
 
 .icone-footer {
@@ -321,7 +321,7 @@ input::placeholder {
     font-weight: normal;
     margin: 0;
     font-style: italic;
-    color: var(--gray-400);
+    color: var(--gray-color-400);
     padding-left: var(--padding-text);
     margin-top: var(--spacing-1);
 }

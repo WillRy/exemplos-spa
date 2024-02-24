@@ -1,32 +1,51 @@
 <template>
-  <th style="{'max-width': width}">
-    <button @click="$emit('onSort')" v-if="!disabled" type="button">
-      <span v-if="info" v-tooltip="{content: info}">
-        {{ texto }}
-      </span>
-      <span v-else>
-        {{ texto }}
-      </span>
+  <th
+    style="
+       {
+        'max-width':width ;
+      }
+    "
+  >
+    <button @click="sortBy(nome)" v-if="!disabled" type="button">
+      <slot></slot>
 
-      <!--      {{ texto }}-->
+      <template v-if="!$slots.default">
+        <span v-if="info" v-tooltip="{ content: info }">
+          {{ texto }}
+        </span>
+        <span v-else>
+          {{ texto }}
+        </span>
+      </template>
 
-      <SortAscIcon v-if="(ordenando === nome || ordenando === order) && ordenando && orderMinuscula === 'asc'"/>
+      <SortAscIcon
+        v-if="
+          (ordenando === nome || ordenando === order) &&
+          ordenando &&
+          orderMinuscula === 'asc'
+        "
+      />
       <SortDescIcon
-          v-else-if="(ordenando === nome || ordenando === order) && ordenando && orderMinuscula === 'desc'"/>
+        v-else-if="
+          (ordenando === nome || ordenando === order) &&
+          ordenando &&
+          orderMinuscula === 'desc'
+        "
+      />
 
-      <SortIcon v-else/>
-
-      <!--      <InfoIcon v-if="info" class="info" v-tooltip="{content: info}"/>-->
+      <SortIcon v-else />
     </button>
-    <span v-else>{{ texto }}</span>
+    <span v-else-if="!$slots.default">
+      {{ texto }}
+    </span>
+    <span v-else>
+      <slot></slot>
+    </span>
   </th>
 </template>
 
-<script>
-import {
-  VTooltip,
-} from 'floating-vue'
-
+<script lang="ts">
+import { VTooltip } from "floating-vue";
 
 import InfoIcon from "../icons/InfoIcon.vue";
 import SortAscIcon from "../icons/SortAscIcon.vue";
@@ -35,36 +54,56 @@ import SortIcon from "../icons/SortIcon.vue";
 
 export default {
   name: "HeadSort",
-  components: {SortIcon, SortDescIcon, SortAscIcon, InfoIcon},
-  props: ['nome', 'order', 'texto', "ordenando", 'width', 'info', 'disabled'],
+  components: { SortIcon, SortDescIcon, SortAscIcon, InfoIcon },
+  props: ["nome", "order", "texto", "ordenando", "width", "info", "disabled"],
   computed: {
     orderMinuscula() {
       if (!this.order) return "sort";
       return this.order.toLowerCase();
-    }
+    },
   },
   directives: {
-    tooltip: VTooltip
-  }
-}
+    tooltip: VTooltip,
+  },
+  methods: {
+    sortBy(campo) {
+      let sortName = campo;
+      let sortOrder = this.order;
+
+      sortName = campo;
+      if (sortName !== campo) {
+        sortOrder = "asc";
+      } else {
+        sortOrder = sortOrder === "asc" ? "desc" : "asc";
+      }
+
+      this.$emit("onSort", {
+        sortName: sortName,
+        sortOrder: sortOrder,
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>
-th button {
-  color: rgb(75 85 99);
+th button,
+th :deep(button) {
+  color: var(--gray-color-700);
   white-space: nowrap;
   display: flex;
   align-items: center;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0px;
+  padding: 0;
 }
 
-th span {
-  color: var(--gray-700);
-  font-weight: bold;
-  padding: 0.5rem 0.5rem;
+th span,
+th :deep(span) {
+  color: var(--gray-color-700);
+  font-weight: 700;
+  padding: 0.5rem;
   white-space: nowrap;
   display: flex;
   align-items: center;

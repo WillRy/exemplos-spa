@@ -9,8 +9,8 @@ let idNotificacao = 1;
 
 export const useAlertStore = defineStore("alert", {
   state: () => ({
-    alerts: [],
-  } as RootState),
+    alerts: [] as alertParams[],
+  }),
   actions: {
     setAlert({ tipo, title, mensagem, id = null, acoes = null }: alertParams) {
       const idAlert = id ? id : idNotificacao++;

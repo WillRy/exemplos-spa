@@ -37,7 +37,7 @@
     </CollapseBox>
 </template>
 
-<script>
+<script lang="ts">
 import CollapseBox from "./CollapseBox.vue";
 
 export default {

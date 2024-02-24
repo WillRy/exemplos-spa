@@ -110,11 +110,11 @@ export default {
 
 .alert.warning {
   background: var(--warning-color);
-  color: var(--gray-800);
+  color: var(--gray-color-800);
 }
 
 .alert.warning svg path {
-  fill: var(--gray-800);
+  fill: var(--gray-color-800);
 }
 
 

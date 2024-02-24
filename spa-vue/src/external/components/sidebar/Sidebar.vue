@@ -207,28 +207,27 @@ export default {
   width: 100%;
 }
 
-.custom-scroll {
-  scrollbar-width: 6px;
-  scrollbar-color: #a2a2a2 #e6e6e6
-}
-
 .custom-scroll::-webkit-scrollbar {
-  width: 6px;
-  height: 6px
-}
-
-.custom-scroll::-webkit-scrollbar:horizontal {
-  height: 10px
-}
-
-.custom-scroll::-webkit-scrollbar-track {
-  background: #e6e6e6;
-  background-clip: content-box
+    width: 0.5rem;
+    height: 0.5rem;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {
-  background-color: #a2a2a2;
-  border-radius: 6px
+    background-color: #a2a2a2;
+    border-radius: 0.7rem;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+    background-color: #e6e6e6;
+    border-radius: 0.7rem;
+}
+
+/* Browsers without `::-webkit-scrollbar-*` support */
+@supports (not selector(::-webkit-scrollbar)) {
+    html {
+        scrollbar-width: thin;
+        scrollbar-color: #6d7c77 #cfd7c7;
+    }
 }
 
 .separador {

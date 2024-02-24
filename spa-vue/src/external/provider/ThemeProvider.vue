@@ -49,19 +49,7 @@ const thema = reactive({
     700: "#082d75",
     800: "#001f5c",
     900: "#001642",
-  },
-  warningColor: {
-    50: "#fff3ba",
-    100: "#ffefa1",
-    200: "#ffeb87",
-    300: "#ffe66e",
-    400: "#ffe254",
-    500: "#ffde3b",
-    600: "#ffd921",
-    700: "#e6c007",
-    800: "#cca900",
-    900: "#b39400",
-  },
+  }
 });
 
 function gerarEscala(cor) {
@@ -123,47 +111,6 @@ $primary-colors: (
   900: v-bind("thema.primaryColor[900]"),
 );
 
-$warning-colors: (
-  "50": #fff3ba,
-  "100": #ffefa1,
-  "200": #ffeb87,
-  "300": #ffe66e,
-  "400": #ffe254,
-  "500": #ffde3b,
-  "600": #ffd921,
-  "700": #e6c007,
-  "800": #cca900,
-  "900": #b39400,
-);
-
-$error-colors: (
-  "50": #ffc4c4,
-  "100": #ffabab,
-  "200": #ff9191,
-  "300": #ff7878,
-  "400": #f55b5b,
-  "500": #db3b3b,
-  "600": #c22121,
-  "700": #a80c0c,
-  "800": #8f0000,
-  "900": #750000,
-);
-
-$gray: (
-  "50": #ffffff,
-  "100": #eff0f2,
-  "200": #e1e2e6,
-  "300": #adafb3,
-  "400": #939599,
-  "500": #797b80,
-  "600": #606266,
-  "700": #47494d,
-  "800": #2f3033,
-  "900": #000000,
-);
-
-$text-color: #2f3033;
-$warning-color: #ffd921;
 
 // FUNÇÃO que cria variaveis CSS com as cores
 @mixin create-color-variables($prefix, $color-map) {
@@ -171,25 +118,10 @@ $warning-color: #ffd921;
     --#{"" + $prefix}-color-#{$value}: #{$color};
   }
 }
-@mixin create-color-simple-variables($prefix, $color-map) {
-  @each $value, $color in $color-map {
-    --#{"" + $prefix}-#{$value}: #{$color};
-  }
-}
 
 //   incluir variaveis no CSS
 :deep(*) {
   @include create-color-variables(primary, $primary-colors);
-  @include create-color-variables(warning, $warning-colors);
-  @include create-color-variables(error, $error-colors);
-  @include create-color-simple-variables(gray, $gray);
-
-  --text-color: #{$text-color};
-
-  --secondary-color: #7f2ea6;
-  --success-color: #31b383;
-  --warning-color: #{$warning-color};
-  --error-color: var(--error-color-600);
 
   --primary-color-principal: var(--primary-color-400);
   --primary-color-principal-hover: var(--primary-color-300);
@@ -210,146 +142,7 @@ $warning-color: #ffd921;
   }
 }
 
-@mixin create-color-simple-classes($prefix, $color-map) {
-  @each $value, $color in $color-map {
-    .text-#{"" + $prefix}-#{$value} {
-      color: #{$color};
-    }
-
-    .bg-#{"" + $prefix}-#{$value} {
-      background: #{$color};
-    }
-  }
-}
 
 @include create-color-classes(primary, $primary-colors);
-@include create-color-classes(warning, $warning-colors);
-@include create-color-classes(error, $error-colors);
-@include create-color-simple-classes(gray, $gray);
-
-
-
-:deep(*) {
-  /* variaveis botões primarios */
-  --primary-button-background: var(--primary-color-principal);
-  --primary-button-color: #fff;
-
-   /* variaveis botões primarios: hover */
-   --primary-button-hover-background: var(--primary-color-principal-hover);
-   --primary-button-hover-color: #fff;
-
-   /* variaveis botões primarios: focus */
-   --primary-button-focus-background: var(--primary-color-principal-focus);
-   --primary-button-focus-color: #fff;
-   --primary-button-focus-shadow: var(--primary-color-principal-focus);
-
-  /* variaveis botões primarios: active */
-  --primary-button-active-background: var(--primary-color-principal-active);
-  --primary-button-active-color: #fff;
-
-
-  /* variaveis botões secundários */
-  --secondary-button-background: none;
-  --secondary-button-color: var(--primary-color-principal);
-  --secondary-button-border: var(--primary-color-principal);
-  --secondary-button-icon: var(--primary-color-principal);
-
-  /* variaveis botões secundários : hover*/
-  --secondary-button-hover-background: var(--primary-color-50);
-  --secondary-button-hover-color: var(--primary-color-500);
-  --secondary-button-hover-border: var(--primary-color-500);
-
-  /* variaveis botões secundários : focus*/
-  --secondary-button-focus-background: var(--primary-color-50);
-  --secondary-button-focus-color: var(--primary-color-500);
-  --secondary-button-focus-border: #fff;
-  --secondary-button-focus-shadow: var(--primary-color-500);
-
-  /* variaveis botões secundários : active*/
-  --secondary-button-active-background: var(--primary-color-400);
-  --secondary-button-active-color: #fff;
-  --secondary-button-active-border: var(--primary-color-400);
-  
-
-  /* variaveis botões terciarios */
-  --tertiary-button-background: none;
-  --tertiary-button-color: var(--primary-color-principal);
-  --tertiary-button-border: transparent;
-
-  /* variaveis botões terciarios:hover */
-  --tertiary-button-hover-background: var(--primary-color-50);
-  --tertiary-button-hover-color: var(--primary-color-500);
-  --tertiary-button-hover-border: transparent;
-
-  /* variaveis botões terciarios:focus */
-  --tertiary-button-focus-background: var(--primary-color-50);
-  --tertiary-button-focus-color: var(--primary-color-500);
-  --tertiary-button-focus-border: var(--primary-color-500);
-  
-
-  /* variaveis botões terciarios:active */
-  --tertiary-button-active-background: var(--primary-color-400);
-  --tertiary-button-active-color: #fff;
-  --tertiary-button-active-border: transparent;
-  
-
-
-  /* variaveis botões danger */
-  --danger-button-background: var(--error-color-600);
-  --danger-button-color: #fff;
-  --danger-button-border: transparent;
-
-  /* variaveis botões danger: hover */
-  --danger-button-hover-background: var(--error-color-400);
-  --danger-button-hover-color: #fff;
-
-  /* variaveis botões danger: focus */
-  --danger-button-focus-background: var(--error-color-400);
-  --danger-button-focus-shadow: var(--error-color-400);
-  --danger-button-focus-color: #fff;
-
-  /* variaveis botões danger: active */
-  --danger-button-active-background: var(--error-color-700);
-  --danger-button-active-color: #fff;
-
-
-  /* variaveis botões danger-secondary */
-  --danger-secondary-button-background: transparent;
-  --danger-secondary-button-color: var(--error-color-600);
-  --danger-secondary-button-border: var(--error-color-600);
-
-  /* variaveis botões danger-secondary: hover */
-  --danger-secondary-button-hover-background: var(--error-color-400);
-  --danger-secondary-button-hover-color: #fff;
-  --danger-secondary-button-hover-border: var(--error-color-600);
-
-  /* variaveis botões danger-secondary: focus */
-  --danger-secondary-button-focus-background: var(--error-color-400);
-  --danger-secondary-button-focus-color: #fff;
-  --danger-secondary-button-focus-shadow: var(--error-color-400);
-
-  /* variaveis botões danger-secondary: active */
-  --danger-secondary-button-active-background: var(--error-color-500);
-  --danger-secondary-button-active-color: #fff;
-  --danger-secondary-button-active-border: var(--error-color-700);
-
-
-  /* variaveis botões danger-tertiary */
-  --danger-tertiary-button-background: transparent;
-  --danger-tertiary-button-color: var(--error-color-600);
-
-  /* variaveis botões danger-tertiary: hover */
-  --danger-tertiary-button-hover-background: var(--error-color-400);
-  --danger-tertiary-button-hover-color: #fff;
-
-  /* variaveis botões danger-tertiary: focus */
-  --danger-tertiary-button-focus-background: var(--error-color-400);
-  --danger-tertiary-button-focus-color: #fff;
-  --danger-tertiary-button-focus-border: var(--error-color-600);
-  
-  /* variaveis botões danger-tertiary: active */
-  --danger-tertiary-button-active-background: var(--error-color-500);
-  --danger-tertiary-button-active-color: #fff;
-}
 
 </style>

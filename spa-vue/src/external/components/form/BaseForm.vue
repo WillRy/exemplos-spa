@@ -4,7 +4,7 @@
             <slot name="campos"></slot>
         </div>
         <div class="footer">
-            
+
             <div class="botoesEsquerdo mt-3" v-if="$slots.botoesEsquerdo">
                 <div class="row">
                     <slot name="botoesEsquerdo"></slot>
@@ -16,12 +16,12 @@
                 </div>
             </div>
         </div>
-        
+
     </form>
 
 </template>
 
-<script>
+<script lang="ts">
 export default {
     name: "BaseForm"
 }

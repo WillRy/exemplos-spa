@@ -39,7 +39,7 @@ export default {
     font-weight: normal;
     margin: 0;
     font-style: italic;
-    color: var(--gray-400);
+    color: var(--gray-color-400);
     padding-left: var(--padding-text);
 }
 

@@ -4,7 +4,7 @@
     </component>
 </template>
 
-<script>
+<script lang="ts">
 export default {
     name: "InteractionText",
     props: {
@@ -15,7 +15,7 @@ export default {
         size: {
             type: String,
             default: 'sm',
-            validator(value) {
+            validator(value: string) {
                 return ["sm", "md", "lg"].includes(value);
             }
         },

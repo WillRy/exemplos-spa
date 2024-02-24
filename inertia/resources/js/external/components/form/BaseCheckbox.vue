@@ -29,7 +29,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import InfoErrorIcon from "../icons/InfoErrorIcon.vue";
 import InfoInputIcon from "../icons/InfoInputIcon.vue";
 import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
@@ -46,7 +46,7 @@ export default {
       default: "",
     },
     modelValue: {
-      default: null,
+      required: false,
     },
     error: {
       type: String,
@@ -108,7 +108,7 @@ export default {
   width: 24px;
   background-color: #fff;
   border-radius: 2px;
-  border: 1px solid var(--gray-300);
+  border: 1px solid var(--gray-color-300);
 }
 
 .checkmark:hover:not(.disabled) {
@@ -160,7 +160,7 @@ label.disabled {
   font-weight: normal;
   margin: 0;
   font-style: italic;
-  color: var(--gray-400);
+  color: var(--gray-color-400);
   padding-left: var(--padding-text);
   margin-top: var(--spacing-1);
 }

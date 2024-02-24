@@ -4,7 +4,7 @@
     </component>
 </template>
 
-<script>
+<script lang="ts">
 export default {
     name: "HeadingText",
     props: {
@@ -15,7 +15,7 @@ export default {
         size: {
             type: String,
             default: 'md',
-            validator(value) {
+            validator(value: string) {
                 return ["sm","md", "lg", "xl", "xxl", "xxxl"].includes(value);
             }
         },

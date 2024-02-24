@@ -25,74 +25,90 @@
         </form>
         <Tabela
           :loading="loading"
-          :colunas="[
-            {
-              nome: 'id',
-              texto: $t('palavras.id'),
-            },
-            {
-              nome: 'nome',
-              texto: $t('palavras.nome'),
-            },
-            {
-              nome: 'cor_fundo',
-              texto: $t('palavras.cor_fundo'),
-            },
-            {
-              nome: 'cor_texto',
-              texto: $t('palavras.cor_texto'),
-            },
-            {
-              nome: 'acoes',
-              texto: '',
-              disabled: true,
-              width: '50px',
-            },
-          ]"
           :dados="tags.dados && tags.dados.data"
           :sort-name="sortName"
           :sort-order="sortOrder"
-          @onSort="sortBy"
           texto-empty="Não há dados"
         >
-          <template #table-row="{ coluna, dado, row }">
-            <span v-if="coluna.nome === 'id'">
-              <span
-                style="font-weight: bold; color: var(--primary-color-principal)"
-                >{{ row.id }}</span
-              >
-            </span>
-
-            <div
-              v-else-if="coluna.nome === 'cor_fundo'"
-              class="tag-col"
-              :style="{ background: row.cor_fundo, color: row.cor_texto }"
+          <template #thead>
+            <HeadSort
+              @onSort="sortBy"
+              nome="id"
+              :ordenando="sortName"
+              :order="sortOrder"
+              :disabled="false"
             >
-              {{ row.cor_fundo }}
-            </div>
-
-            <div
-              v-else-if="coluna.nome === 'cor_texto'"
-              class="tag-col"
-              :style="{ background: row.cor_fundo, color: row.cor_texto }"
+              <span>{{ $t("palavras.id") }}</span>
+            </HeadSort>
+            <HeadSort
+              @onSort="sortBy"
+              nome="nome"
+              :ordenando="sortName"
+              :order="sortOrder"
+              :disabled="false"
             >
-              {{ row.cor_texto }}
-            </div>
-
-            <DropdownAcoes
-              :fundoClaro="true"
-              v-else-if="coluna.nome === 'acoes'"
+              <span>{{ $t("palavras.nome") }}</span>
+            </HeadSort>
+            <HeadSort
+              @onSort="sortBy"
+              nome="cor_fundo"
+              :ordenando="sortName"
+              :order="sortOrder"
+              :disabled="false"
             >
-              <button @click="abrirEdicao(row)">
-                {{ $t("palavras.editar") }}
-              </button>
-              <button @click="abrirExclusao(row)">
-                {{ $t("palavras.excluir") }}
-              </button>
-            </DropdownAcoes>
-            <span v-else>
-              {{ coluna.dado }}
-            </span>
+              <span>{{ $t("palavras.cor_fundo") }}</span>
+            </HeadSort>
+            <HeadSort
+              @onSort="sortBy"
+              nome="cor_texto"
+              :ordenando="sortName"
+              :order="sortOrder"
+              :disabled="false"
+            >
+              <span>{{ $t("palavras.cor_texto") }}</span>
+            </HeadSort>
+            <HeadSort
+              @onSort="sortBy"
+              :ordenando="sortName"
+              :order="sortOrder"
+              :disabled="true"
+            />
+          </template>
+          <template v-slot:colunas="{ dados }">
+            <tr v-for="(dado, index) in dados" :key="index">
+              <ColunaTabela>
+                {{ dado.id }}
+              </ColunaTabela>
+              <ColunaTabela>
+                {{ dado.nome }}
+              </ColunaTabela>
+              <ColunaTabela>
+                <div
+                  class="tag-col"
+                  :style="{ background: dado.cor_fundo, color: dado.cor_texto }"
+                >
+                  {{ dado.cor_fundo }}
+                </div>
+              </ColunaTabela>
+              <ColunaTabela>
+                <div
+                  class="tag-col"
+                  :style="{ background: dado.cor_fundo, color: dado.cor_texto }"
+                >
+                  {{ dado.cor_texto }}
+                </div>
+              </ColunaTabela>
+              <ColunaTabela justify="flex-end" class="coluna-acoes">
+                <DropdownAcoes :fundoClaro="true">
+                  <button @click="abrirEdicao(dado)">
+                    {{ $t("palavras.editar") }}
+                  </button>
+                  <button @click="abrirExclusao(dado)">
+                    {{ $t("palavras.excluir") }}
+                  </button>
+                </DropdownAcoes>
+              </ColunaTabela>
+            </tr>
           </template>
         </Tabela>
         <PaginacaoSemRouter
@@ -144,6 +160,7 @@ import ModalExcluirTag from "../components/tags/ModalExcluirTag";
 import { reactive, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useBackendToast } from "../external/hooks/useBackendToast";
+import HeadSort from "../external/components/tabela/HeadSort.vue";
 
 const { t: $t } = useI18n();
 const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
@@ -160,7 +177,7 @@ const sortName = ref("id");
 const sortOrder = ref("desc");
 const page = ref(1);
 const tags = reactive({
-  dados: []
+  dados: [],
 });
 
 // Methods

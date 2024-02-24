@@ -18,7 +18,7 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 import OverlineText from "../text/OverlineText.vue";
 
 export default {
@@ -34,7 +34,7 @@ export default {
     padding: {
       type: String,
       default: "2",
-      validator(value) {
+      validator(value:string) {
         return ["0", "1", "2", "3", "4", "5", "6"].includes(value);
       },
     },

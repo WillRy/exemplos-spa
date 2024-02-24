@@ -18,7 +18,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import ArrowDownSolidIcon from "../icons/ArrowDownSolidIcon.vue";
 
 export default {
@@ -33,9 +33,11 @@ export default {
     toggle() {
       this.$emit("toggle");
     },
-    analizeAbrir(event) {
-      if (event.target.href)
+    analizeAbrir(event: Event) {
+      if ((event?.target as HTMLAnchorElement)?.href) {
         return event.preventDefault();
+      }
+
       this.toggle();
     }
   },

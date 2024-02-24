@@ -1,4 +1,3 @@
-
 .d-inline {
   display: inline !important;
 }
@@ -193,10 +192,35 @@
   order: 6 !important;
 }
 
-
 @each $key, $value in $spacing-map {
   .m-#{$key} {
     margin: #{$value};
+  }
+
+  .mx-#{$key} {
+    margin-right: #{$value};
+    margin-left: #{$value};
+  }
+
+  .my-#{$key} {
+    margin-top: #{$value};
+    margin-bottom: #{$value};
+  }
+
+  .mt-#{$key} {
+    margin-top: #{$value};
+  }
+
+  .me-#{$key} {
+    margin-right: #{$value};
+  }
+
+  .mb-#{$key} {
+    margin-bottom: #{$value};
+  }
+
+  .ms-#{$key} {
+    margin-left: #{$value};
   }
 }
 
@@ -204,25 +228,9 @@
   margin: auto !important;
 }
 
-
-@each $key, $value in $spacing-map {
-  .mx-#{$key} {
-    margin-right: #{$value};
-    margin-left: #{$value};
-  }
-}
-
 .mx-auto {
   margin-right: auto !important;
   margin-left: auto !important;
-}
-
-
-@each $key, $value in $spacing-map {
-  .my-#{$key} {
-    margin-top: #{$value};
-    margin-bottom: #{$value};
-  }
 }
 
 .my-auto {
@@ -230,1664 +238,365 @@
   margin-bottom: auto !important;
 }
 
-
-@each $key, $value in $spacing-map {
-  .mt-#{$key} {
-    margin-top: #{$value};
-  }
-}
-
 .mt-auto {
   margin-top: auto !important;
-}
-
-
-@each $key, $value in $spacing-map {
-  .me-#{$key} {
-    margin-right: #{$value};
-  }
 }
 
 .me-auto {
   margin-right: auto !important;
 }
 
-
-@each $key, $value in $spacing-map {
-  .mb-#{$key} {
-    margin-bottom: #{$value};
-  }
-}
-
 .mb-auto {
   margin-bottom: auto !important;
-}
-
-
-@each $key, $value in $spacing-map {
-  .ms-#{$key} {
-    margin-left: #{$value};
-  }
 }
 
 .ms-auto {
   margin-left: auto !important;
 }
 
-
 @each $key, $value in $spacing-map {
   .p-#{$key} {
     padding: #{$value};
   }
-}
 
-
-@each $key, $value in $spacing-map {
   .px-#{$key} {
     padding-right: #{$value};
     padding-left: #{$value};
   }
-}
 
-
-@each $key, $value in $spacing-map {
   .py-#{$key} {
     padding-top: #{$value};
     padding-bottom: #{$value};
   }
-}
 
-
-@each $key, $value in $spacing-map {
   .pt-#{$key} {
     padding-top: #{$value};
   }
-}
 
-
-@each $key, $value in $spacing-map {
   .pe-#{$key} {
     padding-right: #{$value};
   }
-}
 
-
-@each $key, $value in $spacing-map {
   .pb-#{$key} {
     padding-bottom: #{$value};
   }
-}
 
-
-@each $key, $value in $spacing-map {
   .ps-#{$key} {
     padding-left: #{$value};
   }
 }
 
-@media (min-width: 576px) {
-  .d-sm-inline {
-    display: inline !important;
-  }
-
-  .d-sm-inline-block {
-    display: inline-block !important;
-  }
-
-  .d-sm-block {
-    display: block !important;
-  }
-
-  .d-sm-grid {
-    display: grid !important;
-  }
-
-  .d-sm-table {
-    display: table !important;
-  }
-
-  .d-sm-table-row {
-    display: table-row !important;
-  }
-
-  .d-sm-table-cell {
-    display: table-cell !important;
-  }
-
-  .d-sm-flex {
-    display: flex !important;
-  }
-
-  .d-sm-inline-flex {
-    display: inline-flex !important;
-  }
-
-  .d-sm-none {
-    display: none !important;
-  }
-
-  .flex-sm-fill {
-    flex: 1 1 auto !important;
-  }
-
-  .flex-sm-row {
-    flex-direction: row !important;
-  }
-
-  .flex-sm-column {
-    flex-direction: column !important;
-  }
-
-  .flex-sm-row-reverse {
-    flex-direction: row-reverse !important;
-  }
-
-  .flex-sm-column-reverse {
-    flex-direction: column-reverse !important;
-  }
-
-  .flex-sm-grow-0 {
-    flex-grow: 0 !important;
-  }
-
-  .flex-sm-grow-1 {
-    flex-grow: 1 !important;
-  }
-
-  .flex-sm-shrink-0 {
-    flex-shrink: 0 !important;
-  }
-
-  .flex-sm-shrink-1 {
-    flex-shrink: 1 !important;
-  }
-
-  .flex-sm-wrap {
-    flex-wrap: wrap !important;
-  }
-
-  .flex-sm-nowrap {
-    flex-wrap: nowrap !important;
-  }
-
-  .flex-sm-wrap-reverse {
-    flex-wrap: wrap-reverse !important;
-  }
-
-  .justify-content-sm-start {
-    justify-content: flex-start !important;
-  }
-
-  .justify-content-sm-end {
-    justify-content: flex-end !important;
-  }
-
-  .justify-content-sm-center {
-    justify-content: center !important;
-  }
-
-  .justify-content-sm-between {
-    justify-content: space-between !important;
-  }
-
-  .justify-content-sm-around {
-    justify-content: space-around !important;
-  }
-
-  .justify-content-sm-evenly {
-    justify-content: space-evenly !important;
-  }
-
-  .align-items-sm-start {
-    align-items: flex-start !important;
-  }
-
-  .align-items-sm-end {
-    align-items: flex-end !important;
-  }
-
-  .align-items-sm-center {
-    align-items: center !important;
-  }
-
-  .align-items-sm-baseline {
-    align-items: baseline !important;
-  }
-
-  .align-items-sm-stretch {
-    align-items: stretch !important;
-  }
-
-  .align-content-sm-start {
-    align-content: flex-start !important;
-  }
-
-  .align-content-sm-end {
-    align-content: flex-end !important;
-  }
-
-  .align-content-sm-center {
-    align-content: center !important;
-  }
-
-  .align-content-sm-between {
-    align-content: space-between !important;
-  }
-
-  .align-content-sm-around {
-    align-content: space-around !important;
-  }
-
-  .align-content-sm-stretch {
-    align-content: stretch !important;
-  }
-
-  .align-self-sm-auto {
-    align-self: auto !important;
-  }
-
-  .align-self-sm-start {
-    align-self: flex-start !important;
-  }
-
-  .align-self-sm-end {
-    align-self: flex-end !important;
-  }
-
-  .align-self-sm-center {
-    align-self: center !important;
-  }
-
-  .align-self-sm-baseline {
-    align-self: baseline !important;
-  }
-
-  .align-self-sm-stretch {
-    align-self: stretch !important;
-  }
-
-  .order-sm-first {
-    order: -1 !important;
-  }
-
-  @for $key from 1 through 5 {
-    .order-sm-#{$key} {
-      order: $key;
-    }
-  }
-
-  .order-sm-last {
-    order: 6 !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .m-sm-#{$key} {
-      margin: #{$value};
-    }
-  }
-
-  .m-sm-auto {
-    margin: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .mx-sm-#{$key} {
-      margin-right: #{$value};
-      margin-left: #{$value};
-    }
-  }
-
-  .mx-sm-auto {
-    margin-right: auto !important;
-    margin-left: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .my-sm-#{$key} {
-      margin-top: #{$value};
-      margin-bottom: #{$value};
-    }
-  }
-
-  .my-sm-auto {
-    margin-top: auto !important;
-    margin-bottom: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .mt-sm-#{$key} {
-      margin-top: #{$value};
-    }
-  }
-
-  .mt-sm-auto {
-    margin-top: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .me-sm-#{$key} {
-      margin-right: #{$value};
-    }
-  }
-
-  .me-sm-auto {
-    margin-right: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .mb-sm-#{$key} {
-      margin-bottom: #{$value};
+@each $grid, $pxBreakpoint in $grid-map {
+  @media (min-width: #{$pxBreakpoint}) {
+    .d-#{$grid}-inline {
+      display: inline !important;
     }
-  }
 
-  .mb-sm-auto {
-    margin-bottom: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .ms-sm-#{$key} {
-      margin-left: #{$value};
+    .d-#{$grid}-inline-block {
+      display: inline-block !important;
     }
-  }
-
-  .ms-sm-auto {
-    margin-left: auto !important;
-  }
 
-  @each $key, $value in $spacing-map {
-    .p-sm-#{$key} {
-      padding: #{$value};
+    .d-#{$grid}-block {
+      display: block !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .px-sm-#{$key} {
-      padding-right: #{$value};
-      padding-left: #{$value};
+    .d-#{$grid}-grid {
+      display: grid !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .py-sm-#{$key} {
-      padding-top: #{$value};
-      padding-bottom: #{$value};
+    .d-#{$grid}-table {
+      display: table !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .pt-sm-#{$key} {
-      padding-top: #{$value};
+    .d-#{$grid}-table-row {
+      display: table-row !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .pe-sm-#{$key} {
-      padding-right: #{$value};
+    .d-#{$grid}-table-cell {
+      display: table-cell !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .pb-sm-#{$key} {
-      padding-bottom: #{$value};
+    .d-#{$grid}-flex {
+      display: flex !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .ps-sm-#{$key} {
-      padding-left: #{$value};
+    .d-#{$grid}-inline-flex {
+      display: inline-flex !important;
     }
-  }
-}
-
-@media (min-width: 768px) {
-  .d-md-inline {
-    display: inline !important;
-  }
-
-  .d-md-inline-block {
-    display: inline-block !important;
-  }
-
-  .d-md-block {
-    display: block !important;
-  }
-
-  .d-md-grid {
-    display: grid !important;
-  }
-
-  .d-md-table {
-    display: table !important;
-  }
-
-  .d-md-table-row {
-    display: table-row !important;
-  }
-
-  .d-md-table-cell {
-    display: table-cell !important;
-  }
-
-  .d-md-flex {
-    display: flex !important;
-  }
-
-  .d-md-inline-flex {
-    display: inline-flex !important;
-  }
-
-  .d-md-none {
-    display: none !important;
-  }
-
-  .flex-md-fill {
-    flex: 1 1 auto !important;
-  }
-
-  .flex-md-row {
-    flex-direction: row !important;
-  }
-
-  .flex-md-column {
-    flex-direction: column !important;
-  }
-
-  .flex-md-row-reverse {
-    flex-direction: row-reverse !important;
-  }
-
-  .flex-md-column-reverse {
-    flex-direction: column-reverse !important;
-  }
-
-  .flex-md-grow-0 {
-    flex-grow: 0 !important;
-  }
-
-  .flex-md-grow-1 {
-    flex-grow: 1 !important;
-  }
-
-  .flex-md-shrink-0 {
-    flex-shrink: 0 !important;
-  }
-
-  .flex-md-shrink-1 {
-    flex-shrink: 1 !important;
-  }
-
-  .flex-md-wrap {
-    flex-wrap: wrap !important;
-  }
 
-  .flex-md-nowrap {
-    flex-wrap: nowrap !important;
-  }
-
-  .flex-md-wrap-reverse {
-    flex-wrap: wrap-reverse !important;
-  }
-
-  .justify-content-md-start {
-    justify-content: flex-start !important;
-  }
-
-  .justify-content-md-end {
-    justify-content: flex-end !important;
-  }
-
-  .justify-content-md-center {
-    justify-content: center !important;
-  }
-
-  .justify-content-md-between {
-    justify-content: space-between !important;
-  }
-
-  .justify-content-md-around {
-    justify-content: space-around !important;
-  }
-
-  .justify-content-md-evenly {
-    justify-content: space-evenly !important;
-  }
-
-  .align-items-md-start {
-    align-items: flex-start !important;
-  }
-
-  .align-items-md-end {
-    align-items: flex-end !important;
-  }
-
-  .align-items-md-center {
-    align-items: center !important;
-  }
-
-  .align-items-md-baseline {
-    align-items: baseline !important;
-  }
-
-  .align-items-md-stretch {
-    align-items: stretch !important;
-  }
-
-  .align-content-md-start {
-    align-content: flex-start !important;
-  }
-
-  .align-content-md-end {
-    align-content: flex-end !important;
-  }
-
-  .align-content-md-center {
-    align-content: center !important;
-  }
-
-  .align-content-md-between {
-    align-content: space-between !important;
-  }
-
-  .align-content-md-around {
-    align-content: space-around !important;
-  }
-
-  .align-content-md-stretch {
-    align-content: stretch !important;
-  }
-
-  .align-self-md-auto {
-    align-self: auto !important;
-  }
-
-  .align-self-md-start {
-    align-self: flex-start !important;
-  }
-
-  .align-self-md-end {
-    align-self: flex-end !important;
-  }
-
-  .align-self-md-center {
-    align-self: center !important;
-  }
-
-  .align-self-md-baseline {
-    align-self: baseline !important;
-  }
-
-  .align-self-md-stretch {
-    align-self: stretch !important;
-  }
-
-  .order-md-first {
-    order: -1 !important;
-  }
-
-  @for $key from 1 through 5 {
-    .order-md-#{$key} {
-      order: $key;
+    .d-#{$grid}-none {
+      display: none !important;
     }
-  }
 
-  .order-md-last {
-    order: 6 !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .m-md-#{$key} {
-      margin: #{$value};
+    .flex-#{$grid}-fill {
+      flex: 1 1 auto !important;
     }
-  }
-
-  .m-md-auto {
-    margin: auto !important;
-  }
 
-  @each $key, $value in $spacing-map {
-    .mx-md-#{$key} {
-      margin-right: #{$value};
-      margin-left: #{$value};
+    .flex-#{$grid}-row {
+      flex-direction: row !important;
     }
-  }
 
-  .mx-md-auto {
-    margin-right: auto !important;
-    margin-left: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .my-md-#{$key} {
-      margin-top: #{$value};
-      margin-bottom: #{$value};
+    .flex-#{$grid}-column {
+      flex-direction: column !important;
     }
-  }
-
-  .my-md-auto {
-    margin-top: auto !important;
-    margin-bottom: auto !important;
-  }
 
-  @each $key, $value in $spacing-map {
-    .mt-md-#{$key} {
-      margin-top: #{$value};
+    .flex-#{$grid}-row-reverse {
+      flex-direction: row-reverse !important;
     }
-  }
 
-  .mt-md-auto {
-    margin-top: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .me-md-#{$key} {
-      margin-right: #{$value};
+    .flex-#{$grid}-column-reverse {
+      flex-direction: column-reverse !important;
     }
-  }
-
-  .me-md-auto {
-    margin-right: auto !important;
-  }
 
-  @each $key, $value in $spacing-map {
-    .mb-md-#{$key} {
-      margin-bottom: #{$value};
+    .flex-#{$grid}-grow-0 {
+      flex-grow: 0 !important;
     }
-  }
 
-  .mb-md-auto {
-    margin-bottom: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .ms-md-#{$key} {
-      margin-left: #{$value};
+    .flex-#{$grid}-grow-1 {
+      flex-grow: 1 !important;
     }
-  }
-
-  .ms-md-auto {
-    margin-left: auto !important;
-  }
 
-  @each $key, $value in $spacing-map {
-    .p-md-#{$key} {
-      padding: #{$value};
+    .flex-#{$grid}-shrink-0 {
+      flex-shrink: 0 !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .px-md-#{$key} {
-      padding-right: #{$value};
-      padding-left: #{$value};
+    .flex-#{$grid}-shrink-1 {
+      flex-shrink: 1 !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .py-md-#{$key} {
-      padding-top: #{$value};
-      padding-bottom: #{$value};
+    .flex-#{$grid}-wrap {
+      flex-wrap: wrap !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .pt-md-#{$key} {
-      padding-top: #{$value};
+    .flex-#{$grid}-nowrap {
+      flex-wrap: nowrap !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .pe-md-#{$key} {
-      padding-right: #{$value};
+    .flex-#{$grid}-wrap-reverse {
+      flex-wrap: wrap-reverse !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .pb-md-#{$key} {
-      padding-bottom: #{$value};
+    .justify-content-#{$grid}-start {
+      justify-content: flex-start !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .ps-md-#{$key} {
-      padding-left: #{$value};
+    .justify-content-#{$grid}-end {
+      justify-content: flex-end !important;
     }
-  }
-}
-
-@media (min-width: 992px) {
-  .d-lg-inline {
-    display: inline !important;
-  }
-
-  .d-lg-inline-block {
-    display: inline-block !important;
-  }
-
-  .d-lg-block {
-    display: block !important;
-  }
-
-  .d-lg-grid {
-    display: grid !important;
-  }
-
-  .d-lg-table {
-    display: table !important;
-  }
-
-  .d-lg-table-row {
-    display: table-row !important;
-  }
-
-  .d-lg-table-cell {
-    display: table-cell !important;
-  }
-
-  .d-lg-flex {
-    display: flex !important;
-  }
-
-  .d-lg-inline-flex {
-    display: inline-flex !important;
-  }
-
-  .d-lg-none {
-    display: none !important;
-  }
-
-  .flex-lg-fill {
-    flex: 1 1 auto !important;
-  }
-
-  .flex-lg-row {
-    flex-direction: row !important;
-  }
-
-  .flex-lg-column {
-    flex-direction: column !important;
-  }
-
-  .flex-lg-row-reverse {
-    flex-direction: row-reverse !important;
-  }
-
-  .flex-lg-column-reverse {
-    flex-direction: column-reverse !important;
-  }
-
-  .flex-lg-grow-0 {
-    flex-grow: 0 !important;
-  }
-
-  .flex-lg-grow-1 {
-    flex-grow: 1 !important;
-  }
-
-  .flex-lg-shrink-0 {
-    flex-shrink: 0 !important;
-  }
-
-  .flex-lg-shrink-1 {
-    flex-shrink: 1 !important;
-  }
-
-  .flex-lg-wrap {
-    flex-wrap: wrap !important;
-  }
-
-  .flex-lg-nowrap {
-    flex-wrap: nowrap !important;
-  }
-
-  .flex-lg-wrap-reverse {
-    flex-wrap: wrap-reverse !important;
-  }
-
-  .justify-content-lg-start {
-    justify-content: flex-start !important;
-  }
-
-  .justify-content-lg-end {
-    justify-content: flex-end !important;
-  }
-
-  .justify-content-lg-center {
-    justify-content: center !important;
-  }
-
-  .justify-content-lg-between {
-    justify-content: space-between !important;
-  }
-
-  .justify-content-lg-around {
-    justify-content: space-around !important;
-  }
-
-  .justify-content-lg-evenly {
-    justify-content: space-evenly !important;
-  }
-
-  .align-items-lg-start {
-    align-items: flex-start !important;
-  }
-
-  .align-items-lg-end {
-    align-items: flex-end !important;
-  }
-
-  .align-items-lg-center {
-    align-items: center !important;
-  }
 
-  .align-items-lg-baseline {
-    align-items: baseline !important;
-  }
-
-  .align-items-lg-stretch {
-    align-items: stretch !important;
-  }
-
-  .align-content-lg-start {
-    align-content: flex-start !important;
-  }
-
-  .align-content-lg-end {
-    align-content: flex-end !important;
-  }
-
-  .align-content-lg-center {
-    align-content: center !important;
-  }
-
-  .align-content-lg-between {
-    align-content: space-between !important;
-  }
-
-  .align-content-lg-around {
-    align-content: space-around !important;
-  }
-
-  .align-content-lg-stretch {
-    align-content: stretch !important;
-  }
-
-  .align-self-lg-auto {
-    align-self: auto !important;
-  }
-
-  .align-self-lg-start {
-    align-self: flex-start !important;
-  }
-
-  .align-self-lg-end {
-    align-self: flex-end !important;
-  }
-
-  .align-self-lg-center {
-    align-self: center !important;
-  }
-
-  .align-self-lg-baseline {
-    align-self: baseline !important;
-  }
-
-  .align-self-lg-stretch {
-    align-self: stretch !important;
-  }
-  .order-lg-first {
-    order: -1 !important;
-  }
-
-  @for $key from 1 through 5 {
-    .order-lg-#{$key} {
-      order: $key;
+    .justify-content-#{$grid}-center {
+      justify-content: center !important;
     }
-  }
 
-  .order-lg-last {
-    order: 6 !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .m-lg-#{$key} {
-      margin: #{$value};
+    .justify-content-#{$grid}-between {
+      justify-content: space-between !important;
     }
-  }
-
-  .m-lg-auto {
-    margin: auto !important;
-  }
 
-  @each $key, $value in $spacing-map {
-    .mx-lg-#{$key} {
-      margin-right: #{$value};
-      margin-left: #{$value};
+    .justify-content-#{$grid}-around {
+      justify-content: space-around !important;
     }
-  }
 
-  .mx-lg-auto {
-    margin-right: auto !important;
-    margin-left: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .my-lg-#{$key} {
-      margin-top: #{$value};
-      margin-bottom: #{$value};
+    .justify-content-#{$grid}-evenly {
+      justify-content: space-evenly !important;
     }
-  }
-
-  .my-lg-auto {
-    margin-top: auto !important;
-    margin-bottom: auto !important;
-  }
 
-  @each $key, $value in $spacing-map {
-    .mt-lg-#{$key} {
-      margin-top: #{$value};
+    .align-items-#{$grid}-start {
+      align-items: flex-start !important;
     }
-  }
 
-  .mt-lg-auto {
-    margin-top: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .me-lg-#{$key} {
-      margin-right: #{$value};
+    .align-items-#{$grid}-end {
+      align-items: flex-end !important;
     }
-  }
-
-  .me-lg-auto {
-    margin-right: auto !important;
-  }
 
-  @each $key, $value in $spacing-map {
-    .mb-lg-#{$key} {
-      margin-bottom: #{$value};
+    .align-items-#{$grid}-center {
+      align-items: center !important;
     }
-  }
 
-  .mb-lg-auto {
-    margin-bottom: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .ms-lg-#{$key} {
-      margin-left: #{$value};
+    .align-items-#{$grid}-baseline {
+      align-items: baseline !important;
     }
-  }
-
-  .ms-lg-auto {
-    margin-left: auto !important;
-  }
 
-  @each $key, $value in $spacing-map {
-    .p-lg-#{$key} {
-      padding: #{$value};
+    .align-items-#{$grid}-stretch {
+      align-items: stretch !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .px-lg-#{$key} {
-      padding-right: #{$value};
-      padding-left: #{$value};
+    .align-content-#{$grid}-start {
+      align-content: flex-start !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .py-lg-#{$key} {
-      padding-top: #{$value};
-      padding-bottom: #{$value};
+    .align-content-#{$grid}-end {
+      align-content: flex-end !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .pt-lg-#{$key} {
-      padding-top: #{$value};
+    .align-content-#{$grid}-center {
+      align-content: center !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .pe-lg-#{$key} {
-      padding-right: #{$value};
+    .align-content-#{$grid}-between {
+      align-content: space-between !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .pb-lg-#{$key} {
-      padding-bottom: #{$value};
+    .align-content-#{$grid}-around {
+      align-content: space-around !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .ps-lg-#{$key} {
-      padding-left: #{$value};
+    .align-content-#{$grid}-stretch {
+      align-content: stretch !important;
     }
-  }
-}
-
-@media (min-width: 1200px) {
-  .d-xl-inline {
-    display: inline !important;
-  }
-
-  .d-xl-inline-block {
-    display: inline-block !important;
-  }
-
-  .d-xl-block {
-    display: block !important;
-  }
-
-  .d-xl-grid {
-    display: grid !important;
-  }
-
-  .d-xl-table {
-    display: table !important;
-  }
-
-  .d-xl-table-row {
-    display: table-row !important;
-  }
-
-  .d-xl-table-cell {
-    display: table-cell !important;
-  }
-
-  .d-xl-flex {
-    display: flex !important;
-  }
-
-  .d-xl-inline-flex {
-    display: inline-flex !important;
-  }
-
-  .d-xl-none {
-    display: none !important;
-  }
-
-  .flex-xl-fill {
-    flex: 1 1 auto !important;
-  }
-
-  .flex-xl-row {
-    flex-direction: row !important;
-  }
-
-  .flex-xl-column {
-    flex-direction: column !important;
-  }
-
-  .flex-xl-row-reverse {
-    flex-direction: row-reverse !important;
-  }
-
-  .flex-xl-column-reverse {
-    flex-direction: column-reverse !important;
-  }
-
-  .flex-xl-grow-0 {
-    flex-grow: 0 !important;
-  }
-
-  .flex-xl-grow-1 {
-    flex-grow: 1 !important;
-  }
-
-  .flex-xl-shrink-0 {
-    flex-shrink: 0 !important;
-  }
-
-  .flex-xl-shrink-1 {
-    flex-shrink: 1 !important;
-  }
-
-  .flex-xl-wrap {
-    flex-wrap: wrap !important;
-  }
-
-  .flex-xl-nowrap {
-    flex-wrap: nowrap !important;
-  }
-
-  .flex-xl-wrap-reverse {
-    flex-wrap: wrap-reverse !important;
-  }
-
-  .justify-content-xl-start {
-    justify-content: flex-start !important;
-  }
-
-  .justify-content-xl-end {
-    justify-content: flex-end !important;
-  }
-
-  .justify-content-xl-center {
-    justify-content: center !important;
-  }
-
-  .justify-content-xl-between {
-    justify-content: space-between !important;
-  }
-
-  .justify-content-xl-around {
-    justify-content: space-around !important;
-  }
-
-  .justify-content-xl-evenly {
-    justify-content: space-evenly !important;
-  }
-
-  .align-items-xl-start {
-    align-items: flex-start !important;
-  }
-
-  .align-items-xl-end {
-    align-items: flex-end !important;
-  }
-
-  .align-items-xl-center {
-    align-items: center !important;
-  }
-
-  .align-items-xl-baseline {
-    align-items: baseline !important;
-  }
-
-  .align-items-xl-stretch {
-    align-items: stretch !important;
-  }
-
-  .align-content-xl-start {
-    align-content: flex-start !important;
-  }
-
-  .align-content-xl-end {
-    align-content: flex-end !important;
-  }
-
-  .align-content-xl-center {
-    align-content: center !important;
-  }
-
-  .align-content-xl-between {
-    align-content: space-between !important;
-  }
-
-  .align-content-xl-around {
-    align-content: space-around !important;
-  }
-
-  .align-content-xl-stretch {
-    align-content: stretch !important;
-  }
-
-  .align-self-xl-auto {
-    align-self: auto !important;
-  }
-
-  .align-self-xl-start {
-    align-self: flex-start !important;
-  }
-
-  .align-self-xl-end {
-    align-self: flex-end !important;
-  }
 
-  .align-self-xl-center {
-    align-self: center !important;
-  }
-
-  .align-self-xl-baseline {
-    align-self: baseline !important;
-  }
-
-  .align-self-xl-stretch {
-    align-self: stretch !important;
-  }
-  .order-xl-first {
-    order: -1 !important;
-  }
-
-  @for $key from 1 through 5 {
-    .order-xl-#{$key} {
-      order: $key;
+    .align-self-#{$grid}-auto {
+      align-self: auto !important;
     }
-  }
-
-  .order-xl-last {
-    order: 6 !important;
-  }
 
-  @each $key, $value in $spacing-map {
-    .m-xl-#{$key} {
-      margin: #{$value};
+    .align-self-#{$grid}-start {
+      align-self: flex-start !important;
     }
-  }
 
-  .m-xl-auto {
-    margin: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .mx-xl-#{$key} {
-      margin-right: #{$value};
-      margin-left: #{$value};
+    .align-self-#{$grid}-end {
+      align-self: flex-end !important;
     }
-  }
-
-  .mx-xl-auto {
-    margin-right: auto !important;
-    margin-left: auto !important;
-  }
 
-  @each $key, $value in $spacing-map {
-    .my-xl-#{$key} {
-      margin-top: #{$value};
-      margin-bottom: #{$value};
+    .align-self-#{$grid}-center {
+      align-self: center !important;
     }
-  }
 
-  .my-xl-auto {
-    margin-top: auto !important;
-    margin-bottom: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .mt-xl-#{$key} {
-      margin-top: #{$value};
+    .align-self-#{$grid}-baseline {
+      align-self: baseline !important;
     }
-  }
-
-  .mt-xl-auto {
-    margin-top: auto !important;
-  }
 
-  @each $key, $value in $spacing-map {
-    .me-xl-#{$key} {
-      margin-right: #{$value};
+    .align-self-#{$grid}-stretch {
+      align-self: stretch !important;
     }
-  }
-
-  .me-xl-auto {
-    margin-right: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .mb-xl-#{$key} {
-      margin-bottom: #{$value};
+    .order-#{$grid}-first {
+      order: -1 !important;
     }
-  }
 
-  .mb-xl-auto {
-    margin-bottom: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .ms-xl-#{$key} {
-      margin-left: #{$value};
+    @for $key from 1 through 5 {
+      .order-#{$grid}-#{$key} {
+        order: $key;
+      }
     }
-  }
-
-  .ms-xl-auto {
-    margin-left: auto !important;
-  }
 
-  @each $key, $value in $spacing-map {
-    .p-xl-#{$key} {
-      padding: #{$value};
+    .order-#{$grid}-last {
+      order: 6 !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .px-xl-#{$key} {
-      padding-right: #{$value};
-      padding-left: #{$value};
+    @each $key, $value in $spacing-map {
+      .m-#{$grid}-#{$key} {
+        margin: #{$value};
+      }
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .py-xl-#{$key} {
-      padding-top: #{$value};
-      padding-bottom: #{$value};
+    .m-#{$grid}-auto {
+      margin: auto !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .pt-xl-#{$key} {
-      padding-top: #{$value};
+    @each $key, $value in $spacing-map {
+      .mx-#{$grid}-#{$key} {
+        margin-right: #{$value};
+        margin-left: #{$value};
+      }
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .pe-xl-#{$key} {
-      padding-right: #{$value};
+    .mx-#{$grid}-auto {
+      margin-right: auto !important;
+      margin-left: auto !important;
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .pb-xl-#{$key} {
-      padding-bottom: #{$value};
+    @each $key, $value in $spacing-map {
+      .my-#{$grid}-#{$key} {
+        margin-top: #{$value};
+        margin-bottom: #{$value};
+      }
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .ps-xl-#{$key} {
-      padding-left: #{$value};
+    .my-#{$grid}-auto {
+      margin-top: auto !important;
+      margin-bottom: auto !important;
     }
-  }
-}
-
-@media (min-width: 1400px) {
-  .d-xxl-inline {
-    display: inline !important;
-  }
-
-  .d-xxl-inline-block {
-    display: inline-block !important;
-  }
-
-  .d-xxl-block {
-    display: block !important;
-  }
-
-  .d-xxl-grid {
-    display: grid !important;
-  }
-
-  .d-xxl-table {
-    display: table !important;
-  }
-
-  .d-xxl-table-row {
-    display: table-row !important;
-  }
-
-  .d-xxl-table-cell {
-    display: table-cell !important;
-  }
-
-  .d-xxl-flex {
-    display: flex !important;
-  }
-
-  .d-xxl-inline-flex {
-    display: inline-flex !important;
-  }
-
-  .d-xxl-none {
-    display: none !important;
-  }
-
-  .flex-xxl-fill {
-    flex: 1 1 auto !important;
-  }
-
-  .flex-xxl-row {
-    flex-direction: row !important;
-  }
-
-  .flex-xxl-column {
-    flex-direction: column !important;
-  }
-
-  .flex-xxl-row-reverse {
-    flex-direction: row-reverse !important;
-  }
-
-  .flex-xxl-column-reverse {
-    flex-direction: column-reverse !important;
-  }
-
-  .flex-xxl-grow-0 {
-    flex-grow: 0 !important;
-  }
-
-  .flex-xxl-grow-1 {
-    flex-grow: 1 !important;
-  }
-
-  .flex-xxl-shrink-0 {
-    flex-shrink: 0 !important;
-  }
-
-  .flex-xxl-shrink-1 {
-    flex-shrink: 1 !important;
-  }
-
-  .flex-xxl-wrap {
-    flex-wrap: wrap !important;
-  }
 
-  .flex-xxl-nowrap {
-    flex-wrap: nowrap !important;
-  }
-
-  .flex-xxl-wrap-reverse {
-    flex-wrap: wrap-reverse !important;
-  }
-
-  .justify-content-xxl-start {
-    justify-content: flex-start !important;
-  }
-
-  .justify-content-xxl-end {
-    justify-content: flex-end !important;
-  }
-
-  .justify-content-xxl-center {
-    justify-content: center !important;
-  }
-
-  .justify-content-xxl-between {
-    justify-content: space-between !important;
-  }
-
-  .justify-content-xxl-around {
-    justify-content: space-around !important;
-  }
-
-  .justify-content-xxl-evenly {
-    justify-content: space-evenly !important;
-  }
-
-  .align-items-xxl-start {
-    align-items: flex-start !important;
-  }
-
-  .align-items-xxl-end {
-    align-items: flex-end !important;
-  }
-
-  .align-items-xxl-center {
-    align-items: center !important;
-  }
-
-  .align-items-xxl-baseline {
-    align-items: baseline !important;
-  }
-
-  .align-items-xxl-stretch {
-    align-items: stretch !important;
-  }
-
-  .align-content-xxl-start {
-    align-content: flex-start !important;
-  }
-
-  .align-content-xxl-end {
-    align-content: flex-end !important;
-  }
-
-  .align-content-xxl-center {
-    align-content: center !important;
-  }
-
-  .align-content-xxl-between {
-    align-content: space-between !important;
-  }
-
-  .align-content-xxl-around {
-    align-content: space-around !important;
-  }
-
-  .align-content-xxl-stretch {
-    align-content: stretch !important;
-  }
-
-  .align-self-xxl-auto {
-    align-self: auto !important;
-  }
-
-  .align-self-xxl-start {
-    align-self: flex-start !important;
-  }
-
-  .align-self-xxl-end {
-    align-self: flex-end !important;
-  }
-
-  .align-self-xxl-center {
-    align-self: center !important;
-  }
-
-  .align-self-xxl-baseline {
-    align-self: baseline !important;
-  }
-
-  .align-self-xxl-stretch {
-    align-self: stretch !important;
-  }
-  .order-xxl-first {
-    order: -1 !important;
-  }
-
-  @for $key from 1 through 5 {
-    .order-xxl-#{$key} {
-      order: $key;
+    @each $key, $value in $spacing-map {
+      .mt-#{$grid}-#{$key} {
+        margin-top: #{$value};
+      }
     }
-  }
-
-  .order-xxl-last {
-    order: 6 !important;
-  }
 
-  @each $key, $value in $spacing-map {
-    .m-xxl-#{$key} {
-      margin: #{$value};
+    .mt-#{$grid}-auto {
+      margin-top: auto !important;
     }
-  }
 
-  .m-xxl-auto {
-    margin: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .mx-xxl-#{$key} {
-      margin-right: #{$value};
-      margin-left: #{$value};
+    @each $key, $value in $spacing-map {
+      .me-#{$grid}-#{$key} {
+        margin-right: #{$value};
+      }
     }
-  }
-
-  .mx-xxl-auto {
-    margin-right: auto !important;
-    margin-left: auto !important;
-  }
 
-  @each $key, $value in $spacing-map {
-    .my-xxl-#{$key} {
-      margin-top: #{$value};
-      margin-bottom: #{$value};
+    .me-#{$grid}-auto {
+      margin-right: auto !important;
     }
-  }
 
-  .my-xxl-auto {
-    margin-top: auto !important;
-    margin-bottom: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .mt-xxl-#{$key} {
-      margin-top: #{$value};
+    @each $key, $value in $spacing-map {
+      .mb-#{$grid}-#{$key} {
+        margin-bottom: #{$value};
+      }
     }
-  }
-
-  .mt-xxl-auto {
-    margin-top: auto !important;
-  }
 
-  @each $key, $value in $spacing-map {
-    .me-xxl-#{$key} {
-      margin-right: #{$value};
+    .mb-#{$grid}-auto {
+      margin-bottom: auto !important;
     }
-  }
 
-  .me-xxl-auto {
-    margin-right: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .mb-xxl-#{$key} {
-      margin-bottom: #{$value};
+    @each $key, $value in $spacing-map {
+      .ms-#{$grid}-#{$key} {
+        margin-left: #{$value};
+      }
     }
-  }
 
-  .mb-xxl-auto {
-    margin-bottom: auto !important;
-  }
-
-  @each $key, $value in $spacing-map {
-    .ms-xxl-#{$key} {
-      margin-left: #{$value};
+    .ms-#{$grid}-auto {
+      margin-left: auto !important;
     }
-  }
-
-  .ms-xxl-auto {
-    margin-left: auto !important;
-  }
 
-  @each $key, $value in $spacing-map {
-    .p-xxl-#{$key} {
-      padding: #{$value};
+    @each $key, $value in $spacing-map {
+      .p-#{$grid}-#{$key} {
+        padding: #{$value};
+      }
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .px-xxl-#{$key} {
-      padding-right: #{$value};
-      padding-left: #{$value};
+    @each $key, $value in $spacing-map {
+      .px-#{$grid}-#{$key} {
+        padding-right: #{$value};
+        padding-left: #{$value};
+      }
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .py-xxl-#{$key} {
-      padding-top: #{$value};
-      padding-bottom: #{$value};
+    @each $key, $value in $spacing-map {
+      .py-#{$grid}-#{$key} {
+        padding-top: #{$value};
+        padding-bottom: #{$value};
+      }
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .pt-xxl-#{$key} {
-      padding-top: #{$value};
+    @each $key, $value in $spacing-map {
+      .pt-#{$grid}-#{$key} {
+        padding-top: #{$value};
+      }
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .pe-xxl-#{$key} {
-      padding-right: #{$value};
+    @each $key, $value in $spacing-map {
+      .pe-#{$grid}-#{$key} {
+        padding-right: #{$value};
+      }
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .pb-xxl-#{$key} {
-      padding-bottom: #{$value};
+    @each $key, $value in $spacing-map {
+      .pb-#{$grid}-#{$key} {
+        padding-bottom: #{$value};
+      }
     }
-  }
 
-  @each $key, $value in $spacing-map {
-    .ps-xxl-#{$key} {
-      padding-left: #{$value};
+    @each $key, $value in $spacing-map {
+      .ps-#{$grid}-#{$key} {
+        padding-left: #{$value};
+      }
     }
   }
 }

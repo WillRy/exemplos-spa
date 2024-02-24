@@ -1,196 +1,289 @@
 <template>
   <div :class="{ 'table-responsive': responsive }">
-      <table class="tabela" :class="{ loading: loading, listras: listras, 'auto': tableLayout === 'auto', 'fixed': tableLayout === 'fixed' }">
-          <thead>
-          <th v-if="checkbox" style="vertical-align: middle">
-              <div style="display: flex;align-items: center; justify-content: center">
-                  <BaseCheckbox v-model="checkedAll" @onCheckChange="notificaMarcacao"/>
-              </div>
-          </th>
+    <table
+      class="tabela"
+      :class="{
+        loading: loading,
+        listras: listras,
+        auto: tableLayout === 'auto',
+        fixed: tableLayout === 'fixed',
+      }"
+    >
+      <thead>
+        <template v-if="!$slots.thead">
           <HeadSort
-              @onSort="sortBy(coluna.order ? coluna.order : coluna.nome)"
-              v-for="(coluna, index) in colunasSemCheckbox"
-              :info="coluna.info"
-              :key="index"
-              :nome="coluna.nome"
-              :texto="coluna.texto"
-              :ordenando="sortName"
-              :order="sortOrder"
-              :disabled="coluna.disabled"
-          />
-          <slot name="acoes" v-if="$slots.acoes"></slot>
-          </thead>
-          <tbody v-if="dados && dados.length">
-          <slot name="colunas" :dados="dados" v-if="$slots.colunas"></slot>
-
-          <template v-else>
-              <tr v-for="(dado,index) in dadosAgrupados" :key="index">
-                  <ColunaTabela
-                      v-for="(col, index2) in dado.colunas"
-                      :key="`colunas-${index2}`"
-                      :width="col.width"
-                      :justify="col.justify"
-                  >
-                      <template v-if="!$slots['table-row']">
-                          {{col.dado}}
-                      </template>
-                      <slot name="table-row" :row="dado.row" :coluna="col" :index="index"></slot>
-                  </ColunaTabela>
-              </tr>
-          </template>
-          </tbody>
-          <tbody
-              v-if="(!dados && !loading) || (dados && dados.length === 0 && !loading)"
-              class="tabela-vazia"
-          >
-          <tr v-if="!loading">
-              <td colspan="99999">{{ textoEmpty }}</td>
-          </tr>
-          </tbody>
-          <tbody v-if="loading">
-          <tr class="overlay">
-              <Loader width="3%" height="3%" :cor-principal="true"/>
-          </tr>
-          </tbody>
-      </table>
+            @onSort="$emit('onSort', $event)"
+            v-for="(coluna, index) in colunas"
+            :info="coluna.info"
+            :key="index"
+            :nome="coluna.nome"
+            :ordenando="sortName"
+            :order="sortOrder"
+            :disabled="coluna.disabled"
+            :texto="coluna.texto"
+          ></HeadSort>
+        </template>
+        <slot name="thead" :dados="dados" />
+      </thead>
+      <tbody v-if="dados && dados.length">
+        <slot name="colunas" :dados="dados" v-if="$slots.colunas"></slot>
+      </tbody>
+      <tbody
+        v-if="(!dados && !loading) || (dados && dados.length === 0 && !loading)"
+        class="tabela-vazia"
+      >
+        <tr v-if="!loading">
+          <td colspan="99999">{{ textoEmpty }}</td>
+        </tr>
+      </tbody>
+      <tbody v-if="loading">
+        <tr class="overlay">
+          <Loader width="3%" height="3%" :cor-principal="true" />
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import HeadSort from "./HeadSort.vue";
 import Loader from "../Loader.vue";
 import ColunaTabela from "./ColunaTabela.vue";
 import BaseCheckbox from "../form/BaseCheckbox.vue";
+import { PropType } from "vue";
+
+interface Coluna {
+  nome: string;
+  texto: string;
+  disabled?: boolean;
+  info?: string;
+}
+
+type Colunas = Array<Coluna>;
 
 export default {
   name: "Tabela",
-  components: {BaseCheckbox, ColunaTabela, Loader, HeadSort},
+  components: { BaseCheckbox, ColunaTabela, Loader, HeadSort },
   props: {
-      responsive: {
-          type: Boolean,
-          default: true,
+    responsive: {
+      type: Boolean,
+      default: true,
+    },
+    listras: {
+      type: Boolean,
+      default: true,
+    },
+    textoEmpty: {
+      type: String,
+      default: "Não há dados",
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+    colunas: {
+      type: Array as PropType<Colunas>,
+      default: () => [],
+    },
+    dados: {
+      type: Array,
+      default: () => [],
+    },
+    total: {
+      type: Number,
+      default: 0,
+    },
+    perPage: {
+      type: Number,
+      default: 10,
+    },
+    sortName: {
+      type: String,
+      default: null,
+    },
+    sortOrder: {
+      type: String,
+      default: "asc",
+    },
+    checkbox: {
+      type: Boolean,
+      default: false,
+    },
+    tableLayout: {
+      type: String,
+      default: "auto",
+      validator(value: string) {
+        return ["auto", "fixed"].includes(value);
       },
-      listras: {
-          type: Boolean,
-          default: true,
-      },
-      textoEmpty: {
-          type: String,
-          default: "Não há dados",
-      },
-      loading: {
-          type: Boolean,
-          default: false,
-      },
-      colunas: {
-          type: Array,
-          default: () => [],
-      },
-      dados: {
-          type: Array,
-          default: () => [],
-      },
-      total: {
-          type: Number,
-          default: 0,
-      },
-      perPage: {
-          type: Number,
-          default: 10,
-      },
-      sortName: {
-          type: String,
-          default: null,
-      },
-      sortOrder: {
-          type: String,
-          default: "asc",
-      },
-      checkbox: {
-          type: Boolean,
-          default: false
-      },
-      tableLayout: {
-        type: String,
-        default: "auto",
-        validator(value) {
-            return ["auto", "fixed"].includes(value);
-        }
-      }
+    },
   },
   data() {
-      return {
-          checkedAll: false
-      };
-  },
-  computed: {
-      colunasComCheckbox() {
-         const colunas = this.colunas;
-
-         if(this.checkbox) {
-             colunas.unshift({
-                 nome: 'checkbox',
-                 texto: '',
-                 width: '80px',
-                 justify: 'center'
-             })
-         }
-
-         return colunas;
-      },
-      colunasSemCheckbox() {
-        return this.colunas.filter((col) => col.nome !== 'checkbox')
-      },
-      dadosAgrupados() {
-
-          let resultado = [];
-          this.dados.forEach((dado) => {
-              let dadosRow = []
-
-              for (const coluna of this.colunasComCheckbox) {
-
-                  const valor = dado[coluna.nome]
-
-                  dadosRow.push({
-                      ...coluna,
-                      dado: valor
-                  });
-              }
-
-              resultado.push({
-                  row: dado,
-                  colunas: dadosRow
-              });
-          })
-
-          return resultado;
-
-
-      }
+    return {
+      checkedAll: false,
+    };
   },
   methods: {
-      notificaMarcacao($event) {
-          this.$emit('onCheckChange', $event)
-      },
-      sortBy(campo) {
-          let sortName = campo;
-          let sortOrder = this.sortOrder;
-
-          sortName = campo;
-          if (sortName !== campo) {
-              sortOrder = "asc";
-          } else {
-              sortOrder = sortOrder === "asc" ? "desc" : "asc";
-          }
-
-          this.$emit("onSort", {
-              sortName: sortName,
-              sortOrder: sortOrder,
-          });
-      },
+    sortBy(dadosOrdenacao) {
+      this.$emit("onSort", dadosOrdenacao);
+    },
   },
 };
 </script>
 
 <style scoped>
+.tabela-container {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+
+  background: #fff;
+  border-top: 1px solid #e5e7eb;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border-color: inherit;
+  text-indent: 0;
+}
+
+.tabela.auto {
+  table-layout: auto;
+}
+
+.tabela.fixed {
+  table-layout: fixed;
+}
+
+.tabela {
+  min-height: 36px;
+}
+
+.tabela thead tr .tabela :deep(thead tr) {
+  background-color: rgb(249 250 251);
+}
+
+.tabela thead tr th,
+.tabela :deep(thead tr th) {
+  padding: 0;
+  text-align: left;
+}
+
+.tabela thead tr th .header,
+.tabela :deep(thead tr th .header) {
+  color: rgb(75 85 99);
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+
+  padding: 0.5rem 0.5rem;
+
+  white-space: nowrap;
+}
+
+.tabela thead tr th > button,
+.tabela :deep(thead tr th > button) {
+  color: rgb(75 85 99);
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 0.5rem 0.5rem;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.tabela thead tr th > *:not(button),
+.tabela :deep(thead tr th > *:not(button)) {
+  color: rgb(75 85 99);
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 0.5rem 0.5rem;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+}
+
+.tabela tbody {
+  border-top: 1px solid #e5e7eb;
+}
+
+.tabela tbody tr td,
+.tabela tbody :deep(tr td) {
+  padding: 0.5rem 0.5rem;
+  margin: 0;
+}
+
+.tabela tbody tr ~ tr,
+.tabela tbody :deep(tr ~ tr) {
+  border-top: 1px solid #e5e7eb;
+}
+
+.tabela:not(.loading) tbody tr:hover,
+.tabela:not(.loading) tbody :deep(tr:hover) {
+  background: var(--gray-color-200);
+}
+
+.tabela-vazia {
+  text-align: center;
+}
+
+.tabela-vazia tr td {
+  padding: 8px;
+}
+
+:deep(.coluna-btn) {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  max-width: 270px;
+}
+
+:deep(.coluna-acoes) {
+  max-width: 50px;
+  width: 50px;
+}
+
+.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.overlay {
+  display: none;
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: calc(100% - 0px);
+  background-color: rgba(200, 200, 200, 0.4) !important;
+}
+
+.loading .overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tabela-altura-limitada {
+  max-height: 600px;
+  overflow: auto;
+}
+
+.listras :deep(tr:nth-child(odd)) {
+  background-color: #eff0f2;
+}
 </style>

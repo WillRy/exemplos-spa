@@ -31,15 +31,19 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import BaseButtonTertiary from './../buttons/BaseButtonTertiary.vue';
 import CaptionText from './../text/CaptionText.vue';
-
+import { PropType } from 'vue';
+interface tipoLink {
+    nome: string,
+    link: string
+}
 export default {
     name: "Breadcrumb",
     props: {
         links: {
-            type: Array,
+            type: Array as PropType<tipoLink[]>,
             default: () => [],
         },
         componentLink: {

@@ -155,9 +155,9 @@ export default {
 }
 
 .btn:disabled :deep(svg path) {
-  fill: var(--gray-300) !important;
+  fill: var(--gray-color-300) !important;
 }
 .btn:hover:disabled :deep(svg path) {
-  fill: var(--gray-300) !important;
+  fill: var(--gray-color-300) !important;
 }
 </style>

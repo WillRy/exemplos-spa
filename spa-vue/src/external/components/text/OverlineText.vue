@@ -4,7 +4,7 @@
     </component>
 </template>
 
-<script>
+<script lang="ts">
 export default {
     name: "OverlineText",
     props: {
@@ -15,7 +15,7 @@ export default {
         size: {
             type: String,
             default: 'sm',
-            validator(value) {
+            validator(value: string) {
                 return ["sm", "lg"].includes(value);
             }
         },
@@ -34,7 +34,7 @@ export default {
     font-weight: bold;
     font-size: 0.75rem;
     line-height: 0.9975rem;
-    
+
 }
 
 .sm {

@@ -16,7 +16,7 @@
     </td>
 </template>
 
-<script>
+<script lang="ts">
 import EyeIcon from "../icons/EyeIcon.vue";
 
 export default {
@@ -25,10 +25,12 @@ export default {
     emits: ['onVer'],
     props: {
         paddingColuna: {
+            type: String,
             default: '0.5rem 0.5rem'
         },
         width: {
-            default: null
+            type: String,
+            required: false
         },
         btn: {
             type: Boolean,

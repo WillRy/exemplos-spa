@@ -99,8 +99,8 @@
                                     </button>
                                 </DropdownAcoes>
                               </ColunaTabela>
-                        </tr></template
-                    >
+                        </tr>
+                      </template>
                 </Tabela>
                 <PaginacaoSemRouter
                     class="mt-3"

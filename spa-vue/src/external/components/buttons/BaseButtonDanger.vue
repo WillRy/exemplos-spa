@@ -4,7 +4,7 @@
   </BaseButton>
 </template>
 
-<script>
+<script lang="ts">
 import BaseButton from "./BaseButton.vue";
 
 export default {
@@ -40,50 +40,50 @@ export default {
 
 
 .btn-danger {
-  background: var(--danger-button-background);
-  color: var(--danger-button-color);
-  border: 1px solid var(--danger-button-border);
+  background: var(--error-color-600);
+  color: #fff;
+  border: 1px solid transparent;
 }
 
 .btn-danger:hover {
-  background: var(--danger-button-hover-background);
-  color: var(--danger-button-hover-color);
+  background: var(--error-color-400);
+  color: #fff;
 }
 
 .btn-danger:focus:not(:active) {
-  box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--danger-button-focus-shadow);
-  background: var(--danger-button-focus-background);
+  box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--error-color-400);
+  background: var(--error-color-400);
 }
 
 .btn-danger:active {
-  background: var(--danger-button-active-background);
+  background: var(--error-color-700);
 }
 
 .btn-danger:disabled {
-  background: var(--gray-200);
-  color: var(--gray-300);
+  background: var(--gray-color-200);
+  color: var(--gray-color-300);
   cursor: not-allowed;
   border: none;
 }
 
 
 .btn-danger:disabled :deep(path) {
-  fill: var(--gray-300);
+  fill: var(--gray-color-300);
 }
 
 .btn-danger :deep(path) {
-  fill: var(--danger-button-color);
+  fill: #fff;
 }
 
 .btn-danger:hover :deep(path) {
-  fill: var(--danger-button-hover-color);
+  fill: #fff;
 }
 
 .btn-danger:focus :deep(path) {
-  fill: var(--danger-button-focus-color);
+  fill: #fff;
 }
 
 .btn-danger:active :deep(path) {
-  fill: var(--danger-button-active-color);
+  fill: #fff;
 }
 </style>

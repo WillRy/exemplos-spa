@@ -40,20 +40,18 @@ export default {
   name: "ModalAlert",
   components: {
     BaseModal,
-    BaseModal,
     BaseButtonPrimary,
-    BaseButtonDanger,
     BaseButtonDanger,
   },
   props: {
-    alert: Object,
+    alert: {
+        type: Object,
+        required: true
+    },
   },
   setup() {
     const alertState = useAlertStore();
     return {alertState};
-  },
-  data() {
-    return {};
   },
   methods: {
     fecharModal() {

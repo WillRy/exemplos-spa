@@ -44,32 +44,28 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import BaseButtonTertiary from "../buttons/BaseButtonTertiary.vue";
 import CaptionText from "../text/CaptionText.vue";
 import HomeIcon from "../icons/HomeIcon.vue";
 import ArrowSidebar from "../sidebar/ArrowSidebar.vue";
 
-export default {
+import { PropType, defineComponent } from 'vue';
+interface tipoLink {
+    nome: string,
+    link: string
+}
+
+export default defineComponent({
   name: "SubHeader",
-  data() {
-    return {
-      exibirVoltar: this.exibirBtnVoltar,
-    };
-  },
-  watch: {
-    exibirBtnVoltar(valor) {
-      this.exibirVoltar = valor;
-    },
-  },
   props: {
     links: {
-      type: Array,
-      default: () => [],
+      type: Array as PropType<tipoLink[]>,
+      default: () => []
     },
     exibirBtnVoltar: {
-      type: Boolean,
-      default: false,
+      type: Boolean as PropType<Boolean>,
+      default: false
     },
     homeUrlName: {
       type: String,
@@ -77,12 +73,13 @@ export default {
     },
     padding: {
       type: String,
-      default: null,
+      required: true,
+      default: null
     },
     componentLink: {
       type: String,
       default: "Link",
-      validator(value) {
+      validator(value: string) {
         return ["a","Link","router-link"].includes(value);
       },
     },
@@ -94,7 +91,7 @@ export default {
     },
   },
   created() {},
-};
+});
 </script>
 
 <style scoped>
@@ -109,7 +106,7 @@ export default {
   padding-right: calc(var(--bs-gutter-x) * 0.5);
   padding-left: calc(var(--bs-gutter-x) * 0.5);
 
-  background: var(--gray-200);
+  background: var(--gray-color-200);
 }
 
 .subheader-container {

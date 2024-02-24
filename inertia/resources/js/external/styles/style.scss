@@ -2,23 +2,20 @@
 @import "./variables.scss";
 @import "./colors.scss";
 
-@import "./buttons.scss";
-
 @import "./grid.scss";
 @import "./estrutura.scss";
-
 
 @import "v-calendar/dist/style.css";
 @import "vue-multiselect/dist/vue-multiselect.css";
 @import "floating-vue/dist/style.css";
-@import 'vue-toast-notification/dist/theme-sugar.css';
+@import "vue-toast-notification/dist/theme-sugar.css";
 
 @import "./select.scss";
 @import "./tabelas.scss";
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 
-*:not(g,text,tspan) {
+*:not(g, text, tspan) {
   font-family: "Roboto", sans-serif;
   box-sizing: border-box;
 }
@@ -35,10 +32,9 @@ textarea {
   border: 1px solid #000;
 }
 
-.v-popper__arrow-container{
-  display: none
+.v-popper__arrow-container {
+  display: none;
 }
-
 
 .v-toast__item {
   border-radius: 8px;
@@ -55,7 +51,7 @@ textarea {
 
 .v-toast__item--warning {
   background: var(--warning-color);
-  color: var(--gray-800);
+  color: var(--gray-color-800);
 }
 
 .v-toast__item .v-toast__text {
