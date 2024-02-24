@@ -24,7 +24,6 @@ class CustomCSRF
 
     public function __construct()
     {
-        $this->restoreHash();
         $this->generateCSRF();
     }
 
@@ -122,28 +121,11 @@ class CustomCSRF
     }
 
     /**
-     * Restaura o valor do csrf token para dentro da classe
-     */
-    public function restoreHash()
-    {
-        if ($this->csrfType === self::TYPE_SESSION) {
-            self::$hash = session()->get('csrf');
-        } else {
-            $hashInCookie = filter_input(INPUT_COOKIE, self::$cookieName) ?? null;
-
-
-            self::$hash = $hashInCookie ?? null;
-        }
-    }
-
-    /**
      * Gera o csrf token e salva na sessão ou cookie
      */
     public function generateCSRF()
     {
-        $randomHash = hash_hmac('sha256', $this->generateSessionToken(), env('APP_KEY'));
-
-        self::$hash = !empty(self::$hash) ? self::$hash : $randomHash;
+        self::$hash = hash_hmac('sha256', $this->generateSessionToken(), env('APP_KEY'));
 
         if ($this->csrfType === self::TYPE_COOKIE) {
 
@@ -168,15 +150,12 @@ class CustomCSRF
 
         $this->sessionIsStarted();
 
+        $this->generateCSRF();
+
         if ($this->csrfType === self::TYPE_SESSION) {
             $csrf = $this->getServerCSRF();
         } else {
             $csrf = $this->getPostedCSRF();
-        }
-
-        if (empty($csrf)) {
-            $csrf = $this->generateCSRF();
-            return $csrf;
         }
 
         return $csrf;
