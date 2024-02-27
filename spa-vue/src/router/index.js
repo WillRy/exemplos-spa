@@ -84,7 +84,12 @@ const router = createRouter({
         if (logado) {
           return next();
         }
-        return next('/')
+        return next({
+          name: 'login',
+          query: {
+            logout: 3
+          }
+        })
       },
       children: [
         {

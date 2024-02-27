@@ -32,7 +32,7 @@ const interceptorCSRF = async (config) => {
     if (getCookie("CSRF-TOKEN")) {
       config.headers["CSRF-TOKEN"] = getCookie("CSRF-TOKEN");
     } else {
-      const response = await api.get("/csrf");
+      const response = await apiPublic.get("/csrf");
       config.headers["CSRF-TOKEN"] = response.data.csrf;
     }
   }
@@ -61,59 +61,65 @@ function redirectLogout() {
   });
 }
 
-api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  async (error) => {
-    const originalConfig = error.config;
-    const errorFromRefresh = error.config.url.includes("refresh");
-    const status = error.response.status;
+api.interceptors.response.use(response => {
+  return response;
+}, (error) => {
+  const status = error.response.status;
+  // const shouldRefresh = error.response.data?.code === 'token.expired';
+  const shouldRefresh = !error.response.config.url.includes('/refresh');
 
-    if (errorFromRefresh) {
-      await redirectLogout();
-    }
+  if (status === 401) {
+    if (shouldRefresh) {
+      const originalConfig = error.config
 
-    if (status === 401 && !errorFromRefresh) {
       if (!isRefreshing) {
-        isRefreshing = true;
+        isRefreshing = true
 
-        api
-          .post("/refresh")
-          .then((response) => {
-            const token = response.data.data.token;
+        api.post('/refresh').then(response => {
+          const { token } = response.data;
 
-            // api.defaults.headers['Authorization'] = `Bearer ${token}`;
+          // api.defaults.headers['Authorization'] = `Bearer ${token}`;
 
-            failedRequestsQueue.forEach((request) => request.onSuccess(token));
-            failedRequestsQueue = [];
-          })
-          .catch(async (err) => {
-            failedRequestsQueue.forEach((request) => request.onFailure(err));
-            failedRequestsQueue = [];
+          failedRequestsQueue.forEach(request => request.onSuccess(token))
+          failedRequestsQueue = [];
+        }).catch(err => {
+          failedRequestsQueue.forEach(request => request.onFailure(err))
+          failedRequestsQueue = [];
 
-            await redirectLogout();
-          })
-          .finally(() => {
-            isRefreshing = false;
-          });
+          // if (process.browser) {
+          //   signOut()
+          // }
+
+          return redirectLogout(1);
+        }).finally(() => {
+          isRefreshing = false
+        });
       }
 
       return new Promise((resolve, reject) => {
         failedRequestsQueue.push({
           onSuccess: (token) => {
             // originalConfig.headers['Authorization'] = `Bearer ${token}`
-            resolve(api(originalConfig));
+
+            resolve(api(originalConfig))
           },
           onFailure: (err) => {
-            reject(err);
-          },
-        });
+            reject(err)
+          }
+        })
       });
+    } else {
+      // if (process.browser) {
+      //   signOut()
+      // } else {
+      //   return Promise.reject(new AuthTokenError())
+      // }
+      redirectLogout(2);
+      return Promise.reject(new AuthTokenError())
     }
-
-    return Promise.reject(error);
   }
-);
+
+  return Promise.reject(error);
+});
 
 export default api;
