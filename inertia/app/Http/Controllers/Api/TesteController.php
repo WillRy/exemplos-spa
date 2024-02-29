@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Password;
 
 class TesteController extends Controller
 {
-public function eloquent(Request $request)
+    public function eloquent(Request $request)
     {
         /**
          * Quero pegar SOMENTE as organizações que tem usuarios
@@ -26,12 +26,12 @@ public function eloquent(Request $request)
          * whereHas: torna obrigatorio a presença do relacionamento
          */
 
-         $dados = Organizacao::with("contatos")->whereHas("contatos")->get();
-        //  $dados = Organizacao::with("contatos")
-        //  ->with("tags")
-        //  ->whereHas("contatos")
-        //  ->whereHas("tags")
-        //  ->get();
+        //  $dados = Organizacao::with("contatos")->whereHas('contatos')->get();
+        $dados = Organizacao::with("contatos")
+            ->with("tags")
+            ->whereHas("contatos")
+            ->whereHas("tags")
+            ->get();
 
         //  $dados = Organizacao::with("contatos", function($query) {
         //     $query->with("endereco", function($query) {
@@ -47,9 +47,7 @@ public function eloquent(Request $request)
         //     });
         //  })->whereHas("contatos")->get();
 
-         return response()->json($dados);
-
-
+        return response()->json($dados);
     }
 
     public function query()
@@ -69,10 +67,11 @@ public function eloquent(Request $request)
                 c.cidade  as contato_cidade,
                 c.estado  as contato_estado
             ")
-            ->join("contatos AS c","c.organizacao_id","=","org.id")
+            ->join("contatos AS c", "c.organizacao_id", "=", "org.id")
             ->get();
 
 
+        // $result = $organizacoes;
         $result = [];
         foreach ($organizacoes as $key => $organizacao) {
             $result[$organizacao->id]['id'] = $organizacao->id;
@@ -102,8 +101,30 @@ public function eloquent(Request $request)
             ];
         }
 
+
+        $result = $this->removerChaves($result);
         return response()->json($result);
     }
 
+    public function removerChaves(array &$array = [])
+    {
+        if (empty($array)) {
+            return $array;
+        }
 
+        foreach ($array as $key => &$value) {
+            if (is_array($value)) {
+                $this->removerChaves($value);
+                $array[$key] = $value;
+            }
+        }
+
+        $keys = array_keys($array);
+
+        if (is_numeric($keys[0])) {
+            $array = array_values($array);
+        }
+
+        return $array;
+    }
 }
