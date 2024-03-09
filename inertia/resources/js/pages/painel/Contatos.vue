@@ -118,10 +118,10 @@
                 />
             </Box>
         </div>
-        <ModalCriarContato/>
-        <ModalEditarContato/>
-        <ModalExcluirContato/>
-        <ModalDetalhesContato/>
+        <ModalCriarContato :aberta="criarContatoAberto" @onClose="criarContatoAberto = null" @onReload="buscarDados"/>
+        <ModalEditarContato :contato="contatoSendoEditado" @onClose="contatoSendoEditado = null" @onReload="buscarDados"/>
+        <ModalExcluirContato :contato="contatoSendoExcluido" @onClose="contatoSendoExcluido = null" @onReload="buscarDados"/>
+        <ModalDetalhesContato :contato="detalhesContato" @onClose="detalhesContato = null"/>
     </div>
 </template>
 
@@ -160,14 +160,8 @@ import { useI18n } from "vue-i18n";
 
 const { t: $t } = useI18n();
 const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
-const modalCriarContatoState = modalCriarContatoStore();
-const modalEditarContatoState = modalEditarContatoStore();
-const modalDetalhesContatoState = modalDetalhesContatoStore();
-const modalExcluirContatoState = modalExcluirContatoStore();
-
 defineOptions({ layout: Privado });
 
-// Data
 const form = reactive({
 	pesquisa: "",
 	empresa_id: null,
@@ -183,7 +177,12 @@ const resultadoPesquisaEmpresa = reactive({
   dados: []
 });
 
-// Methods
+const detalhesContato = ref(false);
+const criarContatoAberto = ref(false);
+const contatoSendoEditado = ref(null);
+const contatoSendoExcluido = ref(null);
+
+
 const pesquisarEmpresa = function(pesquisa) {
 	axiosWeb.get(`/organizacao`, {params: {pesquisa: pesquisa}}).then(
 		(response) => {
@@ -193,19 +192,19 @@ const pesquisarEmpresa = function(pesquisa) {
 }
 
 const abrirCriar = function() {
-	modalCriarContatoState.abrir();
+	criarContatoAberto.value = true;
 }
 
 const abrirEdicao = function(usuario) {
-	modalEditarContatoState.abrir(usuario);
+	contatoSendoEditado.value = usuario;
 }
 
 const abrirExclusao = function(usuario) {
-	modalExcluirContatoState.abrir(usuario);
+	contatoSendoExcluido.value = usuario;
 }
 
 const abrirDetalhes = function(usuario) {
-	modalDetalhesContatoState.abrir(usuario);
+	detalhesContato.value = usuario;
 }
 
 const sortBy = function (ordem) {
@@ -252,21 +251,7 @@ const buscarDados = function() {
 }
 
 
-// Watch
-watch(() => modalCriarContatoState.reload, function () {
-	buscarDados();
-})
 
-watch(() => modalEditarContatoState.reload, function () {
-	buscarDados();
-})
-
-watch(() => modalExcluirContatoState.reload, function () {
-	buscarDados();
-})
-
-
-// Created
 buscarDados();
 </script>
 

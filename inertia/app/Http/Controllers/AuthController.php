@@ -117,6 +117,7 @@ class AuthController extends Controller
             },
             'token' => 'required'
         ]);
+
         try {
             $tokenModel = new Token();
             $tokenComUsuario = $tokenModel->tokenComUsuario($dados['token']);

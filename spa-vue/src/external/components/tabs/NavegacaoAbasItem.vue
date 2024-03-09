@@ -9,7 +9,7 @@
       <slot></slot>
     </span>
 
-    <div class="contador" :class="{ active: active }" v-if="contador && exibirContador">
+    <div class="contador" :class="{ active: active }" v-if="deveExibirContador">
       {{ contador }}
     </div>
     <slot name="depois"></slot>
@@ -19,7 +19,6 @@
 <script>
 export default {
   name: "NavegacaoAbasItem",
-  props: ["active", "disabled", "contador","exibirContador"],
   props: {
     active: {
       default: false,
@@ -32,6 +31,18 @@ export default {
     },
     exibirContador: {
       default: true
+    },
+    exibeContadorComZero: {
+      default: true
+    }
+  },
+  computed: {
+    deveExibirContador() {
+      if(!this.exibirContador) return false;
+
+      if(this.exibeContadorComZero && this.contador >= 0) return true;
+
+      return this.contador > 0;
     }
   },
   methods: {

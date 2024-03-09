@@ -49,7 +49,7 @@
                         </div>
                     </template>
                     <template v-slot:option="{option}">
-                        <div class="option-select">
+                        <div class="option-select"  v-tooltip="{content: option.tooltip ?? null}">
                             <!-- <span v-tooltip="{content: option[textBy]}">{{ option[textBy] }}</span> -->
                             <span>{{ option[textBy] }}</span>
                         </div>
@@ -114,10 +114,14 @@ import VueMultiselect from "vue-multiselect";
 import InfoErrorIcon from "../icons/InfoErrorIcon.vue";
 import InfoInputIcon from "../icons/InfoInputIcon.vue";
 import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
+import {vTooltip} from 'floating-vue'
 
 export default {
     name: "BaseSelectAjax",
     inheritAttrs: false,
+    directives: {
+        'tooltip': vTooltip
+    },
     components: {
         VueMultiselect,
         InfoInputIcon,
@@ -509,7 +513,7 @@ input::placeholder {
     right: 34px;
     top: 50%;
     transform: translate(0,-50%);
-    z-index: 2;
+    z-index: 9;
     background: var(--error-color-600);
     color: #fff;
     font-weight: bold;
@@ -739,6 +743,7 @@ Ellipsis das options
 }
 
 
+
 :deep(.multiselect__spinner:after),
 :deep(.multiselect__spinner:before) {
   border-color: var(--primary-color-principal-active) transparent transparent;
@@ -783,5 +788,7 @@ Ellipsis das options
   color: #fff;
 }
 
-
+:deep(.multiselect__option--disabled) {
+    pointer-events: initial;
+}
 </style>

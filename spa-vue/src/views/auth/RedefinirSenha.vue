@@ -39,7 +39,7 @@ import { useBackendToast } from "../../external/hooks/useBackendToast";
 import { useRoute, useRouter } from "vue-router";
 import * as yup from "yup";
 
-// Data
+
 const loading = ref(false);
 const { t: $t } = useI18n();
 const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
@@ -58,7 +58,7 @@ const { errors, validate, defineField, resetForm, values } = useForm({
 });
 const [senha] = defineField("senha");
 
-// Methods
+
 const submit = async function () {
   try {
     loading.value = true;

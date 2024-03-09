@@ -42,7 +42,7 @@ import Publico from "../../layouts/Publico.vue";
 import { router, usePage } from "@inertiajs/vue3";
 
 defineOptions({ layout: Publico })
-// Data
+
 const loading = ref(false);
 const { t: $t } = useI18n();
 const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
@@ -63,7 +63,6 @@ const [senha] = defineField("senha");
 const page = usePage();
 const props = defineProps(['token'])
 
-// Methods
 const submit = async function () {
   try {
     loading.value = true;

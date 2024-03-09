@@ -1,29 +1,21 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": [
-      "src/**/*.ts",
-      "src/**/*.d.ts",
-      "src/**/*.vue"
-  ],
-  "exclude": ["node_modules", "public"],
   "compilerOptions": {
-      "verbatimModuleSyntax": false,
-      "target": "esnext",
-      "module": "esnext",
-      "moduleResolution": "node",
-      "strict": false,
-      "skipLibCheck": true,
-      "jsx": "preserve",
-      "sourceMap": true,
-      "resolveJsonModule": true,
-      "esModuleInterop": true,
-      "allowJs": true,
-      "lib": ["esnext", "dom"],
-      "baseUrl": ".",
-      "types": ["vite/client"],
-      "paths": {
-          "@/*": ["./src*"]
-      },
-      "outDir": "./dist"
-  }
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "declaration": true,
+    "noImplicitAny": false,
+    "composite": true,
+  },
+  "include": ["vite.config.ts", "env.d.ts","src/**/*.js","src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
 }

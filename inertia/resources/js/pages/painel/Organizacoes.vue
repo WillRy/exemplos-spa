@@ -159,10 +159,10 @@
         />
       </Box>
     </div>
-    <ModalCriarOrganizacao />
-    <ModalEditarOrganizacao />
-    <ModalExcluirOrganizacao />
-    <ModalDetalhesOrganizacao />
+    <ModalCriarOrganizacao :aberta="criarOrganizacaoAberto" @onClose="criarOrganizacaoAberto = null" @onReload="buscarDados"/>
+    <ModalEditarOrganizacao :organizacao="organizacaoSendoEditado" @onClose="organizacaoSendoEditado = null" @onReload="buscarDados"/>
+    <ModalExcluirOrganizacao :organizacao="organizacaoSendoExcluido" @onClose="organizacaoSendoExcluido = null" @onReload="buscarDados"/>
+    <ModalDetalhesOrganizacao :organizacao="detalhesOrganizacao" @onClose="detalhesOrganizacao = null"/>
   </div>
 </template>
 
@@ -199,14 +199,8 @@ import { useBackendToast } from "../../external/hooks/useBackendToast";
 
 const { t: $t } = useI18n();
 const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
-const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
-const modalEditarOrganizacaoState = modalEditarOrganizacaoStore();
-const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore();
-const modalDetalhesOrganizacaoState = modalDetalhesOrganizacaoStore();
-
 defineOptions({ layout: Privado })
 
-// Data
 const form = reactive({
   pesquisa: "",
   tag_id: [],
@@ -222,7 +216,11 @@ const resultadoPesquisaTag = reactive({
   dados: [],
 });
 
-// Methods
+const detalhesOrganizacao = ref(false);
+const criarOrganizacaoAberto = ref(false);
+const organizacaoSendoEditado = ref(null);
+const organizacaoSendoExcluido = ref(null);
+
 const pesquisarEmpresa = function (pesquisa) {
   axiosWeb.get(`/tag`, { params: { pesquisa: pesquisa } }).then((response) => {
     resultadoPesquisaTag.dados = response.data.data.data;
@@ -230,19 +228,19 @@ const pesquisarEmpresa = function (pesquisa) {
 };
 
 const abrirCriar = function () {
-  modalCriarOrganizacaoState.abrir();
+  criarOrganizacaoAberto.value = true;
 };
 
 const abrirEdicao = function (usuario) {
-  modalEditarOrganizacaoState.abrir(usuario);
+  organizacaoSendoEditado.value = usuario;
 };
 
 const abrirExclusao = function (usuario) {
-  modalExcluirOrganizacaoState.abrir(usuario);
+  organizacaoSendoExcluido.value = usuario;
 };
 
 const abrirDetalhes = function (usuario) {
-  modalDetalhesOrganizacaoState.abrir(usuario);
+  detalhesOrganizacao.value = usuario;
 };
 
 const sortBy = function (ordem) {
@@ -286,29 +284,6 @@ const buscarDados = function () {
     });
 };
 
-// Watch
-watch(
-  () => modalCriarOrganizacaoState.reload,
-  function () {
-    buscarDados();
-  }
-);
-
-watch(
-  () => modalEditarOrganizacaoState.reload,
-  function () {
-    buscarDados();
-  }
-);
-
-watch(
-  () => modalExcluirOrganizacaoState.reload,
-  function () {
-    buscarDados();
-  }
-);
-
-// Created
 buscarDados();
 </script>
 

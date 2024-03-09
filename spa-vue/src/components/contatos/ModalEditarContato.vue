@@ -1,6 +1,6 @@
 <template>
   <BaseModal
-    :aberta="modalEditarContatoState.open"
+    :aberta="contato"
     @onClose="fecharModal"
     @onOpen="carregarFormulario"
   >
@@ -143,30 +143,34 @@ import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTert
 import BaseModal from "../../external/components/modal/BaseModal";
 import BaseSelectAjax from "../../external/components/form/BaseSelectAjax";
 import BaseInput from "../../external/components/form/BaseInput";
-import BaseDate from "../../external/components/form/BaseDate";
-import { modalEditarContatoStore } from "../../stores/contato";
 import axios from "axios";
 import { useI18n } from "vue-i18n";
 import { useBackendToast } from "../../external/hooks/useBackendToast";
 import * as yup from "yup";
 import { useForm } from "vee-validate";
 
-import { reactive, ref, computed } from "vue";
+import { reactive, ref } from "vue";
 
-// Data
+const props = defineProps({
+  contato: {
+    type: Object,
+    default: null
+  },
+});
+
+const $emit = defineEmits(["onClose","onReload"]);
+
+const { t: $t } = useI18n();
+
+const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+
 
 const pesquisouCep = ref(false);
-const config = ref(false);
 const loading = ref(false);
 const loadingDados = ref(false);
 const resultadoPesquisaEmpresa = reactive({
   lista: [],
 });
-
-const modalEditarContatoState = modalEditarContatoStore();
-const { t: $t } = useI18n();
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
-const $emit = defineEmits(["onClose","onReload"]);
 
 
 const { errors, validate, defineField, resetForm, values, setValues,setErrors } = useForm(
@@ -210,14 +214,14 @@ const [organizacao_id] = defineField("organizacao_id");
 const carregarFormulario = function () {
   setValues(
     {
-      ...modalEditarContatoState.payload,
-      organizacao_id: modalEditarContatoState.payload.organizacao
+      ...props.contato,
+      organizacao_id: props.contato?.organizacao || null
     },
     false
   );
 };
 
-// Methods
+
 const tratarCep = function () {
   pesquisouCep.value = false;
   if (cep.value.length === 8) {
@@ -253,7 +257,6 @@ const pesquisarEmpresa = function (pesquisa) {
 
 const fecharModal = function () {
   resetForm();
-  modalEditarContatoState.fechar();
   $emit("onClose");
 };
 
@@ -271,10 +274,11 @@ const submit = async function () {
       organizacao_id: values.organizacao_id ? values.organizacao_id.id : null,
     };
 
-    await api.put(`/contato/${modalEditarContatoState.payload.id}`, data);
+    await api.put(`/contato/${props.contato.id}`, data);
 
     fecharModal();
-    modalEditarContatoState.onReload();
+
+    $emit("onReload");
   } catch (e) {
     const errors = backendToastError(e, $t("textos.erro_editar_contato"));
     setErrors(errors);
@@ -283,7 +287,7 @@ const submit = async function () {
   }
 };
 
-// Created
+
 </script>
 
 <style scoped></style>

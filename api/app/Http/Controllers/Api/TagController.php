@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CriarTagRequest;
+use App\Http\Requests\EditarTagRequest;
 use App\Models\Tag;
 use App\Service\ResponseJSON;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-class TagsController extends Controller
+class TagController extends Controller
 {
 
     public function index(Request $request)
@@ -42,29 +44,11 @@ class TagsController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(CriarTagRequest $request)
     {
-        $dados = $request->validate([
-            'nome' => 'required|max:255|unique:tags,nome',
-            'cor_fundo' => ['required', 'max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i', $value)) {
-                    $fail(__('cor_fundo_invalida'));
-                }
-            }],
-            'cor_texto' => ['required', 'max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i', $value)) {
-                    $fail(__('cor_texto_invalida'));
-                }
-            }],
-        ], [], [
-            'nome' => __('custom.nome'),
-            'cor_fundo' => __('custom.cor_fundo'),
-            'cor_texto' => __('custom.cor_texto'),
-        ]);
+        $dados = $request->validated();
 
         try {
-
-
             $tag = Tag::create($dados);
 
             return (new ResponseJSON())->setData($tag)->setMessage(__('custom.tag_criada_com_sucesso'))->render();
@@ -73,25 +57,9 @@ class TagsController extends Controller
         }
     }
 
-    public function update(Request $request, int $tagId)
+    public function update(EditarTagRequest $request, int $tagId)
     {
-        $dados = $request->validate([
-            'nome' => "required|max:255|unique:tags,nome,{$tagId}",
-            'cor_fundo' => ['required', 'max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i', $value)) {
-                    $fail(__('cor_fundo_invalida'));
-                }
-            }],
-            'cor_texto' => ['required', 'max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i', $value)) {
-                    $fail(__('cor_texto_invalida'));
-                }
-            }],
-        ], [], [
-            'nome' => __('custom.nome'),
-            'cor_fundo' => __('custom.cor_fundo'),
-            'cor_texto' => __('custom.cor_texto'),
-        ]);
+        $dados = $request->validated();
 
         try {
 

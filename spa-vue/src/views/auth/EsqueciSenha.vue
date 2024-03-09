@@ -42,7 +42,6 @@ const { t: $t } = useI18n();
 const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
 const $router = useRouter();
 
-// Data
 const loading = ref(false);
 
 const { errors, validate, defineField, resetForm, values } = useForm({
@@ -57,7 +56,6 @@ const { errors, validate, defineField, resetForm, values } = useForm({
 });
 const [email] = defineField("email");
 
-// Methods
 const submit = async function () {
   try {
     loading.value = true;

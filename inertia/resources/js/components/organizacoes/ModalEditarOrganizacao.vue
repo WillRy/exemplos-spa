@@ -1,6 +1,6 @@
 <template>
   <BaseModal
-    :aberta="modalEditarOrganizacaoState.open"
+    :aberta="organizacao"
     @onClose="fecharModal"
     @onOpen="carregarFormulario"
   >
@@ -167,16 +167,26 @@ import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTert
 import BaseModal from "../../external/components/modal/BaseModal";
 import BaseSelectAjax from "../../external/components/form/BaseSelectAjax";
 import BaseInput from "../../external/components/form/BaseInput";
-import BaseDate from "../../external/components/form/BaseDate";
-import { modalEditarOrganizacaoStore } from "../../stores/organizacao";
 import axios from "axios";
-import { reactive, ref, computed } from "vue";
+import { reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useBackendToast } from "../../external/hooks/useBackendToast";
 import * as yup from "yup";
 import { useForm } from "vee-validate";
 
-// Data
+const props = defineProps({
+  organizacao: {
+    type: Object,
+    default: null
+  }
+});
+
+const $emit = defineEmits(["onClose","onReload"]);
+
+const { t: $t } = useI18n();
+
+const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+
 
 const pesquisouCep = ref(false);
 const loading = ref(false);
@@ -185,10 +195,6 @@ const resultadoPesquisaTag = reactive({
   lista: [],
 });
 
-const modalEditarOrganizacaoState = modalEditarOrganizacaoStore();
-const { t: $t } = useI18n();
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
-const $emit = defineEmits(["onClose","onReload"]);
 
 const { errors, validate, defineField, resetForm, values, setValues, setErrors } = useForm(
   {
@@ -233,14 +239,14 @@ const carregarFormulario = async function () {
   loadingDados.value = true;
 
   const response = await axiosWeb.get(
-    `/organizacao/${modalEditarOrganizacaoState.payload.id}`
+    `/organizacao/${props.organizacao.id}`
   );
   const dados = response.data.data;
 
   setValues(
     {
       ...dados,
-      tags: modalEditarOrganizacaoState.payload.tags
+      tags: props.organizacao.tags
     },
     false
   );
@@ -248,7 +254,7 @@ const carregarFormulario = async function () {
   loadingDados.value = false;
 };
 
-// Methods
+
 
 const tratarCep = function () {
   pesquisouCep.value = false;
@@ -283,7 +289,6 @@ const pesquisarTag = function (pesquisa) {
 
 const fecharModal = function () {
   resetForm();
-  modalEditarOrganizacaoState.fechar();
   $emit("onClose");
 };
 
@@ -301,12 +306,13 @@ const submit = async function () {
     };
 
     await axiosWeb.put(
-      `/organizacao/${modalEditarOrganizacaoState.payload.id}`,
+      `/organizacao/${props.organizacao.id}`,
       data
     );
 
+    $emit("onReload");
+
     fecharModal();
-    modalEditarOrganizacaoState.onReload();
   } catch (e) {
     const errors = backendToastError(e, $t("textos.erro_editar_organizacao"));
     setErrors(errors);
@@ -315,7 +321,7 @@ const submit = async function () {
   }
 };
 
-// Created
+
 </script>
 
 <style scoped></style>

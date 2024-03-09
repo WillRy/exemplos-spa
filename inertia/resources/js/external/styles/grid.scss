@@ -1,3 +1,5 @@
+@use "sass:map";
+
 .container,
 .container-fluid,
 .container-xxl,
@@ -14,58 +16,20 @@
     margin-left: auto; */
 }
 
-@media (min-width: 576px) {
-  .container-sm,
-  .container {
-    max-width: 540px;
-  }
-}
 
-@media (min-width: 768px) {
-  .container-md,
-  .container-sm,
-  .container {
-    max-width: 720px;
-  }
-}
 
-@media (min-width: 992px) {
-  .container-lg,
-  .container-md,
-  .container-sm,
-  .container {
-    max-width: 960px;
+@each $grid, $pxBreakpoint in $grid-map {
+  @media (min-width: #{$pxBreakpoint}) {
+    .container-#{$grid},
+    .container {
+      max-width: map.get($container-map, $grid);
+    }
   }
-}
 
-@media (min-width: 1200px) {
-  .container-xl,
-  .container-lg,
-  .container-md,
-  .container-sm,
-  .container {
-    max-width: 1140px;
+  :root {
+    --bs-breakpoint-#{$grid}: #{$pxBreakpoint};
   }
-}
-
-@media (min-width: 1400px) {
-  .container-xxl,
-  .container-xl,
-  .container-lg,
-  .container-md,
-  .container-sm,
-  .container {
-    max-width: 1320px;
-  }
-}
-
-:root {
-  --bs-breakpoint-xs: 0;
-  --bs-breakpoint-sm: 576px;
-  --bs-breakpoint-md: 768px;
-  --bs-breakpoint-lg: 992px;
-  --bs-breakpoint-xl: 1200px;
-  --bs-breakpoint-xxl: 1400px;
+  
 }
 
 .row {
@@ -92,149 +56,24 @@
   flex: 1 0 0%;
 }
 
-.row-cols-auto > * {
-  flex: 0 0 auto;
-  width: auto;
-}
-
-.row-cols-1 > * {
-  flex: 0 0 auto;
-  width: 100%;
-}
-
-.row-cols-2 > * {
-  flex: 0 0 auto;
-  width: 50%;
-}
-
-.row-cols-3 > * {
-  flex: 0 0 auto;
-  width: 33.3333333333%;
-}
-
-.row-cols-4 > * {
-  flex: 0 0 auto;
-  width: 25%;
-}
-
-.row-cols-5 > * {
-  flex: 0 0 auto;
-  width: 20%;
-}
-
-.row-cols-6 > * {
-  flex: 0 0 auto;
-  width: 16.6666666667%;
-}
-
 .col-auto {
   flex: 0 0 auto;
   width: auto;
 }
 
-.col-1 {
-  flex: 0 0 auto;
-  width: 8.33333333%;
+@each $number, $px in $percentage-map {
+  .col-#{$number} {
+    flex: 0 0 auto;
+    width: #{$px};
+  }
 }
 
-.col-2 {
-  flex: 0 0 auto;
-  width: 16.66666667%;
+@each $number, $px in $offset-map {
+  .offset-#{$number} {
+    margin-left: #{$px};
+  }
 }
 
-.col-3 {
-  flex: 0 0 auto;
-  width: 25%;
-}
-
-.col-4 {
-  flex: 0 0 auto;
-  width: 33.33333333%;
-}
-
-.col-5 {
-  flex: 0 0 auto;
-  width: 41.66666667%;
-}
-
-.col-6 {
-  flex: 0 0 auto;
-  width: 50%;
-}
-
-.col-7 {
-  flex: 0 0 auto;
-  width: 58.33333333%;
-}
-
-.col-8 {
-  flex: 0 0 auto;
-  width: 66.66666667%;
-}
-
-.col-9 {
-  flex: 0 0 auto;
-  width: 75%;
-}
-
-.col-10 {
-  flex: 0 0 auto;
-  width: 83.33333333%;
-}
-
-.col-11 {
-  flex: 0 0 auto;
-  width: 91.66666667%;
-}
-
-.col-12 {
-  flex: 0 0 auto;
-  width: 100%;
-}
-
-.offset-1 {
-  margin-left: 8.33333333%;
-}
-
-.offset-2 {
-  margin-left: 16.66666667%;
-}
-
-.offset-3 {
-  margin-left: 25%;
-}
-
-.offset-4 {
-  margin-left: 33.33333333%;
-}
-
-.offset-5 {
-  margin-left: 41.66666667%;
-}
-
-.offset-6 {
-  margin-left: 50%;
-}
-
-.offset-7 {
-  margin-left: 58.33333333%;
-}
-
-.offset-8 {
-  margin-left: 66.66666667%;
-}
-
-.offset-9 {
-  margin-left: 75%;
-}
-
-.offset-10 {
-  margin-left: 83.33333333%;
-}
-
-.offset-11 {
-  margin-left: 91.66666667%;
-}
 
 @each $key, $value in $spacing-map {
   .g-#{$key},
@@ -254,152 +93,22 @@
       flex: 1 0 0%;
     }
 
-    .row-cols-#{$grid}-auto > * {
-      flex: 0 0 auto;
-      width: auto;
-    }
-
-    .row-cols-#{$grid}-1 > * {
-      flex: 0 0 auto;
-      width: 100%;
-    }
-
-    .row-cols-#{$grid}-2 > * {
-      flex: 0 0 auto;
-      width: 50%;
-    }
-
-    .row-cols-#{$grid}-3 > * {
-      flex: 0 0 auto;
-      width: 33.3333333333%;
-    }
-
-    .row-cols-#{$grid}-4 > * {
-      flex: 0 0 auto;
-      width: 25%;
-    }
-
-    .row-cols-#{$grid}-5 > * {
-      flex: 0 0 auto;
-      width: 20%;
-    }
-
-    .row-cols-#{$grid}-6 > * {
-      flex: 0 0 auto;
-      width: 16.6666666667%;
-    }
-
     .col-#{$grid}-auto {
       flex: 0 0 auto;
       width: auto;
     }
 
-    .col-#{$grid}-1 {
-      flex: 0 0 auto;
-      width: 8.33333333%;
+    @each $number, $px in $percentage-map {
+      .col-#{$grid}-#{$number} {
+        flex: 0 0 auto;
+        width: #{$px};
+      }
     }
 
-    .col-#{$grid}-2 {
-      flex: 0 0 auto;
-      width: 16.66666667%;
-    }
-
-    .col-#{$grid}-3 {
-      flex: 0 0 auto;
-      width: 25%;
-    }
-
-    .col-#{$grid}-4 {
-      flex: 0 0 auto;
-      width: 33.33333333%;
-    }
-
-    .col-#{$grid}-5 {
-      flex: 0 0 auto;
-      width: 41.66666667%;
-    }
-
-    .col-#{$grid}-6 {
-      flex: 0 0 auto;
-      width: 50%;
-    }
-
-    .col-#{$grid}-7 {
-      flex: 0 0 auto;
-      width: 58.33333333%;
-    }
-
-    .col-#{$grid}-8 {
-      flex: 0 0 auto;
-      width: 66.66666667%;
-    }
-
-    .col-#{$grid}-9 {
-      flex: 0 0 auto;
-      width: 75%;
-    }
-
-    .col-#{$grid}-10 {
-      flex: 0 0 auto;
-      width: 83.33333333%;
-    }
-
-    .col-#{$grid}-11 {
-      flex: 0 0 auto;
-      width: 91.66666667%;
-    }
-
-    .col-#{$grid}-12 {
-      flex: 0 0 auto;
-      width: 100%;
-    }
-
-    .offset-#{$grid}-0 {
-      margin-left: 0;
-    }
-
-    .offset-#{$grid}-1 {
-      margin-left: 8.33333333%;
-    }
-
-    .offset-#{$grid}-2 {
-      margin-left: 16.66666667%;
-    }
-
-    .offset-#{$grid}-3 {
-      margin-left: 25%;
-    }
-
-    .offset-#{$grid}-4 {
-      margin-left: 33.33333333%;
-    }
-
-    .offset-#{$grid}-5 {
-      margin-left: 41.66666667%;
-    }
-
-    .offset-#{$grid}-6 {
-      margin-left: 50%;
-    }
-
-    .offset-#{$grid}-7 {
-      margin-left: 58.33333333%;
-    }
-
-    .offset-#{$grid}-8 {
-      margin-left: 66.66666667%;
-    }
-
-    .offset-#{$grid}-9 {
-      margin-left: 75%;
-    }
-
-    .offset-#{$grid}-10 {
-      margin-left: 83.33333333%;
-    }
-
-    .offset-#{$grid}-11 {
-      margin-left: 91.66666667%;
+    @each $number, $px in $offset-map {
+      .offset-#{$grid}-#{$number} {
+        margin-left: #{$px};
+      }
     }
 
     @each $key, $value in $spacing-map {

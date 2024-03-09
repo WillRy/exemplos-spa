@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ContatoController;
 use App\Http\Controllers\Api\OrganizacaoController;
-use App\Http\Controllers\Api\TagsController;
+use App\Http\Controllers\Api\TagController;
 use App\Service\Autenticacao;
 use App\Service\CustomCSRF;
 use Illuminate\Http\Request;
@@ -64,11 +64,11 @@ Route::group(['middleware' => 'locale'], function () {
         });
 
         Route::group(['prefix' => 'tag'], function () {
-            Route::get('/', [TagsController::class, 'index'])->name('tag.index');
-            Route::get('/{id}', [TagsController::class, 'show'])->name('tag.show');
-            Route::post('/', [TagsController::class, 'store'])->name('tag.store');
-            Route::put('/{id}', [TagsController::class, 'update'])->name('tag.update');
-            Route::delete('/{id}', [TagsController::class, 'destroy'])->name('tag.destroy');
+            Route::get('/', [TagController::class, 'index'])->name('tag.index');
+            Route::get('/{id}', [TagController::class, 'show'])->name('tag.show');
+            Route::post('/', [TagController::class, 'store'])->name('tag.store');
+            Route::put('/{id}', [TagController::class, 'update'])->name('tag.update');
+            Route::delete('/{id}', [TagController::class, 'destroy'])->name('tag.destroy');
         });
     });
 });

@@ -145,7 +145,7 @@ export default {
 * {
   box-sizing: border-box;
 
-  --label-color: var(--gray-color-color-400);
+  --label-color: var(--gray-color-400);
   --label-margin-bottom: 2px;
 
   /* cor usada para destaque no focus */

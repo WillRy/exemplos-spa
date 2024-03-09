@@ -132,4 +132,6 @@ class Organizacao extends Model
         $organizacao = self::where('id', $id)->first();
         $organizacao->delete();
     }
+
+
 }

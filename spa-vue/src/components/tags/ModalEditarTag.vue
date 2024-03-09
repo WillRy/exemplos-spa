@@ -1,6 +1,6 @@
 <template>
   <BaseModal
-    :aberta="modalEditarTagState.open"
+    :aberta="tag"
     @onClose="fecharModal"
     @onOpen="carregarFormulario"
   >
@@ -61,26 +61,32 @@ import api from "../../services/api";
 import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import BaseModal from "../../external/components/modal/BaseModal";
-import BaseSelectAjax from "../../external/components/form/BaseSelectAjax";
 import BaseInput from "../../external/components/form/BaseInput";
-import axios from "axios";
-import { modalEditarTagStore } from "../../stores/tag";
-import { reactive, ref, computed } from "vue";
+import { ref } from "vue";
 
 import { useI18n } from "vue-i18n";
 import { useBackendToast } from "../../external/hooks/useBackendToast";
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 
-const modalEditarTagState = modalEditarTagStore();
-const { t: $t } = useI18n();
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const props = defineProps({
+  tag: {
+    type: Object,
+    default: null
+  }
+});
+
 const $emit = defineEmits(["onClose", "onReload"]);
 
+const { t: $t } = useI18n();
+
+const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+
 const loading = ref(false);
+
 const loadingDados = ref(false);
 
-// Data
+
 const { errors, validate, defineField, resetForm, values, setValues, setErrors } = useForm(
   {
     validationSchema: yup.object({
@@ -109,13 +115,11 @@ const [nome] = defineField("nome");
 const [cor_fundo] = defineField("cor_fundo");
 const [cor_texto] = defineField("cor_texto");
 
-// Computed
 
-// Methods
 const carregarFormulario = async function () {
   loadingDados.value = true;
 
-  const response = await api.get(`/tag/${modalEditarTagState.payload.id}`);
+  const response = await api.get(`/tag/${props.tag.id}`);
   const dados = response.data.data;
 
   setValues({...dados}, false);
@@ -125,7 +129,6 @@ const carregarFormulario = async function () {
 
 const fecharModal = function () {
   resetForm();
-  modalEditarTagState.fechar();
   $emit("onClose");
 };
 
@@ -142,10 +145,11 @@ const submit = async function () {
       ...values,
     };
 
-    await api.put(`/tag/${modalEditarTagState.payload.id}`, data);
+    await api.put(`/tag/${props.tag.id}`, data);
 
     fecharModal();
-    modalEditarTagState.onReload();
+
+    $emit("onReload");
   } catch (e) {
     const errors =  backendToastError(e, $t("textos.erro_editar_tag"));
     setErrors(errors);
@@ -154,7 +158,6 @@ const submit = async function () {
   }
 };
 
-// Created
 </script>
 
 <style scoped></style>

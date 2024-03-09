@@ -1,6 +1,6 @@
 <template>
   <BaseModal
-    :aberta="modalDetalhesContatoState.open"
+    :aberta="contato"
     @onClose="fecharModal"
     @onOpen="carregarFormulario"
   >
@@ -54,18 +54,23 @@
 
 <script setup>
 
-import api from "../../services/api";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import BaseModal from "../../external/components/modal/BaseModal";
-import {modalDetalhesContatoStore} from "../../stores/contato";
-import { reactive, ref, computed } from 'vue';
+import { reactive, ref } from 'vue';
 import { useI18n } from "vue-i18n";
 
+const props = defineProps({
+  contato: {
+    type: Object,
+    default: null
+  }
+})
+
 const $emit = defineEmits(['onClose']);
-const modalDetalhesContatoState = modalDetalhesContatoStore();
+
 const { t: $t } = useI18n();
 
-// Data
+
 const form = reactive({
 	nome: '',
 	email: '',
@@ -78,30 +83,17 @@ const form = reactive({
 	estado: '',
 	organizacao_id: null,
 });
+
 const loadingDados = ref(false);
 
-// Computed
-
-// Methods
 const carregarFormulario = async function() {
-	// loadingDados.value = true;
-
-	// const response = await api.get(`/contato/${this.modalDetalhesContatoState.payload.id}`);
-	// const dados = response.data.data;
-	// Object.assign(form, dados);
-	// form.organizacao_id = dados.organizacao;
-
-	// loadingDados.value = false;
-	Object.assign(form, modalDetalhesContatoState.payload);
+	Object.assign(form, props.contato);
 }
 
 const fecharModal = function() {
-	modalDetalhesContatoState.fechar()
 	$emit("onClose");
 }
 
-
-// Created
 
 </script>
 

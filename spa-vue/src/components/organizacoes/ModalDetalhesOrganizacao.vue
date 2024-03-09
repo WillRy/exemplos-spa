@@ -1,6 +1,6 @@
 <template>
   <BaseModal
-    :aberta="modalDetalhesOrganizacaoState.open"
+    :aberta="organizacao"
     @onClose="fecharModal"
     @onOpen="carregarFormulario"
   >
@@ -57,17 +57,22 @@
 import api from "../../services/api";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import BaseModal from "../../external/components/modal/BaseModal";
-import {modalDetalhesOrganizacaoStore} from "../../stores/organizacao";
-import { reactive, ref, computed } from 'vue';
-import { useBackendToast } from "../../external/hooks/useBackendToast";
+import { reactive, ref } from 'vue';
 import { useI18n } from "vue-i18n";
 
-const modalDetalhesOrganizacaoState = modalDetalhesOrganizacaoStore();
-const { t: $t } = useI18n();
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const props = defineProps({
+  organizacao: {
+    type: Object,
+    default: null
+  }
+});
+
 const $emit = defineEmits(["onClose","onReload"]);
 
-// Data
+const { t: $t } = useI18n();
+
+
+
 const form = reactive({
 	nome: '',
 	email: '',
@@ -82,29 +87,14 @@ const form = reactive({
 });
 const loadingDados = ref(false);
 
-
-
-// Computed
-
-// Methods
 const carregarFormulario = async function() {
-	loadingDados.value = true;
-
-	const response = await api.get(`/organizacao/${modalDetalhesOrganizacaoState.payload.id}`);
-	const dados = response.data.data;
-	Object.assign(form, dados);
-	form.organizacao_id = dados.organizacao;
-
-	loadingDados.value = false;
+	Object.assign(form, props.organizacao);
 }
 
 const fecharModal = function() {
-	modalDetalhesOrganizacaoState.fechar()
 	$emit("onClose");
 }
 
-
-// Created
 
 </script>
 

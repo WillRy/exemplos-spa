@@ -28,10 +28,11 @@
         </div>
 
         <DatePicker
+          is24hr
           v-model="data"
           v-bind="attrs"
-          is24hr
           mode="dateTime"
+          is-required
           :first-day-of-week="1"
           :popover="{ visibility: visibility }"
         >
@@ -225,7 +226,7 @@ export default {
   --md-min-height-btn: calc(36px);
   --lg-min-height-btn: calc(42px);
 
-  --label-color: var(--gray-color-color-400);
+  --label-color: var(--gray-color-400);
   --label-margin-bottom: 2px;
 
   /* cor usada para destaque no focus */
@@ -291,13 +292,13 @@ export default {
 
 .form-group-container.borda {
   background: #ffffff;
-  border: var(--border) solid var(--gray-color-color-400);
+  border: var(--border) solid var(--gray-color-400);
   border-radius: 8px;
 }
 
 .form-group-container:not(.borda) {
-  background: var(--gray-color-color-100);
-  border-bottom: var(--border) solid var(--gray-color-color-800);
+  background: var(--gray-color-100);
+  border-bottom: var(--border) solid var(--gray-color-800);
   border-radius: 8px 8px 0 0;
 }
 
@@ -348,7 +349,7 @@ export default {
 .disabled .form-group-container,
 .disabled .form-group-container:hover,
 .disabled .form-group-container:focus {
-  background: var(--gray-color-color-100) !important;
+  background: var(--gray-color-100) !important;
   cursor: not-allowed;
 }
 
@@ -404,7 +405,7 @@ input:focus {
 
 input::placeholder {
   font-size: 0.875rem;
-  color: var(--gray-color-color-400);
+  color: var(--gray-color-400);
 }
 
 .icone-footer {
@@ -419,7 +420,7 @@ input::placeholder {
   font-weight: normal;
   margin: 0;
   font-style: italic;
-  color: var(--gray-color-color-400);
+  color: var(--gray-color-400);
   padding-left: var(--padding-text);
   margin-top: var(--spacing-1);
 }
@@ -518,14 +519,14 @@ input::placeholder {
 }
 
 .form-group-btn :deep(button:disabled) {
-  background: var(--gray-color-color-200);
-  color: var(--gray-color-color-300);
+  background: var(--gray-color-200);
+  color: var(--gray-color-300);
   cursor: not-allowed;
   border: none;
 }
 
 .form-group-btn :disabled :deep(path) {
-  fill: var(--gray-color-color-300);
+  fill: var(--gray-color-300);
 }
 
 .form-group-btn :deep(path) {

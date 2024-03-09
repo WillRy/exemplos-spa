@@ -1,6 +1,6 @@
 <template>
   <BaseModal
-    :aberta="modalCriarContatoState.open"
+    :aberta="aberta"
     @onClose="fecharModal"
     @onOpen="carregarFormulario"
   >
@@ -138,28 +138,37 @@ import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTert
 import BaseModal from "../../external/components/modal/BaseModal";
 import BaseSelectAjax from "../../external/components/form/BaseSelectAjax";
 import BaseInput from "../../external/components/form/BaseInput";
-import BaseDate from "../../external/components/form/BaseDate";
 import { useBackendToast } from "../../external/hooks/useBackendToast";
-import { modalCriarContatoStore } from "../../stores/contato";
 import * as yup from "yup";
 import { useForm } from "vee-validate";
 
 import axios from "axios";
 
-import { reactive, ref, computed } from "vue";
+import { reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
-// Data
+const props = defineProps({
+  aberta: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const $emit = defineEmits(["onClose","onReload"]);
+
+const { t: $t } = useI18n();
+
+const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+
+
 const pesquisouCep = ref(false);
+
 const loading = ref(false);
+
 const resultadoPesquisaEmpresa = reactive({
   lista: [],
 });
 
-const modalCriarContatoState = modalCriarContatoStore();
-const { t: $t } = useI18n();
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
-const $emit = defineEmits(["onClose","onReload"]);
 
 const { errors, validate, defineField, resetForm, values, setErrors } = useForm({
   validationSchema: yup.object({
@@ -200,9 +209,7 @@ const [organizacao_id] = defineField("organizacao_id");
 const carregarFormulario = function () {
   resetForm();
 };
-// Computed
 
-// Methods
 const tratarCep = function () {
   pesquisouCep.value = false;
   if (cep.value.length === 8) {
@@ -238,7 +245,6 @@ const pesquisarEmpresa = function (pesquisa) {
 
 const fecharModal = function () {
   resetForm();
-  modalCriarContatoState.fechar();
   $emit("onClose");
 };
 
@@ -259,7 +265,9 @@ const submit = async function () {
     await axiosWeb.post(`/contato`, data);
 
     fecharModal();
-    modalCriarContatoState.onReload();
+
+
+    $emit('onReload');
   } catch (e) {
     const errors = backendToastError(e, $t("textos.erro_cadastrar_contato"));
     setErrors(errors);
@@ -268,7 +276,7 @@ const submit = async function () {
   }
 };
 
-// Created
+
 </script>
 
 <style scoped></style>

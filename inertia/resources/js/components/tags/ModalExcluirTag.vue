@@ -1,6 +1,6 @@
 <template>
   <BaseModal
-    :aberta="modalExcluirTagState.open"
+    :aberta="tag"
     @onClose="fecharModal"
     @onOpen="carregarFormulario"
   >
@@ -16,7 +16,7 @@
       />
       <p v-else>
         {{ $t("textos.confirmar_excluir_tag") }}
-        <strong>{{ modalExcluirTagState.payload.nome }}</strong
+        <strong>{{ tag.nome }}</strong
         >?
       </p>
     </template>
@@ -33,45 +33,47 @@
 
 <script setup>
 import axiosWeb from "../../services/axiosWeb";
-import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import BaseModal from "../../external/components/modal/BaseModal";
-import BaseSelectAjax from "../../external/components/form/BaseSelectAjax";
-import BaseInput from "../../external/components/form/BaseInput";
-import BaseDate from "../../external/components/form/BaseDate";
 import BaseButtonDanger from "../../external/components/buttons/BaseButtonDanger";
-import { modalExcluirTagStore } from "../../stores/tag";
 
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useBackendToast } from "../../external/hooks/useBackendToast";
 
-// Data
-const modalExcluirTagState = modalExcluirTagStore();
-const { t: $t } = useI18n();
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const props = defineProps({
+  tag: {
+    type: Object,
+    default: null
+  }
+});
+
 const $emit = defineEmits(["onClose", "onReload"]);
 
+const { t: $t } = useI18n();
+
+const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+
 const loading = ref(false);
+
 const loadingDados = ref(false);
 
-// Computed
 
-// Methods
 const carregarFormulario = async function () {};
 
 const fecharModal = function () {
-  modalExcluirTagState.fechar();
   $emit("onClose");
 };
 
 const submit = async function () {
   try {
     loading.value = true;
-    await axiosWeb.delete(`/tag/${modalExcluirTagState.payload.id}`);
+    await axiosWeb.delete(`/tag/${props.tag.id}`);
 
     fecharModal();
-    modalExcluirTagState.onReload();
+
+
+    $emit("onReload");
   } catch (e) {
     backendToastError(e, $t("textos.erro_excluir_tag"));
   } finally {
@@ -79,7 +81,7 @@ const submit = async function () {
   }
 };
 
-// Created
+
 </script>
 
 <style scoped></style>

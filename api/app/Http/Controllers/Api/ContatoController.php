@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\CriarContatoRequest;
+use App\Http\Requests\EditarContatoRequest;
 use App\Models\Contato;
 use App\Service\ResponseJSON;
 use Exception;
@@ -43,33 +45,9 @@ class ContatoController extends \App\Http\Controllers\Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(CriarContatoRequest $request)
     {
-        $dados = $request->validate([
-            'nome' => 'required|max:255|min:3',
-            'email' => 'required|email|max:255|unique:contatos,email',
-            'telefone' => ['nullable', 'max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/([(][0-9]{2}[)])\s[0-9]{4,5}\-[0-9]{4}/', $value)) {
-                    $fail(__('custom.validacao_telefone_valido'));
-                }
-            }],
-            'cep' => ['nullable', 'max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/^[0-9]{5,5}([- ]?[0-9]{3,3})?$/', $value)) {
-                    $fail(__('custom.validacao_cep_valido'));
-                }
-            }],
-            'endereco' => 'nullable|max:255',
-            'bairro' => 'nullable|max:255',
-            'numero' => 'nullable|max:255',
-            'complemento' => 'nullable|max:255',
-            'cidade' => 'nullable|max:255',
-            'estado' => 'nullable|max:255|in:AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC,SP,SE,TO',
-            'organizacao_id' => 'nullable|exists:organizacoes,id'
-        ], [], [
-            'endereco' => 'endereço',
-            'numero' => 'número',
-            'organizacao_id' => 'organização',
-        ]);
+        $dados = $request->validated();
 
         try {
 
@@ -83,33 +61,9 @@ class ContatoController extends \App\Http\Controllers\Controller
         }
     }
 
-    public function update(Request $request, int $id)
+    public function update(EditarContatoRequest $request, int $id)
     {
-        $dados = $request->validate([
-            'nome' => 'required|max:255|min:3',
-            'email' => "required|email|max:255|unique:contatos,email,{$id}", //permitir burlar o unique para proprio dono
-            'telefone' => ['nullable', 'max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/([(][0-9]{2}[)])\s[0-9]{4,5}\-[0-9]{4}/', $value)) {
-                    $fail(__('custom.validacao_telefone_valido'));
-                }
-            }],
-            'cep' => ['nullable', 'max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/^[0-9]{5,5}([- ]?[0-9]{3,3})?$/', $value)) {
-                    $fail(__('custom.validacao_cep_valido'));
-                }
-            }],
-            'endereco' => 'nullable|max:255',
-            'bairro' => 'nullable|max:255',
-            'numero' => 'nullable|max:255',
-            'complemento' => 'nullable|max:255',
-            'cidade' => 'nullable|max:255',
-            'estado' => 'nullable|max:255|in:AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC,SP,SE,TO',
-            'organizacao_id' => 'nullable|exists:organizacoes,id'
-        ], [], [
-            'endereco' => 'endereço',
-            'numero' => 'número',
-            'organizacao_id' => 'organização',
-        ]);
+        $dados = $request->validated();
 
         try {
             $organizacaoExiste = Contato::find($id);

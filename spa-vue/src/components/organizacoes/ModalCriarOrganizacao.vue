@@ -1,6 +1,6 @@
 <template>
   <BaseModal
-    :aberta="modalCriarOrganizacaoState.open"
+    :aberta="aberta"
     @onClose="fecharModal"
     @onOpen="carregarFormulario"
   >
@@ -160,31 +160,38 @@ import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTert
 import BaseModal from "../../external/components/modal/BaseModal";
 import BaseSelectAjax from "../../external/components/form/BaseSelectAjax";
 import BaseInput from "../../external/components/form/BaseInput";
-import BaseDate from "../../external/components/form/BaseDate";
 import {
-  modalCriarOrganizacaoStore,
-  organizacaoStore,
+  modalCriarOrganizacaoStore
 } from "../../stores/organizacao";
 import axios from "axios";
 
-import { reactive, ref, computed } from "vue";
+import { reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useBackendToast } from "../../external/hooks/useBackendToast";
 import * as yup from "yup";
 import { useForm } from "vee-validate";
 
 
-// Data
+const props = defineProps({
+  aberta: {
+    type: Boolean,
+    default: false,
+  }
+})
+
+const $emit = defineEmits(["onClose","onReload"]);
+
+const { t: $t } = useI18n();
+
+const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+
+const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
+
 const pesquisouCep = ref(false);
 const loading = ref(false);
 const resultadoPesquisaTag = reactive({
   lista: [],
 });
-
-const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
-const { t: $t } = useI18n();
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
-const $emit = defineEmits(["onClose","onReload"]);
 
 const { errors, validate, defineField, resetForm, values, setErrors } = useForm({
   validationSchema: yup.object({
@@ -226,8 +233,6 @@ const carregarFormulario = function () {
   resetForm();
 };
 
-// Methods
-
 const tratarCep = function () {
   pesquisouCep.value = false;
   if (cep.value.length === 8) {
@@ -262,7 +267,6 @@ const pesquisarTag = function (pesquisa) {
 
 const fecharModal = function () {
   resetForm();
-  modalCriarOrganizacaoState.fechar();
   $emit("onClose");
 };
 
@@ -282,9 +286,11 @@ const submit = async function () {
     await api.post(`/organizacao`, data);
 
     fecharModal();
-    $emit("onReload");
 
     modalCriarOrganizacaoState.onReload();
+
+    $emit("onReload");
+
   } catch (e) {
     const errors = backendToastError(e, $t("textos.erro_cadastrar_organizacao"));
     setErrors(errors);
@@ -293,7 +299,6 @@ const submit = async function () {
   }
 };
 
-// Created
 </script>
 
 <style scoped></style>

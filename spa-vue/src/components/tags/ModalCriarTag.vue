@@ -1,6 +1,6 @@
 <template>
   <BaseModal
-    :aberta="modalCriarTagState.open"
+    :aberta="aberta"
     @onClose="fecharModal"
     @onOpen="carregarFormulario"
   >
@@ -55,21 +55,26 @@ import api from "../../services/api";
 import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import BaseModal from "../../external/components/modal/BaseModal";
-import BaseSelectAjax from "../../external/components/form/BaseSelectAjax";
 import BaseInput from "../../external/components/form/BaseInput";
-import axios from "axios";
-import { modalCriarTagStore } from "../../stores/tag";
 
-import { reactive, ref, computed } from "vue";
+import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useBackendToast } from "../../external/hooks/useBackendToast";
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 
-const modalCriarTagState = modalCriarTagStore();
-const { t: $t } = useI18n();
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const props = defineProps({
+  aberta: {
+    type: Boolean,
+    default: false
+  }
+});
+
 const $emit = defineEmits(["onClose", "onReload"]);
+
+const { t: $t } = useI18n();
+
+const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
 
 const loading = ref(false);
 
@@ -101,9 +106,6 @@ const [nome] = defineField("nome");
 const [cor_fundo] = defineField("cor_fundo");
 const [cor_texto] = defineField("cor_texto");
 
-// Computed
-
-// Methods
 const carregarFormulario = function () {
   setValues(
     {
@@ -117,7 +119,6 @@ const carregarFormulario = function () {
 
 const fecharModal = function () {
   resetForm();
-  modalCriarTagState.fechar();
   $emit("onClose");
 };
 
@@ -137,7 +138,8 @@ const submit = async function () {
     await api.post(`/tag`, data);
 
     fecharModal();
-    modalCriarTagState.onReload();
+
+    $emit("onReload");
   } catch (e) {
     const errors =  backendToastError(e, $t("textos.erro_cadastrar_tag"));
     setErrors(errors);
@@ -146,7 +148,6 @@ const submit = async function () {
   }
 };
 
-// Created
 </script>
 
 <style scoped></style>

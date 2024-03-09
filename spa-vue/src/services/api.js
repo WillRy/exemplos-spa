@@ -115,7 +115,7 @@ api.interceptors.response.use(response => {
       //   return Promise.reject(new AuthTokenError())
       // }
       redirectLogout(2);
-      return Promise.reject(new AuthTokenError())
+      return Promise.reject(new Error("Sessão expirada"));
     }
   }
 

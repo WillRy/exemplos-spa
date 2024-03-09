@@ -127,9 +127,9 @@
       </Box>
     </div>
 
-    <ModalCriarTag />
-    <ModalEditarTag />
-    <ModalExcluirTag />
+    <ModalCriarTag :aberta="criarTagAberto" @onClose="criarTagAberto = null" @onReload="buscarDados"/>
+    <ModalEditarTag :tag="tagSendoEditada" @onClose="tagSendoEditada = null" @onReload="buscarDados"/>
+    <ModalExcluirTag :tag="tagSendoExcluida" @onClose="tagSendoExcluida = null" @onReload="buscarDados"/>
   </div>
 </template>
 
@@ -167,11 +167,7 @@ defineOptions({ layout: Privado })
 
 const { t: $t } = useI18n();
 const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
-const modalCriarTagState = modalCriarTagStore();
-const modalEditarTagState = modalEditarTagStore();
-const modalExcluirTagState = modalExcluirTagStore();
 
-// Data
 const form = reactive({
   pesquisa: "",
 });
@@ -183,17 +179,20 @@ const tags = reactive({
   dados: [],
 });
 
-// Methods
+const criarTagAberto = ref(false);
+const tagSendoEditada = ref(null);
+const tagSendoExcluida = ref(null);
+
 const abrirCriar = function () {
-  modalCriarTagState.abrir();
+  criarTagAberto.value = true;
 };
 
 const abrirEdicao = function (tag) {
-  modalEditarTagState.abrir(tag);
+  tagSendoEditada.value = tag;
 };
 
 const abrirExclusao = function (tag) {
-  modalExcluirTagState.abrir(tag);
+  tagSendoExcluida.value = tag;
 };
 
 const sortBy = function (ordem) {
@@ -234,29 +233,7 @@ const buscarDados = function () {
     });
 };
 
-// Watch
-watch(
-  () => modalCriarTagState.reload,
-  function () {
-    buscarDados();
-  }
-);
 
-watch(
-  () => modalEditarTagState.reload,
-  function () {
-    buscarDados();
-  }
-);
-
-watch(
-  () => modalExcluirTagState.reload,
-  function () {
-    buscarDados();
-  }
-);
-
-// Created
 buscarDados();
 </script>
 
