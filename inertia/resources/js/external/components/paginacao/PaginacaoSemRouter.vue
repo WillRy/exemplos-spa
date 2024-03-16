@@ -124,7 +124,6 @@ export default {
       return textoSendoTradado;
     },
     numElementoInicial() {
-      const offset = this.paginaAtual - 1;
       const offsetNormalizado =
         this.paginaAtual * this.porPagina - this.porPagina;
       return offsetNormalizado + 1;
@@ -156,7 +155,6 @@ export default {
       const total = this.total / this.porPagina;
       return total !== Infinity ? Math.ceil(total) : 0;
     },
-    idiomaAutomatico() {},
   },
   created() {},
 };

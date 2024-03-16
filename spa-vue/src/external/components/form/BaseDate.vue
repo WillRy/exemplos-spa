@@ -141,7 +141,6 @@ export default {
     },
     data: {
       set(valor) {
-        debugger
         if (!valor) {
           this.$emit('update:modelValue', null)
           this.$emit('update:formatado', null)
@@ -169,7 +168,6 @@ export default {
         return null
       },
       get() {
-        debugger
         if (!this.modelValue) {
           return null
         }

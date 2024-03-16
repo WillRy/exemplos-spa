@@ -30,7 +30,7 @@ export default {
       default: null
     },
     exibirContador: {
-      default: true
+      default: false
     },
     exibeContadorComZero: {
       default: true

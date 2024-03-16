@@ -1,5 +1,5 @@
 <template>
-  <div class="box-container">
+  <div class="box-container" :class="`mb-${marginBottom}`">
     <OverlineText v-if="titulo" class="titulo" size="sm">
       {{ titulo }}
     </OverlineText>
@@ -44,6 +44,10 @@
 
 <script lang="ts">
 import OverlineText from "../text/OverlineText.vue";
+import { PropType } from "vue";
+
+type MarginBottomType = "0" | "1" | "2" | "3" | "4" | "5" | "6";
+
 export default {
   name: "Box",
   props: {
@@ -67,6 +71,10 @@ export default {
       validator(value: string) {
         return ["0", "1", "2", "3", "4", "5", "6"].includes(value);
       },
+    },
+    marginBottom: {
+      type: String as PropType<MarginBottomType>,
+      default: "3",
     },
   },
   components: {

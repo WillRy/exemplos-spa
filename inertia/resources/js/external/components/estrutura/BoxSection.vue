@@ -1,5 +1,5 @@
 <template>
-  <div class="painel-agrupamento">
+  <div class="painel-agrupamento" :class="`mb-${marginBottom}`">
     <div class="painel-agrupamento-header">
       <OverlineText size="lg" v-if="titulo" class="titulo">
         {{ titulo }}
@@ -20,6 +20,9 @@
 </template>
 <script lang="ts">
 import OverlineText from "../text/OverlineText.vue";
+import { PropType } from "vue";
+
+type MarginBottomType = "0" | "1" | "2" | "3" | "4" | "5" | "6";
 
 export default {
   name: "BoxSection",
@@ -37,6 +40,10 @@ export default {
       validator(value:string) {
         return ["0", "1", "2", "3", "4", "5", "6"].includes(value);
       },
+    },
+    marginBottom: {
+      type: String as PropType<MarginBottomType>,
+      default: "3",
     },
     alturaMaxima: {
       type: String,

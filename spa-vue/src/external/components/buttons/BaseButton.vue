@@ -88,7 +88,7 @@ export default {
 
 .btn {
   all: "unset";
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   border: none;
@@ -134,6 +134,7 @@ export default {
 }
 
 .btn-full {
+  display: flex;
   width: 100%;
 }
 

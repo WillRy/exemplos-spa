@@ -39,13 +39,10 @@
 <script>
 
 
-import SidebarLink from "./SidebarLink.vue";
-
 import ArrowSidebar from "./ArrowSidebar.vue";
 import HamburguerSidebar from "./HamburguerSidebar.vue";
 
 import {computed} from "vue";
-import MusicasIcon from "../icons/MusicasIcon.vue";
 
 export default {
   name: "Sidebar",
@@ -71,10 +68,8 @@ export default {
     }
   },
   components: {
-    MusicasIcon,
     HamburguerSidebar,
     ArrowSidebar,
-    SidebarLink
   },
   methods: {
     tratarDropdown(dropdownAbriu) {

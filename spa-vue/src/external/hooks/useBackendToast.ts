@@ -1,13 +1,13 @@
 import axios from "axios";
-import type { Axios, AxiosError, AxiosResponse } from "axios";
-import type { alertParams, errosBackend, errosTratados, jsonBackend } from "../types";
+import type { AxiosError, AxiosResponse } from "axios";
+import type { errosBackend, errosTratados, jsonBackend } from "../types";
 import { useToast } from "vue-toast-notification";
 import type { ToastProps } from 'vue-toast-notification';
 
 function getFormError(e: string|Error|AxiosError) {
   const erros: errosTratados = {};
 
-  let response = axios.isAxiosError(e) ? e?.response : null;
+  const response = axios.isAxiosError(e) ? e?.response : null;
   const json: errosBackend | null = response && response.data ? response.data as errosBackend : null;
   
 
@@ -56,12 +56,11 @@ export function useBackendToast() {
 
   function backendToastError(e: string|Error|AxiosError, message:string|null = null) {
 
-    debugger
-    let response = axios.isAxiosError(e) ? e?.response : null;
+    const response = axios.isAxiosError(e) ? e?.response : null;
     const data: errosBackend | null = response && response.data ? response.data as errosBackend : null;
 
-    if (response && response.status === 422 && data && data.errors) {
-      let erro = Object.keys(response.data.errors)[0];
+    if (response && response.status === 422 && data && data.errors.length) {
+      const erro = Object.keys(response.data.errors)[0];
       toast.open({
         message: response.data.errors[erro][0],
         type: "error",
@@ -97,7 +96,7 @@ export function useBackendToast() {
   }
 
   function backendToastSuccess(e: string|AxiosResponse|null, message = null) {
-    let response: AxiosResponse<jsonBackend>|null = typeof e !== 'string' ? e : null;
+    const response: AxiosResponse<jsonBackend>|null = typeof e !== 'string' ? e : null;
 
     if (response && response.data && response.data.message) {
       toast.open({

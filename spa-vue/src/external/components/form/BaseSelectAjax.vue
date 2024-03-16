@@ -38,8 +38,8 @@
                     :disabled="disabled"
                     :loading="loading"
                 >
-                    <template v-slot:option="{ option }" v-if="thumbBy">
-                        <div class="option-container">
+                    <template v-slot:option="{ option }" >
+                        <div class="option-container" v-if="thumbBy">
                             <img class="option__image" :src="option[thumbBy]"/>
                             <div class="option__desc">
                             <span class="option__title">
@@ -47,9 +47,7 @@
                             </span>
                             </div>
                         </div>
-                    </template>
-                    <template v-slot:option="{option}">
-                        <div class="option-select"  v-tooltip="{content: option.tooltip ?? null}">
+                        <div class="option-select"  v-tooltip="{content: option.tooltip ?? null}" v-else>
                             <!-- <span v-tooltip="{content: option[textBy]}">{{ option[textBy] }}</span> -->
                             <span>{{ option[textBy] }}</span>
                         </div>

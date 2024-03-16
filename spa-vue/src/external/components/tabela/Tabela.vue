@@ -48,8 +48,6 @@
 <script lang="ts">
 import HeadSort from "./HeadSort.vue";
 import Loader from "../Loader.vue";
-import ColunaTabela from "./ColunaTabela.vue";
-import BaseCheckbox from "../form/BaseCheckbox.vue";
 import { PropType } from "vue";
 
 interface Coluna {
@@ -63,7 +61,7 @@ type Colunas = Array<Coluna>;
 
 export default {
   name: "Tabela",
-  components: { BaseCheckbox, ColunaTabela, Loader, HeadSort },
+  components: { Loader, HeadSort },
   props: {
     responsive: {
       type: Boolean,

@@ -85,6 +85,10 @@
   .gy-#{$key} {
     --bs-gutter-y: #{$value};
   }
+
+  .gap-#{$key} {
+    gap: #{$value};
+  }
 }
 
 @each $grid, $pxBreakpoint in $grid-map {

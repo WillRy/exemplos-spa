@@ -12,7 +12,7 @@ export const useAlertStore = defineStore("alert", {
     alerts: [] as alertParams[],
   }),
   actions: {
-    setAlert({ tipo, title, mensagem, id = null, acoes = null }: alertParams) {
+    setAlert({ tipo, title, mensagem, id = null, acoes = null, onClose = null }: alertParams) {
       const idAlert = id ? id : idNotificacao++;
 
       const exists = this.alerts.find((alert) => alert.id === idAlert);
@@ -25,9 +25,10 @@ export const useAlertStore = defineStore("alert", {
         mensagem,
         id: idAlert,
         acoes: acoes,
+        onClose: onClose,
       });
     },
-    error({ title, mensagem, id = null, acoes = null }: alertParams) {
+    error({ title, mensagem, id = null, acoes = null, onClose = null }: alertParams) {
       const idAlert = id ? id : idNotificacao++;
 
       const exists = this.alerts.find((alert) => alert.id === id);
@@ -40,9 +41,10 @@ export const useAlertStore = defineStore("alert", {
         mensagem,
         id: idAlert,
         acoes: acoes,
+        onClose: onClose,
       });
     },
-    success({ title, mensagem, id = null, acoes = null }: alertParams) {
+    success({ title, mensagem, id = null, acoes = null, onClose = null }: alertParams) {
       const idAlert = id ? id : idNotificacao++;
 
       const exists = this.alerts.find((alert) => alert.id === id);
@@ -55,9 +57,10 @@ export const useAlertStore = defineStore("alert", {
         mensagem,
         id: idAlert,
         acoes: acoes,
+        onClose: onClose,
       });
     },
-    info({ title, mensagem, id = null, acoes = null }: alertParams) {
+    info({ title, mensagem, id = null, acoes = null, onClose = null }: alertParams) {
       const idAlert = id ? id : idNotificacao++;
 
       const exists = this.alerts.find((alert) => alert.id === id);
@@ -70,9 +73,10 @@ export const useAlertStore = defineStore("alert", {
         mensagem,
         id: idAlert,
         acoes: acoes,
+        onClose: onClose,
       });
     },
-    warning({ title, mensagem, id = null, acoes = null }: alertParams) {
+    warning({ title, mensagem, id = null, acoes = null, onClose = null }: alertParams) {
       const idAlert = id ? id : idNotificacao++;
 
       const exists = this.alerts.find((alert) => alert.id === id);
@@ -85,6 +89,7 @@ export const useAlertStore = defineStore("alert", {
         mensagem,
         id: idAlert,
         acoes: acoes,
+        onClose: onClose,
       });
     },
     removeAlert(id: any) {

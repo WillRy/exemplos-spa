@@ -41,6 +41,9 @@ export default {
   },
   methods: {
     fecharModal() {
+      if(this.alert.onClose) {
+        this.alert.onClose(this.alert);
+      }
       this.alertState.removeAlert(this.alert.id);
     },
   },
@@ -50,7 +53,6 @@ export default {
     Array.from(anchors).forEach(anchor => {
       anchor.addEventListener('click', (e) => {
         e.preventDefault();
-        debugger
         const alertIdentificadorAcao = e.currentTarget.getAttribute('data-identificador');
 
         if(this.alert.acoes) {
@@ -60,7 +62,9 @@ export default {
 
           if(!acao.click) return false;
 
-          acao.click();
+          acao.click(this.alert, () => {
+            this.fecharModal();
+          });
 
           if(acao.fecharNoClick === undefined || acao.fecharNoClick) this.fecharModal();
 

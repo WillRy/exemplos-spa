@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown-container" :class="{ open: open }">
+  <div class="dropdown-container" :class="{ open: open, 'dropdown-block': full }">
     <VDropdown
       :triggers="triggers"
       :shown="open"
@@ -7,6 +7,7 @@
       :autoHide="false"
       :distance="4"
       placement="bottom-start"
+      :auto-size="autoSize"
       v-bind="$attrs"
     >
       <div class="label-container" v-if="$slots.label">
@@ -20,28 +21,34 @@
         @click.stop.prevent="toggle"
         :size="size"
         :disabled="disabled"
+        :full="full"
       >
         <slot name="botao"></slot>
-        <ArrowDownSolidIcon size="12px" color="#fff" v-if="icone" />
+        <svg
+          v-if="icone" 
+          viewBox="0 0 330 330"
+          xml:space="preserve"
+          :style="{ height: '12px', width: '12px' }"
+        >
+          <path
+            d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393  c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393  s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"
+            fill="#fff"
+          />
+        </svg>
       </BaseButtonPrimary>
 
       <!-- This will be the content of the popover -->
-      <template #popper="{ hide }" v-if="$slots.acoes">
+      <template #popper>
         <div
+          v-if="$slots.acoes"
           class="dropdown-botao"
           @click.stop="fechar"
           :style="{ maxHeight: maxHeight }"
         >
           <slot name="acoes"></slot>
         </div>
-      </template>
-
-      <template
-        #popper="{ hide }"
-        v-if="$slots.conteudo"
-        :style="{ maxHeight: maxHeight }"
-      >
-        <div class="dropdown-conteudo" @click.stop="">
+        
+        <div class="dropdown-conteudo" @click.stop="" v-if="$slots.conteudo" :style="{ maxHeight: maxHeight }">
           <slot name="conteudo"></slot>
         </div>
       </template>
@@ -51,11 +58,7 @@
 
 <script lang="ts">
 import { Dropdown } from "floating-vue";
-import BaseButtonSecondary from "../buttons/BaseButtonSecondary.vue";
-import ArrowDownIcon from "../icons/ArrowDownIcon.vue";
 import { directive } from "../../directives/click-away";
-import BaseButton from "../buttons/BaseButton.vue";
-import ArrowDownSolidIcon from "../icons/ArrowDownSolidIcon.vue";
 import BaseButtonPrimary from "../buttons/BaseButtonPrimary.vue";
 import { PropType } from "vue";
 
@@ -89,13 +92,17 @@ export default {
       type: String,
       default: "",
     },
+    full: {
+      type: Boolean,
+      default: false,
+    },
+    autoSize: {
+      type: Boolean,
+      default: false,
+    }
   },
   components: {
     VDropdown: Dropdown,
-    BaseButtonSecondary,
-    ArrowDownIcon,
-    BaseButton,
-    ArrowDownSolidIcon,
     BaseButtonPrimary,
   },
   directives: {
@@ -170,6 +177,10 @@ export default {
   display: inline-block;
 }
 
+.dropdown-block {
+  display: block;
+}
+
 img {
   height: 24px;
   min-width: 24px;
@@ -181,7 +192,6 @@ img {
   width: auto;
   display: flex;
   flex-direction: column;
-  max-width: 232px;
   overflow: auto;
 }
 

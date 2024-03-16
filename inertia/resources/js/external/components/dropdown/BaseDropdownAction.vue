@@ -31,8 +31,6 @@
 
 <script lang="ts">
 import { Dropdown } from "floating-vue";
-import BaseButtonSecondary from "../buttons/BaseButtonSecondary.vue";
-import ArrowDownIcon from "../icons/ArrowDownIcon.vue";
 import { directive } from "../../directives/click-away";
 import DotsIcon from "../icons/DotsIcon.vue";
 
@@ -46,8 +44,6 @@ export default {
   },
   components: {
     VDropdown: Dropdown,
-    BaseButtonSecondary,
-    ArrowDownIcon,
     DotsIcon,
   },
   directives: {

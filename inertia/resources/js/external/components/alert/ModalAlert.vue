@@ -2,7 +2,6 @@
   <BaseModal
       :aberta="alert"
       @onClose="fecharModal"
-      @onOpen=""
       :class="{ alertError: alert.tipo === 'error' }"
   >
     <template #title>

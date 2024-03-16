@@ -22,12 +22,11 @@
 
 <script>
 
-import ArrowDownSolidIcon from "../icons/ArrowDownSolidIcon.vue";
 import ArrowDownIcon from "../icons/ArrowDownIcon.vue";
 
 export default {
   name: "SidebarDropdown",
-  components: {ArrowDownIcon, ArrowDownSolidIcon},
+  components: {ArrowDownIcon},
   inject: ['sidenavAberta'],
   props: {
     abertoInicial: {

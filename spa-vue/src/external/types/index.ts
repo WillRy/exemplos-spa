@@ -23,6 +23,7 @@ export interface alertParams {
   title?: string | null;
   mensagem?: string | null;
   id?: any | null;
+  onClose?: null|(() => void);
   acoes?:
     | {
         click: () => void;

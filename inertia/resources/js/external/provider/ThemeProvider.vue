@@ -7,21 +7,13 @@
 <script setup>
 import {
   defineProps,
-  computed,
   reactive,
-  ref,
   onBeforeMount,
   watch,
 } from "vue";
 import {
-  lighten,
-  darken,
   shade,
-  setHue,
-  setSaturation,
   tint,
-  adjustHue,
-  setLightness,
   readableColor,
   getContrast,
 } from "polished";

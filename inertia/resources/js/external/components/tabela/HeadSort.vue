@@ -1,10 +1,6 @@
 <template>
   <th
-    style="
-       {
-        'max-width':width ;
-      }
-    "
+    style="{'max-width':width ;}"
   >
     <button @click="sortBy(nome)" v-if="!disabled" type="button">
       <slot></slot>
@@ -47,14 +43,13 @@
 <script lang="ts">
 import { VTooltip } from "floating-vue";
 
-import InfoIcon from "../icons/InfoIcon.vue";
 import SortAscIcon from "../icons/SortAscIcon.vue";
 import SortDescIcon from "../icons/SortDescIcon.vue";
 import SortIcon from "../icons/SortIcon.vue";
 
 export default {
   name: "HeadSort",
-  components: { SortIcon, SortDescIcon, SortAscIcon, InfoIcon },
+  components: { SortIcon, SortDescIcon, SortAscIcon },
   props: ["nome", "order", "texto", "ordenando", "width", "info", "disabled"],
   computed: {
     orderMinuscula() {

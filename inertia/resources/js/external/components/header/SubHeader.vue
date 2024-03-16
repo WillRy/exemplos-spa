@@ -73,7 +73,7 @@ export default defineComponent({
     },
     padding: {
       type: String,
-      required: true,
+      required: false,
       default: null
     },
     componentLink: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown-container" :class="{ open: open }">
+  <div class="dropdown-container" :class="{ open: open, 'dropdown-block': full }">
     <VDropdown
       :triggers="triggers"
       :shown="open"
@@ -7,6 +7,7 @@
       :autoHide="false"
       :distance="4"
       placement="bottom-start"
+      :auto-size="autoSize"
       v-bind="$attrs"
     >
       <div class="label-container" v-if="$slots.label">
@@ -20,28 +21,23 @@
         @click.stop.prevent="toggle"
         :size="size"
         :disabled="disabled"
+        :full="full"
       >
         <slot name="botao"></slot>
         <ArrowDownSolidIcon size="12px" color="#fff" v-if="icone" />
       </BaseButtonSecondary>
 
       <!-- This will be the content of the popover -->
-      <template #popper="{ hide }" v-if="$slots.acoes">
+      <template #popper>
         <div
           class="dropdown-botao"
           @click.stop="fechar"
           :style="{ maxHeight: maxHeight }"
+          v-if="$slots.acoes"
         >
           <slot name="acoes"></slot>
         </div>
-      </template>
-
-      <template
-        #popper="{ hide }"
-        v-if="$slots.conteudo"
-        :style="{ maxHeight: maxHeight }"
-      >
-        <div class="dropdown-conteudo" @click.stop="">
+        <div class="dropdown-conteudo" @click.stop="" v-if="$slots.conteudo" :style="{ maxHeight: maxHeight }">
           <slot name="conteudo"></slot>
         </div>
       </template>
@@ -52,9 +48,7 @@
 <script lang="ts">
 import { Dropdown } from "floating-vue";
 import BaseButtonSecondary from "../buttons/BaseButtonSecondary.vue";
-import ArrowDownIcon from "../icons/ArrowDownIcon.vue";
 import { directive } from "../../directives/click-away";
-import BaseButton from "../buttons/BaseButton.vue";
 import ArrowDownSolidIcon from "../icons/ArrowDownSolidIcon.vue";
 import { PropType } from "vue";
 
@@ -88,12 +82,18 @@ export default {
       type: String,
       default: "",
     },
+    full: {
+      type: Boolean,
+      default: false,
+    },
+    autoSize: {
+      type: Boolean,
+      default: false,
+    }
   },
   components: {
     VDropdown: Dropdown,
     BaseButtonSecondary,
-    ArrowDownIcon,
-    BaseButton,
     ArrowDownSolidIcon,
   },
   directives: {
@@ -166,6 +166,10 @@ export default {
 
 .dropdown-container {
   display: inline-block;
+}
+
+.dropdown-block {
+  display: block;
 }
 
 img {

@@ -64,12 +64,11 @@
   </transition>
 </template>
 <script lang="ts">
-import CloseIcon from "../icons/CloseIcon.vue";
 
 
 export default {
   name: "BaseModal",
-  components: { CloseIcon },
+  components: {  },
   props: {
     paddingHeader: {
       type: String,

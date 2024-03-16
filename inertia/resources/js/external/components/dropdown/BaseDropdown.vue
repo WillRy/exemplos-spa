@@ -19,7 +19,7 @@
       </BaseButton>
 
       <!-- This will be the content of the popover -->
-      <template #popper="{ hide }">
+      <template #popper>
         <div class="dropdown-botao" @click.stop="fechar">
           <slot name="acoes"></slot>
         </div>
@@ -30,8 +30,6 @@
 
 <script lang="ts">
 import { Dropdown } from "floating-vue";
-import BaseButtonSecondary from "../buttons/BaseButtonSecondary.vue";
-import ArrowDownIcon from "../icons/ArrowDownIcon.vue";
 import { directive } from "../../directives/click-away";
 import BaseButton from "../buttons/BaseButton.vue";
 import ArrowDownSolidIcon from "../icons/ArrowDownSolidIcon.vue";
@@ -46,8 +44,6 @@ export default {
   },
   components: {
     VDropdown: Dropdown,
-    BaseButtonSecondary,
-    ArrowDownIcon,
     BaseButton,
     ArrowDownSolidIcon
 },

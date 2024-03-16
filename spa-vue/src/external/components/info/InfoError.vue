@@ -7,15 +7,11 @@
 
 <script>
 import InfoErrorIcon from "../icons/InfoErrorIcon.vue";
-import InfoInputIcon from "../icons/InfoInputIcon.vue";
-import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
-import CaptionText from "../text/CaptionText.vue";
 
 export default {
   name: "ActionText",
   components: {
     InfoErrorIcon,
-    CaptionText,
   },
   props: {
     exibirIcone: {
