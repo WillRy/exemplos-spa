@@ -21,7 +21,7 @@ class InitCustomCSRF
     {
         if ((new CustomCSRF())->hasOrigin()) {
             return (new Pipeline(app()))->send($request)->through([
-                \App\Http\Middleware\EncryptCookies::class,
+                \Illuminate\Cookie\Middleware\EncryptCookies::class,
                 \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
                 \Illuminate\Session\Middleware\StartSession::class,
             ])->then(function ($request) use ($next) {

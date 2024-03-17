@@ -3,9 +3,11 @@
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\InitCustomCSRF;
 use App\Http\Middleware\Locale;
+use App\Service\CustomCSRF;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Support\Facades\Cookie;
 
 function isAjax()
 {
@@ -39,6 +41,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->renderable(function (\Exception $e, $request) {
             $is419 = $e instanceof \Symfony\Component\HttpKernel\Exception\HttpException && $e->getStatusCode() === 419 || $e->getCode() === 419;
+
+            if($is419) {
+                Cookie::expire(CustomCSRF::$cookieName);
+            }
+
             if (!isAjax() && $is419 && $request->method() !== 'GET') {
                 return redirect()->back(303)->with('error', 'Sua sessão expirou, por favor, tente novamente.');
             }
