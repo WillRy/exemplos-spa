@@ -8,17 +8,6 @@ use App\Http\Controllers\PainelController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 // mudar idioma
 Route::get('/lang/{idioma}', [LangController::class, 'definirIdioma'])->name("definirIdioma");
 

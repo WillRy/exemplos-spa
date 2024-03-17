@@ -1,55 +1,106 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Create The Application
-|--------------------------------------------------------------------------
-|
-| The first thing we will do is create a new Laravel application instance
-| which serves as the "glue" for all the components of Laravel, and is
-| the IoC container for the system binding all of the various parts.
-|
-*/
+use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\InitCustomCSRF;
+use App\Http\Middleware\Locale;
+use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Foundation\Configuration\Middleware;
 
-$app = new Illuminate\Foundation\Application(
-    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
-);
+function isAjax()
+{
+    $isApi = str_contains(\Illuminate\Support\Facades\Request::route()->getPrefix(), 'api');
+    $isJSON = \Illuminate\Support\Facades\Request::expectsJson() || \Illuminate\Support\Facades\Request::isJson();
+    $isAjax = ($isApi || $isJSON) && !\Illuminate\Support\Facades\Request::header('X-Inertia');
 
-/*
-|--------------------------------------------------------------------------
-| Bind Important Interfaces
-|--------------------------------------------------------------------------
-|
-| Next, we need to bind some important interfaces into the container so
-| we will be able to resolve them when needed. The kernels serve the
-| incoming requests to this application from both the web and CLI.
-|
-*/
+    return $isAjax;
+}
 
-$app->singleton(
-    Illuminate\Contracts\Http\Kernel::class,
-    App\Http\Kernel::class
-);
+return Application::configure(basePath: dirname(__DIR__))
+    ->withRouting(
+        api: __DIR__ . '/../routes/api.php',
+        web: __DIR__ . '/../routes/web.php',
+        commands: __DIR__ . '/../routes/console.php',
+        health: '/up',
+    )
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->alias([
+            'auth' => Authenticate::class,
+            'locale' => Locale::class,
+        ]);
+        $middleware->appendToGroup('web',[
+            HandleInertiaRequests::class
+        ]);
+        $middleware->encryptCookies([
+            'token',
+            'refresh_token'
+        ]);
+    })
+    ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->renderable(function (\Exception $e, $request) {
+            $is419 = $e instanceof \Symfony\Component\HttpKernel\Exception\HttpException && $e->getStatusCode() === 419 || $e->getCode() === 419;
+            if (!isAjax() && $is419 && $request->method() !== 'GET') {
+                return redirect()->back(303)->with('error', 'Sua sessão expirou, por favor, tente novamente.');
+            }
 
-$app->singleton(
-    Illuminate\Contracts\Console\Kernel::class,
-    App\Console\Kernel::class
-);
+            if($is419) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Sua sessão expirou, por favor, tente novamente.',
+                    'errors' => null,
+                    'error_code' => null,
+                    "data" => [],
+                ], 419);
+            }
+        });
 
-$app->singleton(
-    Illuminate\Contracts\Debug\ExceptionHandler::class,
-    App\Exceptions\Handler::class
-);
+        $exceptions->renderable(function (\Illuminate\Auth\AuthenticationException $e, \Illuminate\Http\Request $request) {
+            if (isAjax()) {
+                $error = str_replace(' (and 1 more error)', '', $e->getMessage());
+                return response()->json([
+                    'success' => false,
+                    'message' => $error,
+                    'errors' => [],
+                    'error_code' => null,
+                    'data' => []
+                ], 401);
+            }
+        });
 
-/*
-|--------------------------------------------------------------------------
-| Return The Application
-|--------------------------------------------------------------------------
-|
-| This script returns the application instance. The instance is given to
-| the calling script so we can separate the building of the instances
-| from the actual running of the application and sending responses.
-|
-*/
+        /**
+         * Padroniza o JSON de response em erro de VALIDAÇÃO
+         *
+         * Para requests que NÃO SÃO INERTIA
+         * */
+        $exceptions->renderable(function (\Illuminate\Validation\ValidationException $e, \Illuminate\Http\Request $request) {
+            if (isAjax()) {
+                $error = str_replace(' (and 1 more error)', '', $e->getMessage());
+                return response()->json([
+                    'success' => false,
+                    'message' => $error,
+                    'errors' => $e->validator->errors(),
+                    'error_code' => null,
+                    'data' => []
+                ], 422);
+            }
+        });
 
-return $app;
+        /**
+         * Padroniza o JSON de response em erro de PERMISSÃO
+         *
+         * Para requests que NÃO SÃO INERTIA
+         * */
+        $exceptions->renderable(function (\Illuminate\Validation\UnauthorizedException $e, \Illuminate\Http\Request $request) {
+            if (isAjax()) {
+                $error = str_replace(' (and 1 more error)', '', $e->getMessage());
+                return response()->json([
+                    'success' => false,
+                    'message' => $error,
+                    'errors' => [],
+                    'error_code' => null,
+                    'data' => []
+                ], 403);
+            }
+        });
+    })->create();

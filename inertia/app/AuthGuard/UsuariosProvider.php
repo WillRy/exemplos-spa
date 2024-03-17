@@ -13,6 +13,7 @@ class UsuariosProvider implements UserProvider
 {
 
     protected $referenciaClasseModel;
+    protected $nomeCampoID;
     protected $nomeCampoLogin;
     protected $nomeCampoSenha;
 
@@ -87,5 +88,10 @@ class UsuariosProvider implements UserProvider
         $senhaUsuarioLogado = !empty($user->{$this->nomeCampoSenha}) ? $user->{$this->nomeCampoSenha} : null;
 
         return Hash::check($senhaInformada, $senhaUsuarioLogado);
+    }
+
+    public function rehashPasswordIfRequired(Authenticatable $user, array $credentials, bool $force = false)
+    {
+        return null;
     }
 }

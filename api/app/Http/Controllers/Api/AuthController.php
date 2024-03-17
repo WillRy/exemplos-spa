@@ -133,7 +133,7 @@ class AuthController extends Controller
     public function usuarioLogado()
     {
         try {
-            return $this->successAPI(Auth::user());
+            return (new ResponseJSON())->setData(Auth::user())->render();
         } catch (\Exception $e) {
             return (new ResponseJSON())->setError($e)->render();
         }
