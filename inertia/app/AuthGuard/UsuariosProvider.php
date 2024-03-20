@@ -4,7 +4,6 @@
 namespace App\AuthGuard;
 
 
-use App\Models\Usuario;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Support\Facades\Hash;
@@ -68,10 +67,6 @@ class UsuariosProvider implements UserProvider
         $usuario = (new $this->referenciaClasseModel)->where($credentials)->first();
 
         if (empty($usuario)) return null;
-
-        $senhaEstaValida = Hash::check($senha, $usuario[$this->nomeCampoSenha]);
-
-        if (!$senhaEstaValida) return null;
 
         return $usuario;
     }

@@ -4,7 +4,6 @@
 namespace App\AuthGuard;
 
 
-use App\Models\Usuario;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Support\Facades\Hash;
@@ -69,10 +68,6 @@ class UsuariosProvider implements UserProvider
 
         if (empty($usuario)) return null;
 
-        $senhaEstaValida = Hash::check($senha, $usuario[$this->nomeCampoSenha]);
-
-        if (!$senhaEstaValida) return null;
-
         return $usuario;
     }
 
@@ -89,7 +84,6 @@ class UsuariosProvider implements UserProvider
 
         return Hash::check($senhaInformada, $senhaUsuarioLogado);
     }
-
 
     public function rehashPasswordIfRequired(Authenticatable $user, array $credentials, bool $force = false)
     {
