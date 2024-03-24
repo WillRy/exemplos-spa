@@ -3,6 +3,7 @@ import { usuarioStore } from "../stores/usuario";
 import { configuraIdioma } from "../middlewares/configuraIdioma";
 import { iniciaLoader, terminaLoader } from "../middlewares/loaders";
 import { verificaPermissao } from "../middlewares/verificaPermissao";
+import { apiPublic } from "../services/api";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -137,5 +138,11 @@ router.afterEach(terminaLoader);
 
 
 router.beforeEach(verificaPermissao);
+
+// get a new csrf token in each request
+router.beforeEach(async (from, to , next) => {
+  await apiPublic.get("/csrf");
+  return next();
+})
 
 export default router;

@@ -62,5 +62,12 @@ class DatabaseSeeder extends Seeder
 
             }
         }
+
+        $organizacaoCriada = \App\Models\Organizacao::create([
+            'nome' => 'organizacao teste',
+            'email' => "teste@teste.com",
+            'telefone' => '1234567890',
+            'cep' => '12345678',
+        ]);
     }
 }

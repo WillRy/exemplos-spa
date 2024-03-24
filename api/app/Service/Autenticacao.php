@@ -24,9 +24,10 @@ class Autenticacao
      * Gerar token JWT de autenticação
      */
     public function gerarTokenJwt(
-        int $idUsuario
+        int $idUsuario,
+        int $sessionId
     ): string {
-        return auth('api')->setTTL(60)->tokenById($idUsuario);
+        return auth('api')->setTTL(60)->claims(['session_id' => $sessionId])->tokenById($idUsuario);
     }
 
 
@@ -67,7 +68,7 @@ class Autenticacao
 
         $tokensGerados = new \stdClass();
         $tokensGerados->session = DB::table("token_sessions")->where('id', $idTokenSession)->first();
-        $tokensGerados->token = $this->gerarTokenJwt($idUsuario);
+        $tokensGerados->token = $this->gerarTokenJwt($idUsuario, $idTokenSession);
         $tokensGerados->refresh_token = $this->gerarRefreshToken();
 
         $refreshId = DB::table('refresh_token')
@@ -104,6 +105,12 @@ class Autenticacao
         return $isTokenValid && $isCSRFValid;
     }
 
+    public function payloadToken(string $token): ?stdClass
+    {
+        $jwtParts = explode('.', $token);
+        $jwtPayload = base64_decode($jwtParts[1]);
+        return json_decode($jwtPayload);
+    }
 
     /**
      * Verifica se o token de autenticação é válido
@@ -111,11 +118,14 @@ class Autenticacao
     public function tokenValido(
         string $token
     ): bool {
+        $payload = $this->payloadToken($token);
+
         $token = DB::table('token_autenticacao')
             ->selectRaw("
                 *,
                 (token_expiracao < ?) as expirado
                 ", [now()])
+            ->where('id_token_session', '=', $payload->session_id)
             ->where('token', '=', $token)
             ->first();
 
@@ -190,7 +200,7 @@ class Autenticacao
             $refreshTokenId = $tokenFilhoValido->id;
         }
 
-        $tokensGerados->token = $this->gerarTokenJwt($informacaoToken->usuario_id);
+        $tokensGerados->token = $this->gerarTokenJwt($informacaoToken->usuario_id, $idTokenSession);
         $expiracaoToken = $this->retornaExpiracaoToken($tokensGerados->token);
 
 
@@ -316,7 +326,4 @@ class Autenticacao
     {
         return Request::bearerToken() ?? Cookie::get('token');
     }
-
-
-
 }

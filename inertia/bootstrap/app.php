@@ -10,7 +10,12 @@ use Illuminate\Foundation\Configuration\Middleware;
 
 function isAjax()
 {
-    $isApi = str_contains(\Illuminate\Support\Facades\Request::route()->getPrefix(), 'api');
+    $route = \Illuminate\Support\Facades\Request::route();
+    if(empty($route)) {
+        return false;
+    }
+
+    $isApi = str_contains($route->getPrefix(), 'api');
     $isJSON = \Illuminate\Support\Facades\Request::expectsJson() || \Illuminate\Support\Facades\Request::isJson();
     $isAjax = ($isApi || $isJSON) && !\Illuminate\Support\Facades\Request::header('X-Inertia');
 

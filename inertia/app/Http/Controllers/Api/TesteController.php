@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Mail\EnviaCodigoVerificadorResetSenha;
+use App\Models\Contato;
 use App\Models\Organizacao;
 use App\Models\Token;
 use App\Models\Usuario;
@@ -19,6 +20,9 @@ class TesteController extends Controller
 {
     public function eloquent(Request $request)
     {
+
+
+
         /**
          * Quero pegar SOMENTE as organizações que tem usuarios
          *
@@ -26,7 +30,8 @@ class TesteController extends Controller
          * whereHas: torna obrigatorio a presença do relacionamento
          */
 
-        //  $dados = Organizacao::with("contatos")->whereHas('contatos')->get();
+        //  $dados = Organizacao::all();
+        // $dados = Organizacao::with('contatos')->get();
         $dados = Organizacao::with("contatos")
             ->with("tags")
             ->whereHas("contatos")
@@ -46,6 +51,16 @@ class TesteController extends Controller
         //         });
         //     });
         //  })->whereHas("contatos")->get();
+
+        /**
+         * Problemas de N+1
+         */
+
+        // $contatos = Contato::all();
+        // foreach ($contatos as $contato) {
+        //     echo "Contato: $contato->nome".' - organizacao:'.$contato->organizacao->nome ."<br>";
+        // }
+
 
         return response()->json($dados);
     }
@@ -72,6 +87,7 @@ class TesteController extends Controller
 
 
         // $result = $organizacoes;
+
         $result = [];
         foreach ($organizacoes as $key => $organizacao) {
             $result[$organizacao->id]['id'] = $organizacao->id;
