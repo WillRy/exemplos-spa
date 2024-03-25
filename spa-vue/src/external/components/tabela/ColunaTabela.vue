@@ -1,7 +1,7 @@
 <template>
-    <td :style="{width: width, padding: paddingColuna }" class="td-oculta-texto">
+    <td :style="{width: width, padding: paddingColuna }" :class="{'td-oculta-texto': esconderTexto}">
         <div class="item" :style="{width: width }" v-if="esconderTexto">
-            <div class="item-query" :style="{justifyContent: justify}">
+            <div class="item-box" :style="{justifyContent: justify}">
                 <span class="overflow">
                     <slot></slot>
                 </span>
@@ -10,8 +10,10 @@
                 </button>
             </div>
         </div>
-        <div v-else>
-            <slot></slot>
+        <div v-else class="item" :style="{width: width }">
+            <div class="item-box" :style="{justifyContent: justify}">
+                <slot></slot>
+            </div>
         </div>
     </td>
 </template>
@@ -42,7 +44,7 @@ export default {
         },
         esconderTexto: {
             type: Boolean,
-            default: true
+            default: false
         }
     },
     methods: {
@@ -59,7 +61,7 @@ td {
     vertical-align: middle;
 }
 
-.td-oculta-texto .item {
+.item {
     display: block;
 }
 
@@ -77,13 +79,13 @@ td {
     text-overflow: ellipsis;
 }
 
-.item-query {
+.item-box {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.item-query .btn-no-icon {
+.item-box .btn-no-icon {
     /* width: 18px; */
     flex-shrink: 0;
 }

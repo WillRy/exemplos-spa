@@ -28,13 +28,15 @@
         </div>
 
         <DatePicker
-          is24hr
           v-model="data"
           v-bind="attrs"
           mode="dateTime"
           is-required
           :first-day-of-week="1"
           :popover="{ visibility: visibility }"
+          :is24hr="is24hrConfig"
+          :timezone="timezoneConfig"
+          :locale="localeConfig"
         >
           <template v-slot="{ inputValue, inputEvents }">
             <input
@@ -82,6 +84,7 @@ import InfoInputIcon from "../icons/InfoInputIcon.vue";
 import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
 import InfoErrorIcon from "../icons/InfoErrorIcon.vue";
 import type { PropType } from 'vue'
+import { useConfigStore } from "../../store/config.ts";
 
 export type PopoverVisibility = 'click' | 'hover' | 'hover-focus' | 'focus';
 
@@ -95,6 +98,12 @@ export default {
     InfoErrorIcon,
   },
   emits: ["update:modelValue", "update:formatado", "change", "changeFormatado"],
+  setup() {
+    const config = useConfigStore();
+    return {
+      config: config
+    }
+  },
   props: {
     size: {
       type: String,
@@ -135,6 +144,12 @@ export default {
     timezone: {
       default: "America/Sao_Paulo",
     },
+    is24hr: {
+      default: true,
+    },
+    locale: {
+      type: String
+    },
     visibility: {
       default: "click",
       type: String as PropType<PopoverVisibility>,
@@ -148,6 +163,15 @@ export default {
       return {
         ...this.$attrs,
       };
+    },
+    timezoneConfig() {
+      return this.timezone ?? this.config.config.current_timezone
+    },
+    is24hrConfig() {
+      return this.is24hr ?? this.config.config.is24hr
+    },
+    localeConfig() {
+      return this.locale ?? this.config.config.locale
     },
     data: {
       set(valor) {

@@ -602,7 +602,10 @@ Ellipsis das options
 /**
 * Personaliza o CSS da lib VueMultiselect
 **/
-
+:deep(.multiselect) {
+    width: 0;
+    min-width: 100%;
+}
 
 .md :deep(.multiselect) {
     min-height: var(--md-min-height-input);

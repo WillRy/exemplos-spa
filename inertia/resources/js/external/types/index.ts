@@ -35,3 +35,10 @@ export interface alertParams {
 export interface RootState {
   alerts: alertParams[];
 }
+
+export interface ConfigState {
+  current_timezone: string
+  default_timezone: string
+  is24hr: boolean
+  locale: string
+}

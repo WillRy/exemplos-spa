@@ -259,12 +259,15 @@ textarea::placeholder {
     opacity: 0.6;
 }
 
-.form-group-btn-flutuante :deep(button svg path) {
+.form-group-btn-flutuante :deep(button svg path), .form-group-btn-flutuante :deep(button i) {
     fill: var(--primary-color-principal);
+    color: var(--primary-color-principal);
 }
 
-.form-group-container:focus-within .form-group-btn-flutuante :deep(button path) {
-    fill: var(--focus-color)
+.form-group-container:focus-within .form-group-btn-flutuante :deep(button path),
+.form-group-container:focus-within .form-group-btn-flutuante :deep(button i) {
+    fill: var(--focus-color);
+    color: var(--focus-color);
 }
 
 .icone-footer {

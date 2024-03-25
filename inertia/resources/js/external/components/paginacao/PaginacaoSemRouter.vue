@@ -177,7 +177,7 @@ export default {
   text-align: center;
   display: flex;
   align-items: center;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   list-style: none;
 }
 
