@@ -1,28 +1,26 @@
 {
-    "compilerOptions": {
-        "target": "esnext",
-        "module": "esnext",
-        "strict": true,
-        "importHelpers": true,
-        "moduleResolution": "node",
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "allowJs": true,
-        "resolveJsonModule": true,
-        "sourceMap": true,
-        "baseUrl": ".",
-        "skipLibCheck": true,
-        "outDir": "./public/build/assets",
-        "declaration": true,
-        "noImplicitAny": false,
-        "composite": true
-    },
-    "include": [
-        "vite.config.ts",
-        "env.d.ts",
-        "resources/**/*.ts",
-        "resources/**/*.js",
-        "resources/**/*.d.ts",
-        "resources/**/*.vue"
-    ]
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": [
+      "vite.config.*",
+      "resources/js/**/*.ts",
+      "resources/js/**/*.js",
+      "resources/js/**/*.d.ts",
+      "resources/js/**/*.vue"
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "verbatimModuleSyntax": false,
+    "allowImportingTsExtensions": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "baseUrl": ".",
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "paths": {
+      "@/*": ["./resources/js/*"]
+    }
+  }
 }
