@@ -74,7 +74,7 @@ const $emit = defineEmits(["onClose", "onReload"]);
 
 const { t: $t } = useI18n();
 
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const { backendToastError } = useBackendToast();
 
 const loading = ref(false);
 

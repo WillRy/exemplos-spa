@@ -1,3 +1,13 @@
+import type { ToastProps } from "vue-toast-notification";
+
+
+type toastTypes = 'success' | 'error' | 'warning'
+
+export interface openToast {
+  type: toastTypes
+  message: string
+}
+
 export interface erroUnicoBackend {
   [fieldName: string]: string[];
 }
@@ -13,7 +23,7 @@ export interface errosTratados {
 export interface jsonBackend {
   success: boolean;
   message: string | null;
-  errors: Array<any>;
+  errors: erroUnicoBackend;
   error_code?: any;
   data: Array<any> | object;
 }
@@ -30,6 +40,11 @@ export interface alertParams {
         identificador: string;
       }[]
     | null;
+}
+
+export interface ToastParams extends ToastProps {
+  message?:string|null;
+  defaultMessage?:string|null;
 }
 
 export interface RootState {

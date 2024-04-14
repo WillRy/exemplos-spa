@@ -149,12 +149,6 @@ import Box from "../../external/components/estrutura/Box";
 import axiosWeb from "../../services/axiosWeb";
 import { useHead } from "@unhead/vue";
 import ModalCriarTag from "../../components/tags/ModalCriarTag";
-import {
-  modalCriarTagStore,
-  modalDetalhesTagStore,
-  modalEditarTagStore,
-  modalExcluirTagStore,
-} from "../../stores/tag";
 import ModalEditarTag from "../../components/tags/ModalEditarTag";
 import ModalExcluirTag from "../../components/tags/ModalExcluirTag";
 

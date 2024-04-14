@@ -93,7 +93,6 @@ import Sidebar from "../external/components/sidebar/Sidebar.vue";
 import SidebarLink from "../external/components/sidebar/SidebarLink.vue";
 import HomeIcon from "../external/components/icons/HomeIcon.vue";
 import HomeContainer from "../external/components/estrutura/HomeContainer.vue";
-import { usuarioStore } from "../stores/usuario";
 import OrganizacaoIcon from "../components/icons/OrganizacaoIcon.vue";
 import ContatoIcon from "../components/icons/ContatoIcon.vue";
 import BaseDropdownPrimary from "../external/components/dropdown/BaseDropdownPrimary";
@@ -105,7 +104,6 @@ import {
   modalCriarOrganizacaoStore,
   modalEditarOrganizacaoStore,
   modalExcluirOrganizacaoStore,
-  organizacaoStore,
 } from "../stores/organizacao";
 import { definirIdioma } from "../lang";
 
@@ -126,12 +124,10 @@ export default {
   },
   setup() {
 
-    const organizacaoState = organizacaoStore();
     const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
     const modalEditarOrganizacaoState = modalEditarOrganizacaoStore();
     const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore();
     return {
-      organizacaoState,
       modalCriarOrganizacaoState,
       modalEditarOrganizacaoState,
       modalExcluirOrganizacaoState,

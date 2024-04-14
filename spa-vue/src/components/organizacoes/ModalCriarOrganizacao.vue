@@ -183,7 +183,7 @@ const $emit = defineEmits(["onClose","onReload"]);
 
 const { t: $t } = useI18n();
 
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const { backendToastError } = useBackendToast();
 
 const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
 
@@ -243,7 +243,7 @@ const tratarCep = function () {
 
         if (data.erro) {
           pesquisouCep.value = true;
-          toastObj.error($t("textos.erro_encontrar_cep"));
+          backendToastError($t("textos.erro_encontrar_cep"));
         }
 
         endereco.value = data.logradouro;

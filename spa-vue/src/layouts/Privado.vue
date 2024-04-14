@@ -1,11 +1,8 @@
 <template>
   <div class="layout" v-if="!loading && usuarioState.usuario">
-    <Sidebar
-      :open="sidebarAberta"
-      @change="mudarSidebar"
-    >
+    <Sidebar :open="sidebarAberta" @change="mudarSidebar">
       <template #logo>
-        <img src="/logo.png" alt="">
+        <img src="/logo.png" alt="" />
       </template>
       <SidebarLink :to="{ name: 'dashboard' }">
         <template #texto> Dashboard </template>
@@ -108,7 +105,6 @@ import {
   modalCriarOrganizacaoStore,
   modalEditarOrganizacaoStore,
   modalExcluirOrganizacaoStore,
-  organizacaoStore,
 } from "../stores/organizacao";
 import { definirIdioma } from "../lang";
 import { emitter } from "../plugins";
@@ -130,13 +126,11 @@ export default {
   },
   setup() {
     const usuarioState = usuarioStore();
-    const organizacaoState = organizacaoStore();
     const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
     const modalEditarOrganizacaoState = modalEditarOrganizacaoStore();
     const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore();
     return {
       usuarioState,
-      organizacaoState,
       modalCriarOrganizacaoState,
       modalEditarOrganizacaoState,
       modalExcluirOrganizacaoState,
@@ -175,11 +169,8 @@ export default {
       this.sidebarAberta = !this.sidebarAberta;
     },
     logout() {
-      api.post("/logout").finally(() => {
-        window.localStorage.removeItem("token");
-        this.$router.push({
-          path: "/",
-        });
+      this.$router.push({
+        name: "logout",
       });
     },
     buscarQuantidadeOrganizacoes() {

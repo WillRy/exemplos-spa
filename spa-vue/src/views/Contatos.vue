@@ -6,8 +6,8 @@
             </BaseButtonPrimary>
         </HeaderPage>
         <div class="container-fluid">
-            <Box>
-                <form @submit.prevent="pesquisar" class="mb-3">
+            <Box padding="0">
+                <form @submit.prevent="pesquisar" class="mb-3 p-2">
                     <div class="row align-items-end gy-1">
                         <div class="col-md-4">
                             <BaseInput
@@ -130,7 +130,6 @@ import HeaderPage from "../components/pages/HeaderPage";
 import BaseButtonPrimary from "../external/components/buttons/BaseButtonPrimary";
 import BaseInput from "../external/components/form/BaseInput";
 import BaseSelectAjax from "../external/components/form/BaseSelectAjax";
-import BaseCheckbox from "../external/components/form/BaseCheckbox";
 import Tabela from "../external/components/tabela/Tabela";
 import ColunaTabela from "../external/components/tabela/ColunaTabela";
 import DropdownAcoes from "../external/components/dropdown/BaseDropdownAction";
@@ -142,7 +141,7 @@ import ModalEditarContato from "../components/contatos/ModalEditarContato";
 import ModalExcluirContato from "../components/contatos/ModalExcluirContato";
 import ModalDetalhesContato from "../components/contatos/ModalDetalhesContato";
 
-import { reactive, ref, watch } from 'vue';
+import { reactive, ref } from 'vue';
 import { useBackendToast } from "../external/hooks/useBackendToast";
 import { useI18n } from "vue-i18n";
 

@@ -57,6 +57,8 @@ interface Coluna {
   info?: string;
 }
 
+type TabelaLayout = "auto" | "fixed";
+
 type Colunas = Array<Coluna>;
 
 export default {
@@ -108,11 +110,8 @@ export default {
       default: false,
     },
     tableLayout: {
-      type: String,
+      type: String as PropType<TabelaLayout>,
       default: "auto",
-      validator(value: string) {
-        return ["auto", "fixed"].includes(value);
-      },
     },
   },
   data() {

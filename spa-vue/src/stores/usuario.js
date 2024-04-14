@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import api from "../services/api";
-import { useToast } from "vue-toast-notification";
 
 export const usuarioStore = defineStore("usuarioStore", {
   state: () => {
@@ -28,15 +27,17 @@ export const usuarioStore = defineStore("usuarioStore", {
     },
     async logout() {
       try {
-        api.post("/logout");
-        this.usuario = null;
-
-        window.localStorage.removeItem("token");
-        window.localStorage.removeItem("refresh_token");
+        await api.post("/logout");
 
         return true;
       } catch (error) {
         return true;
+      } finally {
+        //se fosse usar localstorage ao invés de cookie
+        // window.localStorage.removeItem("token");
+        // window.localStorage.removeItem("refresh_token");
+
+        this.usuario = null;
       }
     },
   },

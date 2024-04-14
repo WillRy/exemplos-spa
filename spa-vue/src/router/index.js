@@ -11,7 +11,6 @@ const router = createRouter({
     {
       path: "/lang/:lang",
       name: "lang",
-      //se eu estiver logado, envia para a dashboard
       async beforeEnter(from, to, next) {
         const lang = to.params.lang ?? from.params.lang;
 
@@ -27,6 +26,16 @@ const router = createRouter({
       },
     },
     {
+      path: "/logout",
+      name: "logout",
+      component: () => import('../views/auth/Login'),
+      async beforeEnter(from, to, next) {
+        const usuarioState = usuarioStore();
+        await usuarioState.logout();
+        return next({ name: "login", query: { logout: 1 }});
+      },
+    },
+    {
       path: "/",
       component: () => import("../layouts/Publico"),
       name: "publico",
@@ -36,7 +45,6 @@ const router = createRouter({
           name: "login",
           component: () => import('../views/auth/Login'),
           async beforeEnter(from, to, next) {
-
             //indica que foi logout forçado, pois não conseguiu recuperar uma sessão ativa
             if(from.query.logout || to.query.logout) {
               return next();
@@ -63,16 +71,7 @@ const router = createRouter({
         },
       ],
     },
-    {
-      path: "/logout",
-      name: "logout",
-      component: () => import('../views/auth/Login'),
-      async beforeEnter(from, to, next) {
-        const usuarioState = usuarioStore();
-        await usuarioState.logout();
-        return next({ name: "login"});
-      },
-    },
+
     {
       path: "/painel",
       component: () => import("../layouts/Privado"),

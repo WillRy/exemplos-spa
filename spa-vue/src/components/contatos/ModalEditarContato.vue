@@ -162,7 +162,7 @@ const $emit = defineEmits(["onClose","onReload"]);
 
 const { t: $t } = useI18n();
 
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const { backendToastError } = useBackendToast();
 
 
 const pesquisouCep = ref(false);
@@ -232,7 +232,7 @@ const tratarCep = function () {
 
         if (data.erro) {
           pesquisouCep.value = true;
-          toastObj.error("Não foi possível encontrar o CEP");
+          backendToastError("Não foi possível encontrar o CEP");
         }
 
         endereco.value = data.logradouro;

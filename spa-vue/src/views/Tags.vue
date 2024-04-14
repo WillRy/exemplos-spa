@@ -6,8 +6,8 @@
       >
     </HeaderPage>
     <div class="container-fluid">
-      <Box>
-        <form @submit.prevent="pesquisar" class="mb-3">
+      <Box padding="0">
+        <form @submit.prevent="pesquisar" class="mb-3 p-2">
           <div class="row align-items-end gy-1">
             <div class="col-md-4">
               <BaseInput
@@ -136,34 +136,24 @@
 <script setup>
 import HeaderPage from "../components/pages/HeaderPage";
 import BaseButtonPrimary from "../external/components/buttons/BaseButtonPrimary";
-import PageContent from "../components/pages/PageContent";
-import ContentTable from "../components/pages/ContentTable";
 import BaseInput from "../external/components/form/BaseInput";
-import BaseSelectAjax from "../external/components/form/BaseSelectAjax";
 import Tabela from "../external/components/tabela/Tabela";
 import ColunaTabela from "../external/components/tabela/ColunaTabela";
 import DropdownAcoes from "../external/components/dropdown/BaseDropdownAction";
 import PaginacaoSemRouter from "../external/components/paginacao/PaginacaoSemRouter";
 import Box from "../external/components/estrutura/Box";
 import api from "../services/api";
-import { useHead } from "@unhead/vue";
 import ModalCriarTag from "../components/tags/ModalCriarTag";
-import {
-  modalCriarTagStore,
-  modalDetalhesTagStore,
-  modalEditarTagStore,
-  modalExcluirTagStore,
-} from "../stores/tag";
 import ModalEditarTag from "../components/tags/ModalEditarTag";
 import ModalExcluirTag from "../components/tags/ModalExcluirTag";
 
-import { reactive, ref, watch } from "vue";
+import { reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useBackendToast } from "../external/hooks/useBackendToast";
 import HeadSort from "../external/components/tabela/HeadSort.vue";
 
 const { t: $t } = useI18n();
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const { backendToastError } = useBackendToast();
 
 
 const form = reactive({

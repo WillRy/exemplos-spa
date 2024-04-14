@@ -78,7 +78,7 @@ export default defineComponent({
     },
     componentLink: {
       type: String,
-      default: "Link",
+      default: "router-link",
       validator(value: string) {
         return ["a","Link","router-link"].includes(value);
       },

@@ -24,19 +24,7 @@ function getCookie(name) {
 }
 
 const interceptorCSRF = async (config) => {
-  const requestMethod = config.method.toUpperCase();
-
-  if (requestMethod !== "GET") {
-    //axios get csrf
-
-    if (getCookie("CSRF-TOKEN")) {
-      config.headers["CSRF-TOKEN"] = getCookie("CSRF-TOKEN");
-    } else {
-      const response = await apiPublic.get("/csrf");
-      config.headers["CSRF-TOKEN"] = response.data.csrf;
-    }
-  }
-
+  config.headers["CSRF-TOKEN"] = getCookie("CSRF-TOKEN");
   return config;
 }
 

@@ -180,12 +180,6 @@ import DropdownAcoes from "../../external/components/dropdown/BaseDropdownAction
 import PaginacaoSemRouter from "../../external/components/paginacao/PaginacaoSemRouter";
 import Box from "../../external/components/estrutura/Box";
 import axiosWeb from "../../services/axiosWeb";
-import {
-  modalCriarOrganizacaoStore,
-  modalEditarOrganizacaoStore,
-  modalDetalhesOrganizacaoStore,
-  modalExcluirOrganizacaoStore,
-} from "../../stores/organizacao";
 import ModalCriarOrganizacao from "../../components/organizacoes/ModalCriarOrganizacao";
 import ModalEditarOrganizacao from "../../components/organizacoes/ModalEditarOrganizacao";
 import ModalExcluirOrganizacao from "../../components/organizacoes/ModalExcluirOrganizacao";

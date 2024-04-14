@@ -10,7 +10,7 @@
                 </button>
             </div>
         </div>
-        <div v-else class="item" :style="{width: width }">
+        <div v-else class="item">
             <div class="item-box" :style="{justifyContent: justify}">
                 <slot></slot>
             </div>

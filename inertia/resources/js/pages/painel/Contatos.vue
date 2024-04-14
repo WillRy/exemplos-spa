@@ -6,8 +6,8 @@
             </BaseButtonPrimary>
         </HeaderPage>
         <div class="container-fluid">
-            <Box>
-                <form @submit.prevent="pesquisar" class="mb-3">
+            <Box padding="0">
+                <form @submit.prevent="pesquisar" class="mb-3 p-2">
                     <div class="row align-items-end gy-1">
                         <div class="col-md-4">
                             <BaseInput
@@ -140,13 +140,6 @@ import DropdownAcoes from "../../external/components/dropdown/BaseDropdownAction
 import PaginacaoSemRouter from "../../external/components/paginacao/PaginacaoSemRouter";
 import Box from "../../external/components/estrutura/Box";
 import axiosWeb from "../../services/axiosWeb";
-import {
-    modalCriarContatoStore,
-    modalEditarContatoStore,
-    modalDetalhesContatoStore,
-    modalExcluirContatoStore,
-} from "../../stores/contato";
-import ModalCriarContato from "../../components/contatos/ModalCriarContato";
 import ModalEditarContato from "../../components/contatos/ModalEditarContato";
 import ModalExcluirContato from "../../components/contatos/ModalExcluirContato";
 import ModalDetalhesContato from "../../components/contatos/ModalDetalhesContato";
