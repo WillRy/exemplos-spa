@@ -6,12 +6,11 @@
 
 <script>
 export default {
-  name: "HomeContainer"
+  name: 'HomeContainer'
 }
 </script>
 
 <style>
-
 .home {
   min-height: 100vh;
   top: 0;
@@ -26,7 +25,7 @@ export default {
   padding-left: 250px;
 }
 
-.sidebar ~ .header .paddingSidebar{
+.sidebar ~ .header .paddingSidebar {
   padding-left: 70px;
 }
 

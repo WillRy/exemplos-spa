@@ -1,7 +1,5 @@
 <template>
-  <th
-    style="{'max-width':width ;}"
-  >
+  <th style="{'max-width':width ;}">
     <button @click="sortBy(nome)" v-if="!disabled" type="button">
       <slot></slot>
 
@@ -15,17 +13,11 @@
       </template>
 
       <SortAscIcon
-        v-if="
-          (ordenando === nome || ordenando === order) &&
-          ordenando &&
-          orderMinuscula === 'asc'
-        "
+        v-if="(ordenando === nome || ordenando === order) && ordenando && orderMinuscula === 'asc'"
       />
       <SortDescIcon
         v-else-if="
-          (ordenando === nome || ordenando === order) &&
-          ordenando &&
-          orderMinuscula === 'desc'
+          (ordenando === nome || ordenando === order) && ordenando && orderMinuscula === 'desc'
         "
       />
 
@@ -41,44 +33,44 @@
 </template>
 
 <script lang="ts">
-import { VTooltip } from "floating-vue";
+import { VTooltip } from 'floating-vue'
 
-import SortAscIcon from "../icons/SortAscIcon.vue";
-import SortDescIcon from "../icons/SortDescIcon.vue";
-import SortIcon from "../icons/SortIcon.vue";
+import SortAscIcon from '../icons/SortAscIcon.vue'
+import SortDescIcon from '../icons/SortDescIcon.vue'
+import SortIcon from '../icons/SortIcon.vue'
 
 export default {
-  name: "HeadSort",
+  name: 'HeadSort',
   components: { SortIcon, SortDescIcon, SortAscIcon },
-  props: ["nome", "order", "texto", "ordenando", "width", "info", "disabled"],
+  props: ['nome', 'order', 'texto', 'ordenando', 'width', 'info', 'disabled'],
   computed: {
     orderMinuscula() {
-      if (!this.order) return "sort";
-      return this.order.toLowerCase();
-    },
+      if (!this.order) return 'sort'
+      return this.order.toLowerCase()
+    }
   },
   directives: {
-    tooltip: VTooltip,
+    tooltip: VTooltip
   },
   methods: {
     sortBy(campo) {
-      let sortName = campo;
-      let sortOrder = this.order;
+      let sortName = campo
+      let sortOrder = this.order
 
-      sortName = campo;
+      sortName = campo
       if (sortName !== campo) {
-        sortOrder = "asc";
+        sortOrder = 'asc'
       } else {
-        sortOrder = sortOrder === "asc" ? "desc" : "asc";
+        sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'
       }
 
-      this.$emit("onSort", {
+      this.$emit('onSort', {
         sortName: sortName,
-        sortOrder: sortOrder,
-      });
-    },
-  },
-};
+        sortOrder: sortOrder
+      })
+    }
+  }
+}
 </script>
 
 <style scoped>

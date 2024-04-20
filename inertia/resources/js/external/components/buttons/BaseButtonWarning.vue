@@ -1,40 +1,34 @@
 <template>
-  <BaseButton
-    class="btn-warning"
-    :size="size"
-    :min="min"
-    :loading="loading"
-    :is="is"
-  >
+  <BaseButton class="btn-warning" :size="size" :min="min" :loading="loading" :is="is">
     <slot></slot>
   </BaseButton>
 </template>
 
 <script lang="ts">
-import BaseButton from "./BaseButton.vue";
+import BaseButton from './BaseButton.vue'
 
 export default {
-  name: "BaseButtonWarning",
+  name: 'BaseButtonWarning',
   components: { BaseButton },
   props: {
     is: {
       type: String,
-      default: "button",
+      default: 'button'
     },
     size: {
       type: String,
-      default: "md",
+      default: 'md'
     },
     min: {
       type: Boolean,
-      default: false,
+      default: false
     },
     loading: {
       type: Boolean,
-      default: false,
-    },
-  },
-};
+      default: false
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -49,7 +43,9 @@ export default {
 }
 
 .btn-warning:focus:not(:active) {
-  box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--warning-color-300);
+  box-shadow:
+    0 0 0 1px #fff,
+    0 0 0 2px var(--warning-color-300);
   background: var(--warning-color-300);
 }
 

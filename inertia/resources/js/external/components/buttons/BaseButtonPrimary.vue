@@ -5,11 +5,11 @@
 </template>
 
 <script lang="ts">
-import BaseButton from "./BaseButton.vue";
+import BaseButton from './BaseButton.vue'
 
 export default {
-  name: "BaseButtonPrimary",
-  components: {BaseButton},
+  name: 'BaseButtonPrimary',
+  components: { BaseButton },
   props: {
     is: {
       type: String,
@@ -44,7 +44,9 @@ export default {
 }
 
 .btn-primary:focus:not(:active) {
-  box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--primary-color-principal-focus);
+  box-shadow:
+    0 0 0 1px #fff,
+    0 0 0 2px var(--primary-color-principal-focus);
   background: var(--primary-color-principal-focus);
   color: #fff;
 }
@@ -60,7 +62,6 @@ export default {
   cursor: not-allowed;
   border: none;
 }
-
 
 .btn-primary:disabled :deep(path) {
   fill: var(--gray-color-300);
@@ -81,5 +82,4 @@ export default {
 .btn-primary:active :deep(path) {
   fill: #fff;
 }
-
 </style>

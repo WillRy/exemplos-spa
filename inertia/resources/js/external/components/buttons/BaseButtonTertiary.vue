@@ -5,11 +5,11 @@
 </template>
 
 <script lang="ts">
-import BaseButton from "./BaseButton.vue";
+import BaseButton from './BaseButton.vue'
 
 export default {
-  name: "BaseButtonTertiary",
-  components: {BaseButton},
+  name: 'BaseButtonTertiary',
+  components: { BaseButton },
   props: {
     is: {
       type: String,
@@ -82,5 +82,4 @@ export default {
 .btn-tertiary:active :deep(path) {
   fill: #fff;
 }
-
 </style>

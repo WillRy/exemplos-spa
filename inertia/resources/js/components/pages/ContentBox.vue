@@ -1,23 +1,19 @@
 <template>
-    <div class="content">
-        <slot>
-
-        </slot>
-    </div>
+  <div class="content">
+    <slot> </slot>
+  </div>
 </template>
 
 <script>
 export default {
-    name: "ContentBox"
+  name: 'ContentBox'
 }
 </script>
 
 <style scoped>
 .content-box {
-    padding: 20px;
-    background: #fff;
-    border-radius: 12px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
 }
-
-
 </style>

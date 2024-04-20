@@ -77,7 +77,7 @@ import InfoSuccessIcon from '../icons/InfoSuccessIcon.vue'
 import InfoErrorIcon from '../icons/InfoErrorIcon.vue'
 
 import type { PropType } from 'vue'
-import { useConfigStore } from "../../store/config.ts";
+import { useConfigStore } from '../../store/config.ts'
 
 export type PopoverVisibility = 'click' | 'hover' | 'hover-focus' | 'focus'
 
@@ -92,7 +92,7 @@ export default {
   },
   emits: ['update:modelValue', 'update:formatado', 'change', 'changeFormatado'],
   setup() {
-    const config = useConfigStore();
+    const config = useConfigStore()
     return {
       config: config
     }

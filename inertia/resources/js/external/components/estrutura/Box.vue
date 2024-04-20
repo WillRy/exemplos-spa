@@ -4,10 +4,7 @@
       {{ titulo }}
     </OverlineText>
 
-    <div
-      :class="{ 'acesso-bloqueado': bloqueado }"
-      class="acesso-bloqueado-container"
-    >
+    <div :class="{ 'acesso-bloqueado': bloqueado }" class="acesso-bloqueado-container">
       <div class="acesso-bloqueado-box">
         <svg
           fill="#000000"
@@ -43,44 +40,44 @@
 </template>
 
 <script lang="ts">
-import OverlineText from "../text/OverlineText.vue";
-import { PropType } from "vue";
+import OverlineText from '../text/OverlineText.vue'
+import { PropType } from 'vue'
 
-type MarginBottomType = "0" | "1" | "2" | "3" | "4" | "5" | "6";
+type MarginBottomType = '0' | '1' | '2' | '3' | '4' | '5' | '6'
 
 export default {
-  name: "Box",
+  name: 'Box',
   props: {
     bloqueado: {
       type: Boolean,
       required: false,
-      default: false,
+      default: false
     },
     titulo: {
       type: String,
-      required: false,
+      required: false
     },
     mensagemPermissao: {
       type: String,
       default:
-        "Entre em contato com administrador solicite a ativação das Permissões para este recurso",
+        'Entre em contato com administrador solicite a ativação das Permissões para este recurso'
     },
     padding: {
       type: String,
-      default: "2",
+      default: '2',
       validator(value: string) {
-        return ["0", "1", "2", "3", "4", "5", "6"].includes(value);
-      },
+        return ['0', '1', '2', '3', '4', '5', '6'].includes(value)
+      }
     },
     marginBottom: {
       type: String as PropType<MarginBottomType>,
-      default: "3",
-    },
+      default: '3'
+    }
   },
   components: {
-    OverlineText,
-  },
-};
+    OverlineText
+  }
+}
 </script>
 
 <style scoped>
@@ -116,7 +113,7 @@ export default {
   bottom: 0;
   right: 0;
   left: 0;
-  content: " ";
+  content: ' ';
   z-index: 99;
   background-color: rgba(51, 47, 47, 0.42);
   backdrop-filter: blur(1px);

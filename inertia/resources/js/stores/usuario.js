@@ -1,47 +1,40 @@
-import { defineStore } from "pinia";
-import api from "../services/api";
+import { defineStore } from 'pinia'
+import api from '../services/api'
 
-export const usuarioStore = defineStore("usuarioStore", {
+export const usuarioStore = defineStore('usuarioStore', {
   state: () => {
     return {
       usuario: null,
-      permissoes: [],
-    };
+      permissoes: []
+    }
   },
   getters: {
     temPermissao: (state) => {
-      return (permissao) => state.permissoes.includes(permissao);
-    },
+      return (permissao) => state.permissoes.includes(permissao)
+    }
   },
   actions: {
     async carregarUsuarioLogado() {
       try {
+        const response = await api.get('/usuario')
+        this.usuario = response.data.data
 
-        const response = await api.get("/usuario");
-        this.usuario = response.data.data;
-
-
-        return true;
-
-      } catch(error) {
-        await this.logout();
-        this.usuario = null;
-        return false;
+        return true
+      } catch (error) {
+        await this.logout()
+        this.usuario = null
+        return false
       }
-
-
     },
     async logout() {
       try {
+        api.post('/logout')
+        this.usuario = null
 
-        api.post("/logout");
-        this.usuario = null;
-
-        return true;
-
-      } catch(error) {
-        return true;
+        return true
+      } catch (error) {
+        return true
       }
-    },
-  },
-});
+    }
+  }
+})

@@ -1,11 +1,7 @@
 <template>
-  <BaseModal
-    :aberta="aberta"
-    @onClose="fecharModal"
-    @onOpen="carregarFormulario"
-  >
+  <BaseModal :aberta="aberta" @onClose="fecharModal" @onOpen="carregarFormulario">
     <template #title>
-      <h3>{{ $t("textos.criacao_organizacao") }}</h3>
+      <h3>{{ $t('textos.criacao_organizacao') }}</h3>
     </template>
     <template #body>
       <form @submit.prevent="submit">
@@ -120,10 +116,10 @@
                   class="custom-tag"
                   :style="{
                     background: option['cor_fundo'],
-                    color: option['cor_texto'],
+                    color: option['cor_texto']
                   }"
                 >
-                  {{ option["nome"] }}
+                  {{ option['nome'] }}
                 </div>
               </template>
               <template v-slot:tag="{ option }">
@@ -131,10 +127,10 @@
                   class="custom-tag"
                   :style="{
                     background: option['cor_fundo'],
-                    color: option['cor_texto'],
+                    color: option['cor_texto']
                   }"
                 >
-                  {{ option["nome"] }}
+                  {{ option['nome'] }}
                 </div>
               </template>
             </BaseSelectAjax>
@@ -144,161 +140,153 @@
     </template>
     <template #footerDireito>
       <BaseButtonTertiary @click.prevent="fecharModal">
-        {{ $t("palavras.cancelar") }}
+        {{ $t('palavras.cancelar') }}
       </BaseButtonTertiary>
       <BaseButtonPrimary @click.prevent="submit" :loading="loading">
-        {{ $t("palavras.salvar") }}
+        {{ $t('palavras.salvar') }}
       </BaseButtonPrimary>
     </template>
   </BaseModal>
 </template>
 
 <script setup>
-import axiosWeb from "../../services/axiosWeb";
-import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
-import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
-import BaseModal from "../../external/components/modal/BaseModal";
-import BaseSelectAjax from "../../external/components/form/BaseSelectAjax";
-import BaseInput from "../../external/components/form/BaseInput";
-import {
-  modalCriarOrganizacaoStore
-} from "../../stores/organizacao";
-import axios from "axios";
+import axiosWeb from '../../services/axiosWeb'
+import BaseButtonPrimary from '../../external/components/buttons/BaseButtonPrimary'
+import BaseButtonTertiary from '../../external/components/buttons/BaseButtonTertiary'
+import BaseModal from '../../external/components/modal/BaseModal'
+import BaseSelectAjax from '../../external/components/form/BaseSelectAjax'
+import BaseInput from '../../external/components/form/BaseInput'
+import { modalCriarOrganizacaoStore } from '../../stores/organizacao'
+import axios from 'axios'
 
-import { reactive, ref } from "vue";
-import { useI18n } from "vue-i18n";
-import { useBackendToast } from "../../external/hooks/useBackendToast";
-import * as yup from "yup";
-import { useForm } from "vee-validate";
-
+import { reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useBackendToast } from '../../external/hooks/useBackendToast'
+import * as yup from 'yup'
+import { useForm } from 'vee-validate'
 
 defineProps({
   aberta: {
     type: Boolean,
-    default: false,
+    default: false
   }
 })
 
-const $emit = defineEmits(["onClose","onReload"]);
+const $emit = defineEmits(['onClose', 'onReload'])
 
-const { t: $t } = useI18n();
+const { t: $t } = useI18n()
 
-const { backendToastError, toastObj } = useBackendToast();
+const { backendToastError, toastObj } = useBackendToast()
 
-const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
+const modalCriarOrganizacaoState = modalCriarOrganizacaoStore()
 
-const pesquisouCep = ref(false);
-const loading = ref(false);
+const pesquisouCep = ref(false)
+const loading = ref(false)
 const resultadoPesquisaTag = reactive({
-  lista: [],
-});
+  lista: []
+})
 
 const { errors, validate, defineField, resetForm, values, setErrors } = useForm({
   validationSchema: yup.object({
-    nome: yup
-      .string()
-      .required($t("validacao.required", { field: $t("palavras.nome") })),
+    nome: yup.string().required($t('validacao.required', { field: $t('palavras.nome') })),
     email: yup
       .string()
-      .email($t("validacao.required", { field: $t("palavras.email") }))
-      .required($t("validacao.required", { field: $t("palavras.email") })),
+      .email($t('validacao.required', { field: $t('palavras.email') }))
+      .required($t('validacao.required', { field: $t('palavras.email') }))
   }),
   initialValues: {
-    nome: "",
-    email: "",
-    telefone: "",
-    cep: "",
-    endereco: "",
-    numero: "",
-    complemento: "",
-    cidade: "",
-    estado: "",
-    teste: "",
-    tags: [],
-  },
-});
-const [nome] = defineField("nome");
-const [email] = defineField("email");
-const [telefone] = defineField("telefone");
-const [cep] = defineField("cep");
-const [endereco] = defineField("endereco");
-const [numero] = defineField("numero");
-const [complemento] = defineField("complemento");
-const [cidade] = defineField("cidade");
-const [estado] = defineField("estado");
-const [bairro] = defineField("bairro");
-const [tags] = defineField("tags");
+    nome: '',
+    email: '',
+    telefone: '',
+    cep: '',
+    endereco: '',
+    numero: '',
+    complemento: '',
+    cidade: '',
+    estado: '',
+    teste: '',
+    tags: []
+  }
+})
+const [nome] = defineField('nome')
+const [email] = defineField('email')
+const [telefone] = defineField('telefone')
+const [cep] = defineField('cep')
+const [endereco] = defineField('endereco')
+const [numero] = defineField('numero')
+const [complemento] = defineField('complemento')
+const [cidade] = defineField('cidade')
+const [estado] = defineField('estado')
+const [bairro] = defineField('bairro')
+const [tags] = defineField('tags')
 
 const carregarFormulario = function () {
-  resetForm();
-};
+  resetForm()
+}
 
 const tratarCep = function () {
-  pesquisouCep.value = false;
+  pesquisouCep.value = false
   if (cep.value.length === 8) {
     axios
       .get(`https://viacep.com.br/ws/${cep.value}/json/`)
       .then((r) => {
-        const { data } = r;
+        const { data } = r
 
         if (data.erro) {
-          pesquisouCep.value = true;
-          toastObj.error($t("textos.erro_encontrar_cep"));
+          pesquisouCep.value = true
+          toastObj.error($t('textos.erro_encontrar_cep'))
         }
 
-        endereco.value = data.logradouro;
-        complemento.value = data.complemento;
-        bairro.value = data.bairro;
-        cidade.value = data.localidade;
-        estado.value = data.uf;
+        endereco.value = data.logradouro
+        complemento.value = data.complemento
+        bairro.value = data.bairro
+        cidade.value = data.localidade
+        estado.value = data.uf
       })
       .catch(() => {
-        pesquisouCep.value = true;
-      });
+        pesquisouCep.value = true
+      })
   }
-};
+}
 
 const pesquisarTag = function (pesquisa) {
   axiosWeb.get(`/tag`, { params: { pesquisa: pesquisa } }).then((response) => {
-    resultadoPesquisaTag.lista = response.data.data.data;
-  });
-};
-
+    resultadoPesquisaTag.lista = response.data.data.data
+  })
+}
 
 const fecharModal = function () {
-  resetForm();
-  $emit("onClose");
-};
+  resetForm()
+  $emit('onClose')
+}
 
 const submit = async function () {
   try {
-    loading.value = true;
+    loading.value = true
 
-    const result = await validate();
+    const result = await validate()
     if (!result.valid) {
-      return;
+      return
     }
 
     const data = {
-      ...values,
-    };
+      ...values
+    }
 
-    await axiosWeb.post(`/organizacao`, data);
+    await axiosWeb.post(`/organizacao`, data)
 
-    fecharModal();
+    fecharModal()
 
-    modalCriarOrganizacaoState.onReload();
+    modalCriarOrganizacaoState.onReload()
 
-    $emit("onReload");
-
+    $emit('onReload')
   } catch (e) {
-    const errors = backendToastError(e, $t("textos.erro_cadastrar_organizacao"));
-    setErrors(errors);
+    const errors = backendToastError(e, $t('textos.erro_cadastrar_organizacao'))
+    setErrors(errors)
   } finally {
-    loading.value = false;
+    loading.value = false
   }
-};
-
+}
 </script>
 
 <style scoped></style>

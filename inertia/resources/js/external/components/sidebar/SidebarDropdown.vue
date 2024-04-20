@@ -1,6 +1,6 @@
 <template>
-  <button class="dropdown-sidebar" @click="toggle" :class="{active: aberto,'url-open': aberto}">
-    <div class="sidebar-item" :class="{active: aberto}">
+  <button class="dropdown-sidebar" @click="toggle" :class="{ active: aberto, 'url-open': aberto }">
+    <div class="sidebar-item" :class="{ active: aberto }">
       <div class="sidebar-item-corpo">
         <div class="sidebar-item-badge" v-if="$slots.badge">
           <slot name="badge"></slot>
@@ -11,7 +11,7 @@
         <div class="sidebar-item-texto">
           <slot name="texto"></slot>
         </div>
-        <ArrowDownIcon class="dropdown-sidebar-icon" size="16px"/>
+        <ArrowDownIcon class="dropdown-sidebar-icon" size="16px" />
       </div>
     </div>
     <div class="dropdown-sidebar-content" @click.stop="">
@@ -21,12 +21,11 @@
 </template>
 
 <script>
-
-import ArrowDownIcon from "../icons/ArrowDownIcon.vue";
+import ArrowDownIcon from '../icons/ArrowDownIcon.vue'
 
 export default {
-  name: "SidebarDropdown",
-  components: {ArrowDownIcon},
+  name: 'SidebarDropdown',
+  components: { ArrowDownIcon },
   inject: ['sidenavAberta'],
   props: {
     abertoInicial: {
@@ -38,33 +37,31 @@ export default {
   },
   data() {
     return {
-      aberto: this.abertoInicial,
+      aberto: this.abertoInicial
     }
   },
   computed: {},
   methods: {
     toggle() {
-      this.aberto = !this.aberto;
+      this.aberto = !this.aberto
 
-      this.$emit("toggle", this.aberto);
-    },
+      this.$emit('toggle', this.aberto)
+    }
   },
   watch: {
     abertoInicial(valor) {
-      this.aberto = valor;
+      this.aberto = valor
     },
     sidenavAberta(valor) {
       if (!valor) {
-        this.aberto = false;
+        this.aberto = false
       }
     }
   }
-
 }
 </script>
 
 <style scoped>
-
 .icon-menu {
   width: 100%;
   display: inline-flex;
@@ -94,7 +91,6 @@ export default {
   display: flex;
 }
 
-
 .sidebar-item {
   width: 100%;
   box-sizing: border-box;
@@ -106,14 +102,12 @@ export default {
   outline: 0;
   color: #fff;
 
-
   position: relative;
 }
 
 .sidebar-item :deep(svg path) {
   fill: #fff;
 }
-
 
 .sidebar-item:hover {
   background: rgba(196, 216, 255, 0.16);
@@ -123,7 +117,6 @@ export default {
 .sidebar-item:hover :deep(svg path) {
   fill: #fff;
 }
-
 
 .sidebar-item.active,
 .router-link-exact-active,
@@ -149,13 +142,11 @@ export default {
   fill: #fff;
 }
 
-
 .sidebar-item:focus:not(.active):not(.router-link-exact-active),
 .dropdown-sidebar:focus:not(.active):not(.router-link-exact-active) .sidebar-item {
   background: rgba(196, 216, 255, 0.16);
   color: #fff;
 }
-
 
 /** Icones **/
 .sidebar-item img.icon-noactive {
@@ -175,7 +166,6 @@ export default {
 .sidebar-item.url-open img.active {
   display: block;
 }
-
 
 .sidebar-item-corpo {
   width: 100%;
@@ -208,7 +198,6 @@ export default {
   visibility: visible;
 }
 
-
 .sidebar-item-corpo {
   position: relative;
 }
@@ -220,7 +209,6 @@ export default {
   height: 24px;
   width: 24px;
 }
-
 
 .dropdown-sidebar {
   background: none;
@@ -234,16 +222,13 @@ export default {
   line-height: 0;
 }
 
-
 .open .sidebar-item-texto {
   visibility: visible;
 }
 
-
 .dropdown-sidebar.active .sidebar-item .sidebar-item-texto {
   color: #fff !important;
 }
-
 
 .dropdown-sidebar .dropdown-sidebar-content > :deep(a.active) {
   color: var(--primary-color-principal);
@@ -294,5 +279,4 @@ export default {
 .open .active .dropdown-sidebar-content {
   display: block;
 }
-
 </style>

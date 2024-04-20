@@ -1,15 +1,13 @@
 <template>
-<div class="p-sm">
+  <div class="p-sm">
     <slot></slot>
-</div>
+  </div>
 </template>
 
 <script>
 export default {
-    name: "PageContent"
+  name: 'PageContent'
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

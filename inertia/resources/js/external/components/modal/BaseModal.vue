@@ -12,22 +12,9 @@
         data-modal=""
         v-drag="{ handle: '.base-modal-title' }"
       >
-        <div
-          v-if="$slots.title"
-          class="base-modal-title"
-          :style="{ padding: paddingHeader }"
-        >
-          <div
-            v-if="exibirBtnFechar"
-            class="btn-fechar-modal"
-            @click="fecharModal"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="21"
-              viewBox="0 0 24 21"
-            >
+        <div v-if="$slots.title" class="base-modal-title" :style="{ padding: paddingHeader }">
+          <div v-if="exibirBtnFechar" class="btn-fechar-modal" @click="fecharModal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="21" viewBox="0 0 24 21">
               <path
                 id="Icon_awesome-window-close"
                 data-name="Icon awesome-window-close"
@@ -64,123 +51,120 @@
   </transition>
 </template>
 <script lang="ts">
-
-
 export default {
-  name: "BaseModal",
-  components: {  },
+  name: 'BaseModal',
+  components: {},
   props: {
     paddingHeader: {
       type: String,
-      default: "20px 20px 0px 20px",
+      default: '20px 20px 0px 20px'
     },
     paddingBody: {
       type: String,
-      default: "0px 20px 20px 20px",
+      default: '0px 20px 20px 20px'
     },
     paddingFooter: {
       type: String,
-      default: "20px",
+      default: '20px'
     },
     aberta: {
       default: false,
-      type: [Boolean, String, Number, Object],
+      type: [Boolean, String, Number, Object]
     },
     fecharClickOutside: {
       type: Boolean,
-      default: true,
+      default: true
     },
     exibirBtnFechar: {
       type: Boolean,
-      default: true,
+      default: true
     },
     textCenter: {
       type: Boolean,
-      default: false,
+      default: false
     },
     tamanho: {
-      default: "sm",
+      default: 'sm',
       validator(value: string) {
-        return ["sm", "md", "lg", "xl", "xxl"].includes(value);
-      },
+        return ['sm', 'md', 'lg', 'xl', 'xxl'].includes(value)
+      }
     },
     autoFocusSelector: {
-      default: () => ['.btn-primary','.btn-danger'],
+      default: () => ['.btn-primary', '.btn-danger'],
       required: false,
       type: Array
     }
   },
-  watch:{
-    aberta(foiAberta){
-      if(foiAberta){
+  watch: {
+    aberta(foiAberta) {
+      if (foiAberta) {
         this.$emit('onOpen')
 
         setTimeout(() => {
           this.autoFocusSelector.forEach((item) => {
-            const autoFocus = this.$el.querySelector(item);
-            if(autoFocus) {
-              autoFocus.focus();
+            const autoFocus = this.$el.querySelector(item)
+            if (autoFocus) {
+              autoFocus.focus()
             }
 
-            return;
-          });
-        });
-
+            return
+          })
+        })
       }
     }
   },
   computed: {
     tamanhoClass() {
       switch (this.tamanho) {
-        case "sm":
-          return "modal-sm";
-        case "md":
-          return "modal-md";
-        case "lg":
-          return "modal-lg";
-        case "xl":
-          return "modal-xl";
-        case "xxl":
-          return "modal-xxl";
+        case 'sm':
+          return 'modal-sm'
+        case 'md':
+          return 'modal-md'
+        case 'lg':
+          return 'modal-lg'
+        case 'xl':
+          return 'modal-xl'
+        case 'xxl':
+          return 'modal-xxl'
         default:
-          return "modal-sm";
+          return 'modal-sm'
       }
-    },
+    }
   },
   data() {
     return {
-      handleClickOutside: null,
-    };
+      handleClickOutside: null
+    }
   },
   methods: {
     fecharModal() {
-      this.$emit("onClose");
+      this.$emit('onClose')
     },
     fecharModalClick() {
       if (this.fecharClickOutside) {
-        this.$emit("onClose");
+        this.$emit('onClose')
       }
     },
     onEnter(e) {
-      if (e.key === "Enter" && this.aberta) {
-        this.$emit("onEnter");
+      if (e.key === 'Enter' && this.aberta) {
+        this.$emit('onEnter')
       }
     },
     onEsc(e) {
-      if ((e.key === "Escape" || e.key === "Esc") && this.aberta) {
-        this.$emit("onEsc");
+      if ((e.key === 'Escape' || e.key === 'Esc') && this.aberta) {
+        this.$emit('onEsc')
       }
-    },
+    }
   },
   beforeUnmount() {
-    window.removeEventListener("keyup", this.onEnter);
-    window.removeEventListener("keyup", this.onEsc);
+    window.removeEventListener('keyup', this.onEnter)
+    window.removeEventListener('keyup', this.onEsc)
   },
   created() {
-    window.addEventListener("keyup", this.onEnter);
-    window.addEventListener("keyup", this.onEsc);
-  },
-};
+    window.addEventListener('keyup', this.onEnter)
+    window.addEventListener('keyup', this.onEsc)
+  }
+}
 </script>
 <style>
 .footerEsquerdo {

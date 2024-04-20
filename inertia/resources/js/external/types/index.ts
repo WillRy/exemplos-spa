@@ -1,5 +1,4 @@
-import type { ToastProps } from "vue-toast-notification";
-
+import type { ToastProps } from 'vue-toast-notification'
 
 type toastTypes = 'success' | 'error' | 'warning'
 
@@ -9,46 +8,46 @@ export interface openToast {
 }
 
 export interface erroUnicoBackend {
-  [fieldName: string]: string[];
+  [fieldName: string]: string[]
 }
 export interface errosBackend {
-  errors: erroUnicoBackend;
-  message: string | null;
+  errors: erroUnicoBackend
+  message: string | null
 }
 
 export interface errosTratados {
-  [key: string]: string | null;
+  [key: string]: string | null
 }
 
 export interface jsonBackend {
-  success: boolean;
-  message: string | null;
-  errors: erroUnicoBackend;
-  error_code?: any;
-  data: Array<any> | object;
+  success: boolean
+  message: string | null
+  errors: erroUnicoBackend
+  error_code?: any
+  data: Array<any> | object
 }
 
 export interface alertParams {
-  tipo?: "success" | "error" | "warning" | "info" | null;
-  title?: string | null;
-  mensagem?: string | null;
-  id?: any | null;
-  onClose?: null|(() => void);
+  tipo?: 'success' | 'error' | 'warning' | 'info' | null
+  title?: string | null
+  mensagem?: string | null
+  id?: any | null
+  onClose?: null | (() => void)
   acoes?:
     | {
-        click: () => void;
-        identificador: string;
+        click: () => void
+        identificador: string
       }[]
-    | null;
+    | null
 }
 
 export interface ToastParams extends ToastProps {
-  message?:string|null;
-  defaultMessage?:string|null;
+  message?: string | null
+  defaultMessage?: string | null
 }
 
 export interface RootState {
-  alerts: alertParams[];
+  alerts: alertParams[]
 }
 
 export interface ConfigState {

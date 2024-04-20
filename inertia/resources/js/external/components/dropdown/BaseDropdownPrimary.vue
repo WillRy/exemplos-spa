@@ -25,7 +25,7 @@
       >
         <slot name="botao"></slot>
         <svg
-          v-if="icone" 
+          v-if="icone"
           viewBox="0 0 330 330"
           xml:space="preserve"
           :style="{ height: '12px', width: '12px' }"
@@ -47,8 +47,13 @@
         >
           <slot name="acoes"></slot>
         </div>
-        
-        <div class="dropdown-conteudo" @click.stop="" v-if="$slots.conteudo" :style="{ maxHeight: maxHeight }">
+
+        <div
+          class="dropdown-conteudo"
+          @click.stop=""
+          v-if="$slots.conteudo"
+          :style="{ maxHeight: maxHeight }"
+        >
           <slot name="conteudo"></slot>
         </div>
       </template>
@@ -57,95 +62,95 @@
 </template>
 
 <script lang="ts">
-import { Dropdown } from "floating-vue";
-import { directive } from "../../directives/click-away";
-import BaseButtonPrimary from "../buttons/BaseButtonPrimary.vue";
-import { PropType } from "vue";
+import { Dropdown } from 'floating-vue'
+import { directive } from '../../directives/click-away'
+import BaseButtonPrimary from '../buttons/BaseButtonPrimary.vue'
+import { PropType } from 'vue'
 
-type TriggerEvent = 'hover' | 'click' | 'focus' | 'touch';
+type TriggerEvent = 'hover' | 'click' | 'focus' | 'touch'
 
 export default {
-  name: "BaseDropdownPrimary",
-  emits: ["onOpen", "onClose"],
+  name: 'BaseDropdownPrimary',
+  emits: ['onOpen', 'onClose'],
   inheritAttrs: false,
   props: {
     triggers: {
       type: Array as PropType<TriggerEvent[]>,
-      default: () => [],
+      default: () => []
     },
     size: {
       type: String,
-      default: "md",
+      default: 'md'
     },
     icone: {
       type: Boolean,
-      default: true,
+      default: true
     },
     disabled: {
-      default: false,
+      default: false
     },
     maxHeight: {
       type: String,
-      default: "400px",
+      default: '400px'
     },
     label: {
       type: String,
-      default: "",
+      default: ''
     },
     full: {
       type: Boolean,
-      default: false,
+      default: false
     },
     autoSize: {
       type: Boolean,
-      default: false,
+      default: false
     }
   },
   components: {
     VDropdown: Dropdown,
-    BaseButtonPrimary,
+    BaseButtonPrimary
   },
   directives: {
-    "click-away": directive,
+    'click-away': directive
   },
   data() {
     return {
-      open: false,
-    };
+      open: false
+    }
   },
   methods: {
     toggle() {
-      this.open = !this.open;
+      this.open = !this.open
 
-      this.$emit(this.open ? "onOpen" : "onClose");
+      this.$emit(this.open ? 'onOpen' : 'onClose')
     },
     fechar() {
-      this.open = false;
-      this.$emit("onClose");
+      this.open = false
+      this.$emit('onClose')
     },
     handleClick(event) {
-      if (this.triggers.length > 0) return;
+      if (this.triggers.length > 0) return
 
-      const clickNoBotao = event.target.closest("dropdown-btn");
-      const clickNoDropdownAcoes = event.target.closest("dropdown-acoes");
-      const clickDropdownConteudo = event.target.closest("dropdown-conteudo");
+      const clickNoBotao = event.target.closest('dropdown-btn')
+      const clickNoDropdownAcoes = event.target.closest('dropdown-acoes')
+      const clickDropdownConteudo = event.target.closest('dropdown-conteudo')
 
-      if (clickNoBotao) this.open = false;
+      if (clickNoBotao) this.open = false
 
-      if (clickNoDropdownAcoes) this.open = false;
+      if (clickNoDropdownAcoes) this.open = false
 
-      if (clickDropdownConteudo) return;
+      if (clickDropdownConteudo) return
 
-      this.open = false;
-    },
+      this.open = false
+    }
   },
   beforeUnmount() {
-    document.body.removeEventListener("click", this.handleClick);
+    document.body.removeEventListener('click', this.handleClick)
   },
   mounted() {
-    document.body.addEventListener("click", this.handleClick);
-  },
-};
+    document.body.addEventListener('click', this.handleClick)
+  }
+}
 </script>
 
 <style scoped>
@@ -252,7 +257,7 @@ img {
 }
 
 .btn {
-  all: "unset";
+  all: 'unset';
   display: flex;
   align-items: center;
   justify-content: center;
@@ -268,7 +273,7 @@ img {
   position: relative;
 }
 
-.btn[data-loading="true"] {
+.btn[data-loading='true'] {
   cursor: progress !important;
 }
 

@@ -13,18 +13,18 @@
 
 <script>
 export default {
-  name: "ContatoIcon",
+  name: 'ContatoIcon',
   props: {
     size: {
       type: String,
-      default: "24px",
+      default: '24px'
     },
     color: {
       type: String,
-      default: "#898C99",
-    },
-  },
-};
+      default: '#898C99'
+    }
+  }
+}
 </script>
 
 <style scoped></style>

@@ -1,12 +1,8 @@
 <template>
   <div class="layout">
-    <Sidebar
-      :open="sidebarAberta"
-      @change="mudarSidebar"
-
-    >
+    <Sidebar :open="sidebarAberta" @change="mudarSidebar">
       <template #logo>
-        <img src="/logo.png" alt="">
+        <img src="/logo.png" alt="" />
       </template>
       <SidebarLink href="/painel" is="Link" :active="$page.url.endsWith('painel')">
         <template #texto> Dashboard </template>
@@ -16,7 +12,7 @@
       </SidebarLink>
       <SidebarLink href="/organizacoes" is="Link" :active="$page.url.endsWith('organizacoes')">
         <template #texto>
-          {{ $t("palavras.organizacoes") }}
+          {{ $t('palavras.organizacoes') }}
         </template>
         <template #icone>
           <OrganizacaoIcon />
@@ -24,7 +20,7 @@
       </SidebarLink>
       <SidebarLink href="/contatos" is="Link" :active="$page.url.endsWith('contatos')">
         <template #texto>
-          {{ $t("palavras.contatos") }}
+          {{ $t('palavras.contatos') }}
         </template>
         <template #icone>
           <ContatoIcon />
@@ -32,7 +28,7 @@
       </SidebarLink>
       <SidebarLink href="/tags" is="Link" :active="$page.url.endsWith('tags')">
         <template #texto>
-          {{ $t("palavras.tags") }}
+          {{ $t('palavras.tags') }}
         </template>
         <template #icone>
           <TagIcon />
@@ -64,11 +60,9 @@
                 {{ $page.props.usuario.nome }}
               </template>
               <template #acoes>
-                <Link href="/logout">{{ $t("palavras.logout") }}</Link>
-                <button
-                  :disabled="!$verificaPermissao($page,'botao')"
-                >
-                  {{ $t("textos.botao_sem_permissao") }}
+                <Link href="/logout">{{ $t('palavras.logout') }}</Link>
+                <button :disabled="!$verificaPermissao($page, 'botao')">
+                  {{ $t('textos.botao_sem_permissao') }}
                 </button>
               </template>
             </BaseDropdownPrimary>
@@ -78,7 +72,7 @@
     </Header>
 
     <HomeContainer>
-     <slot />
+      <slot />
     </HomeContainer>
   </div>
 
@@ -88,26 +82,26 @@
 </template>
 
 <script>
-import Header from "../external/components/header/Header.vue";
-import Sidebar from "../external/components/sidebar/Sidebar.vue";
-import SidebarLink from "../external/components/sidebar/SidebarLink.vue";
-import HomeIcon from "../external/components/icons/HomeIcon.vue";
-import HomeContainer from "../external/components/estrutura/HomeContainer.vue";
-import OrganizacaoIcon from "../components/icons/OrganizacaoIcon.vue";
-import ContatoIcon from "../components/icons/ContatoIcon.vue";
-import BaseDropdownPrimary from "../external/components/dropdown/BaseDropdownPrimary";
-import BaseDropdownSecondary from "../external/components/dropdown/BaseDropdownSecondary";
-import TagIcon from "../components/icons/TagIcon";
-import axiosWeb from "../services/axiosWeb";
+import Header from '../external/components/header/Header.vue'
+import Sidebar from '../external/components/sidebar/Sidebar.vue'
+import SidebarLink from '../external/components/sidebar/SidebarLink.vue'
+import HomeIcon from '../external/components/icons/HomeIcon.vue'
+import HomeContainer from '../external/components/estrutura/HomeContainer.vue'
+import OrganizacaoIcon from '../components/icons/OrganizacaoIcon.vue'
+import ContatoIcon from '../components/icons/ContatoIcon.vue'
+import BaseDropdownPrimary from '../external/components/dropdown/BaseDropdownPrimary'
+import BaseDropdownSecondary from '../external/components/dropdown/BaseDropdownSecondary'
+import TagIcon from '../components/icons/TagIcon'
+import axiosWeb from '../services/axiosWeb'
 import {
   modalCriarOrganizacaoStore,
   modalEditarOrganizacaoStore,
-  modalExcluirOrganizacaoStore,
-} from "../stores/organizacao";
-import { definirIdioma } from "../lang";
+  modalExcluirOrganizacaoStore
+} from '../stores/organizacao'
+import { definirIdioma } from '../lang'
 
 export default {
-  name: "Privado",
+  name: 'Privado',
   components: {
     TagIcon,
     BaseDropdownSecondary,
@@ -118,61 +112,60 @@ export default {
     HomeIcon,
     HomeContainer,
     OrganizacaoIcon,
-    ContatoIcon,
+    ContatoIcon
   },
   setup() {
-
-    const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
-    const modalEditarOrganizacaoState = modalEditarOrganizacaoStore();
-    const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore();
+    const modalCriarOrganizacaoState = modalCriarOrganizacaoStore()
+    const modalEditarOrganizacaoState = modalEditarOrganizacaoStore()
+    const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore()
     return {
       modalCriarOrganizacaoState,
       modalEditarOrganizacaoState,
-      modalExcluirOrganizacaoState,
-    };
+      modalExcluirOrganizacaoState
+    }
   },
   data() {
     return {
       loading: true,
       sidebarAberta: false,
-      qtdOrganizacoes: null,
-    };
+      qtdOrganizacoes: null
+    }
   },
   watch: {
-    "modalCriarOrganizacaoState.reload": {
+    'modalCriarOrganizacaoState.reload': {
       handler() {
-        this.buscarQuantidadeOrganizacoes();
-      },
+        this.buscarQuantidadeOrganizacoes()
+      }
     },
-    "modalEditarOrganizacaoState.reload": {
+    'modalEditarOrganizacaoState.reload': {
       handler() {
-        this.buscarQuantidadeOrganizacoes();
-      },
+        this.buscarQuantidadeOrganizacoes()
+      }
     },
-    "modalExcluirOrganizacaoState.reload": {
+    'modalExcluirOrganizacaoState.reload': {
       handler() {
-        this.buscarQuantidadeOrganizacoes();
-      },
-    },
+        this.buscarQuantidadeOrganizacoes()
+      }
+    }
   },
   methods: {
     mudarIdioma(lang) {
-      definirIdioma(lang);
+      definirIdioma(lang)
     },
     mudarSidebar() {
-      this.sidebarAberta = !this.sidebarAberta;
+      this.sidebarAberta = !this.sidebarAberta
     },
     buscarQuantidadeOrganizacoes() {
-      axiosWeb.get("/organizacao").then((r) => {
-        this.qtdOrganizacoes = r.data.data.total;
-      });
-    },
+      axiosWeb.get('/organizacao').then((r) => {
+        this.qtdOrganizacoes = r.data.data.total
+      })
+    }
   },
   async created() {
-    this.buscarQuantidadeOrganizacoes();
-    this.loading = false;
-  },
-};
+    this.buscarQuantidadeOrganizacoes()
+    this.loading = false
+  }
+}
 </script>
 
 <style>
