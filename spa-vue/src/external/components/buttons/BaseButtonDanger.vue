@@ -1,15 +1,22 @@
 <template>
-  <BaseButton class="btn-danger" :size="size" :min="min" :loading="loading" :outline="outline" :is="is">
+  <BaseButton
+    class="btn-danger"
+    :size="size"
+    :min="min"
+    :loading="loading"
+    :outline="outline"
+    :is="is"
+  >
     <slot></slot>
   </BaseButton>
 </template>
 
 <script lang="ts">
-import BaseButton from "./BaseButton.vue";
+import BaseButton from './BaseButton.vue'
 
 export default {
-  name: "BaseButtonDanger",
-  components: {BaseButton},
+  name: 'BaseButtonDanger',
+  components: { BaseButton },
   props: {
     is: {
       type: String,
@@ -36,9 +43,6 @@ export default {
 </script>
 
 <style scoped>
-
-
-
 .btn-danger {
   background: var(--error-color-600);
   color: #fff;
@@ -51,7 +55,9 @@ export default {
 }
 
 .btn-danger:focus:not(:active) {
-  box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--error-color-400);
+  box-shadow:
+    0 0 0 1px #fff,
+    0 0 0 2px var(--error-color-400);
   background: var(--error-color-400);
 }
 
@@ -65,7 +71,6 @@ export default {
   cursor: not-allowed;
   border: none;
 }
-
 
 .btn-danger:disabled :deep(path) {
   fill: var(--gray-color-300);

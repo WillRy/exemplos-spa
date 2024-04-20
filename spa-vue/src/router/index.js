@@ -1,88 +1,94 @@
-import { createRouter, createWebHistory } from "vue-router";
-import { usuarioStore } from "../stores/usuario";
-import { configuraIdioma } from "../middlewares/configuraIdioma";
-import { iniciaLoader, terminaLoader } from "../middlewares/loaders";
-import { verificaPermissao } from "../middlewares/verificaPermissao";
-import { apiPublic } from "../services/api";
+import { createRouter, createWebHistory } from 'vue-router'
+import { usuarioStore } from '../stores/usuario'
+import { configuraIdioma } from '../middlewares/configuraIdioma'
+import { iniciaLoader, terminaLoader } from '../middlewares/loaders'
+import { verificaPermissao } from '../middlewares/verificaPermissao'
+import { apiPublic } from '../services/api'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/lang/:lang",
-      name: "lang",
+      path: '/lang/:lang',
+      name: 'lang',
       async beforeEnter(from, to, next) {
-        const lang = to.params.lang ?? from.params.lang;
+        const lang = to.params.lang ?? from.params.lang
 
-        window.localStorage.setItem("@lang", lang);
+        window.localStorage.setItem('@lang', lang)
 
-        if (from.fullPath !== to.fullPath) {
-          return next({
-            name: "login",
-          });
+        const toDifferent = to.name !== 'lang';
+        const fromDifferent = from.name !== 'lang';
+
+        if(toDifferent) {
+          return next(to)
         }
 
-        return next(from);
-      },
+        if(fromDifferent) {
+          return next(from)
+        }
+
+
+        return next('/')
+      }
     },
     {
-      path: "/logout",
-      name: "logout",
+      path: '/logout',
+      name: 'logout',
       component: () => import('../views/auth/Login'),
       async beforeEnter(from, to, next) {
-        const usuarioState = usuarioStore();
-        await usuarioState.logout();
-        return next({ name: "login", query: { logout: 1 }});
-      },
+        const usuarioState = usuarioStore()
+        await usuarioState.logout()
+        return next({ name: 'login', query: { logout: 1 } })
+      }
     },
     {
-      path: "/",
-      component: () => import("../layouts/Publico"),
-      name: "publico",
+      path: '/',
+      component: () => import('../layouts/Publico'),
+      name: 'publico',
       children: [
         {
-          path: "",
-          name: "login",
+          path: '',
+          name: 'login',
           component: () => import('../views/auth/Login'),
           async beforeEnter(from, to, next) {
             //indica que foi logout forçado, pois não conseguiu recuperar uma sessão ativa
-            if(from.query.logout || to.query.logout) {
-              return next();
+            if (from.query.logout || to.query.logout) {
+              return next()
             }
 
-            const usuarioState = usuarioStore();
-            const logado = await usuarioState.carregarUsuarioLogado();
+            const usuarioState = usuarioStore()
+            const logado = await usuarioState.carregarUsuarioLogado()
 
             if (logado) {
-              return next({ name: "dashboard" });
+              return next({ name: 'dashboard' })
             }
-            return next();
-          },
+            return next()
+          }
         },
         {
-          path: "esqueci-senha",
-          name: "esqueci-senha",
-          component: () => import("../views/auth/EsqueciSenha"),
+          path: 'esqueci-senha',
+          name: 'esqueci-senha',
+          component: () => import('../views/auth/EsqueciSenha')
         },
         {
-          path: "redefinir-senha",
-          name: "redefinir-senha",
-          component: () => import("../views/auth/RedefinirSenha"),
-        },
-      ],
+          path: 'redefinir-senha',
+          name: 'redefinir-senha',
+          component: () => import('../views/auth/RedefinirSenha')
+        }
+      ]
     },
 
     {
-      path: "/painel",
-      component: () => import("../layouts/Privado"),
+      path: '/painel',
+      component: () => import('../layouts/Privado'),
       meta: {
-        permissoes: [],
+        permissoes: []
       },
       async beforeEnter(from, to, next) {
-        const usuarioState = usuarioStore();
-        const logado = await usuarioState.carregarUsuarioLogado();
+        const usuarioState = usuarioStore()
+        const logado = await usuarioState.carregarUsuarioLogado()
         if (logado) {
-          return next();
+          return next()
         }
         return next({
           name: 'login',
@@ -93,55 +99,55 @@ const router = createRouter({
       },
       children: [
         {
-          path: "",
-          name: "dashboard",
-          component: () => import("../views/Dashboard"),
+          path: '',
+          name: 'dashboard',
+          component: () => import('../views/Dashboard')
         },
         {
-          path: "organizacoes",
-          name: "organizacoes",
-          component: () => import("../views/Organizacoes"),
+          path: 'organizacoes',
+          name: 'organizacoes',
+          component: () => import('../views/Organizacoes')
         },
         {
-          path: "contatos",
-          name: "contatos",
-          component: () => import("../views/Contatos"),
+          path: 'contatos',
+          name: 'contatos',
+          component: () => import('../views/Contatos')
         },
         {
-          path: "tags",
-          name: "tags",
-          component: () => import("../views/Tags"),
+          path: 'tags',
+          name: 'tags',
+          component: () => import('../views/Tags')
         },
         {
-          path: "sem-permissao",
-          name: "sem-permissao",
+          path: 'sem-permissao',
+          name: 'sem-permissao',
           meta: {
-            permissoes: ["permissao-qualquer"],
+            permissoes: ['permissao-qualquer']
           },
-          component: () => import("../views/Contatos"),
-        },
-      ],
+          component: () => import('../views/Contatos')
+        }
+      ]
     },
-    { path: "/:pathMatch(.*)*", name: "not-found", component: () => import("../views/NaoEncontrado") },
-  ],
-});
-
-
-router.beforeEach(configuraIdioma);
-
-
-router.beforeEach(iniciaLoader);
-
-
-router.afterEach(terminaLoader);
-
-
-router.beforeEach(verificaPermissao);
-
-// get a new csrf token in each request
-router.beforeEach(async (from, to , next) => {
-  await apiPublic.get("/csrf");
-  return next();
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('../views/NaoEncontrado')
+    }
+  ]
 })
 
-export default router;
+router.beforeEach(configuraIdioma)
+
+router.beforeEach(iniciaLoader)
+
+router.afterEach(terminaLoader)
+
+router.beforeEach(verificaPermissao)
+
+// get a new csrf token in each request
+router.beforeEach(async (from, to, next) => {
+  await apiPublic.get('/csrf')
+  return next()
+})
+
+export default router

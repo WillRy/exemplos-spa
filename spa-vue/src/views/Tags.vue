@@ -1,9 +1,7 @@
 <template>
   <div class="tags">
     <HeaderPage :titulo="$t('palavras.tags')">
-      <BaseButtonPrimary @click="abrirCriar">
-        {{ $t("palavras.criar") }}</BaseButtonPrimary
-      >
+      <BaseButtonPrimary @click="abrirCriar"> {{ $t('palavras.criar') }}</BaseButtonPrimary>
     </HeaderPage>
     <div class="container-fluid">
       <Box padding="0">
@@ -18,7 +16,7 @@
             </div>
             <div class="col-auto">
               <BaseButtonPrimary :loading="loading" type="submit">
-                {{ $t("palavras.pesquisar") }}
+                {{ $t('palavras.pesquisar') }}
               </BaseButtonPrimary>
             </div>
           </div>
@@ -38,7 +36,7 @@
               :order="sortOrder"
               :disabled="false"
             >
-              <span>{{ $t("palavras.id") }}</span>
+              <span>{{ $t('palavras.id') }}</span>
             </HeadSort>
             <HeadSort
               @onSort="sortBy"
@@ -47,7 +45,7 @@
               :order="sortOrder"
               :disabled="false"
             >
-              <span>{{ $t("palavras.nome") }}</span>
+              <span>{{ $t('palavras.nome') }}</span>
             </HeadSort>
             <HeadSort
               @onSort="sortBy"
@@ -56,7 +54,7 @@
               :order="sortOrder"
               :disabled="false"
             >
-              <span>{{ $t("palavras.cor_fundo") }}</span>
+              <span>{{ $t('palavras.cor_fundo') }}</span>
             </HeadSort>
             <HeadSort
               @onSort="sortBy"
@@ -65,14 +63,9 @@
               :order="sortOrder"
               :disabled="false"
             >
-              <span>{{ $t("palavras.cor_texto") }}</span>
+              <span>{{ $t('palavras.cor_texto') }}</span>
             </HeadSort>
-            <HeadSort
-              @onSort="sortBy"
-              :ordenando="sortName"
-              :order="sortOrder"
-              :disabled="true"
-            />
+            <HeadSort @onSort="sortBy" :ordenando="sortName" :order="sortOrder" :disabled="true" />
           </template>
           <template v-slot:colunas="{ dados }">
             <tr v-for="(dado, index) in dados" :key="index">
@@ -83,28 +76,22 @@
                 {{ dado.nome }}
               </ColunaTabela>
               <ColunaTabela>
-                <div
-                  class="tag-col"
-                  :style="{ background: dado.cor_fundo, color: dado.cor_texto }"
-                >
+                <div class="tag-col" :style="{ background: dado.cor_fundo, color: dado.cor_texto }">
                   {{ dado.cor_fundo }}
                 </div>
               </ColunaTabela>
               <ColunaTabela>
-                <div
-                  class="tag-col"
-                  :style="{ background: dado.cor_fundo, color: dado.cor_texto }"
-                >
+                <div class="tag-col" :style="{ background: dado.cor_fundo, color: dado.cor_texto }">
                   {{ dado.cor_texto }}
                 </div>
               </ColunaTabela>
               <ColunaTabela justify="flex-end" class="coluna-acoes">
                 <DropdownAcoes :fundoClaro="true">
                   <button @click="abrirEdicao(dado)">
-                    {{ $t("palavras.editar") }}
+                    {{ $t('palavras.editar') }}
                   </button>
                   <button @click="abrirExclusao(dado)">
-                    {{ $t("palavras.excluir") }}
+                    {{ $t('palavras.excluir') }}
                   </button>
                 </DropdownAcoes>
               </ColunaTabela>
@@ -119,112 +106,116 @@
           :total="tags.dados.total"
           :porPagina="tags.dados.per_page"
           @onChange="updatePagina($event)"
-          :textoTotal="$t('palavras.total')"
-          :textoResultados="$t('palavras.resultados', tags.dados.total)"
-          :tituloPrimeiraPagina="$t('palavras.primeira')"
-          :tituloUltimaPagina="$t('palavras.ultima')"
         />
       </Box>
     </div>
 
-    <ModalCriarTag :aberta="criarTagAberto" @onClose="criarTagAberto = null" @onReload="buscarDados"/>
-    <ModalEditarTag :tag="tagSendoEditada" @onClose="tagSendoEditada = null" @onReload="buscarDados"/>
-    <ModalExcluirTag :tag="tagSendoExcluida" @onClose="tagSendoExcluida = null" @onReload="buscarDados"/>
+    <ModalCriarTag
+      :aberta="criarTagAberto"
+      @onClose="criarTagAberto = null"
+      @onReload="buscarDados"
+    />
+    <ModalEditarTag
+      :tag="tagSendoEditada"
+      @onClose="tagSendoEditada = null"
+      @onReload="buscarDados"
+    />
+    <ModalExcluirTag
+      :tag="tagSendoExcluida"
+      @onClose="tagSendoExcluida = null"
+      @onReload="buscarDados"
+    />
   </div>
 </template>
 
 <script setup>
-import HeaderPage from "../components/pages/HeaderPage";
-import BaseButtonPrimary from "../external/components/buttons/BaseButtonPrimary";
-import BaseInput from "../external/components/form/BaseInput";
-import Tabela from "../external/components/tabela/Tabela";
-import ColunaTabela from "../external/components/tabela/ColunaTabela";
-import DropdownAcoes from "../external/components/dropdown/BaseDropdownAction";
-import PaginacaoSemRouter from "../external/components/paginacao/PaginacaoSemRouter";
-import Box from "../external/components/estrutura/Box";
-import api from "../services/api";
-import ModalCriarTag from "../components/tags/ModalCriarTag";
-import ModalEditarTag from "../components/tags/ModalEditarTag";
-import ModalExcluirTag from "../components/tags/ModalExcluirTag";
+import HeaderPage from '../components/pages/HeaderPage'
+import BaseButtonPrimary from '../external/components/buttons/BaseButtonPrimary'
+import BaseInput from '../external/components/form/BaseInput'
+import Tabela from '../external/components/tabela/Tabela'
+import ColunaTabela from '../external/components/tabela/ColunaTabela'
+import DropdownAcoes from '../external/components/dropdown/BaseDropdownAction'
+import PaginacaoSemRouter from '../external/components/paginacao/PaginacaoSemRouter'
+import Box from '../external/components/estrutura/Box'
+import api from '../services/api'
+import ModalCriarTag from '../components/tags/ModalCriarTag'
+import ModalEditarTag from '../components/tags/ModalEditarTag'
+import ModalExcluirTag from '../components/tags/ModalExcluirTag'
 
-import { reactive, ref } from "vue";
-import { useI18n } from "vue-i18n";
-import { useBackendToast } from "../external/hooks/useBackendToast";
-import HeadSort from "../external/components/tabela/HeadSort.vue";
+import { reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useBackendToast } from '../external/hooks/useBackendToast'
+import HeadSort from '../external/components/tabela/HeadSort.vue'
 
-const { t: $t } = useI18n();
-const { backendToastError } = useBackendToast();
-
+const { t: $t } = useI18n()
+const { backendToastError } = useBackendToast()
 
 const form = reactive({
-  pesquisa: "",
-});
-const loading = ref(false);
-const sortName = ref("id");
-const sortOrder = ref("desc");
-const page = ref(1);
+  pesquisa: ''
+})
+const loading = ref(false)
+const sortName = ref('id')
+const sortOrder = ref('desc')
+const page = ref(1)
 const tags = reactive({
-  dados: [],
-});
+  dados: []
+})
 
-const criarTagAberto = ref(false);
-const tagSendoEditada = ref(null);
-const tagSendoExcluida = ref(null);
-
+const criarTagAberto = ref(false)
+const tagSendoEditada = ref(null)
+const tagSendoExcluida = ref(null)
 
 const abrirCriar = function () {
-  criarTagAberto.value = true;
-};
+  criarTagAberto.value = true
+}
 
 const abrirEdicao = function (tag) {
-  tagSendoEditada.value = tag;
-};
+  tagSendoEditada.value = tag
+}
 
 const abrirExclusao = function (tag) {
-  tagSendoExcluida.value = tag;
-};
+  tagSendoExcluida.value = tag
+}
 
 const sortBy = function (ordem) {
-  sortName.value = ordem.sortName;
-  sortOrder.value = ordem.sortOrder;
-  buscarDados();
-};
+  sortName.value = ordem.sortName
+  sortOrder.value = ordem.sortOrder
+  buscarDados()
+}
 
 const updatePagina = function (pagina) {
-  page.value = pagina;
-  buscarDados();
-};
+  page.value = pagina
+  buscarDados()
+}
 
 const pesquisar = function () {
-  page.value = 1;
-  buscarDados();
-};
+  page.value = 1
+  buscarDados()
+}
 
 const buscarDados = function () {
-  loading.value = true;
+  loading.value = true
   api
-    .get("/tag", {
+    .get('/tag', {
       params: {
         ...(form.pesquisa ? { pesquisa: form.pesquisa } : {}),
         ...(page.value ? { page: page.value } : {}),
         sortOrder: sortOrder.value,
-        sortName: sortName.value,
-      },
+        sortName: sortName.value
+      }
     })
     .then((r) => {
-      tags.dados = r.data.data;
+      tags.dados = r.data.data
     })
     .catch((e) => {
-      backendToastError(e, $t("texto.erro_listar_dados"));
+      backendToastError(e, $t('texto.erro_listar_dados'))
     })
     .finally(() => {
-      loading.value = false;
-    });
-};
+      loading.value = false
+    })
+}
 
-
-
-buscarDados();
+buscarDados()
 </script>
 
 <style scoped>

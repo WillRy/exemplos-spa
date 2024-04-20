@@ -1,15 +1,22 @@
 <template>
-  <BaseButton class="btn-danger-tertiary" :size="size" :min="min" :loading="loading" :outline="outline" :is="is">
+  <BaseButton
+    class="btn-danger-tertiary"
+    :size="size"
+    :min="min"
+    :loading="loading"
+    :outline="outline"
+    :is="is"
+  >
     <slot></slot>
   </BaseButton>
 </template>
 
 <script lang="ts">
-import BaseButton from "./BaseButton.vue";
+import BaseButton from './BaseButton.vue'
 
 export default {
-  name: "BaseButtonDanger",
-  components: {BaseButton},
+  name: 'BaseButtonDanger',
+  components: { BaseButton },
   props: {
     is: {
       type: String,
@@ -36,7 +43,6 @@ export default {
 </script>
 
 <style scoped>
-
 .btn-danger-tertiary {
   background: transparent;
   color: var(--error-color-600);
@@ -44,7 +50,7 @@ export default {
 }
 
 .btn-danger-tertiary:hover {
-  background:var(--error-color-400);
+  background: var(--error-color-400);
   color: #fff;
 }
 

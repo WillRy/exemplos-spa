@@ -6,8 +6,8 @@
 
 <script lang="ts">
 export default {
-  name: "HomeContainer",
-};
+  name: 'HomeContainer'
+}
 </script>
 
 <style>

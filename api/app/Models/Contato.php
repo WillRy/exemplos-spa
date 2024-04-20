@@ -9,7 +9,7 @@ class Contato extends Model
 {
     use HasFactory;
 
-    protected $table = "contatos";
+    protected $table = 'contatos';
 
     protected $primaryKey = 'id';
 
@@ -24,31 +24,30 @@ class Contato extends Model
         'complemento',
         'cidade',
         'estado',
-        'organizacao_id'
+        'organizacao_id',
     ];
 
-    public function organizacao()
+    public function organizacao(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Organizacao::class, 'organizacao_id', 'id');
+        return $this->belongsTo(Organizacao::class, 'organizacao_id', 'id','organizacao');
     }
 
     public function pesquisar(
         ?string $pesquisa,
         ?string $organizacao_id = null,
-        ?string $sortName = "id",
-        ?string $sortOrder = "desc"
-    )
-    {
+        ?string $sortName = 'id',
+        ?string $sortOrder = 'desc'
+    ) {
         return self::query()
             ->select('*')
             ->with('organizacao')
-            ->when(!empty($pesquisa), function ($query) use ($pesquisa) {
-                $query->where("id", "=", $pesquisa);
-                $query->where("nome", "like", "%$pesquisa%");
-                $query->orWhere("email", "like", "%$pesquisa%");
+            ->when(! empty($pesquisa), function ($query) use ($pesquisa) {
+                $query->where('id', '=', $pesquisa);
+                $query->where('nome', 'like', "%$pesquisa%");
+                $query->orWhere('email', 'like', "%$pesquisa%");
             })
-            ->when(!empty($organizacao_id), function ($query) use ($organizacao_id) {
-                $query->where("organizacao_id", "=", $organizacao_id);
+            ->when(! empty($organizacao_id), function ($query) use ($organizacao_id) {
+                $query->where('organizacao_id', '=', $organizacao_id);
             })
             ->orderBy($sortName, $sortOrder)
             ->paginate(15);
@@ -64,6 +63,7 @@ class Contato extends Model
         $organizacao = self::where('id', $id)->first();
         $organizacao->fill($dados);
         $organizacao->save();
+
         return $organizacao;
     }
 

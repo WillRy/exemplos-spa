@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('token_autenticacao', function (Blueprint $table) {
             $table->bigInteger('refresh_id')->unsigned()->nullable();
-            $table->foreign('refresh_id')->references('id')->on('refresh_token')->onDelete("CASCADE");
+            $table->foreign('refresh_id')->references('id')->on('refresh_token')->onDelete('CASCADE');
         });
     }
 

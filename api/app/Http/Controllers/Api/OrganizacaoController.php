@@ -14,10 +14,10 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
     {
         try {
             $organizacoes = (new Organizacao())->pesquisar(
-                $request->input("pesquisa", null),
-                $request->input("sortName", "id"),
-                $request->input("sortOrder", "desc"),
-                $request->input("id_tags", [])
+                $request->input('pesquisa', null),
+                $request->input('sortName', 'id'),
+                $request->input('sortOrder', 'desc'),
+                $request->input('id_tags', [])
             );
 
             return (new ResponseJSON())->setData($organizacoes)->render();
@@ -30,7 +30,7 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
     public function show(Request $request, int $id)
     {
         try {
-            $organizacaoExiste = Organizacao::with("tags")->find($id);
+            $organizacaoExiste = Organizacao::with('tags')->find($id);
 
             if (empty($organizacaoExiste)) {
                 throw new \Exception(__('custom.organizacao_inexistente'), 404);
@@ -53,7 +53,6 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
 
             return (new ResponseJSON())->setData($organizacao)->setMessage(__('custom.organizacao_criado_com_sucesso'))->render();
 
-
         } catch (\Exception $e) {
             return (new ResponseJSON())->setError($e)->render();
         }
@@ -74,7 +73,6 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
 
             return (new ResponseJSON())->setData($organizacao)->setMessage(__('custom.organizacao_editado_com_sucesso'))->render();
 
-
         } catch (\Exception $e) {
             return (new ResponseJSON())->setError($e)->render();
         }
@@ -92,7 +90,6 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
             (new Organizacao())->deletar($id);
 
             return (new ResponseJSON())->setData([])->setMessage(__('custom.organizacao_excluido_com_sucesso'))->render();
-
 
         } catch (\Exception $e) {
             return (new ResponseJSON())->setError($e)->render();

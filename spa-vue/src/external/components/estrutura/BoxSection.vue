@@ -8,42 +8,43 @@
     </div>
     <div
       class="painel-agrupamento-borda"
-      :class="[
-        classeFundoCinza,
-        classePadding,
-      ]"
-      :style="{minHeight: alturaMinima, maxHeight: alturaMaxima, overflow: alturaMaxima ? 'auto' : ''}"
+      :class="[classeFundoCinza, classePadding]"
+      :style="{
+        minHeight: alturaMinima,
+        maxHeight: alturaMaxima,
+        overflow: alturaMaxima ? 'auto' : ''
+      }"
     >
       <slot></slot>
     </div>
   </div>
 </template>
 <script lang="ts">
-import OverlineText from "../text/OverlineText.vue";
-import { PropType } from "vue";
+import OverlineText from '../text/OverlineText.vue'
+import { PropType } from 'vue'
 
-type MarginBottomType = "0" | "1" | "2" | "3" | "4" | "5" | "6";
+type MarginBottomType = '0' | '1' | '2' | '3' | '4' | '5' | '6'
 
 export default {
-  name: "BoxSection",
+  name: 'BoxSection',
   props: {
     titulo: {
-      type: String,
+      type: String
     },
     fundoCinza: {
       type: Boolean,
-      default: false,
+      default: false
     },
     padding: {
       type: String,
-      default: "2",
-      validator(value:string) {
-        return ["0", "1", "2", "3", "4", "5", "6"].includes(value);
-      },
+      default: '2',
+      validator(value: string) {
+        return ['0', '1', '2', '3', '4', '5', '6'].includes(value)
+      }
     },
     marginBottom: {
       type: String as PropType<MarginBottomType>,
-      default: "3",
+      default: '3'
     },
     alturaMaxima: {
       type: String,
@@ -54,26 +55,26 @@ export default {
       type: String,
       default: null,
       required: false
-    },
+    }
   },
   computed: {
     classeFundoCinza() {
-      if(this.fundoCinza) {
+      if (this.fundoCinza) {
         return 'painel-agrupamento-cinza'
       }
 
       return ''
     },
     classePadding() {
-      if(this.padding) {
+      if (this.padding) {
         return `p-${this.padding}`
       }
 
       return ''
-    },
+    }
   },
-  components: { OverlineText },
-};
+  components: { OverlineText }
+}
 </script>
 <style scoped>
 .titulo {

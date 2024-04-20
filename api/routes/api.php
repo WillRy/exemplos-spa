@@ -4,11 +4,9 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ContatoController;
 use App\Http\Controllers\Api\OrganizacaoController;
 use App\Http\Controllers\Api\TagController;
-use App\Service\Autenticacao;
 use App\Service\CustomCSRF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,8 +42,6 @@ Route::group(['middleware' => 'locale'], function () {
     Route::group(['middleware' => ['auth:api']], function () {
 
         Route::get('/usuario', [AuthController::class, 'usuarioLogado'])->name('usuarioLogado');
-
-
 
         Route::group(['prefix' => 'organizacao'], function () {
             Route::get('/', [OrganizacaoController::class, 'index'])->name('organizacao.index');

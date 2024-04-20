@@ -1,13 +1,13 @@
 <template>
- <div class="notfound">
-   <p>Página não encontrada</p>
-   <router-link to="/">Voltar</router-link>
- </div>
+  <div class="notfound">
+    <p>Página não encontrada</p>
+    <router-link to="/">Voltar</router-link>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "NaoEncontrado"
+  name: 'NaoEncontrado'
 }
 </script>
 

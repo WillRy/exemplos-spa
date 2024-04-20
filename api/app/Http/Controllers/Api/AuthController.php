@@ -20,14 +20,14 @@ class AuthController extends Controller
     {
         $dados = $request->validate([
             'email' => 'required|email',
-            'senha' => 'required'
+            'senha' => 'required',
         ]);
 
         try {
 
-            $token = Auth::guard("api")->attempt([
+            $token = Auth::guard('api')->attempt([
                 'email' => $dados['email'],
-                'senha' => $dados['senha']
+                'senha' => $dados['senha'],
             ]);
 
             if (empty($token)) {
@@ -40,9 +40,7 @@ class AuthController extends Controller
                 $user->id
             );
 
-
             return (new ResponseJSON())->setData($tokens)->setMessage('Bem vindo!')->render();
-
 
         } catch (\Exception $e) {
             return (new ResponseJSON())->setError($e)->render();
@@ -53,7 +51,7 @@ class AuthController extends Controller
     {
         $dados = $request->validate([
             'email' => 'required|email',
-            'url' => 'required|url'
+            'url' => 'required|url',
         ]);
 
         try {
@@ -68,14 +66,12 @@ class AuthController extends Controller
                 60 * 1
             );
 
-
             Mail::to($user->email)
                 ->send(new EnviaCodigoVerificadorResetSenha(
                     $token,
                     1,
                     $dados['url']
                 ));
-
 
             return (new ResponseJSON())->setMessage(__('custom.token_reset_senha_enviado'))->render();
 
@@ -93,11 +89,11 @@ class AuthController extends Controller
                 $number = preg_match('@[0-9]@', $value);
                 $specialChars = preg_match('@[^\w]@', $value);
 
-                if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($value) < 8) {
+                if (! $uppercase || ! $lowercase || ! $number || ! $specialChars || strlen($value) < 8) {
                     $fail(__('custom.validacao_senha_forte'));
                 }
             },
-            'token' => 'required'
+            'token' => 'required',
         ]);
 
         try {
@@ -115,7 +111,7 @@ class AuthController extends Controller
                 $dados['token']
             );
 
-            if (!$temTokenValido) {
+            if (! $temTokenValido) {
                 throw new \Exception(__('custom.token_reset_senha_invalido'), 403);
             }
 
@@ -123,7 +119,6 @@ class AuthController extends Controller
             $user->save();
 
             return (new ResponseJSON())->setMessage(__('custom.senha_redefinida'))->render();
-
 
         } catch (\Exception $e) {
             return (new ResponseJSON())->setError($e)->render();
@@ -150,14 +145,13 @@ class AuthController extends Controller
     public function refreshToken(Request $request)
     {
         try {
-            $refreshToken = $request->input("refresh_token") ?? Cookie::get('refresh_token');
+            $refreshToken = $request->input('refresh_token') ?? Cookie::get('refresh_token');
 
             if (empty($refreshToken)) {
-                throw new \Exception("Invalid refresh token!", 401);
+                throw new \Exception('Invalid refresh token!', 401);
             }
 
             $novoToken = (new Autenticacao())->refreshToken($refreshToken);
-
 
             return (new ResponseJSON())->setData($novoToken)->render();
         } catch (\Exception $e) {

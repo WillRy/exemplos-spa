@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -20,10 +19,9 @@ class EnviaCodigoVerificadorResetSenha extends Mailable
      */
     public function __construct(
         protected string $codigoVerificador,
-        protected int    $minutosParaExpirar,
+        protected int $minutosParaExpirar,
         protected string $url
-    )
-    {
+    ) {
         //
     }
 
@@ -46,7 +44,8 @@ class EnviaCodigoVerificadorResetSenha extends Mailable
      */
     public function content()
     {
-        $url = $this->url . "?token=" . $this->codigoVerificador;
+        $url = $this->url.'?token='.$this->codigoVerificador;
+
         return new Content(
             view: 'emails.reset_senha',
             with: [

@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Request;
 use Laravel\Sanctum\HasApiTokens;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
@@ -18,8 +16,7 @@ class Usuario extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-
-    protected $table = "usuarios";
+    protected $table = 'usuarios';
 
     protected $fillable = [
         'nome',
@@ -50,7 +47,6 @@ class Usuario extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Token::class, 'usuario_id', 'id');
     }
-
 
     public function logout()
     {

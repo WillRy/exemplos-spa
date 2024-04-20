@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('token_sessions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('usuarios')->onDelete("CASCADE");
+            $table->foreign('user_id')->references('id')->on('usuarios')->onDelete('CASCADE');
             $table->timestamps();
         });
     }

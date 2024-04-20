@@ -12,7 +12,7 @@
       </SidebarLink>
       <SidebarLink :to="{ name: 'organizacoes' }">
         <template #texto>
-          {{ $t("palavras.organizacoes") }}
+          {{ $t('palavras.organizacoes') }}
         </template>
         <template #icone>
           <OrganizacaoIcon />
@@ -20,7 +20,7 @@
       </SidebarLink>
       <SidebarLink :to="{ name: 'contatos' }">
         <template #texto>
-          {{ $t("palavras.contatos") }}
+          {{ $t('palavras.contatos') }}
         </template>
         <template #icone>
           <ContatoIcon />
@@ -28,7 +28,7 @@
       </SidebarLink>
       <SidebarLink :to="{ name: 'tags' }">
         <template #texto>
-          {{ $t("palavras.tags") }}
+          {{ $t('palavras.tags') }}
         </template>
         <template #icone>
           <TagIcon />
@@ -60,15 +60,15 @@
                 {{ usuarioState.usuario.nome }}
               </template>
               <template #acoes>
-                <button @click="logout">{{ $t("palavras.logout") }}</button>
+                <button @click="logout">{{ $t('palavras.logout') }}</button>
                 <button
                   :disabled="!usuarioState.temPermissao('botao')"
                   v-if="!usuarioState.temPermissao('botao')"
                 >
-                  {{ $t("textos.botao_sem_permissao") }}
+                  {{ $t('textos.botao_sem_permissao') }}
                 </button>
                 <button v-else>
-                  {{ $t("textos.botao_sem_permissao") }}
+                  {{ $t('textos.botao_sem_permissao') }}
                 </button>
               </template>
             </BaseDropdownPrimary>
@@ -78,7 +78,7 @@
     </Header>
 
     <HomeContainer>
-      <router-view key="privado" :key="$route.path"></router-view>
+      <router-view :key="$route.path"></router-view>
     </HomeContainer>
   </div>
 
@@ -88,33 +88,30 @@
 </template>
 
 <script>
-import Header from "../external/components/header/Header.vue";
-import Sidebar from "../external/components/sidebar/Sidebar.vue";
-import SidebarLink from "../external/components/sidebar/SidebarLink.vue";
-import HomeIcon from "../external/components/icons/HomeIcon.vue";
-import HomeContainer from "../external/components/estrutura/HomeContainer.vue";
-import { usuarioStore } from "../stores/usuario";
-import OrganizacaoIcon from "../components/icons/OrganizacaoIcon.vue";
-import ContatoIcon from "../components/icons/ContatoIcon.vue";
-import BaseDropdownPrimary from "../external/components/dropdown/BaseDropdownPrimary";
-import BaseButtonSecondary from "../external/components/buttons/BaseButtonSecondary";
-import BaseDropdownSecondary from "../external/components/dropdown/BaseDropdownSecondary";
-import TagIcon from "../components/icons/TagIcon";
-import api from "../services/api";
+import Header from '../external/components/header/Header.vue'
+import Sidebar from '../external/components/sidebar/Sidebar.vue'
+import SidebarLink from '../external/components/sidebar/SidebarLink.vue'
+import HomeIcon from '../external/components/icons/HomeIcon.vue'
+import HomeContainer from '../external/components/estrutura/HomeContainer.vue'
+import { usuarioStore } from '../stores/usuario'
+import OrganizacaoIcon from '../components/icons/OrganizacaoIcon.vue'
+import ContatoIcon from '../components/icons/ContatoIcon.vue'
+import BaseDropdownPrimary from '../external/components/dropdown/BaseDropdownPrimary'
+import BaseDropdownSecondary from '../external/components/dropdown/BaseDropdownSecondary'
+import TagIcon from '../components/icons/TagIcon'
+import api from '../services/api'
 import {
   modalCriarOrganizacaoStore,
   modalEditarOrganizacaoStore,
-  modalExcluirOrganizacaoStore,
-} from "../stores/organizacao";
-import { definirIdioma } from "../lang";
-import { emitter } from "../plugins";
+  modalExcluirOrganizacaoStore
+} from '../stores/organizacao'
+import { definirIdioma } from '../lang'
 
 export default {
-  name: "Privado",
+  name: 'Privado',
   components: {
     TagIcon,
     BaseDropdownSecondary,
-    BaseButtonSecondary,
     BaseDropdownPrimary,
     Sidebar,
     Header,
@@ -122,68 +119,67 @@ export default {
     HomeIcon,
     HomeContainer,
     OrganizacaoIcon,
-    ContatoIcon,
+    ContatoIcon
   },
   setup() {
-    const usuarioState = usuarioStore();
-    const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
-    const modalEditarOrganizacaoState = modalEditarOrganizacaoStore();
-    const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore();
+    const usuarioState = usuarioStore()
+    const modalCriarOrganizacaoState = modalCriarOrganizacaoStore()
+    const modalEditarOrganizacaoState = modalEditarOrganizacaoStore()
+    const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore()
     return {
       usuarioState,
       modalCriarOrganizacaoState,
       modalEditarOrganizacaoState,
-      modalExcluirOrganizacaoState,
-    };
+      modalExcluirOrganizacaoState
+    }
   },
   data() {
     return {
       loading: true,
       sidebarAberta: false,
-      qtdOrganizacoes: null,
-    };
+      qtdOrganizacoes: null
+    }
   },
   watch: {
-    "modalCriarOrganizacaoState.reload": {
+    'modalCriarOrganizacaoState.reload': {
       handler() {
-        this.buscarQuantidadeOrganizacoes();
-      },
+        this.buscarQuantidadeOrganizacoes()
+      }
     },
-    "modalEditarOrganizacaoState.reload": {
+    'modalEditarOrganizacaoState.reload': {
       handler() {
-        this.buscarQuantidadeOrganizacoes();
-      },
+        this.buscarQuantidadeOrganizacoes()
+      }
     },
-    "modalExcluirOrganizacaoState.reload": {
+    'modalExcluirOrganizacaoState.reload': {
       handler() {
-        this.buscarQuantidadeOrganizacoes();
-      },
-    },
+        this.buscarQuantidadeOrganizacoes()
+      }
+    }
   },
   methods: {
     mudarIdioma(lang) {
-      this.$i18n.locale = lang;
-      definirIdioma(lang);
+      definirIdioma(lang)
     },
     mudarSidebar() {
-      this.sidebarAberta = !this.sidebarAberta;
+      this.sidebarAberta = !this.sidebarAberta
     },
     logout() {
       this.$router.push({
-        name: "logout",
-      });
+        name: 'logout'
+      })
     },
     buscarQuantidadeOrganizacoes() {
-      api.get("/organizacao").then((r) => {
-        this.qtdOrganizacoes = r.data.data.total;
-      });
-    },
+      api.get('/organizacao').then((r) => {
+        this.qtdOrganizacoes = r.data.data.total
+      })
+    }
   },
   async created() {
-    this.buscarQuantidadeOrganizacoes();
-    this.loading = false;
-  },
-};
+    this.buscarQuantidadeOrganizacoes()
+    this.loading = false
+  }
+}
 </script>
 
 <style>

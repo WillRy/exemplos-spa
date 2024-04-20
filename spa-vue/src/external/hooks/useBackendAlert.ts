@@ -39,10 +39,7 @@ function descobrirDadosBackend(e: any) {
   return data
 }
 
-function descobrirMensagem(
-  e: any,
-  defaultMessage: string | null = null
-) {
+function descobrirMensagem(e: any, defaultMessage: string | null = null) {
   let response: AxiosResponse<any> | undefined | null
 
   const data: jsonBackend | null = descobrirDadosBackend(e)
@@ -72,11 +69,7 @@ function descobrirMensagem(
 export function useBackendAlert() {
   const alertState = useAlertStore()
 
-  function backendAlertError(
-    e: any,
-    message: string | null,
-    objAlert: alertParams = {}
-  ) {
+  function backendAlertError(e: any, message: string | null, objAlert: alertParams = {}) {
     const mensagem = descobrirMensagem(e, message)
 
     if (mensagem) {
@@ -89,11 +82,7 @@ export function useBackendAlert() {
     return getFormError(e)
   }
 
-  function backendAlertSuccess(
-    e: any,
-    message = null,
-    objAlert: alertParams = {}
-  ) {
+  function backendAlertSuccess(e: any, message = null, objAlert: alertParams = {}) {
     const mensagem = descobrirMensagem(e, message)
 
     if (mensagem) {

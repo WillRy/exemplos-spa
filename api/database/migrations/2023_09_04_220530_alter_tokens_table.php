@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::table('token_autenticacao', function (Blueprint $table) {
             $table->unsignedBigInteger('id_token_session');
-            $table->foreign('id_token_session')->references('id')->on('token_sessions')->onDelete("CASCADE");
+            $table->foreign('id_token_session')->references('id')->on('token_sessions')->onDelete('CASCADE');
         });
         Schema::table('refresh_token', function (Blueprint $table) {
             $table->unsignedBigInteger('id_token_session');
-            $table->foreign('id_token_session')->references('id')->on('token_sessions')->onDelete("CASCADE");
+            $table->foreign('id_token_session')->references('id')->on('token_sessions')->onDelete('CASCADE');
         });
     }
 

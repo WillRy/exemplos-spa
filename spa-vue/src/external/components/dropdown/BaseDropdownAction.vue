@@ -1,11 +1,6 @@
 <template>
   <div class="dropdown-action-container">
-    <VDropdown
-      :triggers="[]"
-      :shown="open"
-      :distance="4"
-      placement="bottom"
-    >
+    <VDropdown :triggers="[]" :shown="open" :distance="4" placement="bottom">
       <button
         class="dropdown-acoes-btn"
         :class="{ 'disabled-btn': disabled }"
@@ -17,11 +12,7 @@
 
       <!-- This will be the content of the popover -->
       <template #popper>
-        <div
-          v-click-away="() => (open = false)"
-          class="dropdown-acoes"
-          @click.stop="toggle"
-        >
+        <div v-click-away="() => (open = false)" class="dropdown-acoes" @click.stop="toggle">
           <slot></slot>
         </div>
       </template>
@@ -30,38 +21,38 @@
 </template>
 
 <script lang="ts">
-import { Dropdown } from "floating-vue";
-import { directive } from "../../directives/click-away";
-import DotsIcon from "../icons/DotsIcon.vue";
+import { Dropdown } from 'floating-vue'
+import { directive } from '../../directives/click-away'
+import DotsIcon from '../icons/DotsIcon.vue'
 
 export default {
-  name: "DropdownAcoes",
+  name: 'DropdownAcoes',
   props: {
     disabled: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   components: {
     VDropdown: Dropdown,
-    DotsIcon,
+    DotsIcon
   },
   directives: {
-    "click-away": directive,
+    'click-away': directive
   },
   data() {
     return {
-      open: false,
-    };
+      open: false
+    }
   },
   methods: {
     toggle() {
-      if (this.disabled) return;
+      if (this.disabled) return
 
-      this.open = !this.open;
-    },
-  },
-};
+      this.open = !this.open
+    }
+  }
+}
 </script>
 
 <style scoped>

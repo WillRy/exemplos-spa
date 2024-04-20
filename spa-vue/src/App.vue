@@ -3,30 +3,26 @@
 </template>
 
 <script setup>
-import { useHead } from "@unhead/vue";
-import { onMounted } from "vue";
-import { RouterView } from "vue-router";
+import { useHead } from '@unhead/vue'
+import { RouterView } from 'vue-router'
 useHead({
-  title: "CRM",
+  title: 'CRM',
   meta: [
     {
-      name: "og:image",
-      content: "/thumb.png",
-      itemprop: "image"
+      name: 'og:image',
+      content: '/thumb.png',
+      itemprop: 'image'
     },
     {
-      name: "og:title",
-      content: "CRM",
+      name: 'og:title',
+      content: 'CRM'
     },
     {
-      name: "og:description",
-      content: "CRM",
-    },
-  ],
-});
-
-
-
+      name: 'og:description',
+      content: 'CRM'
+    }
+  ]
+})
 </script>
 
 <style>
@@ -42,7 +38,8 @@ useHead({
 }
 
 #nprogress .peg {
-  box-shadow: 0 0 10px var(--warning-color-700),
+  box-shadow:
+    0 0 10px var(--warning-color-700),
     0 0 5px var(--warning-color-700) !important;
 }
 

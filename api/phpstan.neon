@@ -1,0 +1,22 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    reportUnmatchedIgnoredErrors: false
+    paths:
+        - app/
+
+    # Level 9 is the highest level
+    level: 5
+
+    ignoreErrors:
+        - '#^Access to an undefined property App\\Models\\[a-zA-Z0-9::a-zA-Z]#'
+        - '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model#'
+        - '#^Access to an undefined property Illuminate\\Contracts\\Auth\\Authenticatable#'
+        - '#^Method App\\Http\\Middleware\\Authenticate::authenticate\(\) with return type void returns null but should not return anything#'
+        - '#^Result of method Illuminate\\Contracts\\Auth\\Factory::shouldUse\(\) #'
+
+    excludePaths:
+
+#
+#    checkMissingIterableValueType: false

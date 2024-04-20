@@ -4,42 +4,81 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class Locale
 {
+    public $idiomaPadrao = 'pt-BR';
 
+    public static $idiomasSuportados = ['pt-BR', 'en'];
+
+    public static function formataIdiomaPadraoLaravel(string $idioma)
+    {
+        return str_replace('-', '_', $idioma);
+    }
+
+    public static function verificaIdiomaSuportado(string $idioma)
+    {
+         // Normaliza o valor procurado substituindo hífen por sublinhado e vice-versa
+        $valorProcuradoNormalizado = str_replace(['-', '_'], '_', $idioma);
+
+        foreach (self::$idiomasSuportados as $valor) {
+            // Normaliza o valor atual do array
+            $valorNormalizado = str_replace(['-', '_'], '_', $valor);
+
+            // Compara os valores normalizados
+            if ($valorNormalizado === $valorProcuradoNormalizado) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     /**
      * Descobrir qual o idioma que o browser aceita ou client da API informou que deseja receber
      */
     public function handle(Request $request, Closure $next)
     {
-        $idiomasSuportados = ['pt_BR','en'];
+        $session = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? config('app.locale') ?? "pt-BR";
 
-        $httpAcceptLanguage = !empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : "en";
+        //verifica se tem idioma salvo na sessão, se não pega do browser
+        if (!empty($session)) {
+            $httpAcceptLanguage = $session;
+        } else {
+            $httpAcceptLanguage = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? config('app.locale') ?? "pt-BR";
+        }
+
 
         $languages = explode(',', $httpAcceptLanguage);
         $result = [];
         foreach ($languages as $language) {
             $lang = explode(';q=', $language);
-            // $lang == [language, weight], default weight = 1
             $result[$lang[0]] = isset($lang[1]) ? floatval($lang[1]) : 1;
         }
 
         arsort($result);
 
-       $primeiroIdiomaSuportado = !empty($result) ? str_replace('-','_', array_key_first($result)) : 'en';
+        $primeiroIdiomaSuportado = array_key_first($result);
 
+        $idiomaFinal = null;
 
-        if(!in_array($primeiroIdiomaSuportado, $idiomasSuportados)) {
-            app()->setLocale('en');
-        } else if(empty($primeiroIdiomaSuportado)){
-            app()->setLocale('en');
+        if (!self::verificaIdiomaSuportado($primeiroIdiomaSuportado)) { //se idioma não é suportado
+            $idiomaFinal = $this->idiomaPadrao;
+        } elseif (empty($primeiroIdiomaSuportado)) { //se idioma não é identificado no browser
+            $idiomaFinal = $this->idiomaPadrao;
         } else {
-            app()->setLocale($primeiroIdiomaSuportado);
+            $idiomaFinal = $primeiroIdiomaSuportado;
+        }
+
+        $idiomaNoFormatoLaravel = self::formataIdiomaPadraoLaravel($idiomaFinal);
+
+        app()->setLocale($idiomaNoFormatoLaravel);
+
+        if (Session::isStarted()) {
+            Session::put('lang', app()->getLocale());
         }
 
         return $next($request);
     }
-
 }

@@ -7,19 +7,17 @@ use App\Http\Requests\CriarTagRequest;
 use App\Http\Requests\EditarTagRequest;
 use App\Models\Tag;
 use App\Service\ResponseJSON;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
-
     public function index(Request $request)
     {
         try {
             $tags = (new Tag())->pesquisar(
-                $request->input("pesquisa", ''),
-                $request->input("sortName", "id"),
-                $request->input("sortOrder", "desc")
+                $request->input('pesquisa', ''),
+                $request->input('sortName', 'id'),
+                $request->input('sortOrder', 'desc')
             );
 
             return (new ResponseJSON())->setData($tags)->render();
@@ -68,7 +66,6 @@ class TagController extends Controller
             if (empty($tag)) {
                 throw new \Exception(__('custom.tag_inexistente'), 404);
             }
-
 
             $tag->fill($dados);
             $tag->save();

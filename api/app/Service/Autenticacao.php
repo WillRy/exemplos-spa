@@ -7,18 +7,19 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
+use PHPOpenSourceSaver\JWTAuth\JWTGuard;
 use stdClass;
 
 class Autenticacao
 {
     // usado para gerar graceful period do token
     const SEGUNDOS_TOLERANCIA_REFRESH = 30;
+
     const SEGUNDOS_ACCESS_TOKEN_VALIDO = 3600; //1 hour
+
     const SEGUNDOS_REFRESH_TOKEN_VALIDO = 25200; //7 hours
+
     const SEGUNDOS_RETORNAR_TOKENS_AINDA_VALIDOS = 300; //5 minutes
-
-
-
 
     /**
      * Gerar token JWT de autenticação
@@ -27,9 +28,10 @@ class Autenticacao
         int $idUsuario,
         int $sessionId
     ): string {
-        return auth('api')->setTTL(60)->claims(['session_id' => $sessionId])->tokenById($idUsuario);
+        /** @var JWTGuard $authapi */
+        $authapi = auth('api');
+        return $authapi->setTTL(60)->claims(['session_id' => $sessionId])->tokenById($idUsuario);
     }
-
 
     /**
      * Gerar o refresh token no modelo opaco
@@ -44,10 +46,9 @@ class Autenticacao
         setcookie($name, $value, [
             'expires' => $forceExpire ? time() - 3600 : null,
             'path' => '/',
-            'domain' => null,
             'secure' => true,
             'httponly' => $httpOnly,
-            'samesite' => 'Lax'
+            'samesite' => 'Lax',
         ]);
     }
 
@@ -60,14 +61,14 @@ class Autenticacao
         int $idUsuario
     ): stdClass {
 
-        $idTokenSession = DB::table("token_sessions")->insertGetId([
+        $idTokenSession = DB::table('token_sessions')->insertGetId([
             'user_id' => $idUsuario,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
         $tokensGerados = new \stdClass();
-        $tokensGerados->session = DB::table("token_sessions")->where('id', $idTokenSession)->first();
+        $tokensGerados->session = DB::table('token_sessions')->where('id', $idTokenSession)->first();
         $tokensGerados->token = $this->gerarTokenJwt($idUsuario, $idTokenSession);
         $tokensGerados->refresh_token = $this->gerarRefreshToken();
 
@@ -76,7 +77,7 @@ class Autenticacao
                 'id_token_session' => $idTokenSession,
                 'usuario_id' => $idUsuario,
                 'token' => $tokensGerados->refresh_token,
-                'token_expiracao' => date('Y-m-d H:i:s', strtotime("+" . self::SEGUNDOS_REFRESH_TOKEN_VALIDO . "seconds")),
+                'token_expiracao' => date('Y-m-d H:i:s', strtotime('+'.self::SEGUNDOS_REFRESH_TOKEN_VALIDO.'seconds')),
             ]);
 
         DB::table('token_autenticacao')
@@ -84,8 +85,8 @@ class Autenticacao
                 'id_token_session' => $idTokenSession,
                 'usuario_id' => $idUsuario,
                 'token' => $tokensGerados->token,
-                'token_expiracao' => date('Y-m-d H:i:s', strtotime("+" . self::SEGUNDOS_ACCESS_TOKEN_VALIDO . "seconds")),
-                'refresh_id' => $refreshId
+                'token_expiracao' => date('Y-m-d H:i:s', strtotime('+'.self::SEGUNDOS_ACCESS_TOKEN_VALIDO.'seconds')),
+                'refresh_id' => $refreshId,
             ]);
 
         $this->setCookie('token', $tokensGerados->token);
@@ -100,15 +101,15 @@ class Autenticacao
     public function isLogged(string $token): bool
     {
         $isTokenValid = $this->tokenValido($token);
-        $isCSRFValid = true;
 
-        return $isTokenValid && $isCSRFValid;
+        return $isTokenValid;
     }
 
     public function payloadToken(string $token): ?stdClass
     {
         $jwtParts = explode('.', $token);
         $jwtPayload = base64_decode($jwtParts[1]);
+
         return json_decode($jwtPayload);
     }
 
@@ -121,15 +122,15 @@ class Autenticacao
         $payload = $this->payloadToken($token);
 
         $token = DB::table('token_autenticacao')
-            ->selectRaw("
+            ->selectRaw('
                 *,
                 (token_expiracao < ?) as expirado
-                ", [now()])
+                ', [now()])
             ->where('id_token_session', '=', $payload->session_id)
             ->where('token', '=', $token)
             ->first();
 
-        $tokenValido = !empty($token) && $token->expirado  === 0;
+        $tokenValido = ! empty($token) && $token->expirado === 0;
 
         return $tokenValido;
     }
@@ -142,9 +143,9 @@ class Autenticacao
         $jwtParts = explode('.', $token);
         $jwtPayload = base64_decode($jwtParts[1]);
         $payload = json_decode($jwtPayload);
+
         return $payload->exp ? \DateTimeImmutable::createFromFormat('U', $payload->exp)->format('Y-m-d H:i:s') : null;
     }
-
 
     /**
      * Realiza o processo de refresh token, contemplando:
@@ -153,25 +154,24 @@ class Autenticacao
      * - Geração de novo refresh token
      * - Inativação do token antigo
      * - Inativação do refresh token antigo
-     *
      */
     public function refreshToken(
         string $refreshToken
     ): stdClass {
         $this->removerTokensExpirados();
 
-        $informacaoToken = DB::table("refresh_token")
-            ->selectRaw("
+        $informacaoToken = DB::table('refresh_token')
+            ->selectRaw('
               *,
               (token_expiracao < ?) as expirado
-              ", [now()])
+              ', [now()])
             ->where('token', '=', $refreshToken)
             ->first();
 
-        $refreshTokenValido = !empty($informacaoToken) && $informacaoToken->expirado === 0;
+        $refreshTokenValido = ! empty($informacaoToken) && $informacaoToken->expirado === 0;
 
-        if (!$refreshTokenValido) {
-            throw new \Exception("Invalid refresh token");
+        if (! $refreshTokenValido) {
+            throw new \Exception('Invalid refresh token');
         }
 
         $idTokenSession = $informacaoToken->id_token_session;
@@ -184,8 +184,7 @@ class Autenticacao
 
             $tokensGerados->refresh_token = $this->gerarRefreshToken();
 
-            $expiracaoRefreshToken = date('Y-m-d H:i:s', strtotime("+7hour"));
-
+            $expiracaoRefreshToken = date('Y-m-d H:i:s', strtotime('+7hour'));
 
             $refreshTokenId = DB::table('refresh_token')
                 ->insertGetId([
@@ -193,7 +192,7 @@ class Autenticacao
                     'usuario_id' => $informacaoToken->usuario_id,
                     'token' => $tokensGerados->refresh_token,
                     'token_expiracao' => $expiracaoRefreshToken,
-                    'refresh_id_pai' =>  $informacaoToken->id
+                    'refresh_id_pai' => $informacaoToken->id,
                 ]);
         } else {
             $tokensGerados->refresh_token = $tokenFilhoValido->token;
@@ -203,14 +202,13 @@ class Autenticacao
         $tokensGerados->token = $this->gerarTokenJwt($informacaoToken->usuario_id, $idTokenSession);
         $expiracaoToken = $this->retornaExpiracaoToken($tokensGerados->token);
 
-
         DB::table('token_autenticacao')
             ->insert([
                 'id_token_session' => $idTokenSession,
                 'usuario_id' => $informacaoToken->usuario_id,
                 'token' => $tokensGerados->token,
                 'token_expiracao' => $expiracaoToken,
-                'refresh_id' => $refreshTokenId
+                'refresh_id' => $refreshTokenId,
             ]);
 
         if (empty($informacaoToken->usado_em)) {
@@ -225,13 +223,11 @@ class Autenticacao
                 ]);
         }
 
-
         $this->setCookie('token', $tokensGerados->token);
         $this->setCookie('refresh_token', $tokensGerados->refresh_token);
 
         return $tokensGerados;
     }
-
 
     /**
      * Faz logout do usuário com base em um token
@@ -246,9 +242,11 @@ class Autenticacao
             return false;
         }
 
-        return DB::table('token_sessions')
+        DB::table('token_sessions')
             ->where('id', '=', $token->id_token_session)
             ->delete();
+
+        return true;
     }
 
     /**
@@ -260,12 +258,10 @@ class Autenticacao
 
         $token = Request::bearerToken() ?? Cookie::get('token');
 
-
         //set cookie lax
         $this->setCookie('token', '', true);
         $this->setCookie('refresh_token', '', true);
         $this->setCookie(CustomCSRF::$cookieName, '', true);
-
 
         if ($token) {
             $this->excluirLoginPorToken($token);
@@ -274,22 +270,22 @@ class Autenticacao
 
     public function removerTokensExpirados(): void
     {
-        DB::table("refresh_token")
+        DB::table('refresh_token')
             ->whereRaw('(token_expiracao < ?)', [now()])
             ->delete();
 
-        DB::table("token_autenticacao")
+        DB::table('token_autenticacao')
             ->whereRaw('(token_expiracao < ?)', [now()])
             ->delete();
     }
 
     public function removerTokensPorSession(int $tokenSessionId): void
     {
-        DB::table("refresh_token")
+        DB::table('refresh_token')
             ->where('id_token_session', '=', $tokenSessionId)
             ->delete();
 
-        DB::table("token_autenticacao")
+        DB::table('token_autenticacao')
             ->where('id_token_session', '=', $tokenSessionId)
             ->delete();
     }

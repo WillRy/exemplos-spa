@@ -1,18 +1,12 @@
 <template>
-<div v-html="$route.query.teste">
-
-</div>
+  <div v-html="$route.query.teste"></div>
 </template>
 
 <script>
 export default {
-    name: "Dashboard",
-    created() {
-
-    }
+  name: 'Dashboard',
+  created() {}
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

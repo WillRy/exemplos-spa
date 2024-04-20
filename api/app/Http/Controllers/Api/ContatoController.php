@@ -15,10 +15,10 @@ class ContatoController extends \App\Http\Controllers\Controller
     {
         try {
             $contatos = (new Contato())->pesquisar(
-                $request->input("pesquisa", null),
-                $request->input("empresa_id", null),
-                $request->input("sortName", "id"),
-                $request->input("sortOrder", "desc")
+                $request->input('pesquisa', null),
+                $request->input('empresa_id', null),
+                $request->input('sortName', 'id'),
+                $request->input('sortOrder', 'desc')
             );
 
             return (new ResponseJSON())->setData($contatos)->render();
@@ -31,14 +31,13 @@ class ContatoController extends \App\Http\Controllers\Controller
     public function show(Request $request, int $id)
     {
         try {
-            $organizacaoExiste = Contato::with("organizacao")->find($id);
+            $organizacaoExiste = Contato::with('organizacao')->find($id);
 
             if (empty($organizacaoExiste)) {
                 throw new \Exception(__('custom.contato_inexistente'), 404);
             }
 
             return (new ResponseJSON())->setData($organizacaoExiste)->render();
-
 
         } catch (\Exception $e) {
             return (new ResponseJSON())->setError($e)->render();
@@ -54,7 +53,6 @@ class ContatoController extends \App\Http\Controllers\Controller
             $organizacao = (new Contato())->criar($dados);
 
             return (new ResponseJSON())->setData($organizacao)->setMessage(__('custom.contato_criado_com_sucesso'))->render();
-
 
         } catch (\Exception $e) {
             return (new ResponseJSON())->setError($e)->render();
@@ -76,7 +74,6 @@ class ContatoController extends \App\Http\Controllers\Controller
 
             return (new ResponseJSON())->setData($organizacao)->setMessage(__('custom.contato_editado_com_sucesso'))->render();
 
-
         } catch (\Exception $e) {
             return (new ResponseJSON())->setError($e)->render();
         }
@@ -89,13 +86,11 @@ class ContatoController extends \App\Http\Controllers\Controller
 
             if (empty($organizacaoExiste)) {
                 throw new Exception(__('custom.contato_inexistente'), 404);
-
             }
 
             (new Contato())->deletar($id);
 
             return (new ResponseJSON())->setData([])->setMessage(__('custom.contato_excluido_com_sucesso'))->render();
-
 
         } catch (\Exception $e) {
             return (new ResponseJSON())->setError($e)->render();

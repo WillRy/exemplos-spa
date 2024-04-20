@@ -8,7 +8,7 @@
       <ul>
         <li>
           <a @click="logout">
-            {{ $t("palavras.logout") }}
+            {{ $t('palavras.logout') }}
           </a>
         </li>
         <li>
@@ -16,10 +16,10 @@
             :disabled="!usuarioState.temPermissao('botao')"
             v-if="!usuarioState.temPermissao('botao')"
           >
-            {{ $t("textos.botao_sem_permissao") }}
+            {{ $t('textos.botao_sem_permissao') }}
           </button>
-          <button v-else="usuarioState.temPermissao('botao')">
-            {{ $t("textos.botao_sem_permissao") }}
+          <button v-else>
+            {{ $t('textos.botao_sem_permissao') }}
           </button>
         </li>
       </ul>
@@ -28,37 +28,37 @@
 </template>
 
 <script>
-import { usuarioStore } from "../../stores/usuario";
+import { usuarioStore } from '../../stores/usuario'
 
 export default {
-  name: "DropdownHeader",
+  name: 'DropdownHeader',
   setup() {
-    const usuarioState = usuarioStore();
+    const usuarioState = usuarioStore()
     return {
-      usuarioState,
-    };
+      usuarioState
+    }
   },
   data() {
     return {
-      aberto: false,
-    };
+      aberto: false
+    }
   },
   methods: {
     toggle() {
-      this.aberto = !this.aberto;
+      this.aberto = !this.aberto
     },
 
     clickFora() {
-      this.aberto = false;
+      this.aberto = false
     },
     logout() {
-      window.localStorage.removeItem("token");
+      window.localStorage.removeItem('token')
       this.$router.push({
-        path: "/",
-      });
-    },
-  },
-};
+        path: '/'
+      })
+    }
+  }
+}
 </script>
 
 <style scoped>

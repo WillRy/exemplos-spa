@@ -1,25 +1,25 @@
 <template>
-    <component :is="is" :class="[size,'heading-text']">
-        <slot></slot>
-    </component>
+  <component :is="is" :class="[size, 'heading-text']">
+    <slot></slot>
+  </component>
 </template>
 
 <script lang="ts">
 export default {
-    name: "InteractionText",
-    props: {
-        is: {
-            type: String,
-            default: 'p'
-        },
-        size: {
-            type: String,
-            default: 'sm',
-            validator(value: string) {
-                return ["sm", "md", "lg"].includes(value);
-            }
-        },
+  name: 'InteractionText',
+  props: {
+    is: {
+      type: String,
+      default: 'p'
+    },
+    size: {
+      type: String,
+      default: 'sm',
+      validator(value: string) {
+        return ['sm', 'md', 'lg'].includes(value)
+      }
     }
+  }
 }
 </script>
 
@@ -30,20 +30,20 @@ export default {
 }
 
 .lg {
-    font-weight: 500;
-    font-size: 1rem;
-    line-height: 1.5rem;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 
 .md {
-    font-weight: 500;
-    font-size: 0.875rem;
-    line-height: 1.0063rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.0063rem;
 }
 
 .sm {
-    font-weight: 500;
-    font-size: 0.75rem;
-    line-height: 0.9975rem;
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 0.9975rem;
 }
 </style>

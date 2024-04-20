@@ -35,12 +35,12 @@ class CriarTagRequest extends FormRequest
         return [
             'nome' => 'required|max:255|unique:tags,nome',
             'cor_fundo' => ['required', 'max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i', $value)) {
+                if (! preg_match('/#([a-f0-9]{3}){1,2}\b/i', $value)) {
                     $fail(__('cor_fundo_invalida'));
                 }
             }],
             'cor_texto' => ['required', 'max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/#([a-f0-9]{3}){1,2}\b/i', $value)) {
+                if (! preg_match('/#([a-f0-9]{3}){1,2}\b/i', $value)) {
                     $fail(__('cor_texto_invalida'));
                 }
             }],

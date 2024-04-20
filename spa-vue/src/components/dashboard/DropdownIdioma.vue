@@ -7,14 +7,10 @@
     <div class="dropdown-header-corpo" :class="{ aberto: aberto }">
       <ul>
         <li>
-          <button @click="mudarIdioma('pt-BR')">
-            Português
-          </button>
+          <button @click="mudarIdioma('pt-BR')">Português</button>
         </li>
         <li>
-          <button @click="mudarIdioma('en')">
-            Inglês
-          </button>
+          <button @click="mudarIdioma('en')">Inglês</button>
         </li>
       </ul>
     </div>
@@ -22,29 +18,28 @@
 </template>
 
 <script>
-import { usuarioStore } from "../../stores/usuario";
-import {i18n} from '../../lang/index'
+import { usuarioStore } from '../../stores/usuario'
 
 export default {
-  name: "DropdownIdioma",
+  name: 'DropdownIdioma',
   setup() {
-    const usuarioState = usuarioStore();
+    const usuarioState = usuarioStore()
     return {
-      usuarioState,
-    };
+      usuarioState
+    }
   },
   data() {
     return {
-      aberto: false,
-    };
+      aberto: false
+    }
   },
   methods: {
     toggle() {
-      this.aberto = !this.aberto;
+      this.aberto = !this.aberto
     },
 
     clickFora() {
-      this.aberto = false;
+      this.aberto = false
     },
     mudarIdioma(lang) {
       // const route = this.$router.resolve({
@@ -54,16 +49,14 @@ export default {
       // });
       // window.location.href = route.fullPath;
 
-
       this.$router.push({
         params: {
           lang: lang
         }
-      });
-      
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 
 <style scoped>

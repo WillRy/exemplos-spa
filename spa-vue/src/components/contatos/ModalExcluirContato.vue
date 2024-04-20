@@ -1,15 +1,14 @@
 <template>
-  <BaseModal
-    :aberta="contato"
-    @onClose="fecharModal"
-    @onOpen="carregarFormulario"
-  >
+  <BaseModal :aberta="contato" @onClose="fecharModal" @onOpen="carregarFormulario">
     <template #title>
-      <h3>{{ $t("textos.exclusao_contato") }}</h3>
+      <h3>{{ $t('textos.exclusao_contato') }}</h3>
     </template>
     <template #body>
       <Loader width="60px" height="60px" :cor-principal="true" v-if="loadingDados"></Loader>
-      <p v-else>{{ $t('textos.confirmar_excluir_contato') }} <strong>{{contato.nome}}</strong>?</p>
+      <p v-else>
+        {{ $t('textos.confirmar_excluir_contato') }} <strong>{{ contato.nome }}</strong
+        >?
+      </p>
     </template>
     <template #footerDireito>
       <BaseButtonTertiary @click.prevent="fecharModal">
@@ -23,14 +22,13 @@
 </template>
 
 <script setup>
-
-import api from "../../services/api";
-import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
-import BaseModal from "../../external/components/modal/BaseModal";
-import BaseButtonDanger from "../../external/components/buttons/BaseButtonDanger";
-import { ref } from 'vue';
-import { useI18n } from "vue-i18n";
-import { useBackendToast } from "../../external/hooks/useBackendToast";
+import api from '../../services/api'
+import BaseButtonTertiary from '../../external/components/buttons/BaseButtonTertiary'
+import BaseModal from '../../external/components/modal/BaseModal'
+import BaseButtonDanger from '../../external/components/buttons/BaseButtonDanger'
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useBackendToast } from '../../external/hooks/useBackendToast'
 
 const props = defineProps({
   contato: {
@@ -39,44 +37,34 @@ const props = defineProps({
   }
 })
 
-const $emit = defineEmits(["onClose","onReload"]);
+const $emit = defineEmits(['onClose', 'onReload'])
 
-const { t: $t } = useI18n();
-const { backendToastError } = useBackendToast();
+const { t: $t } = useI18n()
+const { backendToastError } = useBackendToast()
 
+const loading = ref(false)
+const loadingDados = ref(false)
 
-const loading = ref(false);
-const loadingDados = ref(false);
+const carregarFormulario = async function () {}
 
-
-const carregarFormulario = async function() {
-
+const fecharModal = function () {
+  $emit('onClose')
 }
 
-const fecharModal = function() {
-	$emit("onClose");
-}
+const submit = async function () {
+  try {
+    loading.value = true
+    await api.delete(`/contato/${props.contato.id}`)
 
-const submit = async function() {
-	try {
-		loading.value = true;
-		await api.delete(`/contato/${props.contato.id}`);
+    fecharModal()
 
-		fecharModal();
-
-		$emit('onReload');
-
-	} catch (e) {
+    $emit('onReload')
+  } catch (e) {
     backendToastError(e, $t('textos.erro_excluir_contato'))
-	} finally {
-		loading.value = false;
-	}
+  } finally {
+    loading.value = false
+  }
 }
-
-
-
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

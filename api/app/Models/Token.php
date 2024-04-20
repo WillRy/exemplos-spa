@@ -4,9 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
-use Psy\Util\Str;
 
 class Token extends Model
 {
@@ -15,12 +12,12 @@ class Token extends Model
     protected $fillable = [
         'token',
         'expira_em',
-        'usuario_id'
+        'usuario_id',
     ];
 
-    protected $table = "tokens";
+    protected $table = 'tokens';
 
-    public function usuario()
+    public function usuario(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Usuario::class, 'usuario_id', 'id');
     }
@@ -43,7 +40,7 @@ class Token extends Model
         $criado = self::create([
             'token' => \Illuminate\Support\Str::random(16),
             'usuario_id' => $idUsuario,
-            'expira_em' => date('Y-m-d H:i:s', strtotime("+{$segundos}seconds"))
+            'expira_em' => date('Y-m-d H:i:s', strtotime("+{$segundos}seconds")),
         ]);
 
         return $criado->token;

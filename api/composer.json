@@ -19,7 +19,8 @@
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.0",
         "phpunit/phpunit": "^10.5",
-        "spatie/laravel-ignition": "^2.4"
+        "spatie/laravel-ignition": "^2.4",
+        "larastan/larastan": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -34,6 +35,8 @@
         }
     },
     "scripts": {
+        "cs": "./vendor/bin/pint",
+        "qualidade": "./vendor/bin/phpstan analyse --memory-limit 2G",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

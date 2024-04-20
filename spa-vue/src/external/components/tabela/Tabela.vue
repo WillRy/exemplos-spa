@@ -6,7 +6,7 @@
         loading: loading,
         listras: listras,
         auto: tableLayout === 'auto',
-        fixed: tableLayout === 'fixed',
+        fixed: tableLayout === 'fixed'
       }"
     >
       <thead>
@@ -46,85 +46,85 @@
 </template>
 
 <script lang="ts">
-import HeadSort from "./HeadSort.vue";
-import Loader from "../Loader.vue";
-import { PropType } from "vue";
+import HeadSort from './HeadSort.vue'
+import Loader from '../Loader.vue'
+import { PropType } from 'vue'
 
 interface Coluna {
-  nome: string;
-  texto: string;
-  disabled?: boolean;
-  info?: string;
+  nome: string
+  texto: string
+  disabled?: boolean
+  info?: string
 }
 
-type TabelaLayout = "auto" | "fixed";
+type TabelaLayout = 'auto' | 'fixed'
 
-type Colunas = Array<Coluna>;
+type Colunas = Array<Coluna>
 
 export default {
-  name: "Tabela",
+  name: 'Tabela',
   components: { Loader, HeadSort },
   props: {
     responsive: {
       type: Boolean,
-      default: true,
+      default: true
     },
     listras: {
       type: Boolean,
-      default: true,
+      default: true
     },
     textoEmpty: {
       type: String,
-      default: "Não há dados",
+      default: 'Não há dados'
     },
     loading: {
       type: Boolean,
-      default: false,
+      default: false
     },
     colunas: {
       type: Array as PropType<Colunas>,
-      default: () => [],
+      default: () => []
     },
     dados: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     total: {
       type: Number,
-      default: 0,
+      default: 0
     },
     perPage: {
       type: Number,
-      default: 10,
+      default: 10
     },
     sortName: {
       type: String,
-      default: null,
+      default: null
     },
     sortOrder: {
       type: String,
-      default: "asc",
+      default: 'asc'
     },
     checkbox: {
       type: Boolean,
-      default: false,
+      default: false
     },
     tableLayout: {
       type: String as PropType<TabelaLayout>,
-      default: "auto",
-    },
+      default: 'auto'
+    }
   },
   data() {
     return {
-      checkedAll: false,
-    };
+      checkedAll: false
+    }
   },
   methods: {
     sortBy(dadosOrdenacao) {
-      this.$emit("onSort", dadosOrdenacao);
-    },
-  },
-};
+      this.$emit('onSort', dadosOrdenacao)
+    }
+  }
+}
 </script>
 
 <style scoped>

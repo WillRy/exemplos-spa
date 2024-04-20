@@ -21,30 +21,25 @@ class CustomCSRF
 
     public static $hash = '';
 
-
     public function __construct()
     {
-        $this->generateCSRF();
+        $this->iniciarCSRF();
     }
-
 
     public function setCookie(string $name, string $value, bool $forceExpire = false, bool $httpOnly = true)
     {
         setcookie($name, $value, [
             'expires' => $forceExpire ? time() - 3600 : time() + 3600,
             'path' => '/',
-            'domain' => null,
             'secure' => true,
             'httponly' => $httpOnly,
-            'samesite' => 'Lax'
+            'samesite' => 'Lax',
         ]);
     }
 
-
-
     public function sessionIsStarted()
     {
-        if (!Session::isStarted()) {
+        if (! Session::isStarted()) {
             return Session::start();
         }
 
@@ -62,6 +57,7 @@ class CustomCSRF
 
         $random = Str::random(60);
         session()->put('unique_token', $random);
+
         return $random;
     }
 
@@ -70,21 +66,20 @@ class CustomCSRF
         return isset($_SERVER['HTTP_ORIGIN']);
     }
 
-
     /**
      * Verifica se deve ou não proteger a request com CSRF
      */
     public function shouldCheckCSRF()
     {
         // Protects POST, PUT, DELETE, PATCH
-        $method           = strtoupper($_SERVER['REQUEST_METHOD']);
+        $method = strtoupper($_SERVER['REQUEST_METHOD']);
         $methodsToProtect = ['POST', 'PUT', 'DELETE', 'PATCH'];
-        if (!in_array($method, $methodsToProtect, true)) {
+        if (! in_array($method, $methodsToProtect, true)) {
             return false;
         }
 
         //protects only browser requests
-        if (!$this->hasOrigin()) {
+        if (! $this->hasOrigin()) {
             return false;
         }
 
@@ -139,8 +134,6 @@ class CustomCSRF
         return self::$hash;
     }
 
-
-
     /**
      * Inicializa a proteção de CSRF
      * somente se necessário
@@ -163,10 +156,9 @@ class CustomCSRF
      */
     public function tratarCSRF()
     {
-        if (!$this->shouldCheckCSRF()) {
+        if (! $this->shouldCheckCSRF()) {
             return true;
         }
-
 
         $this->sessionIsStarted();
 
@@ -175,14 +167,13 @@ class CustomCSRF
         $serverCSRF = $this->getServerCSRF();
 
         if (empty($postedCsrf) || empty($serverCSRF)) {
-            throw new \Exception("CSRF Token inválido!", 419);
+            throw new \Exception('CSRF Token inválido!', 419);
         }
-
 
         $checkCsrf = hash_equals($postedCsrf, $serverCSRF);
 
-        if (!$checkCsrf) {
-            throw new \Exception("CSRF Token inválido!", 419);
+        if (! $checkCsrf) {
+            throw new \Exception('CSRF Token inválido!', 419);
         }
 
         return true;

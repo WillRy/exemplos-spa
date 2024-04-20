@@ -5,11 +5,11 @@
 </template>
 
 <script lang="ts">
-import BaseButton from "./BaseButton.vue";
+import BaseButton from './BaseButton.vue'
 
 export default {
-  name: "BaseButtonSecondary",
-  components: {BaseButton},
+  name: 'BaseButtonSecondary',
+  components: { BaseButton },
   props: {
     is: {
       type: String,

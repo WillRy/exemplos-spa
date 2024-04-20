@@ -38,12 +38,12 @@ class EditarContatoRequest extends FormRequest
             'nome' => 'required|max:255|min:3',
             'email' => "required|email|max:255|unique:contatos,email,{$id}", //permitir burlar o unique para proprio dono
             'telefone' => ['nullable', 'max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/([(][0-9]{2}[)])\s[0-9]{4,5}\-[0-9]{4}/', $value)) {
+                if (! preg_match('/([(][0-9]{2}[)])\s[0-9]{4,5}\-[0-9]{4}/', $value)) {
                     $fail(__('custom.validacao_telefone_valido'));
                 }
             }],
             'cep' => ['nullable', 'max:255', function ($attribute, $value, $fail) {
-                if (!preg_match('/^[0-9]{5,5}([- ]?[0-9]{3,3})?$/', $value)) {
+                if (! preg_match('/^[0-9]{5,5}([- ]?[0-9]{3,3})?$/', $value)) {
                     $fail(__('custom.validacao_cep_valido'));
                 }
             }],
@@ -53,7 +53,7 @@ class EditarContatoRequest extends FormRequest
             'complemento' => 'nullable|max:255',
             'cidade' => 'nullable|max:255',
             'estado' => 'nullable|max:255|in:AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC,SP,SE,TO',
-            'organizacao_id' => 'nullable|exists:organizacoes,id'
+            'organizacao_id' => 'nullable|exists:organizacoes,id',
         ];
     }
 }

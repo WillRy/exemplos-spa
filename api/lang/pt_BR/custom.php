@@ -18,6 +18,6 @@ return [
     'nome' => 'nome',
     'cor_fundo' => 'Cor de fundo',
     'cor_texto' => 'Cor de texto',
-    'cor_fundo_invalida' => "Informe uma cor de fundo válida",
-    'cor_texto_invalida' => "Informe uma cor de texto válida",
+    'cor_fundo_invalida' => 'Informe uma cor de fundo válida',
+    'cor_texto_invalida' => 'Informe uma cor de texto válida',
 ];

@@ -2,9 +2,8 @@
 
 namespace App\Service;
 
-
-class ResponseJSON {
-
+class ResponseJSON
+{
     protected bool $success = true;
 
     protected $data = [];
@@ -15,11 +14,12 @@ class ResponseJSON {
 
     protected int $statusCode = 200;
 
-    protected array $allowedStatus = [100, 101, 200, 201, 202, 203, 204, 205, 206, 300, 301, 302, 303, 304, 305, 306, 307, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 500, 501, 502, 503, 504, 505];
+    protected array $allowedStatus = [100, 101, 200, 201, 202, 203, 204, 205, 206, 300, 301, 302, 303, 304, 305, 306, 307, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 419, 500, 501, 502, 503, 504, 505];
 
     public function setData(mixed $data = null)
     {
-        $this->data = !empty($data) ? $data : [];
+        $this->data = ! empty($data) ? $data : [];
+
         return $this;
     }
 
@@ -64,7 +64,7 @@ class ResponseJSON {
         if ($error instanceof \App\Exceptions\CustomException) {
             $this->message = $error->getMessage();
             $this->statusCode = in_array($error->getStatusCode(), $this->allowedStatus) ? $error->getStatusCode() : 500;
-        } else if ($error instanceof \Exception) {
+        } elseif ($error instanceof \Exception) {
             $this->message = $error->getMessage();
             $this->statusCode = in_array($error->getCode(), $this->allowedStatus) ? $error->getCode() : 500;
         } else {
@@ -74,14 +74,13 @@ class ResponseJSON {
         return $this;
     }
 
-
     public function render()
     {
         return response()->json([
             'success' => $this->success,
             'message' => $this->message,
             'errors' => $this->errors,
-            "data" => $this->data,
+            'data' => $this->data,
         ], $this->statusCode);
     }
 }

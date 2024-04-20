@@ -1,44 +1,44 @@
-import { defineStore } from "pinia";
-import api from "../services/api";
+import { defineStore } from 'pinia'
+import api from '../services/api'
 
-export const usuarioStore = defineStore("usuarioStore", {
+export const usuarioStore = defineStore('usuarioStore', {
   state: () => {
     return {
       usuario: null,
-      permissoes: [],
-    };
+      permissoes: []
+    }
   },
   getters: {
     temPermissao: (state) => {
-      return (permissao) => state.permissoes.includes(permissao);
-    },
+      return (permissao) => state.permissoes.includes(permissao)
+    }
   },
   actions: {
     async carregarUsuarioLogado() {
       try {
-        const response = await api.get("/usuario");
-        this.usuario = response.data.data;
+        const response = await api.get('/usuario')
+        this.usuario = response.data.data
 
-        return true;
+        return true
       } catch (error) {
-        this.usuario = null;
-        return false;
+        this.usuario = null
+        return false
       }
     },
     async logout() {
       try {
-        await api.post("/logout");
+        await api.post('/logout')
 
-        return true;
+        return true
       } catch (error) {
-        return true;
+        return true
       } finally {
         //se fosse usar localstorage ao invés de cookie
         // window.localStorage.removeItem("token");
         // window.localStorage.removeItem("refresh_token");
 
-        this.usuario = null;
+        this.usuario = null
       }
-    },
-  },
-});
+    }
+  }
+})

@@ -1,19 +1,10 @@
 <template>
-  <BaseModal
-    :aberta="organizacao"
-    @onClose="fecharModal"
-    @onOpen="carregarFormulario"
-  >
+  <BaseModal :aberta="organizacao" @onClose="fecharModal" @onOpen="carregarFormulario">
     <template #title>
-      <h3>{{ $t("textos.edicao_organizacao") }}</h3>
+      <h3>{{ $t('textos.edicao_organizacao') }}</h3>
     </template>
     <template #body>
-      <Loader
-        width="60px"
-        height="60px"
-        :cor-principal="true"
-        v-if="loadingDados"
-      ></Loader>
+      <Loader width="60px" height="60px" :cor-principal="true" v-if="loadingDados"></Loader>
       <form @submit.prevent="submit" v-if="!loadingDados">
         <div class="row mb-3 gy-3">
           <div class="col-12">
@@ -127,10 +118,10 @@
                   class="custom-tag"
                   :style="{
                     background: option['cor_fundo'],
-                    color: option['cor_texto'],
+                    color: option['cor_texto']
                   }"
                 >
-                  {{ option["nome"] }}
+                  {{ option['nome'] }}
                 </div>
               </template>
               <template v-slot:tag="{ option }">
@@ -138,10 +129,10 @@
                   class="custom-tag"
                   :style="{
                     background: option['cor_fundo'],
-                    color: option['cor_texto'],
+                    color: option['cor_texto']
                   }"
                 >
-                  {{ option["nome"] }}
+                  {{ option['nome'] }}
                 </div>
               </template>
             </BaseSelectAjax>
@@ -151,97 +142,89 @@
     </template>
     <template #footerDireito>
       <BaseButtonTertiary @click.prevent="fecharModal">
-        {{ $t("palavras.cancelar") }}
+        {{ $t('palavras.cancelar') }}
       </BaseButtonTertiary>
       <BaseButtonPrimary @click.prevent="submit" :loading="loading">
-        {{ $t("palavras.salvar") }}
+        {{ $t('palavras.salvar') }}
       </BaseButtonPrimary>
     </template>
   </BaseModal>
 </template>
 
 <script setup>
-import api from "../../services/api";
-import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
-import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
-import BaseModal from "../../external/components/modal/BaseModal";
-import BaseSelectAjax from "../../external/components/form/BaseSelectAjax";
-import BaseInput from "../../external/components/form/BaseInput";
-import axios from "axios";
-import { reactive, ref } from "vue";
-import { useI18n } from "vue-i18n";
-import { useBackendToast } from "../../external/hooks/useBackendToast";
-import * as yup from "yup";
-import { useForm } from "vee-validate";
+import api from '../../services/api'
+import BaseButtonPrimary from '../../external/components/buttons/BaseButtonPrimary'
+import BaseButtonTertiary from '../../external/components/buttons/BaseButtonTertiary'
+import BaseModal from '../../external/components/modal/BaseModal'
+import BaseSelectAjax from '../../external/components/form/BaseSelectAjax'
+import BaseInput from '../../external/components/form/BaseInput'
+import axios from 'axios'
+import { reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useBackendToast } from '../../external/hooks/useBackendToast'
+import * as yup from 'yup'
+import { useForm } from 'vee-validate'
 
 const props = defineProps({
   organizacao: {
     type: Object,
     default: null
   }
-});
+})
 
-const $emit = defineEmits(["onClose","onReload"]);
+const $emit = defineEmits(['onClose', 'onReload'])
 
-const { t: $t } = useI18n();
+const { t: $t } = useI18n()
 
-const { backendToastError } = useBackendToast();
+const { backendToastError } = useBackendToast()
 
-
-const pesquisouCep = ref(false);
-const loading = ref(false);
-const loadingDados = ref(false);
+const pesquisouCep = ref(false)
+const loading = ref(false)
+const loadingDados = ref(false)
 const resultadoPesquisaTag = reactive({
-  lista: [],
-});
+  lista: []
+})
 
-
-const { errors, validate, defineField, resetForm, values, setValues, setErrors } = useForm(
-  {
-    validationSchema: yup.object({
-      nome: yup
-        .string()
-        .required($t("validacao.required", { field: $t("palavras.nome") })),
-      email: yup
-        .string()
-        .email($t("validacao.required", { field: $t("palavras.email") }))
-        .required($t("validacao.required", { field: $t("palavras.email") })),
-    }),
-    initialValues: {
-      nome: "",
-      email: "",
-      telefone: "",
-      cep: "",
-      endereco: "",
-      numero: "",
-      complemento: "",
-      cidade: "",
-      estado: "",
-      teste: "",
-      tags: [],
-    },
+const { errors, validate, defineField, resetForm, values, setValues, setErrors } = useForm({
+  validationSchema: yup.object({
+    nome: yup.string().required($t('validacao.required', { field: $t('palavras.nome') })),
+    email: yup
+      .string()
+      .email($t('validacao.required', { field: $t('palavras.email') }))
+      .required($t('validacao.required', { field: $t('palavras.email') }))
+  }),
+  initialValues: {
+    nome: '',
+    email: '',
+    telefone: '',
+    cep: '',
+    endereco: '',
+    numero: '',
+    complemento: '',
+    cidade: '',
+    estado: '',
+    teste: '',
+    tags: []
   }
-);
+})
 
-const [nome] = defineField("nome");
-const [email] = defineField("email");
-const [telefone] = defineField("telefone");
-const [cep] = defineField("cep");
-const [endereco] = defineField("endereco");
-const [numero] = defineField("numero");
-const [complemento] = defineField("complemento");
-const [cidade] = defineField("cidade");
-const [estado] = defineField("estado");
-const [bairro] = defineField("bairro");
-const [tags] = defineField("tags");
+const [nome] = defineField('nome')
+const [email] = defineField('email')
+const [telefone] = defineField('telefone')
+const [cep] = defineField('cep')
+const [endereco] = defineField('endereco')
+const [numero] = defineField('numero')
+const [complemento] = defineField('complemento')
+const [cidade] = defineField('cidade')
+const [estado] = defineField('estado')
+const [bairro] = defineField('bairro')
+const [tags] = defineField('tags')
 
 const carregarFormulario = async function () {
-  loadingDados.value = true;
+  loadingDados.value = true
 
-  const response = await api.get(
-    `/organizacao/${props.organizacao.id}`
-  );
-  const dados = response.data.data;
+  const response = await api.get(`/organizacao/${props.organizacao.id}`)
+  const dados = response.data.data
 
   setValues(
     {
@@ -249,79 +232,72 @@ const carregarFormulario = async function () {
       tags: props.organizacao.tags
     },
     false
-  );
+  )
 
-  loadingDados.value = false;
-};
-
-
+  loadingDados.value = false
+}
 
 const tratarCep = function () {
-  pesquisouCep.value = false;
+  pesquisouCep.value = false
   if (cep.value.length === 8) {
     axios
       .get(`https://viacep.com.br/ws/${cep.value}/json/`)
       .then((r) => {
-        const { data } = r;
+        const { data } = r
 
         if (data.erro) {
-          pesquisouCep.value = true;
-          backendToastError($t("textos.erro_encontrar_cep"));
+          pesquisouCep.value = true
+          backendToastError($t('textos.erro_encontrar_cep'))
         }
 
-        endereco.value = data.logradouro;
-        complemento.value = data.complemento;
-        bairro.value = data.bairro;
-        cidade.value = data.localidade;
-        estado.value = data.uf;
+        endereco.value = data.logradouro
+        complemento.value = data.complemento
+        bairro.value = data.bairro
+        cidade.value = data.localidade
+        estado.value = data.uf
       })
       .catch(() => {
-        pesquisouCep.value = true;
-      });
+        pesquisouCep.value = true
+      })
   }
-};
+}
 
 const pesquisarTag = function (pesquisa) {
   api.get(`/tag`, { params: { pesquisa: pesquisa } }).then((response) => {
-    resultadoPesquisaTag.lista = response.data.data.data;
-  });
-};
+    resultadoPesquisaTag.lista = response.data.data.data
+  })
+}
 
 const fecharModal = function () {
-  resetForm();
-  $emit("onClose");
-};
+  resetForm()
+  $emit('onClose')
+}
 
 const submit = async function () {
   try {
-    loading.value = true;
+    loading.value = true
 
-    const result = await validate();
+    const result = await validate()
     if (!result.valid) {
-      return;
+      return
     }
 
     const data = {
-      ...values,
-    };
+      ...values
+    }
 
-    await api.put(
-      `/organizacao/${props.organizacao.id}`,
-      data
-    );
+    await api.put(`/organizacao/${props.organizacao.id}`, data)
 
-    $emit("onReload");
+    $emit('onReload')
 
-    fecharModal();
+    fecharModal()
   } catch (e) {
-    const errors = backendToastError(e, $t("textos.erro_editar_organizacao"));
-    setErrors(errors);
+    const errors = backendToastError(e, $t('textos.erro_editar_organizacao'))
+    setErrors(errors)
   } finally {
-    loading.value = false;
+    loading.value = false
   }
-};
-
-
+}
 </script>
 
 <style scoped></style>
