@@ -7,7 +7,7 @@ const toast = useToast();
 
 const emitter = mitt();
 let LaravelError = {
-    install: (app, options) => {
+    install: (app) => {
         // inject a globally available $translate() method
         app.config.globalProperties.$laravelError = (e, message) => {
             let response = e.response;
@@ -63,7 +63,7 @@ let LaravelError = {
 }
 
 let LaravelAlert = {
-    install: (app, options) => {
+    install: (app) => {
 
         // inject a globally available $translate() method
         app.config.globalProperties.$laravelAlert = (e, message, objAlert = {}) => {
@@ -154,7 +154,7 @@ let LaravelAlert = {
 }
 
 let getError = {
-    install: (app, options) => {
+    install: (app) => {
         app.config.globalProperties.$getError = (e, message) => {
             let response = e.response;
             if (response && response.status === 422 && response.data.errors) {
@@ -176,7 +176,7 @@ let getError = {
 }
 
 let toasts = {
-    install: (app, options) => {
+    install: (app) => {
         function open({type, message, ...options}) {
             const config = {
                 type: type,
@@ -197,7 +197,7 @@ let toasts = {
 
 
 let filters = {
-    install: (app, options) => {
+    install: (app) => {
         app.config.globalProperties.$filters = {
             data(value) {
                 if (value === '0000-00-00 00:00:00' || !value) return ''
@@ -216,7 +216,7 @@ let filters = {
 
 
 let EventBus = {
-    install: (app, options) => {
+    install: (app) => {
 
         app.config.globalProperties.$eventBus = {
             $on: (...args) => emitter.on(...args),
@@ -228,7 +228,7 @@ let EventBus = {
 }
 
 let VerificaPermissao = {
-    install: (app, options) => {
+    install: (app) => {
         app.config.globalProperties.$verificaPermissao = ($page, permissao) => {
             return $page.props.permissoes.find(
                 (item) => item === permissao

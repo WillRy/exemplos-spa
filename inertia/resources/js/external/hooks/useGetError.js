@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export function useGetError() {
-  function getError(e, mensagemReserva = "") {
+  function getError(e, message = "") {
     let response = axios.isAxiosError(e) ? e?.response : null;
     const data = response && response.data ? response.data : null;
 
@@ -20,7 +20,7 @@ export function useGetError() {
       return message;
     }
 
-    return mensagemReserva;
+    return message;
   }
 
   return {

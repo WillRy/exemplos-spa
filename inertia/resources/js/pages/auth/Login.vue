@@ -39,30 +39,25 @@
 <script setup>
 import BaseInput from "../../external/components/form/BaseInput";
 import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
-import axios from "axios";
 import axiosWeb from "../../services/axiosWeb";
-import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
-import { usuarioStore } from "../../stores/usuario";
 
-import { reactive, ref, defineOptions } from "vue";
+import { ref, defineOptions } from "vue";
 import { useI18n } from "vue-i18n";
 import { useBackendToast } from "../../external/hooks/useBackendToast";
 import * as yup from "yup";
 import { useForm } from "vee-validate";
-import { useRouter } from "vue-router";
 import Publico from "../../layouts/Publico.vue";
 import { router } from "@inertiajs/vue3";
 
 defineOptions({ layout: Publico })
 
 const { t: $t } = useI18n();
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
-const $router = useRouter();
+const { backendToastError } = useBackendToast();
 
 
 const loading = ref(false);
 
-const { errors, validate, defineField, resetForm, values } = useForm({
+const { errors, validate, defineField, values } = useForm({
   validationSchema: yup.object({
     email: yup
       .string()

@@ -99,8 +99,9 @@
             </tr>
           </template>
         </Tabela>
+
         <PaginacaoSemRouter
-          class="mt-3"
+          class="mt-3 p-2"
           :exibir-total="true"
           :pagina-atual="contatos.dados.current_page"
           :total="contatos.dados.total"

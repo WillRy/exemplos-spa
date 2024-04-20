@@ -28,28 +28,23 @@
 <script setup>
 import BaseInput from "../../external/components/form/BaseInput";
 import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
-import axios from "axios";
 import axiosWeb from "../../services/axiosWeb";
-import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 
 import { ref } from "vue";
 import { useForm } from "vee-validate";
 import { useI18n } from "vue-i18n";
 import { useBackendToast } from "../../external/hooks/useBackendToast";
-import { useRoute, useRouter } from "vue-router";
 import * as yup from "yup";
 import Publico from "../../layouts/Publico.vue";
-import { router, usePage } from "@inertiajs/vue3";
+import { router } from "@inertiajs/vue3";
 
 defineOptions({ layout: Publico })
 
 const loading = ref(false);
 const { t: $t } = useI18n();
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
-const $router = useRouter();
-const $route = useRoute();
+const { backendToastError, backendToastSuccess } = useBackendToast();
 
-const { errors, validate, defineField, resetForm, values } = useForm({
+const { errors, validate, defineField } = useForm({
   validationSchema: yup.object({
     senha: yup
       .string()
@@ -60,7 +55,6 @@ const { errors, validate, defineField, resetForm, values } = useForm({
   },
 });
 const [senha] = defineField("senha");
-const page = usePage();
 const props = defineProps(['token'])
 
 const submit = async function () {

@@ -99,7 +99,7 @@
           </template>
         </Tabela>
         <PaginacaoSemRouter
-          class="mt-3"
+          class="mt-3 p-2"
           :exibir-total="true"
           v-if="tags.dados"
           :pagina-atual="tags.dados.current_page"

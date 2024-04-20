@@ -135,7 +135,7 @@
           </template>
         </Tabela>
         <PaginacaoSemRouter
-          class="mt-3"
+          class="mt-3 p-2"
           :exibir-total="true"
           v-if="organizacoes.dados"
           :pagina-atual="organizacoes.dados.current_page"

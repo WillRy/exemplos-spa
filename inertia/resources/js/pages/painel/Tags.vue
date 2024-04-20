@@ -137,22 +137,18 @@
 import Privado from "../../layouts/Privado.vue";
 import HeaderPage from "../../components/pages/HeaderPage";
 import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
-import PageContent from "../../components/pages/PageContent";
-import ContentTable from "../../components/pages/ContentTable";
 import BaseInput from "../../external/components/form/BaseInput";
-import BaseSelectAjax from "../../external/components/form/BaseSelectAjax";
 import Tabela from "../../external/components/tabela/Tabela";
 import ColunaTabela from "../../external/components/tabela/ColunaTabela";
 import DropdownAcoes from "../../external/components/dropdown/BaseDropdownAction";
 import PaginacaoSemRouter from "../../external/components/paginacao/PaginacaoSemRouter";
 import Box from "../../external/components/estrutura/Box";
 import axiosWeb from "../../services/axiosWeb";
-import { useHead } from "@unhead/vue";
 import ModalCriarTag from "../../components/tags/ModalCriarTag";
 import ModalEditarTag from "../../components/tags/ModalEditarTag";
 import ModalExcluirTag from "../../components/tags/ModalExcluirTag";
 
-import { reactive, ref, watch } from "vue";
+import { reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useBackendToast } from "../../external/hooks/useBackendToast";
 import HeadSort from "../../external/components/tabela/HeadSort.vue";
@@ -160,7 +156,7 @@ import HeadSort from "../../external/components/tabela/HeadSort.vue";
 defineOptions({ layout: Privado })
 
 const { t: $t } = useI18n();
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const { backendToastError } = useBackendToast();
 
 const form = reactive({
   pesquisa: "",

@@ -147,7 +147,7 @@ import axios from "axios";
 import { reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
-const props = defineProps({
+defineProps({
   aberta: {
     type: Boolean,
     default: false,
@@ -158,7 +158,7 @@ const $emit = defineEmits(["onClose","onReload"]);
 
 const { t: $t } = useI18n();
 
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const { backendToastError, toastObj } = useBackendToast();
 
 
 const pesquisouCep = ref(false);

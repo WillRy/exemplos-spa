@@ -170,8 +170,6 @@
 import Privado from "../../layouts/Privado.vue";
 import HeaderPage from "../../components/pages/HeaderPage";
 import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
-import PageContent from "../../components/pages/PageContent";
-import ContentTable from "../../components/pages/ContentTable";
 import BaseInput from "../../external/components/form/BaseInput";
 import BaseSelectAjax from "../../external/components/form/BaseSelectAjax";
 import Tabela from "../../external/components/tabela/Tabela";
@@ -184,15 +182,13 @@ import ModalCriarOrganizacao from "../../components/organizacoes/ModalCriarOrgan
 import ModalEditarOrganizacao from "../../components/organizacoes/ModalEditarOrganizacao";
 import ModalExcluirOrganizacao from "../../components/organizacoes/ModalExcluirOrganizacao";
 import ModalDetalhesOrganizacao from "../../components/organizacoes/ModalDetalhesOrganizacao";
-import { useHead } from "@unhead/vue";
-import { emitter } from "../../plugins";
 
-import { reactive, ref, watch } from "vue";
+import { reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useBackendToast } from "../../external/hooks/useBackendToast";
 
 const { t: $t } = useI18n();
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const { backendToastError } = useBackendToast();
 defineOptions({ layout: Privado })
 
 const form = reactive({

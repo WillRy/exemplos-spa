@@ -96,7 +96,6 @@ import HomeContainer from "../external/components/estrutura/HomeContainer.vue";
 import OrganizacaoIcon from "../components/icons/OrganizacaoIcon.vue";
 import ContatoIcon from "../components/icons/ContatoIcon.vue";
 import BaseDropdownPrimary from "../external/components/dropdown/BaseDropdownPrimary";
-import BaseButtonSecondary from "../external/components/buttons/BaseButtonSecondary";
 import BaseDropdownSecondary from "../external/components/dropdown/BaseDropdownSecondary";
 import TagIcon from "../components/icons/TagIcon";
 import axiosWeb from "../services/axiosWeb";
@@ -112,7 +111,6 @@ export default {
   components: {
     TagIcon,
     BaseDropdownSecondary,
-    BaseButtonSecondary,
     BaseDropdownPrimary,
     Sidebar,
     Header,

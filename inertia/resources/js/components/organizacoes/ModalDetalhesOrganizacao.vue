@@ -54,7 +54,6 @@
 
 <script setup>
 
-import axiosWeb from "../../services/axiosWeb";
 import BaseButtonTertiary from "../../external/components/buttons/BaseButtonTertiary";
 import BaseModal from "../../external/components/modal/BaseModal";
 import { reactive, ref } from 'vue';

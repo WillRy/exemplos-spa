@@ -63,7 +63,7 @@ import { useBackendToast } from "../../external/hooks/useBackendToast";
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 
-const props = defineProps({
+defineProps({
   aberta: {
     type: Boolean,
     default: false
@@ -74,7 +74,7 @@ const $emit = defineEmits(["onClose", "onReload"]);
 
 const { t: $t } = useI18n();
 
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const { backendToastError } = useBackendToast();
 
 const loading = ref(false);
 

@@ -129,11 +129,8 @@
 import Privado from "../../layouts/Privado.vue";
 import HeaderPage from "../../components/pages/HeaderPage";
 import BaseButtonPrimary from "../../external/components/buttons/BaseButtonPrimary";
-import PageContent from "../../components/pages/PageContent";
-import ContentTable from "../../components/pages/ContentTable";
 import BaseInput from "../../external/components/form/BaseInput";
 import BaseSelectAjax from "../../external/components/form/BaseSelectAjax";
-import BaseCheckbox from "../../external/components/form/BaseCheckbox";
 import Tabela from "../../external/components/tabela/Tabela";
 import ColunaTabela from "../../external/components/tabela/ColunaTabela";
 import DropdownAcoes from "../../external/components/dropdown/BaseDropdownAction";
@@ -143,16 +140,13 @@ import axiosWeb from "../../services/axiosWeb";
 import ModalEditarContato from "../../components/contatos/ModalEditarContato";
 import ModalExcluirContato from "../../components/contatos/ModalExcluirContato";
 import ModalDetalhesContato from "../../components/contatos/ModalDetalhesContato";
-import { useHead } from "@unhead/vue";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-import { reactive, ref, watch } from "vue";
+import { reactive, ref } from "vue";
 import { useBackendToast } from "../../external/hooks/useBackendToast";
 import { useI18n } from "vue-i18n";
 
 const { t: $t } = useI18n();
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const { backendToastError } = useBackendToast();
 defineOptions({ layout: Privado });
 
 const form = reactive({

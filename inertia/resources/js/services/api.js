@@ -74,6 +74,7 @@ api.interceptors.response.use(
 
                 return new Promise((resolve, reject) => {
                     failedRequestsQueue.push({
+                        // eslint-disable-next-line no-unused-vars
                         onSuccess: (token) => {
                             // originalConfig.headers['Authorization'] = `Bearer ${token}`
 

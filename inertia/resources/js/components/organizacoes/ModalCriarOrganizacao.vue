@@ -172,7 +172,7 @@ import * as yup from "yup";
 import { useForm } from "vee-validate";
 
 
-const props = defineProps({
+defineProps({
   aberta: {
     type: Boolean,
     default: false,
@@ -183,7 +183,7 @@ const $emit = defineEmits(["onClose","onReload"]);
 
 const { t: $t } = useI18n();
 
-const { backendToastError, backendToastSuccess, toastObj } = useBackendToast();
+const { backendToastError, toastObj } = useBackendToast();
 
 const modalCriarOrganizacaoState = modalCriarOrganizacaoStore();
 
