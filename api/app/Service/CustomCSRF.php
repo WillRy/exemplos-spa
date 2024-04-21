@@ -21,6 +21,10 @@ class CustomCSRF
 
     public static $hash = '';
 
+    const COOKIE_SAME_SITE = 'none';
+
+    const SIGNATURE  = 'NCJDWCWO8U8922FMCDNCIUDWO84928';
+
     public function __construct()
     {
         $this->iniciarCSRF();
@@ -33,7 +37,7 @@ class CustomCSRF
             'path' => '/',
             'secure' => true,
             'httponly' => $httpOnly,
-            'samesite' => 'Lax',
+            'samesite' => self::COOKIE_SAME_SITE,
         ]);
     }
 
@@ -48,17 +52,29 @@ class CustomCSRF
         }
     }
 
-    public function generateSessionToken()
+    public function generateToken()
     {
+        if($this->csrfType === self::TYPE_SESSION) {
+            $this->sessionIsStarted();
 
-        if (session()->has('unique_token')) {
-            return session()->get('unique_token');
+            if (session()->has('unique_token')) {
+                return session()->get('unique_token');
+            }
+
+            $random = Str::random(60);
+            session()->put('unique_token', $random);
+
+            return $random;
+        } else {
+            $random = !empty($_COOKIE[self::$cookieName]) ? $_COOKIE[self::$cookieName] : Str::random(60);
+            $this->setCookie(self::$cookieName, $random, false, false);
+
+
+            return $random;
         }
 
-        $random = Str::random(60);
-        session()->put('unique_token', $random);
 
-        return $random;
+
     }
 
     public function hasOrigin(): bool
@@ -108,30 +124,7 @@ class CustomCSRF
      */
     public function getServerCSRF()
     {
-        if ($this->csrfType === self::TYPE_COOKIE) {
-            return hash_hmac('sha256', $this->generateSessionToken(), env('APP_KEY'));
-        }
-
-        return session()->get('csrf');
-    }
-
-    /**
-     * Gera o csrf token e salva na sessão ou cookie
-     */
-    public function generateCSRF()
-    {
-        self::$hash = hash_hmac('sha256', $this->generateSessionToken(), env('APP_KEY'));
-
-        if ($this->csrfType === self::TYPE_COOKIE) {
-
-            $this->setCookie(self::$cookieName, self::$hash, false, false);
-
-            return self::$hash;
-        }
-
-        session()->put('csrf', self::$hash);
-
-        return self::$hash;
+        return $this->generateToken();
     }
 
     /**
@@ -140,12 +133,7 @@ class CustomCSRF
      */
     public function iniciarCSRF(): string
     {
-
-        $this->sessionIsStarted();
-
-        $csrf = $this->generateCSRF();
-
-        return $csrf;
+        return $this->generateToken();
     }
 
     /**
@@ -159,8 +147,6 @@ class CustomCSRF
         if (! $this->shouldCheckCSRF()) {
             return true;
         }
-
-        $this->sessionIsStarted();
 
         $postedCsrf = $this->getPostedCSRF();
 

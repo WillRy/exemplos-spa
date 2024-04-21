@@ -36,9 +36,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth' => Authenticate::class,
             'locale' => Locale::class,
         ]);
-        // $middleware->appendToGroup('api', [
-        //     InitCustomCSRF::class,
-        // ]);
+        $middleware->appendToGroup('api', [
+            InitCustomCSRF::class,
+        ]);
         $middleware->encryptCookies([
             'token',
             'refresh_token',

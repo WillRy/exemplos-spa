@@ -21,6 +21,8 @@ class Autenticacao
 
     const SEGUNDOS_RETORNAR_TOKENS_AINDA_VALIDOS = 300; //5 minutes
 
+    const COOKIE_SAME_SITE = 'none';
+
     /**
      * Gerar token JWT de autenticação
      */
@@ -48,7 +50,7 @@ class Autenticacao
             'path' => '/',
             'secure' => true,
             'httponly' => $httpOnly,
-            'samesite' => 'Lax',
+            'samesite' => self::COOKIE_SAME_SITE,
         ]);
     }
 
