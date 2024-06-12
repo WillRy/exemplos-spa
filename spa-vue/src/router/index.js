@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { usuarioStore } from '../stores/usuario'
-import { configuraIdioma } from '../middlewares/configuraIdioma'
+import { configuraIdioma, mudarIdioma } from '../middlewares/configuraIdioma'
 import { iniciaLoader, terminaLoader } from '../middlewares/loaders'
 import { verificaPermissao } from '../middlewares/verificaPermissao'
 import { apiPublic } from '../services/api'
+import { auth, redirectIfAuth } from '@/middlewares/auth.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,25 +12,7 @@ const router = createRouter({
     {
       path: '/lang/:lang',
       name: 'lang',
-      async beforeEnter(from, to, next) {
-        const lang = to.params.lang ?? from.params.lang
-
-        window.localStorage.setItem('@lang', lang)
-
-        const toDifferent = to.name !== 'lang';
-        const fromDifferent = from.name !== 'lang';
-
-        if(toDifferent) {
-          return next(to)
-        }
-
-        if(fromDifferent) {
-          return next(from)
-        }
-
-
-        return next('/')
-      }
+      beforeEnter: [mudarIdioma]
     },
     {
       path: '/logout',
@@ -45,25 +28,15 @@ const router = createRouter({
       path: '/',
       component: () => import('../layouts/Publico'),
       name: 'publico',
+      beforeEnter: [redirectIfAuth],
+      meta: {
+        public: true,
+      },
       children: [
         {
           path: '',
           name: 'login',
           component: () => import('../views/auth/Login'),
-          async beforeEnter(from, to, next) {
-            //indica que foi logout forçado, pois não conseguiu recuperar uma sessão ativa
-            if (from.query.logout || to.query.logout) {
-              return next()
-            }
-
-            const usuarioState = usuarioStore()
-            const logado = await usuarioState.carregarUsuarioLogado()
-
-            if (logado) {
-              return next({ name: 'dashboard' })
-            }
-            return next()
-          }
         },
         {
           path: 'esqueci-senha',
@@ -84,19 +57,7 @@ const router = createRouter({
       meta: {
         permissoes: []
       },
-      async beforeEnter(from, to, next) {
-        const usuarioState = usuarioStore()
-        const logado = await usuarioState.carregarUsuarioLogado()
-        if (logado) {
-          return next()
-        }
-        return next({
-          name: 'login',
-          query: {
-            logout: 3
-          }
-        })
-      },
+      beforeEnter: [auth],
       children: [
         {
           path: '',

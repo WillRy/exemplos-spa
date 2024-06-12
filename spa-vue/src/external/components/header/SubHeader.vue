@@ -45,19 +45,19 @@
 </template>
 
 <script lang="ts">
-import BaseButtonTertiary from '../buttons/BaseButtonTertiary.vue'
-import CaptionText from '../text/CaptionText.vue'
-import HomeIcon from '../icons/HomeIcon.vue'
-import ArrowSidebar from '../sidebar/ArrowSidebar.vue'
+import BaseButtonTertiary from "../buttons/BaseButtonTertiary.vue";
+import CaptionText from "../text/CaptionText.vue";
+import HomeIcon from "../icons/HomeIcon.vue";
+import ArrowSidebar from "../sidebar/ArrowSidebar.vue";
 
-import { PropType, defineComponent } from 'vue'
+import { PropType, defineComponent } from 'vue';
 interface tipoLink {
-  nome: string
-  link: string
+    nome: string,
+    link: string
 }
 
 export default defineComponent({
-  name: 'SubHeader',
+  name: "SubHeader",
   props: {
     links: {
       type: Array as PropType<tipoLink[]>,
@@ -69,7 +69,7 @@ export default defineComponent({
     },
     homeUrlName: {
       type: String,
-      default: 'dashboard'
+      default: "dashboard",
     },
     padding: {
       type: String,
@@ -78,20 +78,20 @@ export default defineComponent({
     },
     componentLink: {
       type: String,
-      default: 'router-link',
+      default: "router-link",
       validator(value: string) {
-        return ['a', 'Link', 'router-link'].includes(value)
-      }
-    }
+        return ["a","Link","router-link"].includes(value);
+      },
+    },
   },
   components: { ArrowSidebar, HomeIcon, BaseButtonTertiary, CaptionText },
   methods: {
     voltar() {
-      this.$emit('voltar')
-    }
+      this.$emit("voltar");
+    },
   },
-  created() {}
-})
+  created() {},
+});
 </script>
 
 <style scoped>
@@ -161,12 +161,13 @@ export default defineComponent({
   opacity: 0.6;
 }
 
+
 .links .breadcrumb-item:not(:last-child) {
   color: #606266;
 }
 
 .links .atual *,
-.links .atual :deep(*) {
+.links .atual :deep(*){
   color: var(--primary-color-principal) !important;
 }
 

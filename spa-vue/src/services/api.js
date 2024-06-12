@@ -7,26 +7,23 @@ let failedRequestsQueue = []
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
+/** requests sem refresh token */
 export const apiPublic = axios.create({
   baseURL: 'http://localhost:8000/api/',
   withCredentials: true
 })
 
-const api = axios.create({
+/** requests com refresh token, mas SEM redirect automatico para login ao expirar acesso */
+export const apiSemLogout = axios.create({
   baseURL: 'http://localhost:8000/api/',
   withCredentials: true
 })
 
-const interceptors = async (config) => {
-  config.headers['Accept-Language'] = i18n.global.locale
-  config.headers['CSRF-TOKEN'] =
-    ('; ' + document.cookie).split(`; CSRF-TOKEN=`).pop().split(';')[0] ?? null
-  return config
-}
-
-//enviar idioma ou token da localstorage(caso use)
-api.interceptors.request.use(interceptors)
-apiPublic.interceptors.request.use(interceptors)
+/** requests com refresh token, mas COM REDIRECT PARA O LOGIN ao expirar acesso*/
+const api = axios.create({
+  baseURL: 'http://localhost:8000/api/',
+  withCredentials: true
+})
 
 function redirectLogout() {
   return router.push({
@@ -37,12 +34,15 @@ function redirectLogout() {
   })
 }
 
-api.interceptors.response.use(
-  (response) => {
-    return response
-  },
-  (error) => {
-    const status = error.response.status
+const interceptors = async (config) => {
+  config.headers['Accept-Language'] = i18n.global.locale
+  config.headers['CSRF-TOKEN'] =
+    ('; ' + document.cookie).split(`; CSRF-TOKEN=`).pop().split(';')[0] ?? null
+  return config
+}
+
+const interceptorRefresh = (error, shouldRedirectLogout = true) => {
+  const status = error.response.status
     // const shouldRefresh = error.response.data?.code === 'token.expired';
     const shouldRefresh = !error.response.config.url.includes('/refresh')
 
@@ -67,11 +67,10 @@ api.interceptors.response.use(
               failedRequestsQueue.forEach((request) => request.onFailure(err))
               failedRequestsQueue = []
 
-              // if (process.browser) {
-              //   signOut()
-              // }
+              if(shouldRedirectLogout) {
+                return redirectLogout(1)
+              }
 
-              return redirectLogout(1)
             })
             .finally(() => {
               isRefreshing = false
@@ -92,18 +91,32 @@ api.interceptors.response.use(
           })
         })
       } else {
-        // if (process.browser) {
-        //   signOut()
-        // } else {
-        //   return Promise.reject(new AuthTokenError())
-        // }
-        redirectLogout(2)
+        if(shouldRedirectLogout) {
+          return redirectLogout(2)
+        }
         return Promise.reject(new Error('Sessão expirada'))
       }
     }
 
     return Promise.reject(error)
-  }
+}
+
+//enviar idioma ou token da localstorage(caso use)
+api.interceptors.request.use(interceptors)
+apiPublic.interceptors.request.use(interceptors)
+apiSemLogout.interceptors.request.use(interceptors)
+apiSemLogout.interceptors.response.use(
+  (response) => {
+    return response
+  },
+  (error) => interceptorRefresh(error, false)
+)
+
+api.interceptors.response.use(
+  (response) => {
+    return response
+  },
+  (error) => interceptorRefresh(error, true)
 )
 
 export default api

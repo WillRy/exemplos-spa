@@ -41,10 +41,14 @@
               v-on="inputEvents"
               :value="inputValue"
               :placeholder="placeholder"
+              ref="input"
             />
             <input v-else :value="inputValue" :placeholder="placeholder" disabled />
           </template>
         </DatePicker>
+        <div class="form-group-default-icon" @click="focusInput">
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><path d="M368.005 272h-96v96h96v-96zm-32-208v32h-160V64h-48v32h-24.01c-22.002 0-40 17.998-40 40v272c0 22.002 17.998 40 40 40h304.01c22.002 0 40-17.998 40-40V136c0-22.002-17.998-40-40-40h-24V64h-48zm72 344h-304.01V196h304.01v212z"></path></svg>
+        </div>
       </div>
       <div v-if="$slots.btn" class="form-group-btn">
         <slot name="btn"></slot>
@@ -80,6 +84,7 @@ import type { PropType } from 'vue'
 import { useConfigStore } from '../../store/config.ts'
 
 export type PopoverVisibility = 'click' | 'hover' | 'hover-focus' | 'focus'
+export type SizeInput = 'md' | 'lg'
 
 export default {
   name: 'BaseDate',
@@ -99,11 +104,8 @@ export default {
   },
   props: {
     size: {
-      type: String,
+      type: String as PropType<SizeInput>,
       default: 'md',
-      validator(value: string) {
-        return ['md', 'lg'].includes(value)
-      }
     },
     borda: {
       type: Boolean,
@@ -143,9 +145,6 @@ export default {
     visibility: {
       default: 'click',
       type: String as PropType<PopoverVisibility>,
-      validator(value: string) {
-        return ['click', 'hover'].includes(value)
-      }
     }
   },
   computed: {
@@ -213,7 +212,19 @@ export default {
       }
     }
   },
-  methods: {},
+  expose: ['focusInput','clickInput'],
+  methods: {
+    focusInput() {
+      (this.$refs.input as HTMLInputElement).focus();
+
+      setTimeout(() => {
+        (this.$refs.input as HTMLInputElement).click();
+      });
+    },
+    clickInput() {
+      (this.$refs.input as HTMLInputElement).click()
+    }
+  },
   created() {}
 }
 </script>
@@ -280,6 +291,30 @@ export default {
 .form-group-icon > :deep(svg) {
   height: 18px;
   width: 18px;
+}
+
+.form-group-container:focus-within .form-group-icon > :deep(svg path) {
+  fill: var(--focus-color);
+}
+
+
+.form-group-default-icon {
+  flex-shrink: 0;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-group-default-icon > :deep(img) {
+  height: 18px;
+  width: 18px;
+}
+
+.form-group-default-icon > :deep(svg) {
+  height: 18px;
+  width: 18px;
+  fill: var(--primary-color-principal);
 }
 
 .form-group-container:focus-within .form-group-icon > :deep(svg path) {
@@ -567,13 +602,14 @@ input::placeholder {
   box-shadow: var(--primary-color-principal-hover) 0px 0px 0px var(--border);
 }
 
-.md .form-group-container > div:not(.form-group-icon):not(.form-group-prefix) {
+.md .form-group-container > div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
   min-height: 42px;
   width: 100%;
 }
 
-.lg .form-group-container > div:not(.form-group-icon):not(.form-group-prefix) {
+.lg .form-group-container > div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
   min-height: 54px;
   width: 100%;
 }
+
 </style>

@@ -12,23 +12,24 @@ $spacing-map: (
   3: 16px,
   4: 24px,
   5: 48px,
-  6: 96px
+  6: 96px,
+  padrao: 8px
 );
 
 $grid-map: (
-  'sm': 576px,
-  'md': 768px,
-  'lg': 992px,
-  'xl': 1200px,
-  'xxl': 1400px
+  "sm": 576px,
+  "md": 768px,
+  "lg": 992px,
+  "xl": 1200px,
+  "xxl": 1400px,
 );
 
 $container-map: (
-  'sm': 540px,
-  'md': 720px,
-  'lg': 960px,
-  'xl': 1140px,
-  'xxl': 1320px
+  "sm": 540px,
+  "md": 720px,
+  "lg": 960px,
+  "xl": 1140px,
+  "xxl": 1320px,
 );
 
 $percentage-map: (
@@ -43,7 +44,7 @@ $percentage-map: (
   9: 75%,
   10: 83.3333333333%,
   11: 91.6666666667%,
-  12: 100%
+  12: 100%,
 );
 
 $offset-map: (
@@ -57,7 +58,7 @@ $offset-map: (
   8: 66.6666666667%,
   9: 75%,
   10: 83.3333333333%,
-  11: 91.6666666667%
+  11: 91.6666666667%,
 );
 
 :root {

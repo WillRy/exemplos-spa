@@ -30,52 +30,52 @@
 </template>
 
 <script lang="ts">
-import InfoErrorIcon from '../icons/InfoErrorIcon.vue'
-import InfoInputIcon from '../icons/InfoInputIcon.vue'
-import InfoSuccessIcon from '../icons/InfoSuccessIcon.vue'
+import InfoErrorIcon from "../icons/InfoErrorIcon.vue";
+import InfoInputIcon from "../icons/InfoInputIcon.vue";
+import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
 
 export default {
-  name: 'BaseCheckbox',
+  name: "BaseCheckbox",
   inheritAttrs: false,
   props: {
     disabled: {
-      default: false
+      default: false,
     },
     label: {
       type: String,
-      default: ''
+      default: "",
     },
     modelValue: {
-      required: false
+      required: false,
     },
     error: {
-      type: String
+      type: String,
     },
     success: {
-      type: String
+      type: String,
     },
     legenda: {
-      type: String
-    }
+      type: String,
+    },
   },
   computed: {
     attrs() {
       return {
-        ...this.$attrs
-      }
+        ...this.$attrs,
+      };
     },
     localValue: {
       set(valor) {
-        this.$emit('update:modelValue', valor)
+        this.$emit("update:modelValue", valor);
       },
       get() {
-        return this.modelValue
-      }
-    }
+        return this.modelValue;
+      },
+    },
   },
   methods: {},
-  components: { InfoInputIcon, InfoSuccessIcon, InfoErrorIcon }
-}
+  components: { InfoInputIcon, InfoSuccessIcon, InfoErrorIcon },
+};
 </script>
 
 <style scoped>
@@ -109,6 +109,7 @@ export default {
   background-color: #fff;
   border-radius: 2px;
   border: 1px solid var(--gray-color-300);
+  border-radius: 6px;
 }
 
 .checkmark:hover:not(.disabled) {
@@ -129,7 +130,7 @@ export default {
 
 /* Criar o ícone de check, escondido quando não estiver selecionado */
 .checkbox-container .checkmark:after {
-  content: '';
+  content: "";
   position: absolute;
   display: none;
   left: 7px;

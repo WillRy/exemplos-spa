@@ -6,20 +6,20 @@
 </template>
 
 <script>
-import InfoErrorIcon from '../icons/InfoErrorIcon.vue'
+import InfoErrorIcon from "../icons/InfoErrorIcon.vue";
 
 export default {
-  name: 'ActionText',
+  name: "ActionText",
   components: {
-    InfoErrorIcon
+    InfoErrorIcon,
   },
   props: {
     exibirIcone: {
       type: Boolean,
-      default: true
-    }
-  }
-}
+      default: true,
+    },
+  },
+};
 </script>
 
 <style scoped>

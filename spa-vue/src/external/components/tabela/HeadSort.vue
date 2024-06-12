@@ -1,11 +1,12 @@
 <template>
-  <th style="{'max-width':width ;}">
-    <button @click="sortBy(nome)" v-if="!disabled" type="button">
+  <th :style="styleWidth">
+    <button @click="sortBy(nome)" v-if="!disabled" type="button" class="head-container">
       <slot></slot>
 
       <template v-if="!$slots.default">
         <span v-if="info" v-tooltip="{ content: info }">
           {{ texto }}
+          <svg class="info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
         </span>
         <span v-else>
           {{ texto }}
@@ -23,8 +24,14 @@
 
       <SortIcon v-else />
     </button>
-    <span v-else-if="!$slots.default">
-      {{ texto }}
+    <span v-else-if="!$slots.default" class="head-container">
+      <span v-if="info" v-tooltip="{ content: info }">
+        {{ texto }}
+        <svg class="info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
+      </span>
+      <span v-else>
+        {{ texto }}
+      </span>
     </span>
     <span v-else>
       <slot></slot>
@@ -42,11 +49,52 @@ import SortIcon from '../icons/SortIcon.vue'
 export default {
   name: 'HeadSort',
   components: { SortIcon, SortDescIcon, SortAscIcon },
-  props: ['nome', 'order', 'texto', 'ordenando', 'width', 'info', 'disabled'],
+  props: {
+    nome: {
+      type: String,
+      required: true
+    },
+    order: {
+      type: String,
+      default: ''
+    },
+    texto: {
+      type: String,
+      required: false
+    },
+    ordenando: {
+      type: String,
+      required: false
+    },
+    width: {
+      type: String,
+      default: ''
+    },
+    info: {
+      type: String,
+      default: ''
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    permiteRemoverOrdenacao: {
+      type: Boolean,
+      default: false
+    }
+  },
   computed: {
+    styleWidth() {
+      return this.width
+        ? { 'max-width': this.width, 'min-width': this.width, width: this.width }
+        : {}
+    },
     orderMinuscula() {
       if (!this.order) return 'sort'
       return this.order.toLowerCase()
+    },
+    estaOrdenando() {
+      return (this.ordenando === this.nome || this.ordenando === this.order) && this.ordenando
     }
   },
   directives: {
@@ -58,10 +106,22 @@ export default {
       let sortOrder = this.order
 
       sortName = campo
-      if (sortName !== campo) {
-        sortOrder = 'asc'
+
+      if (this.permiteRemoverOrdenacao) {
+        if (sortOrder === 'asc') {
+          sortOrder = 'desc'
+        } else if (sortOrder === 'desc' && this.estaOrdenando) {
+          sortOrder = ''
+          sortName = ''
+        } else {
+          sortOrder = 'asc'
+        }
       } else {
-        sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'
+        if (sortName !== campo) {
+          sortOrder = 'asc'
+        } else {
+          sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'
+        }
       }
 
       this.$emit('onSort', {
@@ -86,22 +146,29 @@ th :deep(button) {
   padding: 0;
 }
 
-th span,
-th :deep(span) {
+.head-container > span,
+.head-container > :deep(span),
+.head-container > button > span {
   color: var(--gray-color-700);
   font-weight: 700;
   padding: 0.5rem;
   white-space: nowrap;
-  display: flex;
-  align-items: center;
   background: none;
   border: none;
   font-size: 1rem;
+  display: block;
+  text-align: left;
 }
 
+
 .info {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   margin-left: 6px;
+  color: var(--primary-color-principal);
+}
+
+.info path {
+  fill: var(--primary-color-principal);
 }
 </style>

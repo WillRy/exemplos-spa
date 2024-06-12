@@ -1,7 +1,15 @@
 <template>
-  <div class="box-container" :class="`mb-${marginBottom}`">
-    <OverlineText v-if="titulo" class="titulo" size="sm">
-      {{ titulo }}
+  <div
+    class="box-container"
+    :class="[`mb-${marginBottom}`, { 'ocupar-altura-maxima': ocuparAlturaMaxima }]"
+  >
+    <OverlineText class="titulo">
+      <template v-if="titulo">
+        {{ titulo }}
+      </template>
+      <template v-else>
+        &nbsp;
+      </template>
     </OverlineText>
 
     <div :class="{ 'acesso-bloqueado': bloqueado }" class="acesso-bloqueado-container">
@@ -43,7 +51,8 @@
 import OverlineText from '../text/OverlineText.vue'
 import { PropType } from 'vue'
 
-type MarginBottomType = '0' | '1' | '2' | '3' | '4' | '5' | '6'
+type MarginBottomType = '0' | '1' | '2' | '3' | '4' | '5' | '6' | 'padrao'
+type PaddingType = '0' | '1' | '2' | '3' | '4' | '5' | '6' | 'padrao'
 
 export default {
   name: 'Box',
@@ -63,15 +72,16 @@ export default {
         'Entre em contato com administrador solicite a ativação das Permissões para este recurso'
     },
     padding: {
-      type: String,
-      default: '2',
-      validator(value: string) {
-        return ['0', '1', '2', '3', '4', '5', '6'].includes(value)
-      }
+      type: String as PropType<PaddingType>,
+      default: 'padrao'
     },
     marginBottom: {
       type: String as PropType<MarginBottomType>,
       default: '3'
+    },
+    ocuparAlturaMaxima: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -81,12 +91,25 @@ export default {
 </script>
 
 <style scoped>
+.box-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.box-container.ocupar-altura-maxima {
+  height: 100%;
+}
+
 .box {
   border: 1px solid #e1e2e6;
   border-radius: 8px;
   position: relative;
 
   background: #fff;
+
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .titulo {
@@ -97,9 +120,9 @@ export default {
 }
 
 .acesso-bloqueado-container {
-  /*display: flex;*/
-  /*flex-direction: column;*/
-  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .acesso-bloqueado-box {

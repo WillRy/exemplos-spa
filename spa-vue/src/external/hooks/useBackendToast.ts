@@ -40,10 +40,13 @@ function descobrirDadosBackend(e: any) {
   return data
 }
 
-function descobrirMensagem(e: any, defaultMessage: string | null = null) {
+function descobrirMensagem(
+  e: any,
+  defaultMessage: string | null = null
+) {
   let response: AxiosResponse<any> | undefined | null
 
-  const data: jsonBackend | null = descobrirDadosBackend(e)
+  const data: jsonBackend | null = descobrirDadosBackend(e);
 
   if (axios.isAxiosError(e) && e.response) {
     response = e.response
@@ -66,6 +69,8 @@ function descobrirMensagem(e: any, defaultMessage: string | null = null) {
 
   return null
 }
+
+
 
 export function useBackendToast() {
   const toast = useToast()
@@ -98,9 +103,9 @@ export function useBackendToast() {
     defaultMessage: string | null = null,
     params = {} as ToastParams
   ) {
-    const mensagem = descobrirMensagem(e, defaultMessage)
+    const mensagem = descobrirMensagem(e, defaultMessage);
 
-    if (mensagem) {
+    if(mensagem) {
       toastObj.error(mensagem, params)
     }
 
@@ -112,9 +117,9 @@ export function useBackendToast() {
     defaultMessage: string | null = null,
     params = {} as ToastParams
   ) {
-    const mensagem = descobrirMensagem(e, defaultMessage)
+    const mensagem = descobrirMensagem(e, defaultMessage);
 
-    if (mensagem) {
+    if(mensagem) {
       toastObj.success(mensagem, params)
     }
   }
@@ -129,8 +134,8 @@ export function useBackendToast() {
     if (!params?.type) {
       params.type = isError ? 'error' : 'success'
     }
-
-    const mensagem = descobrirMensagem(e, defaultMessage)
+    
+    const mensagem = descobrirMensagem(e, defaultMessage);
 
     const toastToUse = toastObj[params.type as string]
 
@@ -138,7 +143,7 @@ export function useBackendToast() {
       return false
     }
 
-    toastToUse(mensagem)
+    toastToUse(mensagem);
 
     return getFormError(e)
   }

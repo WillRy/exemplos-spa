@@ -1,4 +1,4 @@
-@use 'sass:map';
+@use "sass:map";
 
 .container,
 .container-fluid,
@@ -16,6 +16,8 @@
     margin-left: auto; */
 }
 
+
+
 @each $grid, $pxBreakpoint in $grid-map {
   @media (min-width: #{$pxBreakpoint}) {
     .container-#{$grid},
@@ -27,6 +29,7 @@
   :root {
     --bs-breakpoint-#{$grid}: #{$pxBreakpoint};
   }
+  
 }
 
 .row {
@@ -70,6 +73,7 @@
     margin-left: #{$px};
   }
 }
+
 
 @each $key, $value in $spacing-map {
   .g-#{$key},

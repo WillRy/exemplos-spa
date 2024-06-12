@@ -2,13 +2,12 @@
   <div class="dropdown-container" :class="{ open: open, 'dropdown-block': full }">
     <VDropdown
       :triggers="triggers"
-      :shown="open"
-      :hide="!open"
-      :autoHide="false"
       :distance="4"
       placement="bottom-start"
       :auto-size="autoSize"
       v-bind="$attrs"
+      @show="() => $emit('onOpen')"
+      @auto-hide="() => $emit('onClose')"
     >
       <div class="label-container" v-if="$slots.label">
         <slot name="label" v-if="$slots.label" @click.stop=""></slot>
@@ -18,32 +17,37 @@
       </div>
       <BaseButtonSecondary
         class="btn-primary dropdown-btn"
-        @click.stop.prevent="toggle"
         :size="size"
         :disabled="disabled"
         :full="full"
       >
         <slot name="botao"></slot>
-        <ArrowDownSolidIcon size="12px" color="#fff" v-if="icone" />
+        <svg
+          v-if="iconePadrao && !$slots.icone" 
+          viewBox="0 0 330 330"
+          xml:space="preserve"
+          :style="{ height: '12px', width: '12px' }"
+        >
+          <path
+            d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393  c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393  s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"
+            fill="#fff"
+          />
+        </svg>
+        <slot name="icone"></slot>
       </BaseButtonSecondary>
 
       <!-- This will be the content of the popover -->
-      <template #popper>
+      <template #popper="{hide}">
         <div
           class="dropdown-botao"
-          @click.stop="fechar"
           :style="{ maxHeight: maxHeight }"
           v-if="$slots.acoes"
+          @click.stop="hide"
         >
           <slot name="acoes"></slot>
         </div>
-        <div
-          class="dropdown-conteudo"
-          @click.stop=""
-          v-if="$slots.conteudo"
-          :style="{ maxHeight: maxHeight }"
-        >
-          <slot name="conteudo"></slot>
+        <div class="dropdown-conteudo" @click.stop="" v-if="$slots.conteudo" :style="{ maxHeight: maxHeight }">
+          <slot name="conteudo" :hide="hide"></slot>
         </div>
       </template>
     </VDropdown>
@@ -51,97 +55,96 @@
 </template>
 
 <script lang="ts">
-import { Dropdown } from 'floating-vue'
-import BaseButtonSecondary from '../buttons/BaseButtonSecondary.vue'
-import { directive } from '../../directives/click-away'
-import ArrowDownSolidIcon from '../icons/ArrowDownSolidIcon.vue'
-import { PropType } from 'vue'
+import { Dropdown } from "floating-vue";
+import BaseButtonSecondary from "../buttons/BaseButtonSecondary.vue";
+import { directive } from "../../directives/click-away";
+import { PropType } from "vue";
 
-type TriggerEvent = 'hover' | 'click' | 'focus' | 'touch'
+type TriggerEvent = 'hover' | 'click' | 'focus' | 'touch';
+type SizeButton = 'sm' | 'md' | 'lg'
 
 export default {
-  name: 'BaseDropdownSecondary',
-  emits: ['onOpen', 'onClose'],
+  name: "BaseDropdownSecondary",
+  emits: ["onOpen", "onClose"],
   inheritAttrs: false,
   props: {
     triggers: {
       type: Array as PropType<TriggerEvent[]>,
-      default: () => []
+      default: () => ['click'],
     },
     size: {
-      type: String,
-      default: 'md'
+      type: String as PropType<SizeButton>,
+      default: "md",
     },
-    icone: {
+    iconePadrao: {
       type: Boolean,
-      default: true
+      default: true,
     },
     disabled: {
-      default: false
+      default: false,
     },
     maxHeight: {
       type: String,
-      default: '400px'
+      default: "400px",
     },
     label: {
       type: String,
-      default: ''
+      default: "",
     },
     full: {
       type: Boolean,
-      default: false
+      default: false,
     },
     autoSize: {
       type: Boolean,
-      default: false
+      default: false,
     }
   },
   components: {
     VDropdown: Dropdown,
     BaseButtonSecondary,
-    ArrowDownSolidIcon
   },
   directives: {
-    'click-away': directive
+    "click-away": directive,
   },
   data() {
     return {
-      open: false
-    }
+      open: false,
+    };
   },
   methods: {
     toggle() {
-      this.open = !this.open
+      this.open = !this.open;
 
-      this.$emit(this.open ? 'onOpen' : 'onClose')
+      this.$emit(this.open ? "onOpen" : "onClose");
     },
     fechar() {
-      this.open = false
-      this.$emit('onClose')
+      this.open = false;
+      this.$emit("onClose");
     },
     handleClick(event) {
-      if (this.triggers.length > 0) return
+      if (this.triggers.length > 0) return;
 
-      const clickNoBotao = event.target.closest('dropdown-btn')
-      const clickNoDropdownAcoes = event.target.closest('dropdown-acoes')
-      const clickDropdownConteudo = event.target.closest('dropdown-conteudo')
+      const clickNoBotao = event.target.closest("dropdown-btn");
+      const clickNoDropdownAcoes = event.target.closest("dropdown-acoes");
+      const clickDropdownConteudo = event.target.closest("dropdown-conteudo");
 
-      if (clickNoBotao) this.open = false
+      if (clickNoBotao) this.open = false;
 
-      if (clickNoDropdownAcoes) this.open = false
+      if (clickNoDropdownAcoes) this.open = false;
 
-      if (clickDropdownConteudo) return
+      if (clickDropdownConteudo) return;
 
-      this.open = false
-    }
+      this.open = false;
+    },
   },
   beforeUnmount() {
-    document.body.removeEventListener('click', this.handleClick)
+    document.body.removeEventListener("click", this.handleClick);
   },
   mounted() {
-    document.body.addEventListener('click', this.handleClick)
-  }
-}
+    document.body.addEventListener("click", this.handleClick);
+  },
+};
 </script>
 
 <style scoped>
@@ -260,6 +263,7 @@ img {
 .dropdown-btn svg {
   transition: rotate 100ms;
 }
+
 
 :global(.v-popper__inner) {
   background: #fff;

@@ -1,47 +1,61 @@
 <template>
-  <div :class="{ 'table-responsive': responsive }">
-    <table
-      class="tabela"
-      :class="{
-        loading: loading,
-        listras: listras,
-        auto: tableLayout === 'auto',
-        fixed: tableLayout === 'fixed'
-      }"
-    >
-      <thead>
-        <template v-if="!$slots.thead">
-          <HeadSort
-            @onSort="$emit('onSort', $event)"
-            v-for="(coluna, index) in colunas"
-            :info="coluna.info"
-            :key="index"
-            :nome="coluna.nome"
-            :ordenando="sortName"
-            :order="sortOrder"
-            :disabled="coluna.disabled"
-            :texto="coluna.texto"
-          ></HeadSort>
-        </template>
-        <slot name="thead" :dados="dados" />
-      </thead>
-      <tbody v-if="dados && dados.length">
-        <slot name="colunas" :dados="dados" v-if="$slots.colunas"></slot>
-      </tbody>
-      <tbody
-        v-if="(!dados && !loading) || (dados && dados.length === 0 && !loading)"
-        class="tabela-vazia"
+  <div>
+    <div :class="{ 'table-responsive': responsive }">
+      <table
+        class="tabela"
+        :class="{
+          loading: loading,
+          listras: listras,
+          auto: tableLayout === 'auto',
+          fixed: tableLayout === 'fixed'
+        }"
       >
-        <tr v-if="!loading">
-          <td colspan="99999">{{ textoEmpty }}</td>
-        </tr>
-      </tbody>
-      <tbody v-if="loading">
-        <tr class="overlay">
-          <Loader width="3%" height="3%" :cor-principal="true" />
-        </tr>
-      </tbody>
-    </table>
+        <thead>
+          <template v-if="!$slots.thead">
+            <HeadSort
+              @onSort="$emit('onSort', $event)"
+              v-for="(coluna, index) in colunas"
+              :info="coluna.info"
+              :key="index"
+              :nome="coluna.nome"
+              :ordenando="sortName"
+              :order="sortOrder"
+              :disabled="coluna.disabled"
+              :texto="coluna.texto"
+              :width="coluna.width"
+              :permiteRemoverOrdenacao="permiteRemoverOrdenacao"
+            ></HeadSort>
+          </template>
+          <slot name="thead" :dados="dados" />
+        </thead>
+        <tbody v-if="dados && dados.length">
+          <slot name="colunas" :dados="dados" v-if="$slots.colunas"></slot>
+        </tbody>
+        <tbody
+          v-if="(!dados && !loading) || (dados && dados.length === 0 && !loading)"
+          class="tabela-vazia"
+        >
+          <tr v-if="!loading">
+            <td colspan="99999">{{ textoEmpty }}</td>
+          </tr>
+        </tbody>
+        <tbody v-if="loading">
+          <tr class="overlay">
+            <Loader width="3%" height="3%" :cor-principal="true" />
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <PaginacaoSemRouter
+      v-if="exibirPaginacao"
+      class="mt-3 p-2"
+      :exibir-total="true"
+      :pagina-atual="currentPage"
+      :total="total"
+      :porPagina="perPage"
+      @onChange="updatePagina($event)"
+    />
   </div>
 </template>
 
@@ -49,22 +63,30 @@
 import HeadSort from './HeadSort.vue'
 import Loader from '../Loader.vue'
 import { PropType } from 'vue'
+import PaginacaoSemRouter from '../paginacao/PaginacaoSemRouter.vue'
 
 interface Coluna {
   nome: string
   texto: string
   disabled?: boolean
   info?: string
+  width?: string
 }
 
 type TabelaLayout = 'auto' | 'fixed'
+type TableSort = 'asc' | 'desc' | 'ASC' | 'DESC'
 
 type Colunas = Array<Coluna>
 
 export default {
   name: 'Tabela',
-  components: { Loader, HeadSort },
+  components: { Loader, HeadSort, PaginacaoSemRouter},
+  emits: ['onSort', 'onPage'],
   props: {
+    permiteRemoverOrdenacao: {
+      type: Boolean,
+      default: false
+    },
     responsive: {
       type: Boolean,
       default: true
@@ -89,20 +111,12 @@ export default {
       type: Array,
       default: () => []
     },
-    total: {
-      type: Number,
-      default: 0
-    },
-    perPage: {
-      type: Number,
-      default: 10
-    },
     sortName: {
       type: String,
       default: null
     },
     sortOrder: {
-      type: String,
+      type: String as PropType<TableSort>,
       default: 'asc'
     },
     checkbox: {
@@ -112,6 +126,22 @@ export default {
     tableLayout: {
       type: String as PropType<TabelaLayout>,
       default: 'auto'
+    },
+    currentPage: {
+      type: Number,
+      default: 1
+    },
+    perPage: {
+      type: Number,
+      default: 1
+    },
+    total: {
+      type: Number,
+      default: 0
+    },
+    exibirPaginacao: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -122,6 +152,9 @@ export default {
   methods: {
     sortBy(dadosOrdenacao) {
       this.$emit('onSort', dadosOrdenacao)
+    },
+    updatePagina(page) {
+      this.$emit('onPage', page)
     }
   }
 }

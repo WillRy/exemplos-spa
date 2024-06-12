@@ -1,15 +1,12 @@
 <template>
-  <div
-    class="page-container"
-    :class="{ 'container-fluid': containerFluido, container: !containerFluido }"
-  >
+  <div class="page-container" :class="{'container-fluid': containerFluido, 'container': !containerFluido}">
     <slot></slot>
   </div>
 </template>
 
 <script lang="ts">
 export default {
-  name: 'PageContainer',
+  name: "PageContainer",
   props: {
     containerFluido: {
       type: Boolean,

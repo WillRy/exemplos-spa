@@ -20,26 +20,26 @@
 
 <script>
 export default {
-  name: 'Loader',
+  name: "Loader",
   props: {
     height: {
-      default: '20px'
+      default: "20px",
     },
     width: {
-      default: '20px'
+      default: "20px",
     },
     fill: {
-      default: '#fff'
+      default: "#fff",
     },
     padding: {
-      default: '0px'
+      default: "0px",
     },
     corPrincipal: {
       type: Boolean,
-      default: false
-    }
-  }
-}
+      default: true,
+    },
+  },
+};
 </script>
 
 <style scoped>

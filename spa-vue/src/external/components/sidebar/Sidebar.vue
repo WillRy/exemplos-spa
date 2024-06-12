@@ -1,9 +1,19 @@
 <template>
-  <div class="sidebar custom-scroll" :class="{ open: aberto }">
+  <div
+      class="sidebar custom-scroll"
+      :class="{open: aberto}"
+  >
     <div class="logo" @mouseenter.stop="">
       <div class="icon-menu-hamburguer" @click="toggle">
-        <ArrowSidebar class="arrow-menu arrow-hamburguer" v-if="open" />
-        <HamburguerSidebar src="/arrow-menu.svg" class="arrow-menu arrow-hamburguer" v-if="!open" />
+        <ArrowSidebar
+            class="arrow-menu arrow-hamburguer"
+            v-if="open"
+        />
+        <HamburguerSidebar
+            src="/arrow-menu.svg"
+            class="arrow-menu arrow-hamburguer"
+            v-if="!open"
+        />
       </div>
       <div class="logo-empresa" v-if="$slots.logo">
         <slot name="logo"></slot>
@@ -20,23 +30,27 @@
       <div class="menuBottom">
         <slot name="menuBottom"></slot>
       </div>
+
+
     </div>
   </div>
 </template>
 
 <script>
-import ArrowSidebar from './ArrowSidebar.vue'
-import HamburguerSidebar from './HamburguerSidebar.vue'
 
-import { computed } from 'vue'
+
+import ArrowSidebar from "./ArrowSidebar.vue";
+import HamburguerSidebar from "./HamburguerSidebar.vue";
+
+import {computed} from "vue";
 
 export default {
-  name: 'Sidebar',
+  name: "Sidebar",
   props: {
     open: {
       type: Boolean,
       default: false
-    }
+    },
   },
   provide() {
     return {
@@ -46,29 +60,30 @@ export default {
   data() {
     return {
       aberto: this.open
-    }
+    };
   },
   watch: {
     open() {
-      this.aberto = this.open
+      this.aberto = this.open;
     }
   },
   components: {
     HamburguerSidebar,
-    ArrowSidebar
+    ArrowSidebar,
   },
   methods: {
     tratarDropdown(dropdownAbriu) {
       if (dropdownAbriu && !this.aberto) {
-        this.aberto = true
-        this.$emit('change')
+        this.aberto = true;
+        this.$emit("change")
       }
     },
     toggle() {
-      this.$emit('change')
-    }
-  }
-}
+      this.$emit("change")
+    },
+  },
+
+};
 </script>
 
 <style scoped>
@@ -78,15 +93,16 @@ export default {
 
 .icon-menu-hamburguer {
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 42px !important;
-  flex-shrink: 0;
-  height: 36px;
-  border-radius: 8px;
-  margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 42px !important;
+    flex-shrink: 0;
+    height: 36px;
+    border-radius: 8px;
+    margin-left: 10px;
 }
+
 
 .icon-menu-hamburguer:hover {
   background: rgba(196, 216, 255, 0.16);
@@ -142,11 +158,12 @@ export default {
   user-select: none;
 }
 
-.logo-empresa :deep(a) {
+.logo-empresa :deep(a){
   display: block;
 }
 
 .open .logo-empresa {
+
   visibility: visible;
 }
 
@@ -186,26 +203,26 @@ export default {
 }
 
 .custom-scroll::-webkit-scrollbar {
-  width: 0.5rem;
-  height: 0.5rem;
+    width: 0.5rem;
+    height: 0.5rem;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {
-  background-color: #a2a2a2;
-  border-radius: 0.7rem;
+    background-color: #a2a2a2;
+    border-radius: 0.7rem;
 }
 
 .custom-scroll::-webkit-scrollbar-track {
-  background-color: #e6e6e6;
-  border-radius: 0.7rem;
+    background-color: #e6e6e6;
+    border-radius: 0.7rem;
 }
 
 /* Browsers without `::-webkit-scrollbar-*` support */
 @supports (not selector(::-webkit-scrollbar)) {
-  html {
-    scrollbar-width: thin;
-    scrollbar-color: #6d7c77 #cfd7c7;
-  }
+    html {
+        scrollbar-width: thin;
+        scrollbar-color: #6d7c77 #cfd7c7;
+    }
 }
 
 .separador {
@@ -218,6 +235,7 @@ export default {
 .sidebar-item {
   margin-bottom: 6px;
 }
+
 
 .menuBottom {
 }

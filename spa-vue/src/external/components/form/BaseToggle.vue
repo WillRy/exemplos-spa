@@ -1,5 +1,8 @@
 <template>
-  <div class="check-container" :class="{ error: error, checked: checked, disabled: disabled }">
+  <div
+    class="check-container"
+    :class="{ error: error, checked: checked, disabled: disabled }"
+  >
     <div class="label-container" v-if="$slots.label">
       <slot name="label" v-if="$slots.label" @click.stop=""></slot>
     </div>
@@ -20,17 +23,17 @@
     </label>
 
     <div v-if="$slots.legenda || legenda" class="legenda">
-      <InfoInputIcon size="14px" class="icone-footer" />
+      <InfoInputIcon size="14px"  class="icone-footer"/>
       <slot name="legenda" v-if="$slots.legenda"></slot>
       <template v-else>{{ legenda }}</template>
     </div>
     <div v-if="$slots.success || success" class="successMessage">
-      <InfoSuccessIcon size="14px" class="icone-footer" />
+      <InfoSuccessIcon size="14px"  class="icone-footer"/>
       <slot name="success" v-if="$slots.success"></slot>
       <template v-else>{{ success }}</template>
     </div>
     <div v-if="$slots.error || error" class="errorMessage">
-      <InfoErrorIcon size="14px" class="icone-footer" />
+      <InfoErrorIcon size="14px"  class="icone-footer"/>
       <slot name="error" v-if="$slots.error"></slot>
       <template v-else>{{ error }}</template>
     </div>
@@ -38,61 +41,61 @@
 </template>
 
 <script lang="ts">
-import InfoErrorIcon from '../icons/InfoErrorIcon.vue'
-import InfoInputIcon from '../icons/InfoInputIcon.vue'
-import InfoSuccessIcon from '../icons/InfoSuccessIcon.vue'
-import ActionText from '../text/ActionText.vue'
+import InfoErrorIcon from "../icons/InfoErrorIcon.vue";
+import InfoInputIcon from "../icons/InfoInputIcon.vue";
+import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
+import ActionText from "../text/ActionText.vue";
 
 export default {
-  name: 'BaseToggle',
+  name: "BaseToggle",
   inheritAttrs: false,
   emits: ['toggle'],
   components: { InfoInputIcon, InfoSuccessIcon, InfoErrorIcon, ActionText },
   props: {
     error: {
-      type: String
+      type: String,
     },
     success: {
-      type: String
+      type: String,
     },
     legenda: {
-      type: String
+      type: String,
     },
     checked: {
-      type: [Boolean, String]
+      type: [Boolean, String],
     },
     disabled: Boolean,
     label: String,
     on: {
       type: String,
-      default: 'ON'
+      default: "ON",
     },
     off: {
       type: String,
-      default: 'OFF'
-    }
+      default: "OFF",
+    },
   },
   computed: {
     checkedNormalizado() {
       if (
-        (typeof this.checked === 'string' && this.checked === 'S') ||
-        (typeof this.checked === 'boolean' && this.checked)
+        (typeof this.checked === "string" && this.checked === "S") ||
+        (typeof this.checked === "boolean" && this.checked)
       ) {
-        return true
+        return true;
       }
-      return false
-    }
+      return false;
+    },
   },
   methods: {
     updateValue() {
-      if (this.disabled) return
-      let valor = !this.checkedNormalizado
-      console.log(valor)
-      this.$emit('toggle', valor)
-    }
+      if (this.disabled) return;
+      let valor = (this.$refs.checkbox as HTMLInputElement).checked;
+      this.$emit("toggle", valor);
+    },
   },
-  created() {}
-}
+  created() {
+  },
+};
 </script>
 
 <style scoped>
@@ -121,26 +124,27 @@ export default {
 }
 
 .legenda > svg {
-  flex-shrink: 0;
-  width: 14px;
-  margin-right: 8px;
+    flex-shrink: 0;
+    width: 14px;
+    margin-right: 8px;
 }
 
+
 .errorMessage {
-  display: flex;
-  font-size: 0.75rem;
-  line-height: 0.9975rem;
-  font-weight: normal;
-  margin: 0;
-  font-style: italic;
-  color: var(--error-color-600);
-  padding-left: var(--padding-text);
+    display: flex;
+    font-size: 0.75rem;
+    line-height: 0.9975rem;
+    font-weight: normal;
+    margin: 0;
+    font-style: italic;
+    color: var(--error-color-600);
+    padding-left: var(--padding-text);
 }
 
 .errorMessage > svg {
-  flex-shrink: 0;
-  width: 14px;
-  margin-right: 8px;
+    flex-shrink: 0;
+    width: 14px;
+    margin-right: 8px;
 }
 
 .successMessage {
@@ -154,10 +158,11 @@ export default {
   padding-left: var(--padding-text);
 }
 
+
 .successMessage > svg {
-  flex-shrink: 0;
-  width: 14px;
-  margin-right: 8px;
+    flex-shrink: 0;
+    width: 14px;
+    margin-right: 8px;
 }
 
 .check-container {
@@ -224,7 +229,7 @@ export default {
 .checktoggle:after {
   box-shadow: 0px 3px 6px #00000029;
 
-  content: ' ';
+  content: " ";
   display: block;
   position: absolute;
   top: 50%;
@@ -234,9 +239,7 @@ export default {
   height: 22px;
   background-color: #fff;
   border-radius: 50%;
-  transition:
-    left 300ms ease,
-    transform 300ms ease;
+  transition: left 300ms ease, transform 300ms ease;
 }
 
 .check:checked + .checktoggle:after {

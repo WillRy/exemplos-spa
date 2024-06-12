@@ -18,13 +18,13 @@
 
 <script>
 export default {
-  name: 'NavegacaoAbasItem',
+  name: "NavegacaoAbasItem",
   props: {
     active: {
-      default: false
+      default: false,
     },
     disabled: {
-      default: false
+      default: false,
     },
     contador: {
       default: null
@@ -38,20 +38,20 @@ export default {
   },
   computed: {
     deveExibirContador() {
-      if (!this.exibirContador) return false
+      if(!this.exibirContador) return false;
 
-      if (this.exibeContadorComZero && this.contador >= 0) return true
+      if(this.exibeContadorComZero && this.contador >= 0) return true;
 
-      return this.contador > 0
+      return this.contador > 0;
     }
   },
   methods: {
     navegar() {
-      if (this.disabled) return
-      this.$emit('navegar')
-    }
-  }
-}
+      if (this.disabled) return;
+      this.$emit("navegar");
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -84,9 +84,7 @@ export default {
 }
 
 .navegacao-abas-item:focus:not(.active) {
-  box-shadow:
-    0 0 0 1px #fff,
-    0 0 0 2px var(--primary-color-principal-hover);
+  box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--primary-color-principal-hover);
   background: var(--primary-color-principal-hover);
   color: #fff;
 }
@@ -142,12 +140,12 @@ export default {
 }
 
 .contador {
-  background: #fff;
-  color: var(--primary-color-principal);
-  padding: 4px;
-  border-radius: 5px;
-  font-weight: 700;
-  font-size: 14px;
+    background: #fff;
+    color: var(--primary-color-principal);
+    padding: 4px;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 14px;
 }
 
 .contador.active {
