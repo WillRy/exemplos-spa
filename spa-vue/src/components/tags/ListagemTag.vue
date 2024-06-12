@@ -20,6 +20,11 @@
       :dados="tags.dados && tags.dados.data"
       :sort-name="sortName"
       :sort-order="sortOrder"
+      :total="tags.dados && tags.dados.total"
+      :per-page="tags.dados && tags.dados.per_page"
+      :current-page="tags.dados && tags.dados.current_page"
+      @onSort="sortBy"
+      @onPage="updatePagina"
       texto-empty="Não há dados"
     >
       <template #thead>
@@ -92,15 +97,6 @@
         </tr>
       </template>
     </Tabela>
-    <PaginacaoSemRouter
-      class="mt-3 p-2"
-      :exibir-total="true"
-      v-if="tags.dados"
-      :pagina-atual="tags.dados.current_page"
-      :total="tags.dados.total"
-      :porPagina="tags.dados.per_page"
-      @onChange="updatePagina($event)"
-    />
 
     <ModalCriarTag
       :aberta="criarTagAberto"
@@ -125,7 +121,6 @@ import BaseInput from '../../external/components/form/BaseInput'
 import Tabela from '../../external/components/tabela/Tabela'
 import ColunaTabela from '../../external/components/tabela/ColunaTabela'
 import DropdownAcoes from '../../external/components/dropdown/BaseDropdownAction'
-import PaginacaoSemRouter from '../../external/components/paginacao/PaginacaoSemRouter'
 import Box from '../../external/components/estrutura/Box'
 import api from '@/services/api'
 import { reactive, ref } from 'vue'

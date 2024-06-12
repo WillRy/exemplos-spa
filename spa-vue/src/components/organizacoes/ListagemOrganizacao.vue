@@ -85,7 +85,11 @@
       :dados="organizacoes.dados && organizacoes.dados.data"
       :sort-name="sortName"
       :sort-order="sortOrder"
+      :total="organizacoes.dados && organizacoes.dados.total"
+      :per-page="organizacoes.dados && organizacoes.dados.per_page"
+      :current-page="organizacoes.dados && organizacoes.dados.current_page"
       @onSort="sortBy"
+      @onPage="updatePagina"
       texto-empty="Não há dados"
     >
       <template v-slot:colunas="{ dados }">
@@ -128,15 +132,6 @@
         </tr>
       </template>
     </Tabela>
-    <PaginacaoSemRouter
-      class="mt-3 p-2"
-      :exibir-total="true"
-      v-if="organizacoes.dados"
-      :pagina-atual="organizacoes.dados.current_page"
-      :total="organizacoes.dados.total"
-      :porPagina="organizacoes.dados.per_page"
-      @onChange="updatePagina($event)"
-    />
 
     <ModalCriarOrganizacao
       :aberta="criarOrganizacaoAberto"
@@ -166,7 +161,6 @@ import BaseSelectAjax from '../../external/components/form/BaseSelectAjax'
 import Tabela from '../../external/components/tabela/Tabela'
 import ColunaTabela from '../../external/components/tabela/ColunaTabela'
 import DropdownAcoes from '../../external/components/dropdown/BaseDropdownAction'
-import PaginacaoSemRouter from '../../external/components/paginacao/PaginacaoSemRouter'
 import Box from '../../external/components/estrutura/Box'
 import api from '@/services/api'
 import ModalCriarOrganizacao from './ModalCriarOrganizacao'
