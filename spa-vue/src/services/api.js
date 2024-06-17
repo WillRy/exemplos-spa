@@ -53,7 +53,7 @@ const interceptorRefresh = (error, shouldRedirectLogout = true) => {
         if (!isRefreshing) {
           isRefreshing = true
 
-          api
+          apiPublic
             .post('/refresh')
             .then((response) => {
               const { token } = response.data
@@ -92,7 +92,7 @@ const interceptorRefresh = (error, shouldRedirectLogout = true) => {
         })
       } else {
         if(shouldRedirectLogout) {
-          return redirectLogout(2)
+          redirectLogout(2)
         }
         return Promise.reject(new Error('Sessão expirada'))
       }
@@ -103,7 +103,9 @@ const interceptorRefresh = (error, shouldRedirectLogout = true) => {
 
 //enviar idioma ou token da localstorage(caso use)
 api.interceptors.request.use(interceptors)
+
 apiPublic.interceptors.request.use(interceptors)
+
 apiSemLogout.interceptors.request.use(interceptors)
 apiSemLogout.interceptors.response.use(
   (response) => {

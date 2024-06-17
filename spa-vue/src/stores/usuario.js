@@ -11,6 +11,9 @@ export const usuarioStore = defineStore('usuarioStore', {
   getters: {
     temPermissao: (state) => {
       return (permissao) => state.permissoes.includes(permissao)
+    },
+    isLoggedIn: (state) => {
+      return !!state.usuario
     }
   },
   actions: {
@@ -27,7 +30,7 @@ export const usuarioStore = defineStore('usuarioStore', {
     },
     async logout() {
       try {
-        await api.post('/logout')
+        await apiSemLogout.post('/logout')
 
         return true
       } catch (error) {

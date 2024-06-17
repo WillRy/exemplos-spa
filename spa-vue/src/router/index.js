@@ -2,9 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { usuarioStore } from '../stores/usuario'
 import { configuraIdioma, mudarIdioma } from '../middlewares/configuraIdioma'
 import { iniciaLoader, terminaLoader } from '../middlewares/loaders'
-import { verificaPermissao } from '../middlewares/verificaPermissao'
 import { apiPublic } from '../services/api'
-import { auth, redirectIfAuth } from '@/middlewares/auth.js'
+import { auth } from '@/middlewares/auth.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,7 +27,7 @@ const router = createRouter({
       path: '/',
       component: () => import('../layouts/Publico'),
       name: 'publico',
-      beforeEnter: [redirectIfAuth],
+      beforeEnter: [],
       meta: {
         public: true,
       },
@@ -55,9 +54,10 @@ const router = createRouter({
       path: '/painel',
       component: () => import('../layouts/Privado'),
       meta: {
-        permissoes: []
+        permissoes: [],
+        privado: true,
       },
-      beforeEnter: [auth],
+      beforeEnter: [],
       children: [
         {
           path: '',
@@ -103,7 +103,7 @@ router.beforeEach(iniciaLoader)
 
 router.afterEach(terminaLoader)
 
-router.beforeEach(verificaPermissao)
+router.beforeEach(auth)
 
 // get a new csrf token in each request
 router.beforeEach(async (from, to, next) => {
