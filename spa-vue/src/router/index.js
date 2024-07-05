@@ -23,6 +23,7 @@ const router = createRouter({
         return next({ name: 'login', query: { logout: 1 } })
       }
     },
+    // rotas publicas
     {
       path: '/',
       component: () => import('../layouts/Publico'),
@@ -49,7 +50,7 @@ const router = createRouter({
         }
       ]
     },
-
+    // rotas privadas
     {
       path: '/painel',
       component: () => import('../layouts/Privado'),

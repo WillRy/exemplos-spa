@@ -16,6 +16,7 @@ export const auth = async (to, from, next) => {
    */
   let rotaEstaComoPrivada = to.matched.map((record) => record.meta.privado).find(Boolean)
 
+  //se usuário não está carregado na store, carrega ele
   let logado = usuarioState.isLoggedIn;
   if(!logado) {
     logado = await usuarioState.carregarUsuarioLogado()
@@ -23,7 +24,7 @@ export const auth = async (to, from, next) => {
 
   //se está vindo de um login ou logout forçado, deixa entrar na rota (util para SSO)
   const fazendoNovoLogin = from.query.logout || to.query.logout || to.query.k || to.query.token || to.name === 'logout';
-  if(fazendoNovoLogin) {
+  if(fazendoNovoLogin && !rotaEstaComoPrivada) {
     return next()
   }
 
@@ -44,6 +45,9 @@ export const auth = async (to, from, next) => {
     })
   }
 
+  /**
+   * Se rota é privada e está logado, verifica se tem permissão para acess
+   */
 
   const permissoesUsuario = usuarioState.permissoes
 
