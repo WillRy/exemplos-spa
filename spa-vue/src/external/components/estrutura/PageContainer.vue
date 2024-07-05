@@ -19,5 +19,6 @@ export default {
 <style scoped>
 .page-container {
   margin-top: var(--spacing-4);
+  padding-bottom: 20px;
 }
 </style>

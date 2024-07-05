@@ -4,7 +4,6 @@ import { createPinia } from 'pinia'
 import VueToast from 'vue-toast-notification'
 import VueTheMask from 'vue-the-mask'
 
-import { filters, EventBus, LaravelError, LaravelAlert, VerificaPermissao, toasts } from './plugins'
 
 import App from './App.vue'
 import router from './router'
@@ -33,12 +32,5 @@ app.use(drag)
 app.use(createHead())
 app.directive('click-away', directive)
 app.component('Loader', Loader)
-
-app.use(VerificaPermissao)
-app.use(LaravelError)
-app.use(LaravelAlert)
-app.use(toasts)
-app.use(filters)
-app.use(EventBus)
 
 app.mount('#app')

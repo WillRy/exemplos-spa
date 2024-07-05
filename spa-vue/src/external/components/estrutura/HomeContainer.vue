@@ -1,24 +1,34 @@
 <template>
-  <div class="home">
-    <slot></slot>
+  <div class="home-container">
+    <slot name="sidebar"> </slot>
+    <slot name="header"></slot>
+    <div class="home">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 export default {
-  name: "HomeContainer",
-};
+  name: 'HomeContainer'
+}
 </script>
 
-<style>
+<style scoped>
+.home-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
 .home {
-  min-height: 100vh;
   top: 0;
   transition: all 0.5s ease;
   z-index: var(--z-index-1);
-  padding-bottom: 20px;
   padding-left: 60px;
   padding-top: 60px;
+  width: 100%;
+  height: 100%;
 }
 
 .sidebar.open ~ .home {

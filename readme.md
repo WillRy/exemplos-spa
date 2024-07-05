@@ -1,16 +1,17 @@
 # Aplicação de exemplo - Mini CRM
 
-Um software que foi criado em 2 arquiteturas:
+Repositório contém 2 aplicações:
 
-- Monolítica com Inertia.JS, Laravel e Vue.JS
-- Back e Front separados por API(Laravel) e Front (Vue.JS)
+- API: Backend em Laravel
+- FrontEnd: SPA em vue 3
 
-Ambos os modelos contemplam:
+Contemplando:
 
 - autenticação
     - jwt
     - refresh token
     - tratamento de race condition em refresh token rotativo
+    - CSRF token 
 - estruturação de rotas publicas e privadas
 - CRUD
 - comunicação entre componentes
@@ -26,25 +27,8 @@ Ambos os modelos contemplam:
 - senha: 123456
 
 
-## Divisão das aplicações
-
-Existem 2 modelos
-
-
-### 1° modelo
-
-Backend e front end separados, através da pasta **api** e a pasta **spa-vue** com o front
-
-### 2° modelo
-
-Aplicação monolítica usando inertia.js
-
 ## Como executar?
 
-Depende do modelo que deseja executar
-
-
-### Executar 1° modelo
 
 **pasta: api**
 ```shell
@@ -54,18 +38,6 @@ docker-compose up -d
 **pasta: spa-vue**
 
 ```shell
-npm install
-
-npm run dev
-```
-
-### Executar 2° modelo
-
-
-**pasta: inertia**
-```shell
-docker-compose up -d
-
 npm install
 
 npm run dev

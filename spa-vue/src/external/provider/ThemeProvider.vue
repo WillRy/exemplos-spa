@@ -90,6 +90,10 @@ onBeforeMount(() => {
 });
 </script>
 <style scoped lang="scss">
+.themeprovider {
+  height: 100%;
+}
+
 $primary-colors: (
   50: v-bind("thema.primaryColor[50]"),
   100: v-bind("thema.primaryColor[100]"),

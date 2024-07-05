@@ -1,8 +1,9 @@
 <template>
   <button
-    :class="{ active: active, disabled: disabled }"
+    :class="{ active: valorAtivo === valor, disabled: disabled }"
     class="navegacao-abas-item"
-    @click="navegar"
+    @click="mudarAba(valor)"
+    :disabled="disabled"
   >
     <slot name="antes"></slot>
     <span class="conteudo">
@@ -34,8 +35,13 @@ export default {
     },
     exibeContadorComZero: {
       default: true
-    }
+    },
+    valor: {
+      type: String,
+      required: true,
+    },
   },
+  inject: ["valorAtivo", "mudarAba"],
   computed: {
     deveExibirContador() {
       if(!this.exibirContador) return false;

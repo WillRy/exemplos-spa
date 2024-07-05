@@ -45,6 +45,9 @@ import { VTooltip } from 'floating-vue'
 import SortAscIcon from '../icons/SortAscIcon.vue'
 import SortDescIcon from '../icons/SortDescIcon.vue'
 import SortIcon from '../icons/SortIcon.vue'
+import { inject } from 'vue'
+
+type SortFunction = (sort: {sortName: string, sortOrder: string}) => void
 
 export default {
   name: 'HeadSort',
@@ -52,17 +55,10 @@ export default {
   props: {
     nome: {
       type: String,
-      required: true
-    },
-    order: {
-      type: String,
+      required: false,
       default: ''
     },
     texto: {
-      type: String,
-      required: false
-    },
-    ordenando: {
       type: String,
       required: false
     },
@@ -100,6 +96,13 @@ export default {
   directives: {
     tooltip: VTooltip
   },
+  setup() {
+    return {
+      sortByTabela: inject('sortByTabela') as SortFunction,
+      ordenando: inject('ordenando') as string,
+      order: inject('order') as string
+    }
+  },
   methods: {
     sortBy(campo) {
       let sortName = campo
@@ -124,7 +127,7 @@ export default {
         }
       }
 
-      this.$emit('onSort', {
+      this.sortByTabela({
         sortName: sortName,
         sortOrder: sortOrder
       })

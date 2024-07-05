@@ -13,13 +13,10 @@
         <thead>
           <template v-if="!$slots.thead">
             <HeadSort
-              @onSort="$emit('onSort', $event)"
               v-for="(coluna, index) in colunas"
               :info="coluna.info"
               :key="index"
               :nome="coluna.nome"
-              :ordenando="sortName"
-              :order="sortOrder"
               :disabled="coluna.disabled"
               :texto="coluna.texto"
               :width="coluna.width"
@@ -47,23 +44,26 @@
       </table>
     </div>
 
-    <PaginacaoSemRouter
-      v-if="exibirPaginacao"
-      class="mt-3 p-2"
-      :exibir-total="true"
-      :pagina-atual="currentPage"
-      :total="total"
-      :porPagina="perPage"
-      @onChange="updatePagina($event)"
-    />
+    <template v-if="exibirPaginacao">
+      <Separador />
+      <PaginacaoSemRouter
+        class="mt-3 p-2"
+        :exibir-total="true"
+        :pagina-atual="currentPage"
+        :total="total"
+        :porPagina="perPage"
+        @onChange="updatePagina($event)"
+      />
+    </template>
   </div>
 </template>
 
 <script lang="ts">
 import HeadSort from './HeadSort.vue'
 import Loader from '../Loader.vue'
-import { PropType } from 'vue'
+import { PropType, computed } from 'vue'
 import PaginacaoSemRouter from '../paginacao/PaginacaoSemRouter.vue'
+import Separador from '../estrutura/Separador.vue'
 
 interface Coluna {
   nome: string
@@ -80,7 +80,7 @@ type Colunas = Array<Coluna>
 
 export default {
   name: 'Tabela',
-  components: { Loader, HeadSort, PaginacaoSemRouter},
+  components: { Loader, HeadSort, PaginacaoSemRouter, Separador },
   emits: ['onSort', 'onPage'],
   props: {
     permiteRemoverOrdenacao: {
@@ -149,9 +149,16 @@ export default {
       checkedAll: false
     }
   },
+  provide() {
+    return {
+      sortByTabela: (dados) => this.sortBy(dados),
+      ordenando: computed(() => this.sortName),
+      order: computed(() => this.sortOrder)
+    }
+  },
   methods: {
     sortBy(dadosOrdenacao) {
-      this.$emit('onSort', dadosOrdenacao)
+      this.$emit('onSort', dadosOrdenacao);
     },
     updatePagina(page) {
       this.$emit('onPage', page)

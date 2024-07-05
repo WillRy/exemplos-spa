@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { useConfigStore } from "@/external/store/config.ts";
+import { useConfigStore } from "../../store/config";
 import ArrowLeftIcon from "../icons/ArrowLeftIcon.vue";
 import ArrowRightIcon from "../icons/ArrowRightIcon.vue";
 import ActionText from "../text/ActionText.vue";

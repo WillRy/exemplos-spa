@@ -9,7 +9,7 @@ export interface openToast {
 }
 
 export interface erroUnicoBackend {
-  [fieldName: string]: string[];
+  [fieldName: string]: string[] | string;
 }
 export interface errosBackend {
   errors: erroUnicoBackend;
@@ -17,7 +17,7 @@ export interface errosBackend {
 }
 
 export interface errosTratados {
-  [key: string]: string | null;
+  [key: string|number]: string | null | Array<any> | { [key: string]: string | Array<any> };
 }
 
 export interface jsonBackend {

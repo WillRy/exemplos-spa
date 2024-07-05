@@ -1,83 +1,87 @@
 <template>
   <div class="layout" v-if="!loading && usuarioState.usuario">
-    <Sidebar :open="sidebarAberta" @change="mudarSidebar">
-      <template #logo>
-        <img src="/logo.png" alt="" />
-      </template>
-      <SidebarLink :to="{ name: 'dashboard' }">
-        <template #texto> Dashboard </template>
-        <template #icone>
-          <HomeIcon />
-        </template>
-      </SidebarLink>
-      <SidebarLink :to="{ name: 'organizacoes' }">
-        <template #texto>
-          {{ $t('palavras.organizacoes') }}
-        </template>
-        <template #icone>
-          <OrganizacaoIcon />
-        </template>
-      </SidebarLink>
-      <SidebarLink :to="{ name: 'contatos' }">
-        <template #texto>
-          {{ $t('palavras.contatos') }}
-        </template>
-        <template #icone>
-          <ContatoIcon />
-        </template>
-      </SidebarLink>
-      <SidebarLink :to="{ name: 'tags' }">
-        <template #texto>
-          {{ $t('palavras.tags') }}
-        </template>
-        <template #icone>
-          <TagIcon />
-        </template>
-      </SidebarLink>
-    </Sidebar>
-
-    <Header :containerFluido="true">
-      <template #boxDireito>
-        <div class="row">
-          <div class="col col-count" v-if="qtdOrganizacoes">
-            <span>Organizações:</span>
-            <span>{{ qtdOrganizacoes }}</span>
-          </div>
-          <div class="col">
-            <BaseDropdownSecondary>
-              <template #botao>
-                {{ $i18n.locale }}
-              </template>
-              <template #acoes>
-                <button @click="mudarIdioma('pt-BR')">Português</button>
-                <button @click="mudarIdioma('en')">Inglês</button>
-              </template>
-            </BaseDropdownSecondary>
-          </div>
-          <div class="col">
-            <BaseDropdownPrimary>
-              <template #botao>
-                {{ usuarioState.usuario.nome }}
-              </template>
-              <template #acoes>
-                <button @click="logout">{{ $t('palavras.logout') }}</button>
-                <button
-                  :disabled="!usuarioState.temPermissao('botao')"
-                  v-if="!usuarioState.temPermissao('botao')"
-                >
-                  {{ $t('textos.botao_sem_permissao') }}
-                </button>
-                <button v-else>
-                  {{ $t('textos.botao_sem_permissao') }}
-                </button>
-              </template>
-            </BaseDropdownPrimary>
-          </div>
-        </div>
-      </template>
-    </Header>
-
     <HomeContainer>
+      <template #sidebar>
+        <Sidebar :open="sidebarAberta" @change="mudarSidebar">
+          <template #logo>
+            <img src="/logo.png" alt="" />
+          </template>
+          <SidebarLink :to="{ name: 'dashboard' }">
+            <template #texto> Dashboard </template>
+            <template #icone>
+              <HomeIcon />
+            </template>
+          </SidebarLink>
+          <SidebarLink :to="{ name: 'organizacoes' }">
+            <template #texto>
+              {{ $t('palavras.organizacoes') }}
+            </template>
+            <template #icone>
+              <OrganizacaoIcon />
+            </template>
+          </SidebarLink>
+          <SidebarLink :to="{ name: 'contatos' }">
+            <template #texto>
+              {{ $t('palavras.contatos') }}
+            </template>
+            <template #icone>
+              <ContatoIcon />
+            </template>
+          </SidebarLink>
+          <SidebarLink :to="{ name: 'tags' }">
+            <template #texto>
+              {{ $t('palavras.tags') }}
+            </template>
+            <template #icone>
+              <TagIcon />
+            </template>
+          </SidebarLink>
+        </Sidebar>
+      </template>
+
+      <template #header>
+        <Header :containerFluido="true">
+          <template #boxDireito>
+            <div class="row">
+              <div class="col col-count" v-if="qtdOrganizacoes">
+                <span>Organizações:</span>
+                <span>{{ qtdOrganizacoes }}</span>
+              </div>
+              <div class="col">
+                <BaseDropdownSecondary>
+                  <template #botao>
+                    {{ $i18n.locale }}
+                  </template>
+                  <template #acoes>
+                    <button @click="mudarIdioma('pt-BR')">Português</button>
+                    <button @click="mudarIdioma('en')">Inglês</button>
+                  </template>
+                </BaseDropdownSecondary>
+              </div>
+              <div class="col">
+                <BaseDropdownPrimary>
+                  <template #botao>
+                    {{ usuarioState.usuario.nome }}
+                  </template>
+                  <template #acoes>
+                    <button @click="logout">{{ $t('palavras.logout') }}</button>
+                    <button
+                      :disabled="!usuarioState.temPermissao('botao')"
+                      v-if="!usuarioState.temPermissao('botao')"
+                    >
+                      {{ $t('textos.botao_sem_permissao') }}
+                    </button>
+                    <button v-else>
+                      {{ $t('textos.botao_sem_permissao') }}
+                    </button>
+                  </template>
+                </BaseDropdownPrimary>
+              </div>
+            </div>
+          </template>
+        </Header>
+      </template>
+
       <router-view :key="$route.path"></router-view>
     </HomeContainer>
   </div>

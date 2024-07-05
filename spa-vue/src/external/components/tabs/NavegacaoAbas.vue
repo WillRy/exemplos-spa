@@ -5,8 +5,37 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+
 export default {
   name: "NavegacaoAbas",
+  emits: ['update:valor','navegar'],
+  props: {
+    valor: {
+      type: String,
+      required: true,
+      default: ""
+    },
+    manual: {
+      type: Boolean,
+      default: false
+    }
+  },
+  provide() {
+    return {
+      valorAtivo: computed(() => this.valor),
+      mudarAba: (aba) => this.mudarAba(aba)
+    }
+  },
+  methods: {
+    mudarAba(valor) {
+      if(this.manual) {
+        this.$emit('navegar', valor)
+      } else {
+        this.$emit("update:valor", valor);
+      }
+    }
+  }
 };
 </script>
 

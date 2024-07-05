@@ -192,6 +192,14 @@
   order: 6 !important;
 }
 
+.h-full {
+  height: 100%;
+}
+
+.w-full {
+  height: 100%;
+}
+
 @each $key, $value in $spacing-map {
   .m-#{$key} {
     margin: #{$value};

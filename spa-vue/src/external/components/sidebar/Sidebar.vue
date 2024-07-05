@@ -132,6 +132,7 @@ export default {
   z-index: var(--z-index-3);
 
   transition: all 0.5s ease;
+  flex-shrink: 0;
 }
 
 .sidebar.open {

@@ -29,37 +29,25 @@
     >
       <template #thead>
         <HeadSort
-          @onSort="sortBy"
           nome="id"
-          :ordenando="sortName"
-          :order="sortOrder"
           :disabled="false"
         >
           <span>{{ $t('palavras.id') }}</span>
         </HeadSort>
         <HeadSort
-          @onSort="sortBy"
           nome="nome"
-          :ordenando="sortName"
-          :order="sortOrder"
           :disabled="false"
         >
           <span>{{ $t('palavras.nome') }}</span>
         </HeadSort>
         <HeadSort
-          @onSort="sortBy"
           nome="cor_fundo"
-          :ordenando="sortName"
-          :order="sortOrder"
           :disabled="false"
         >
           <span>{{ $t('palavras.cor_fundo') }}</span>
         </HeadSort>
         <HeadSort
-          @onSort="sortBy"
           nome="cor_texto"
-          :ordenando="sortName"
-          :order="sortOrder"
           :disabled="false"
         >
           <span>{{ $t('palavras.cor_texto') }}</span>

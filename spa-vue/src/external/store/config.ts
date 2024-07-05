@@ -10,7 +10,6 @@ export const useConfigStore = defineStore('useConfigStore', {
         is24hr: true,
         locale: 'pt-BR',
         textoPaginacaoTabela: null
-        // textoPaginacaoTabela: 'Exibindo [INICIO] a [FIM] de [TOTAL] [TXT_RESULTADO=resultado|resultados]'
     } as ConfigState
   }),
   actions: {

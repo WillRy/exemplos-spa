@@ -2,15 +2,18 @@ import { i18n } from '@/lang/index.js';
 import { usuarioStore } from '@/stores/usuario.js'
 import { useToast } from 'vue-toast-notification';
 
+/**
+ * Middleware de permissão
+ */
 export const auth = async (to, from, next) => {
-  debugger;
   const usuarioState = usuarioStore()
 
-  let permissoesRotas = to.matched
-    .map((record) => record.meta.permissoes)
-    .reduce((a, b) => a.concat(b), [])
-    .filter(Boolean)
-
+  //verifica se rota contém um meta indicando que o grupo de rota é privado
+  /**
+   * meta: {
+   *  privado: true
+   * }
+   */
   let rotaEstaComoPrivada = to.matched.map((record) => record.meta.privado).find(Boolean)
 
   let logado = usuarioState.isLoggedIn;
@@ -18,7 +21,7 @@ export const auth = async (to, from, next) => {
     logado = await usuarioState.carregarUsuarioLogado()
   }
 
-  //se está vindo de um login ou logout forçado, deixa entrar
+  //se está vindo de um login ou logout forçado, deixa entrar na rota (util para SSO)
   const fazendoNovoLogin = from.query.logout || to.query.logout || to.query.k || to.query.token || to.name === 'logout';
   if(fazendoNovoLogin) {
     return next()
@@ -41,8 +44,19 @@ export const auth = async (to, from, next) => {
     })
   }
 
-  //se tem permissão, deixa entrar, caso contrário leva para a home
+
   const permissoesUsuario = usuarioState.permissoes
+
+  //verifica se rota contém um meta indicando que a lista de permissões
+  /**
+   * meta: {
+   *  permissoes: ['xpto']
+   * }
+   */
+  let permissoesRotas = to.matched
+    .map((record) => record.meta.permissoes)
+    .reduce((a, b) => a.concat(b), [])
+    .filter(Boolean)
 
   const usuarioTemPermissao = permissoesRotas.filter((permissao) => {
     return permissoesUsuario.includes(permissao)
