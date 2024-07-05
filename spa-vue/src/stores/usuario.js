@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import api, {apiSemLogout} from '../services/api'
+import {apiSemLogout} from '../services/api'
 
 export const usuarioStore = defineStore('usuarioStore', {
   state: () => {
