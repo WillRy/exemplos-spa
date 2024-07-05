@@ -63,11 +63,6 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
         $dados = $request->validated();
 
         try {
-            $organizacaoExiste = Organizacao::find($id);
-
-            if (empty($organizacaoExiste)) {
-                throw new \Exception(__('custom.organizacao_inexistente'), 404);
-            }
 
             $organizacao = (new Organizacao())->editar($id, $dados);
 
@@ -81,12 +76,6 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
     public function destroy(Request $request, int $id)
     {
         try {
-            $organizacaoExiste = Organizacao::find($id);
-
-            if (empty($organizacaoExiste)) {
-                throw new \Exception(__('custom.organizacao_inexistente'), 404);
-            }
-
             (new Organizacao())->deletar($id);
 
             return (new ResponseJSON())->setData([])->setMessage(__('custom.organizacao_excluido_com_sucesso'))->render();

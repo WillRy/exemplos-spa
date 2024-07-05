@@ -64,12 +64,6 @@ class ContatoController extends \App\Http\Controllers\Controller
         $dados = $request->validated();
 
         try {
-            $organizacaoExiste = Contato::find($id);
-
-            if (empty($organizacaoExiste)) {
-                throw new Exception(__('custom.contato_inexistente'), 404);
-            }
-
             $organizacao = (new Contato())->editar($id, $dados);
 
             return (new ResponseJSON())->setData($organizacao)->setMessage(__('custom.contato_editado_com_sucesso'))->render();
@@ -82,11 +76,6 @@ class ContatoController extends \App\Http\Controllers\Controller
     public function destroy(Request $request, int $id)
     {
         try {
-            $organizacaoExiste = Contato::find($id);
-
-            if (empty($organizacaoExiste)) {
-                throw new Exception(__('custom.contato_inexistente'), 404);
-            }
 
             (new Contato())->deletar($id);
 

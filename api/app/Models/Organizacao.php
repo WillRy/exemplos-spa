@@ -101,24 +101,29 @@ class Organizacao extends Model
 
             DB::beginTransaction();
 
-            $organizacao = self::where('id', $id)->first();
-            $organizacao->fill($dados);
-            $organizacao->save();
+            $organizacaoExiste = Organizacao::find($id);
+
+            if (empty($organizacaoExiste)) {
+                throw new \Exception(__('custom.organizacao_inexistente'), 404);
+            }
+
+            $organizacaoExiste->fill($dados);
+            $organizacaoExiste->save();
 
             if (array_key_exists('tags', $dados)) {
                 $ids = is_array($dados['tags']) ? array_column($dados['tags'], 'id') : [];
 
                 if (! empty($ids)) {
-                    $organizacao->tags()->sync($ids);
+                    $organizacaoExiste->tags()->sync($ids);
                 } else {
-                    $organizacao->tags()->detach();
+                    $organizacaoExiste->tags()->detach();
                 }
 
             }
 
             DB::commit();
 
-            return $organizacao;
+            return $organizacaoExiste;
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;
@@ -127,7 +132,12 @@ class Organizacao extends Model
 
     public function deletar(int $id): void
     {
-        $organizacao = self::where('id', $id)->first();
-        $organizacao->delete();
+        $organizacaoExiste = Organizacao::find($id);
+
+        if (empty($organizacaoExiste)) {
+            throw new \Exception(__('custom.organizacao_inexistente'), 404);
+        }
+
+        $organizacaoExiste->delete();
     }
 }

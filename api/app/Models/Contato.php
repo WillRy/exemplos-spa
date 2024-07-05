@@ -41,12 +41,12 @@ class Contato extends Model
         return self::query()
             ->select('*')
             ->with('organizacao')
-            ->when(! empty($pesquisa), function ($query) use ($pesquisa) {
+            ->when(!empty($pesquisa), function ($query) use ($pesquisa) {
                 $query->where('id', '=', $pesquisa);
                 $query->where('nome', 'like', "%$pesquisa%");
                 $query->orWhere('email', 'like', "%$pesquisa%");
             })
-            ->when(! empty($organizacao_id), function ($query) use ($organizacao_id) {
+            ->when(!empty($organizacao_id), function ($query) use ($organizacao_id) {
                 $query->where('organizacao_id', '=', $organizacao_id);
             })
             ->orderBy($sortName, $sortOrder)
@@ -60,16 +60,26 @@ class Contato extends Model
 
     public function editar(int $id, array $dados): Contato
     {
-        $organizacao = self::where('id', $id)->first();
-        $organizacao->fill($dados);
-        $organizacao->save();
+        $contatoExistente = Contato::find($id);
 
-        return $organizacao;
+        if (empty($contatoExistente)) {
+            throw new \Exception(__('custom.contato_inexistente'), 404);
+        }
+
+        $contatoExistente->fill($dados);
+        $contatoExistente->save();
+
+        return $contatoExistente;
     }
 
     public function deletar(int $id): void
     {
-        $organizacao = self::where('id', $id)->first();
-        $organizacao->delete();
+        $contatoExistente = Contato::find($id);
+
+        if (empty($contatoExistente)) {
+            throw new \Exception(__('custom.contato_inexistente'), 404);
+        }
+
+        $contatoExistente->delete();
     }
 }
