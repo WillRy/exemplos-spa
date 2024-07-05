@@ -43,4 +43,21 @@ class Tag extends Model
             ->orderBy($ordenarNome, $ordenarOrdem)
             ->paginate(15);
     }
+
+    public function editar(
+        int $id,
+        array $dados
+    )
+    {
+        $tag = Tag::find($id);
+
+        if (empty($tag)) {
+            throw new \Exception(__('custom.tag_inexistente'), 404);
+        }
+
+        $tag->fill($dados);
+        $tag->save();
+
+        return $tag;
+    }
 }

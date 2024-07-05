@@ -45,11 +45,9 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
 
     public function store(CriarOrganizacaoRequest $request)
     {
-        $dados = $request->validated();
-
         try {
 
-            $organizacao = (new Organizacao())->criar($dados);
+            $organizacao = (new Organizacao())->criar($request->validated());
 
             return (new ResponseJSON())->setData($organizacao)->setMessage(__('custom.organizacao_criado_com_sucesso'))->render();
 
@@ -60,11 +58,9 @@ class OrganizacaoController extends \App\Http\Controllers\Controller
 
     public function update(EditarOrganizacaoRequest $request, int $id)
     {
-        $dados = $request->validated();
-
         try {
 
-            $organizacao = (new Organizacao())->editar($id, $dados);
+            $organizacao = (new Organizacao())->editar($id, $request->validated());
 
             return (new ResponseJSON())->setData($organizacao)->setMessage(__('custom.organizacao_editado_com_sucesso'))->render();
 

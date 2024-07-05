@@ -44,10 +44,8 @@ class TagController extends Controller
 
     public function store(CriarTagRequest $request)
     {
-        $dados = $request->validated();
-
         try {
-            $tag = Tag::create($dados);
+            $tag = Tag::create($request->validated());
 
             return (new ResponseJSON())->setData($tag)->setMessage(__('custom.tag_criada_com_sucesso'))->render();
         } catch (\Exception $e) {
@@ -57,18 +55,9 @@ class TagController extends Controller
 
     public function update(EditarTagRequest $request, int $tagId)
     {
-        $dados = $request->validated();
-
         try {
 
-            $tag = Tag::find($tagId);
-
-            if (empty($tag)) {
-                throw new \Exception(__('custom.tag_inexistente'), 404);
-            }
-
-            $tag->fill($dados);
-            $tag->save();
+            $tag = (new Tag())->editar($tagId, $request->validated());
 
             return (new ResponseJSON())->setData($tag)->setMessage(__('custom.tag_editada_com_sucesso'))->render();
 

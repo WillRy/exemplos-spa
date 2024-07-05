@@ -46,11 +46,9 @@ class ContatoController extends \App\Http\Controllers\Controller
 
     public function store(CriarContatoRequest $request)
     {
-        $dados = $request->validated();
-
         try {
 
-            $organizacao = (new Contato())->criar($dados);
+            $organizacao = (new Contato())->criar($request->validated());
 
             return (new ResponseJSON())->setData($organizacao)->setMessage(__('custom.contato_criado_com_sucesso'))->render();
 
@@ -61,10 +59,9 @@ class ContatoController extends \App\Http\Controllers\Controller
 
     public function update(EditarContatoRequest $request, int $id)
     {
-        $dados = $request->validated();
 
         try {
-            $organizacao = (new Contato())->editar($id, $dados);
+            $organizacao = (new Contato())->editar($id, $request->validated());
 
             return (new ResponseJSON())->setData($organizacao)->setMessage(__('custom.contato_editado_com_sucesso'))->render();
 
