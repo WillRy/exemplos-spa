@@ -19,7 +19,7 @@ class Locale
 
     public static function verificaIdiomaSuportado(string $idioma)
     {
-         // Normaliza o valor procurado substituindo hífen por sublinhado e vice-versa
+        // Normaliza o valor procurado substituindo hífen por sublinhado e vice-versa
         $valorProcuradoNormalizado = str_replace(['-', '_'], '_', $idioma);
 
         foreach (self::$idiomasSuportados as $valor) {
@@ -40,15 +40,14 @@ class Locale
      */
     public function handle(Request $request, Closure $next)
     {
-        $session = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? config('app.locale') ?? "pt-BR";
+        $session = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? config('app.locale') ?? 'pt-BR';
 
         //verifica se tem idioma salvo na sessão, se não pega do browser
-        if (!empty($session)) {
+        if (! empty($session)) {
             $httpAcceptLanguage = $session;
         } else {
-            $httpAcceptLanguage = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? config('app.locale') ?? "pt-BR";
+            $httpAcceptLanguage = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? config('app.locale') ?? 'pt-BR';
         }
-
 
         $languages = explode(',', $httpAcceptLanguage);
         $result = [];
@@ -63,7 +62,7 @@ class Locale
 
         $idiomaFinal = null;
 
-        if (!self::verificaIdiomaSuportado($primeiroIdiomaSuportado)) { //se idioma não é suportado
+        if (! self::verificaIdiomaSuportado($primeiroIdiomaSuportado)) { //se idioma não é suportado
             $idiomaFinal = $this->idiomaPadrao;
         } elseif (empty($primeiroIdiomaSuportado)) { //se idioma não é identificado no browser
             $idiomaFinal = $this->idiomaPadrao;

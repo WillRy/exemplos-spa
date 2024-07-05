@@ -29,7 +29,7 @@ class Contato extends Model
 
     public function organizacao(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Organizacao::class, 'organizacao_id', 'id','organizacao');
+        return $this->belongsTo(Organizacao::class, 'organizacao_id', 'id', 'organizacao');
     }
 
     public function pesquisar(

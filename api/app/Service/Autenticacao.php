@@ -32,6 +32,7 @@ class Autenticacao
     ): string {
         /** @var JWTGuard $authapi */
         $authapi = auth('api');
+
         return $authapi->setTTL(60)->claims(['session_id' => $sessionId])->tokenById($idUsuario);
     }
 

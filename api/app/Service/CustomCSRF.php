@@ -23,7 +23,7 @@ class CustomCSRF
 
     const COOKIE_SAME_SITE = 'none';
 
-    const SIGNATURE  = 'NCJDWCWO8U8922FMCDNCIUDWO84928';
+    const SIGNATURE = 'NCJDWCWO8U8922FMCDNCIUDWO84928';
 
     public function __construct()
     {
@@ -54,7 +54,7 @@ class CustomCSRF
 
     public function generateToken()
     {
-        if($this->csrfType === self::TYPE_SESSION) {
+        if ($this->csrfType === self::TYPE_SESSION) {
             $this->sessionIsStarted();
 
             if (session()->has('unique_token')) {
@@ -66,14 +66,11 @@ class CustomCSRF
 
             return $random;
         } else {
-            $random = !empty($_COOKIE[self::$cookieName]) ? $_COOKIE[self::$cookieName] : Str::random(60);
+            $random = ! empty($_COOKIE[self::$cookieName]) ? $_COOKIE[self::$cookieName] : Str::random(60);
             $this->setCookie(self::$cookieName, $random, false, false);
-
 
             return $random;
         }
-
-
 
     }
 

@@ -42,7 +42,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->encryptCookies([
             'token',
             'refresh_token',
-            'CSRF-TOKEN'
+            'CSRF-TOKEN',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
