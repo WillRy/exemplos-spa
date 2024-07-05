@@ -1,5 +1,13 @@
 <template>
-  <BaseButton class="btn-primary" :size="size" :min="min" :loading="loading" :is="is" :full="full" :type="type">
+  <BaseButton
+    class="btn-primary"
+    :size="size"
+    :min="min"
+    :loading="loading"
+    :is="is"
+    :full="full"
+    :type="type"
+  >
     <slot></slot>
   </BaseButton>
 </template>

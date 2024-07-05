@@ -47,3 +47,15 @@ npm run dev
 ## Endpoints
 
 Na pasta da **api** contém um arquivo **insomnia.json** que pode ser importado no insomnia ou postman, para já ter os endpoints prontos para uso
+
+## Controle de qualidade
+
+O código conta com análise de erros no backend e frontend. 
+
+- **Backend**: é feito via phpstan/larastan. Comando: composer qualidade
+- **FrontEnd**: é feito via ESLint com regras recomendadas para o Vue3. Comando: npm run fix
+
+Além disso tem formatador automático
+
+- **Backend**: é feito via Laravel Pint. Comando: composer cs
+- **FrontEnd**: é feito via Prettier com regras recomendadas para o Vue3. Comando: npm run format

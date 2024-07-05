@@ -1,19 +1,26 @@
 <template>
-  <BaseButton class="btn-secondary" :size="size" :min="min" :loading="loading" :is="is" :full="full">
+  <BaseButton
+    class="btn-secondary"
+    :size="size"
+    :min="min"
+    :loading="loading"
+    :is="is"
+    :full="full"
+  >
     <slot></slot>
   </BaseButton>
 </template>
 
 <script lang="ts">
-import { PropType } from "vue";
-import BaseButton from "./BaseButton.vue";
+import { PropType } from 'vue'
+import BaseButton from './BaseButton.vue'
 
 type TypeButton = 'submit' | 'button'
 type SizeButton = 'sm' | 'md' | 'lg'
 
 export default {
-  name: "BaseButtonSecondary",
-  components: {BaseButton},
+  name: 'BaseButtonSecondary',
+  components: { BaseButton },
   props: {
     is: {
       type: String,

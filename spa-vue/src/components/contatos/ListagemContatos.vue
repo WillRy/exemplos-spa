@@ -98,8 +98,6 @@
       </template>
     </Tabela>
 
-
-
     <ModalCriarContato
       :aberta="criarContatoAberto"
       @onClose="criarContatoAberto = null"
@@ -120,7 +118,7 @@
 </template>
 <script setup>
 import BaseInput from '../../external/components/form/BaseInput'
-import {useBackendToast} from '../../external/hooks/useBackendToast'
+import { useBackendToast } from '../../external/hooks/useBackendToast'
 import BaseSelectAjax from '../../external/components/form/BaseSelectAjax'
 import Tabela from '../../external/components/tabela/Tabela'
 import ColunaTabela from '../../external/components/tabela/ColunaTabela'

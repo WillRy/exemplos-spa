@@ -1,13 +1,9 @@
 <template>
   <div class="tags">
-    <HeaderPage :titulo="$t('palavras.tags')">
-
-    </HeaderPage>
+    <HeaderPage :titulo="$t('palavras.tags')"> </HeaderPage>
     <PageContainer :container-fluido="true">
-      <ListagemTag/>
+      <ListagemTag />
     </PageContainer>
-
-
   </div>
 </template>
 
@@ -20,4 +16,3 @@ import PageContainer from '@/external/components/estrutura/PageContainer.vue'
 
 const { t: $t } = useI18n()
 </script>
-

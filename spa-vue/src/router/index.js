@@ -30,13 +30,13 @@ const router = createRouter({
       name: 'publico',
       beforeEnter: [],
       meta: {
-        public: true,
+        public: true
       },
       children: [
         {
           path: '',
           name: 'login',
-          component: () => import('../views/auth/Login'),
+          component: () => import('../views/auth/Login')
         },
         {
           path: 'esqueci-senha',
@@ -56,7 +56,7 @@ const router = createRouter({
       component: () => import('../layouts/Privado'),
       meta: {
         permissoes: [],
-        privado: true,
+        privado: true
       },
       beforeEnter: [],
       children: [

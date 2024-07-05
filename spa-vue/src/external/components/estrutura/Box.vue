@@ -7,9 +7,7 @@
       <template v-if="titulo">
         {{ titulo }}
       </template>
-      <template v-else>
-        &nbsp;
-      </template>
+      <template v-else> &nbsp; </template>
     </OverlineText>
 
     <div :class="{ 'acesso-bloqueado': bloqueado }" class="acesso-bloqueado-container">

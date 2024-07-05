@@ -4,7 +4,6 @@ import { createPinia } from 'pinia'
 import VueToast from 'vue-toast-notification'
 import VueTheMask from 'vue-the-mask'
 
-
 import App from './App.vue'
 import router from './router'
 

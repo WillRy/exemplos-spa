@@ -47,7 +47,11 @@
           </template>
         </DatePicker>
         <div class="form-group-default-icon" @click="focusInput">
-          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><path d="M368.005 272h-96v96h96v-96zm-32-208v32h-160V64h-48v32h-24.01c-22.002 0-40 17.998-40 40v272c0 22.002 17.998 40 40 40h304.01c22.002 0 40-17.998 40-40V136c0-22.002-17.998-40-40-40h-24V64h-48zm72 344h-304.01V196h304.01v212z"></path></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
+            <path
+              d="M368.005 272h-96v96h96v-96zm-32-208v32h-160V64h-48v32h-24.01c-22.002 0-40 17.998-40 40v272c0 22.002 17.998 40 40 40h304.01c22.002 0 40-17.998 40-40V136c0-22.002-17.998-40-40-40h-24V64h-48zm72 344h-304.01V196h304.01v212z"
+            ></path>
+          </svg>
         </div>
       </div>
       <div v-if="$slots.btn" class="form-group-btn">
@@ -105,7 +109,7 @@ export default {
   props: {
     size: {
       type: String as PropType<SizeInput>,
-      default: 'md',
+      default: 'md'
     },
     borda: {
       type: Boolean,
@@ -144,7 +148,7 @@ export default {
     },
     visibility: {
       default: 'click',
-      type: String as PropType<PopoverVisibility>,
+      type: String as PropType<PopoverVisibility>
     }
   },
   computed: {
@@ -212,17 +216,17 @@ export default {
       }
     }
   },
-  expose: ['focusInput','clickInput'],
+  expose: ['focusInput', 'clickInput'],
   methods: {
     focusInput() {
-      (this.$refs.input as HTMLInputElement).focus();
+      ;(this.$refs.input as HTMLInputElement).focus()
 
       setTimeout(() => {
-        (this.$refs.input as HTMLInputElement).click();
-      });
+        ;(this.$refs.input as HTMLInputElement).click()
+      })
     },
     clickInput() {
-      (this.$refs.input as HTMLInputElement).click()
+      ;(this.$refs.input as HTMLInputElement).click()
     }
   },
   created() {}
@@ -296,7 +300,6 @@ export default {
 .form-group-container:focus-within .form-group-icon > :deep(svg path) {
   fill: var(--focus-color);
 }
-
 
 .form-group-default-icon {
   flex-shrink: 0;
@@ -602,14 +605,17 @@ input::placeholder {
   box-shadow: var(--primary-color-principal-hover) 0px 0px 0px var(--border);
 }
 
-.md .form-group-container > div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
+.md
+  .form-group-container
+  > div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
   min-height: 42px;
   width: 100%;
 }
 
-.lg .form-group-container > div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
+.lg
+  .form-group-container
+  > div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
   min-height: 54px;
   width: 100%;
 }
-
 </style>

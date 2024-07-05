@@ -15,15 +15,10 @@
       <div class="label-container" v-if="label">
         <label>{{ label }}</label>
       </div>
-      <BaseButtonTertiary
-        class="dropdown-btn"
-        :size="size"
-        :disabled="disabled"
-        :full="full"
-      >
+      <BaseButtonTertiary class="dropdown-btn" :size="size" :disabled="disabled" :full="full">
         <slot name="botao"></slot>
         <svg
-          v-if="iconePadrao && !$slots.icone" 
+          v-if="iconePadrao && !$slots.icone"
           viewBox="0 0 330 330"
           xml:space="preserve"
           :style="{ height: '12px', width: '12px' }"
@@ -37,7 +32,7 @@
       </BaseButtonTertiary>
 
       <!-- This will be the content of the popover -->
-      <template #popper="{hide}">
+      <template #popper="{ hide }">
         <div
           class="dropdown-botao"
           @click.stop="hide"
@@ -61,96 +56,96 @@
 </template>
 
 <script lang="ts">
-import { Dropdown } from "floating-vue";
-import { directive } from "../../directives/click-away";
-import BaseButtonTertiary from "../buttons/BaseButtonTertiary.vue";
-import { PropType } from "vue";
+import { Dropdown } from 'floating-vue'
+import { directive } from '../../directives/click-away'
+import BaseButtonTertiary from '../buttons/BaseButtonTertiary.vue'
+import { PropType } from 'vue'
 
-type TriggerEvent = 'hover' | 'click' | 'focus' | 'touch';
+type TriggerEvent = 'hover' | 'click' | 'focus' | 'touch'
 type SizeButton = 'sm' | 'md' | 'lg'
 
 export default {
-  name: "BaseDropdownTertiary",
-  emits: ["onOpen", "onClose"],
+  name: 'BaseDropdownTertiary',
+  emits: ['onOpen', 'onClose'],
   inheritAttrs: false,
   props: {
     triggers: {
       type: Array as PropType<TriggerEvent[]>,
-      default: () => ['click'],
+      default: () => ['click']
     },
     size: {
       type: String as PropType<SizeButton>,
-      default: "md",
+      default: 'md'
     },
     iconePadrao: {
       type: Boolean,
-      default: true,
+      default: true
     },
     disabled: {
-      default: false,
+      default: false
     },
     maxHeight: {
       type: String,
-      default: "400px",
+      default: '400px'
     },
     label: {
       type: String,
-      default: "",
+      default: ''
     },
     full: {
       type: Boolean,
-      default: false,
+      default: false
     },
     autoSize: {
       type: Boolean,
-      default: false,
+      default: false
     }
   },
   components: {
     VDropdown: Dropdown,
-    BaseButtonTertiary,
+    BaseButtonTertiary
   },
   directives: {
-    "click-away": directive,
+    'click-away': directive
   },
   data() {
     return {
-      open: false,
-    };
+      open: false
+    }
   },
   methods: {
     toggle() {
-      this.open = !this.open;
+      this.open = !this.open
 
-      this.$emit(this.open ? "onOpen" : "onClose");
+      this.$emit(this.open ? 'onOpen' : 'onClose')
     },
     fechar() {
-      this.open = false;
-      this.$emit("onClose");
+      this.open = false
+      this.$emit('onClose')
     },
     handleClick(event) {
-      if (this.triggers.length > 0) return;
+      if (this.triggers.length > 0) return
 
-      const clickNoBotao = event.target.closest("dropdown-btn");
-      const clickNoDropdownAcoes = event.target.closest("dropdown-acoes");
-      const clickDropdownConteudo = event.target.closest("dropdown-conteudo");
+      const clickNoBotao = event.target.closest('dropdown-btn')
+      const clickNoDropdownAcoes = event.target.closest('dropdown-acoes')
+      const clickDropdownConteudo = event.target.closest('dropdown-conteudo')
 
-      if (clickNoBotao) this.open = false;
+      if (clickNoBotao) this.open = false
 
-      if (clickNoDropdownAcoes) this.open = false;
+      if (clickNoDropdownAcoes) this.open = false
 
-      if (clickDropdownConteudo) return;
+      if (clickDropdownConteudo) return
 
-      this.open = false;
-    },
+      this.open = false
+    }
   },
   beforeUnmount() {
-    document.body.removeEventListener("click", this.handleClick);
+    document.body.removeEventListener('click', this.handleClick)
   },
   mounted() {
-    document.body.addEventListener("click", this.handleClick);
-  },
-};
+    document.body.addEventListener('click', this.handleClick)
+  }
+}
 </script>
 
 <style scoped>

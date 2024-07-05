@@ -1,6 +1,9 @@
 <template>
   <div class="header">
-    <div class="paddingSidebar" :class="{'container-fluid': containerFluido, 'container': !containerFluido}">
+    <div
+      class="paddingSidebar"
+      :class="{ 'container-fluid': containerFluido, container: !containerFluido }"
+    >
       <div class="header-box">
         <div class="box-esquerdo">
           <slot name="boxEsquerdo"></slot>
@@ -15,7 +18,7 @@
 
 <script lang="ts">
 export default {
-  name: "Header",
+  name: 'Header',
   props: {
     containerFluido: {
       type: Boolean,
@@ -26,7 +29,7 @@ export default {
       default: '250px'
     }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -41,7 +44,6 @@ export default {
   position: fixed;
   top: 0;
   z-index: var(--z-index-2);
-
 }
 
 .header-box {

@@ -1,6 +1,6 @@
-import { i18n } from '@/lang/index.js';
+import { i18n } from '@/lang/index.js'
 import { usuarioStore } from '@/stores/usuario.js'
-import { useToast } from 'vue-toast-notification';
+import { useToast } from 'vue-toast-notification'
 
 /**
  * Middleware de permissão
@@ -17,19 +17,20 @@ export const auth = async (to, from, next) => {
   let rotaEstaComoPrivada = to.matched.map((record) => record.meta.privado).find(Boolean)
 
   //se usuário não está carregado na store, carrega ele
-  let logado = usuarioState.isLoggedIn;
-  if(!logado) {
+  let logado = usuarioState.isLoggedIn
+  if (!logado) {
     logado = await usuarioState.carregarUsuarioLogado()
   }
 
   //se está vindo de um login ou logout forçado, deixa entrar na rota (util para SSO)
-  const fazendoNovoLogin = from.query.logout || to.query.logout || to.query.k || to.query.token || to.name === 'logout';
-  if(fazendoNovoLogin && !rotaEstaComoPrivada) {
+  const fazendoNovoLogin =
+    from.query.logout || to.query.logout || to.query.k || to.query.token || to.name === 'logout'
+  if (fazendoNovoLogin && !rotaEstaComoPrivada) {
     return next()
   }
 
   //se rota é privada e não to logado, redireciona para o login
-  if(rotaEstaComoPrivada && !logado) {
+  if (rotaEstaComoPrivada && !logado) {
     return next({
       name: 'login',
       query: {
@@ -39,7 +40,7 @@ export const auth = async (to, from, next) => {
   }
 
   //se rota é publica e estou logado, envia para a home
-  if(!rotaEstaComoPrivada && logado) {
+  if (!rotaEstaComoPrivada && logado) {
     return next({
       name: 'dashboard'
     })
@@ -75,6 +76,6 @@ export const auth = async (to, from, next) => {
       message: i18n.global.t('message.rota_sem_permissao')
     })
 
-    next({name: 'dashboard'})
+    next({ name: 'dashboard' })
   }
 }

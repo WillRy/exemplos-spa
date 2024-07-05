@@ -1,5 +1,8 @@
 <template>
-  <div class="painel-agrupamento" :class="[`mb-${marginBottom}`, {'ocupar-altura-maxima': ocuparAlturaMaxima}]">
+  <div
+    class="painel-agrupamento"
+    :class="[`mb-${marginBottom}`, { 'ocupar-altura-maxima': ocuparAlturaMaxima }]"
+  >
     <div class="painel-agrupamento-header">
       <OverlineText v-if="titulo" class="titulo" size="sm">
         {{ titulo }}
@@ -8,11 +11,12 @@
     </div>
     <div
       class="painel-agrupamento-borda"
-      :class="[
-        classeFundoCinza,
-        classePadding,
-      ]"
-      :style="{minHeight: alturaMinima, maxHeight: alturaMaxima, overflow: alturaMaxima ? 'auto' : ''}"
+      :class="[classeFundoCinza, classePadding]"
+      :style="{
+        minHeight: alturaMinima,
+        maxHeight: alturaMaxima,
+        overflow: alturaMaxima ? 'auto' : ''
+      }"
       v-on:scroll="onScroll"
     >
       <slot></slot>
@@ -20,33 +24,33 @@
   </div>
 </template>
 <script lang="ts">
-import OverlineText from "../text/OverlineText.vue";
-import { PropType } from "vue";
+import OverlineText from '../text/OverlineText.vue'
+import { PropType } from 'vue'
 
-type MarginBottomType = "0" | "1" | "2" | "3" | "4" | "5" | "6" | 'padrao';
-type PaddingType = '0' | '1' | '2' | '3' | '4' | '5' | '6' | 'padrao';
+type MarginBottomType = '0' | '1' | '2' | '3' | '4' | '5' | '6' | 'padrao'
+type PaddingType = '0' | '1' | '2' | '3' | '4' | '5' | '6' | 'padrao'
 
 export default {
-  name: "BoxSection",
+  name: 'BoxSection',
   props: {
     titulo: {
-      type: String,
+      type: String
     },
     fundoCinza: {
       type: Boolean,
-      default: false,
+      default: false
     },
     padding: {
       type: String as PropType<PaddingType>,
-      default: "padrao",
+      default: 'padrao'
     },
     marginBottom: {
       type: String as PropType<MarginBottomType>,
-      default: "3",
+      default: '3'
     },
     ocuparAlturaMaxima: {
       type: Boolean,
-      default: false,
+      default: false
     },
     alturaMaxima: {
       type: String,
@@ -57,31 +61,31 @@ export default {
       type: String,
       default: null,
       required: false
-    },
+    }
   },
   computed: {
     classeFundoCinza() {
-      if(this.fundoCinza) {
+      if (this.fundoCinza) {
         return 'painel-agrupamento-cinza'
       }
 
       return ''
     },
     classePadding() {
-      if(this.padding) {
+      if (this.padding) {
         return `p-${this.padding}`
       }
 
       return ''
-    },
+    }
   },
   components: { OverlineText },
   methods: {
     onScroll(event: Event) {
-      this.$emit("scroll", event);
-    },
+      this.$emit('scroll', event)
+    }
   }
-};
+}
 </script>
 <style scoped>
 .titulo {
@@ -118,5 +122,4 @@ export default {
 .alturaMaxima {
   overflow: auto;
 }
-
 </style>

@@ -8,14 +8,13 @@
 </template>
 
 <script setup>
-import PageContainer from '@/external/components/estrutura/PageContainer.vue';
+import PageContainer from '@/external/components/estrutura/PageContainer.vue'
 import HeaderPage from '../components/pages/HeaderPage'
-import ListagemContatos from '../components/contatos/ListagemContatos';
+import ListagemContatos from '../components/contatos/ListagemContatos'
 
 import { useI18n } from 'vue-i18n'
 
 const { t: $t } = useI18n()
-
 </script>
 
 <style scoped></style>

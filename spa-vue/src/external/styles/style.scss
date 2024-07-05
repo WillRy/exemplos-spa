@@ -1,26 +1,28 @@
-@import "./normalize.scss";
-@import "./variables.scss";
-@import "./colors.scss";
+@import './normalize.scss';
+@import './variables.scss';
+@import './colors.scss';
 
-@import "./grid.scss";
-@import "./estrutura.scss";
+@import './grid.scss';
+@import './estrutura.scss';
 
-@import "v-calendar/dist/style.css";
-@import "vue-multiselect/dist/vue-multiselect.css";
-@import "floating-vue/dist/style.css";
-@import "vue-toast-notification/dist/theme-sugar.css";
+@import 'v-calendar/dist/style.css';
+@import 'vue-multiselect/dist/vue-multiselect.css';
+@import 'floating-vue/dist/style.css';
+@import 'vue-toast-notification/dist/theme-sugar.css';
 
-@import "./select.scss";
-@import "./tabelas.scss";
+@import './select.scss';
+@import './tabelas.scss';
 
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 *:not(g, text, tspan) {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   box-sizing: border-box;
 }
 
-body, html, #app {
+body,
+html,
+#app {
   height: 100%;
 }
 

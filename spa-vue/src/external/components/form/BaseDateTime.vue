@@ -5,7 +5,7 @@
       error: error,
       md: size === 'md',
       lg: size === 'lg',
-      disabled: disabled,
+      disabled: disabled
     }"
   >
     <div class="label-container" v-if="$slots.label">
@@ -16,10 +16,7 @@
     </div>
 
     <div style="display: flex; align-items: center">
-      <div
-        class="form-group-container"
-        :class="{ borda: borda, btn: $slots.btn }"
-      >
+      <div class="form-group-container" :class="{ borda: borda, btn: $slots.btn }">
         <div v-if="$slots.icon" class="form-group-icon">
           <slot name="icon"></slot>
         </div>
@@ -45,16 +42,15 @@
               :value="inputValue"
               :placeholder="placeholder"
             />
-            <input
-              v-else
-              :value="inputValue"
-              :placeholder="placeholder"
-              disabled
-            />
+            <input v-else :value="inputValue" :placeholder="placeholder" disabled />
           </template>
         </DatePicker>
         <div class="form-group-default-icon" @click="focusInput">
-          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><path d="M368.005 272h-96v96h96v-96zm-32-208v32h-160V64h-48v32h-24.01c-22.002 0-40 17.998-40 40v272c0 22.002 17.998 40 40 40h304.01c22.002 0 40-17.998 40-40V136c0-22.002-17.998-40-40-40h-24V64h-48zm72 344h-304.01V196h304.01v212z"></path></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
+            <path
+              d="M368.005 272h-96v96h96v-96zm-32-208v32h-160V64h-48v32h-24.01c-22.002 0-40 17.998-40 40v272c0 22.002 17.998 40 40 40h304.01c22.002 0 40-17.998 40-40V136c0-22.002-17.998-40-40-40h-24V64h-48zm72 344h-304.01V196h304.01v212z"
+            ></path>
+          </svg>
         </div>
       </div>
       <div v-if="$slots.btn" class="form-group-btn">
@@ -81,29 +77,29 @@
 </template>
 
 <script lang="ts">
-import { DatePicker } from "v-calendar";
-import { format } from "date-fns";
-import InfoInputIcon from "../icons/InfoInputIcon.vue";
-import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
-import InfoErrorIcon from "../icons/InfoErrorIcon.vue";
+import { DatePicker } from 'v-calendar'
+import { format } from 'date-fns'
+import InfoInputIcon from '../icons/InfoInputIcon.vue'
+import InfoSuccessIcon from '../icons/InfoSuccessIcon.vue'
+import InfoErrorIcon from '../icons/InfoErrorIcon.vue'
 import type { PropType } from 'vue'
-import { useConfigStore } from "../../store/config.ts";
+import { useConfigStore } from '../../store/config.ts'
 
-export type PopoverVisibility = 'click' | 'hover' | 'hover-focus' | 'focus';
+export type PopoverVisibility = 'click' | 'hover' | 'hover-focus' | 'focus'
 export type SizeInput = 'md' | 'lg'
 
 export default {
-  name: "BaseDateTime",
+  name: 'BaseDateTime',
   inheritAttrs: false,
   components: {
     DatePicker,
     InfoInputIcon,
     InfoSuccessIcon,
-    InfoErrorIcon,
+    InfoErrorIcon
   },
-  emits: ["update:modelValue", "update:formatado", "change", "changeFormatado"],
+  emits: ['update:modelValue', 'update:formatado', 'change', 'changeFormatado'],
   setup() {
-    const config = useConfigStore();
+    const config = useConfigStore()
     return {
       config: config
     }
@@ -111,56 +107,56 @@ export default {
   props: {
     size: {
       type: String as PropType<SizeInput>,
-      default: "md",
+      default: 'md'
     },
     borda: {
       type: Boolean,
-      default: true,
+      default: true
     },
     label: {
       type: String,
-      default: "",
+      default: ''
     },
     placeholder: {
       default: null,
-      type: String,
+      type: String
     },
     error: {
-      type: String,
+      type: String
     },
     success: {
-      type: String,
+      type: String
     },
     legenda: {
-      type: String,
+      type: String
     },
     modelValue: [String, Date],
     disabled: {
       type: Boolean,
-      default: false,
+      default: false
     },
     formatado: {
-      type: [String, Date],
+      type: [String, Date]
     },
     timezone: {
-      default: "America/Sao_Paulo",
+      default: 'America/Sao_Paulo'
     },
     is24hr: {
-      default: true,
+      default: true
     },
     locale: {
       type: String
     },
     visibility: {
-      default: "click",
-      type: String as PropType<PopoverVisibility>,
-    },
+      default: 'click',
+      type: String as PropType<PopoverVisibility>
+    }
   },
   computed: {
     attrs() {
       return {
-        ...this.$attrs,
-      };
+        ...this.$attrs
+      }
     },
     timezoneConfig() {
       return this.timezone ?? this.config.config.current_timezone
@@ -174,15 +170,15 @@ export default {
     data: {
       set(valor) {
         if (!valor) {
-          this.$emit("update:modelValue", null);
-          this.$emit("update:formatado", null);
-          return null;
+          this.$emit('update:modelValue', null)
+          this.$emit('update:formatado', null)
+          return null
         }
 
-        let valorNormalizado = valor;
+        let valorNormalizado = valor
 
-        if (typeof valor !== "object") {
-          let normalizarDataUtc = new Date(valor);
+        if (typeof valor !== 'object') {
+          let normalizarDataUtc = new Date(valor)
           valorNormalizado = new Date(
             normalizarDataUtc.getFullYear(),
             normalizarDataUtc.getMonth(),
@@ -190,25 +186,25 @@ export default {
             normalizarDataUtc.getHours(),
             normalizarDataUtc.getMinutes(),
             normalizarDataUtc.getSeconds()
-          );
+          )
         }
 
-        let string = format(valorNormalizado, "yyyy-MM-dd");
-        this.$emit("update:modelValue", valorNormalizado);
-        this.$emit("update:formatado", string);
+        let string = format(valorNormalizado, 'yyyy-MM-dd')
+        this.$emit('update:modelValue', valorNormalizado)
+        this.$emit('update:formatado', string)
 
-        return null;
+        return null
       },
       get() {
         if (!this.modelValue) {
-          return null;
+          return null
         }
 
-        if (typeof this.modelValue === "object") {
-          return this.modelValue;
+        if (typeof this.modelValue === 'object') {
+          return this.modelValue
         }
 
-        let normalizarDataUtc = new Date(this.modelValue);
+        let normalizarDataUtc = new Date(this.modelValue)
 
         const valor = new Date(
           normalizarDataUtc.getFullYear(),
@@ -217,24 +213,24 @@ export default {
           normalizarDataUtc.getHours(),
           normalizarDataUtc.getMinutes(),
           normalizarDataUtc.getSeconds()
-        );
+        )
 
-        return valor;
-      },
-    },
+        return valor
+      }
+    }
   },
   expose: ['focusInput'],
   methods: {
     focusInput() {
-      (this.$refs.input as HTMLInputElement).focus();
+      ;(this.$refs.input as HTMLInputElement).focus()
 
       setTimeout(() => {
-        (this.$refs.input as HTMLInputElement).click();
-      });
-    },
+        ;(this.$refs.input as HTMLInputElement).click()
+      })
+    }
   },
-  created() {},
-};
+  created() {}
+}
 </script>
 <style scoped>
 * {
@@ -445,7 +441,7 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-transition: "color 9999s ease-out, background-color 9999s ease-out";
+  -webkit-transition: 'color 9999s ease-out, background-color 9999s ease-out';
   -webkit-transition-delay: 9999s;
 }
 
@@ -562,7 +558,9 @@ input::placeholder {
 }
 
 .form-group-btn :deep(button:focus) {
-  box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--primary-color-principal-focus);
+  box-shadow:
+    0 0 0 1px #fff,
+    0 0 0 2px var(--primary-color-principal-focus);
   background: var(--primary-color-principal-focus);
   color: #fff;
 }
@@ -599,9 +597,7 @@ input::placeholder {
   fill: #fff;
 }
 
-.form-group-container.borda:focus-within
-  ~ .form-group-btn
-  :deep(button:not(:active)) {
+.form-group-container.borda:focus-within ~ .form-group-btn :deep(button:not(:active)) {
   box-shadow: var(--primary-color-principal) 0px 0px 0px var(--border);
 }
 
@@ -609,14 +605,17 @@ input::placeholder {
   box-shadow: var(--primary-color-principal-hover) 0px 0px 0px var(--border);
 }
 
-.md .form-group-container > div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
+.md
+  .form-group-container
+  > div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
   min-height: 42px;
   width: 100%;
 }
 
-.lg .form-group-container > div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
+.lg
+  .form-group-container
+  > div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
   min-height: 54px;
   width: 100%;
 }
-
 </style>

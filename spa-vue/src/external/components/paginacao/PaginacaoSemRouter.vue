@@ -38,35 +38,35 @@
 </template>
 
 <script lang="ts">
-import { useConfigStore } from "../../store/config";
-import ArrowLeftIcon from "../icons/ArrowLeftIcon.vue";
-import ArrowRightIcon from "../icons/ArrowRightIcon.vue";
-import ActionText from "../text/ActionText.vue";
+import { useConfigStore } from '../../store/config'
+import ArrowLeftIcon from '../icons/ArrowLeftIcon.vue'
+import ArrowRightIcon from '../icons/ArrowRightIcon.vue'
+import ActionText from '../text/ActionText.vue'
 
 export default {
-  name: "PaginacaoSemRouter",
+  name: 'PaginacaoSemRouter',
   components: { ArrowRightIcon, ArrowLeftIcon, ActionText },
   props: {
     exibirTotal: {
-        type: Boolean,
-        default: false
+      type: Boolean,
+      default: false
     },
     porPagina: {
       type: Number,
-      default: 1,
+      default: 1
     },
     total: {
       type: Number,
-      default: 1,
+      default: 1
     },
     paginaAtual: {
       type: Number,
-      default: 1,
+      default: 1
     },
     separador: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   setup() {
     const config = useConfigStore()
@@ -76,92 +76,87 @@ export default {
   },
   methods: {
     query(pagina) {
-      this.$emit("onChange", pagina);
+      this.$emit('onChange', pagina)
     },
     paginaEstaAtiva(pagina) {
-      return pagina === this.paginaAtual;
-    },
+      return pagina === this.paginaAtual
+    }
   },
   computed: {
-    textoInformado() :string {
-      const ptBr =
-        "Exibindo [INICIO] a [FIM] de [TOTAL] [TXT_RESULTADO=resultado|resultados]";
-      const en =
-        "Displaying [INICIO] to [FIM] of [TOTAL] [TXT_RESULTADO=result|results]";
+    textoInformado(): string {
+      const ptBr = 'Exibindo [INICIO] a [FIM] de [TOTAL] [TXT_RESULTADO=resultado|resultados]'
+      const en = 'Displaying [INICIO] to [FIM] of [TOTAL] [TXT_RESULTADO=result|results]'
 
-      let textoFinal = this.config.config.textoPaginacaoTabela || ptBr;
+      let textoFinal = this.config.config.textoPaginacaoTabela || ptBr
 
-      const isBrowser = window !== undefined;
+      const isBrowser = window !== undefined
       if (isBrowser && !textoFinal) {
-        const idioma = document.documentElement.lang;
+        const idioma = document.documentElement.lang
 
-        textoFinal = ptBr;
+        textoFinal = ptBr
 
-        if (idioma.includes("en")) {
-          textoFinal = en;
+        if (idioma.includes('en')) {
+          textoFinal = en
         }
 
-        if (idioma.includes("pt-BR")) {
-          textoFinal = ptBr;
+        if (idioma.includes('pt-BR')) {
+          textoFinal = ptBr
         }
       }
 
-      return textoFinal;
+      return textoFinal
     },
     textoPaginacao() {
       let textoSendoTradado = this.textoInformado
-        .replace("[INICIO]", `<span>${this.numElementoInicial}</span>`)
-        .replace("[FIM]", `<span>${this.numElementoFinal}</span>`)
-        .replace("[TOTAL]", `<span>${this.total}</span>`);
+        .replace('[INICIO]', `<span>${this.numElementoInicial}</span>`)
+        .replace('[FIM]', `<span>${this.numElementoFinal}</span>`)
+        .replace('[TOTAL]', `<span>${this.total}</span>`)
 
       // Use regex para extrair o valor após o sinal de igual em [TXT_RESULTADO=resultado|resultados]
-      let matchResultado = /\[TXT_RESULTADO=([^|\]]+)\|([^|\]]+)\]/.exec(
-        textoSendoTradado
-      );
+      let matchResultado = /\[TXT_RESULTADO=([^|\]]+)\|([^|\]]+)\]/.exec(textoSendoTradado)
 
       // Se houver uma correspondência, substitua [TXT_RESULTADO=resultado|resultados] pelo valor correto
       if (matchResultado) {
-        let valorResultado = this.total <= 1 ? matchResultado[1] : matchResultado[2];
-        textoSendoTradado = textoSendoTradado.replace(matchResultado[0],valorResultado);
+        let valorResultado = this.total <= 1 ? matchResultado[1] : matchResultado[2]
+        textoSendoTradado = textoSendoTradado.replace(matchResultado[0], valorResultado)
       }
 
-      return textoSendoTradado;
+      return textoSendoTradado
     },
     numElementoInicial() {
-      const offsetNormalizado =
-        this.paginaAtual * this.porPagina - this.porPagina;
-      return offsetNormalizado + 1;
+      const offsetNormalizado = this.paginaAtual * this.porPagina - this.porPagina
+      return offsetNormalizado + 1
     },
     numElementoFinal() {
       if (this.paginasTotal === this.paginaAtual) {
-        return this.total;
+        return this.total
       }
 
-      return this.paginaAtual * this.porPagina;
+      return this.paginaAtual * this.porPagina
     },
     paginas() {
-      const current = this.paginaAtual;
-      const range = 9;
-      const offset = Math.ceil(range / 2);
-      const total = this.paginasTotal;
-      const pagesArray: Array<number> = [];
+      const current = this.paginaAtual
+      const range = 9
+      const offset = Math.ceil(range / 2)
+      const total = this.paginasTotal
+      const pagesArray: Array<number> = []
 
       for (let i = 1; i <= total; i++) {
-        pagesArray.push(i);
+        pagesArray.push(i)
       }
 
-      pagesArray.splice(0, current - offset);
-      pagesArray.splice(range, total);
+      pagesArray.splice(0, current - offset)
+      pagesArray.splice(range, total)
 
-      return pagesArray;
+      return pagesArray
     },
     paginasTotal() {
-      const total = this.total / this.porPagina;
-      return total !== Infinity ? Math.ceil(total) : 0;
-    },
+      const total = this.total / this.porPagina
+      return total !== Infinity ? Math.ceil(total) : 0
+    }
   },
-  created() {},
-};
+  created() {}
+}
 </script>
 
 <style scoped>

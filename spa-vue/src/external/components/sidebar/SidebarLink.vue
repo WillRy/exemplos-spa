@@ -1,5 +1,5 @@
 <template>
-  <component class="sidebar-item" :is="is" :class="{active: active}">
+  <component class="sidebar-item" :is="is" :class="{ active: active }">
     <div class="sidebar-item-corpo">
       <div class="icon-menu icone" v-if="$slots.icone">
         <slot name="icone"></slot>
@@ -23,24 +23,24 @@
 </template>
 
 <script>
-import InteractionText from '../text/InteractionText.vue';
+import InteractionText from '../text/InteractionText.vue'
 
 export default {
-  name: "SidebarLink",
+  name: 'SidebarLink',
   components: {
     InteractionText
   },
   props: {
     is: {
       type: String,
-      default: "router-link",
+      default: 'router-link'
     },
     active: {
       type: Boolean,
-      default: false,
-    },
-  },
-};
+      default: false
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -137,7 +137,7 @@ export default {
 .dropdown-sidebar.active .sidebar-item::before {
   width: 4px;
   background: #fff;
-  content: " ";
+  content: ' ';
   position: absolute;
   left: 0;
   top: 0;
@@ -150,8 +150,7 @@ export default {
 }
 
 .sidebar-item:focus:not(.active):not(.router-link-exact-active),
-.dropdown-sidebar:focus:not(.active):not(.router-link-exact-active)
-  .sidebar-item {
+.dropdown-sidebar:focus:not(.active):not(.router-link-exact-active) .sidebar-item {
   background: rgba(196, 216, 255, 0.16);
   color: #fff;
 }
@@ -206,11 +205,11 @@ export default {
   transition: all 0.8s;
 }
 
-.sidebar-item-texto :deep(*){
-  color: #fff  !important; 
+.sidebar-item-texto :deep(*) {
+  color: #fff !important;
 }
 
-.sidebar-item.active  {
+.sidebar-item.active {
   color: #fff;
 }
 

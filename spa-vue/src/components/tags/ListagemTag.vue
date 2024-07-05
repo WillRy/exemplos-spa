@@ -28,28 +28,16 @@
       texto-empty="Não há dados"
     >
       <template #thead>
-        <HeadSort
-          nome="id"
-          :disabled="false"
-        >
+        <HeadSort nome="id" :disabled="false">
           <span>{{ $t('palavras.id') }}</span>
         </HeadSort>
-        <HeadSort
-          nome="nome"
-          :disabled="false"
-        >
+        <HeadSort nome="nome" :disabled="false">
           <span>{{ $t('palavras.nome') }}</span>
         </HeadSort>
-        <HeadSort
-          nome="cor_fundo"
-          :disabled="false"
-        >
+        <HeadSort nome="cor_fundo" :disabled="false">
           <span>{{ $t('palavras.cor_fundo') }}</span>
         </HeadSort>
-        <HeadSort
-          nome="cor_texto"
-          :disabled="false"
-        >
+        <HeadSort nome="cor_texto" :disabled="false">
           <span>{{ $t('palavras.cor_texto') }}</span>
         </HeadSort>
         <HeadSort @onSort="sortBy" :ordenando="sortName" :order="sortOrder" :disabled="true" />
@@ -118,7 +106,6 @@ import ModalCriarTag from './ModalCriarTag.vue'
 import ModalEditarTag from './ModalEditarTag.vue'
 import ModalExcluirTag from './ModalExcluirTag.vue'
 import HeadSort from '@/external/components/tabela/HeadSort.vue'
-
 
 const { t: $t } = useI18n()
 const { backendToastError } = useBackendToast()
@@ -197,4 +184,3 @@ buscarDados()
   border: 1px solid var(--gray-400);
 }
 </style>
-

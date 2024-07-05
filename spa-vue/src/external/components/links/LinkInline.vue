@@ -1,25 +1,25 @@
 <template>
-    <component :is="is" :class="[size,'link-inline']">
-        <slot></slot>
-    </component>
+  <component :is="is" :class="[size, 'link-inline']">
+    <slot></slot>
+  </component>
 </template>
 
 <script lang="ts">
 export default {
-    name: "LinkInline",
-    props: {
-        is: {
-            type: String,
-            default: 'a'
-        },
-        size: {
-            type: String,
-            default: 'sm',
-            validator(value: string) {
-                return ["sm", "lg"].includes(value);
-            }
-        },
+  name: 'LinkInline',
+  props: {
+    is: {
+      type: String,
+      default: 'a'
+    },
+    size: {
+      type: String,
+      default: 'sm',
+      validator(value: string) {
+        return ['sm', 'lg'].includes(value)
+      }
     }
+  }
 }
 </script>
 

@@ -1,35 +1,44 @@
 <template>
-    <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-         width="48.000000pt" height="48.000000pt" viewBox="0 0 48.000000 48.000000"
-         preserveAspectRatio="xMidYMid meet" :style="{height: size, width: size}">
-        <g transform="translate(0.000000,48.000000) scale(0.100000,-0.100000)"
-           :fill="color" stroke="none">
-            <path d="M80 400 c-18 -18 -20 -33 -20 -160 0 -127 2 -142 20 -160 18 -18 33
+  <svg
+    version="1.0"
+    xmlns="http://www.w3.org/2000/svg"
+    width="48.000000pt"
+    height="48.000000pt"
+    viewBox="0 0 48.000000 48.000000"
+    preserveAspectRatio="xMidYMid meet"
+    :style="{ height: size, width: size }"
+  >
+    <g
+      transform="translate(0.000000,48.000000) scale(0.100000,-0.100000)"
+      :fill="color"
+      stroke="none"
+    >
+      <path
+        d="M80 400 c-18 -18 -20 -33 -20 -160 0 -127 2 -142 20 -160 18 -18 33
                     -20 160 -20 187 0 180 -7 180 180 0 187 7 180 -180 180 -127 0 -142 -2 -160
                     -20z m127 -92 l33 -32 35 34 c33 32 36 33 52 17 16 -16 15 -19 -17 -52 l-34
                     -35 34 -35 c30 -31 32 -37 19 -50 -13 -14 -19 -11 -49 20 l-34 35 -38 -37
                     c-36 -35 -39 -36 -55 -20 -16 16 -15 19 20 55 l37 38 -35 34 c-26 26 -32 37
-                    -24 47 16 18 19 17 56 -19z"/>
-        </g>
-    </svg>
+                    -24 47 16 18 19 17 56 -19z"
+      />
+    </g>
+  </svg>
 </template>
 
 <script>
 export default {
-    name: "CloseIcon",
-    props: {
-        size: {
-            type: String,
-            default: '24px'
-        },
-        color: {
-            type: String,
-            default: '#c00'
-        },
+  name: 'CloseIcon',
+  props: {
+    size: {
+      type: String,
+      default: '24px'
+    },
+    color: {
+      type: String,
+      default: '#c00'
     }
+  }
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

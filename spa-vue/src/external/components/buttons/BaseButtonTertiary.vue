@@ -5,15 +5,15 @@
 </template>
 
 <script lang="ts">
-import { PropType } from "vue";
-import BaseButton from "./BaseButton.vue";
+import { PropType } from 'vue'
+import BaseButton from './BaseButton.vue'
 
 type TypeButton = 'submit' | 'button'
 type SizeButton = 'sm' | 'md' | 'lg'
 
 export default {
-  name: "BaseButtonTertiary",
-  components: {BaseButton},
+  name: 'BaseButtonTertiary',
+  components: { BaseButton },
   props: {
     is: {
       type: String,
@@ -94,5 +94,4 @@ export default {
 .btn-tertiary:active :deep(path) {
   fill: #fff;
 }
-
 </style>

@@ -23,7 +23,7 @@
       >
         <slot name="botao"></slot>
         <svg
-          v-if="iconePadrao && !$slots.icone" 
+          v-if="iconePadrao && !$slots.icone"
           viewBox="0 0 330 330"
           xml:space="preserve"
           :style="{ height: '12px', width: '12px' }"
@@ -37,7 +37,7 @@
       </BaseButtonPrimary>
 
       <!-- This will be the content of the popover -->
-      <template #popper="{hide}">
+      <template #popper="{ hide }">
         <div
           v-if="$slots.acoes"
           class="dropdown-botao"
@@ -46,8 +46,13 @@
         >
           <slot name="acoes"></slot>
         </div>
-        
-        <div class="dropdown-conteudo" @click.stop="" v-if="$slots.conteudo" :style="{ maxHeight: maxHeight }">
+
+        <div
+          class="dropdown-conteudo"
+          @click.stop=""
+          v-if="$slots.conteudo"
+          :style="{ maxHeight: maxHeight }"
+        >
           <slot name="conteudo" :hide="hide"></slot>
         </div>
       </template>
@@ -56,68 +61,65 @@
 </template>
 
 <script lang="ts">
-import { Dropdown } from "floating-vue";
-import { directive } from "../../directives/click-away";
-import BaseButtonPrimary from "../buttons/BaseButtonPrimary.vue";
-import { PropType } from "vue";
+import { Dropdown } from 'floating-vue'
+import { directive } from '../../directives/click-away'
+import BaseButtonPrimary from '../buttons/BaseButtonPrimary.vue'
+import { PropType } from 'vue'
 
-type TriggerEvent = 'hover' | 'click' | 'focus' | 'touch';
+type TriggerEvent = 'hover' | 'click' | 'focus' | 'touch'
 type SizeButton = 'sm' | 'md' | 'lg'
 
 export default {
-  name: "BaseDropdownPrimary",
-  emits: ["onOpen", "onClose"],
+  name: 'BaseDropdownPrimary',
+  emits: ['onOpen', 'onClose'],
   inheritAttrs: false,
   props: {
     triggers: {
       type: Array as PropType<TriggerEvent[]>,
-      default: () => ['click'],
+      default: () => ['click']
     },
     size: {
       type: String as PropType<SizeButton>,
-      default: "md",
+      default: 'md'
     },
     iconePadrao: {
       type: Boolean,
-      default: true,
+      default: true
     },
     disabled: {
-      default: false,
+      default: false
     },
     maxHeight: {
       type: String,
-      default: "400px",
+      default: '400px'
     },
     label: {
       type: String,
-      default: "",
+      default: ''
     },
     full: {
       type: Boolean,
-      default: false,
+      default: false
     },
     autoSize: {
       type: Boolean,
-      default: false,
+      default: false
     }
   },
   components: {
     VDropdown: Dropdown,
-    BaseButtonPrimary,
+    BaseButtonPrimary
   },
   directives: {
-    "click-away": directive,
+    'click-away': directive
   },
   data() {
     return {
-      open: false,
-    };
+      open: false
+    }
   },
-  methods: {
-    
-  },
-  
-};
+  methods: {}
+}
 </script>
 
 <style scoped>
@@ -224,7 +226,7 @@ img {
 }
 
 .btn {
-  all: "unset";
+  all: 'unset';
   display: flex;
   align-items: center;
   justify-content: center;
@@ -240,7 +242,7 @@ img {
   position: relative;
 }
 
-.btn[data-loading="true"] {
+.btn[data-loading='true'] {
   cursor: progress !important;
 }
 
