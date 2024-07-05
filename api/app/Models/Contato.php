@@ -41,12 +41,12 @@ class Contato extends Model
         return self::query()
             ->select('*')
             ->with('organizacao')
-            ->when(!empty($pesquisa), function ($query) use ($pesquisa) {
+            ->when(! empty($pesquisa), function ($query) use ($pesquisa) {
                 $query->where('id', '=', $pesquisa);
                 $query->where('nome', 'like', "%$pesquisa%");
                 $query->orWhere('email', 'like', "%$pesquisa%");
             })
-            ->when(!empty($organizacao_id), function ($query) use ($organizacao_id) {
+            ->when(! empty($organizacao_id), function ($query) use ($organizacao_id) {
                 $query->where('organizacao_id', '=', $organizacao_id);
             })
             ->orderBy($sortName, $sortOrder)

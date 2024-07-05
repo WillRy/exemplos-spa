@@ -6,9 +6,9 @@
       <div class="separador-barra"></div>
     </div>
   </template>
-  
-  <script setup></script>
-  
+
+  <script setup lang="ts"></script>
+
   <style scoped>
   .separador .conteudo {
     font-size: 12px;
@@ -16,7 +16,7 @@
     padding-left: 20px;
     color: #bbbfc4;
   }
-  
+
   .separador-barra {
     display: block;
     height: 1px;
@@ -25,4 +25,3 @@
     opacity: 0.4;
   }
   </style>
-  

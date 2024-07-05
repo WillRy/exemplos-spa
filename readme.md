@@ -42,3 +42,8 @@ npm install
 
 npm run dev
 ```
+
+
+## Endpoints
+
+Na pasta da **api** contém um arquivo **insomnia.json** que pode ser importado no insomnia ou postman, para já ter os endpoints prontos para uso

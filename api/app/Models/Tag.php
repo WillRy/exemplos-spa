@@ -47,8 +47,7 @@ class Tag extends Model
     public function editar(
         int $id,
         array $dados
-    )
-    {
+    ) {
         $tag = Tag::find($id);
 
         if (empty($tag)) {

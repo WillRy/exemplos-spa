@@ -56,5 +56,5 @@ export interface ConfigState {
   default_timezone: string
   is24hr: boolean
   locale: string,
-  textoPaginacaoTabela?: string,
+  textoPaginacaoTabela: string | null,
 }
