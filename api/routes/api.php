@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ContatoController;
 use App\Http\Controllers\Api\OrganizacaoController;
 use App\Http\Controllers\Api\TagController;
+use App\Http\Controllers\Api\TestController;
 use App\Service\CustomCSRF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/csrf', function (Request $request) {
     return response()->json(['csrf' => (new CustomCSRF())->iniciarCSRF()]);
 });
+
+
+Route::get('/test-queries', [TestController::class, 'testQueries']);
 
 Route::group(['middleware' => 'locale'], function () {
     Route::post('/login', [AuthController::class, 'login']);

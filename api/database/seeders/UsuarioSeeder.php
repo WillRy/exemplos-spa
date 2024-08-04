@@ -10,6 +10,7 @@ class UsuarioSeeder extends Seeder
 {
     public function run()
     {
+
         Usuario::create([
             'nome' => 'Administrador',
             'email' => 'admin@admin.com',
