@@ -11,7 +11,7 @@
     </div>
     <div
       class="painel-agrupamento-borda"
-      :class="[classeFundoCinza, classePadding]"
+      :class="[classeFundoCinza, classePadding, classeBorda]"
       :style="{
         minHeight: alturaMinima,
         maxHeight: alturaMaxima,
@@ -61,6 +61,10 @@ export default {
       type: String,
       default: null,
       required: false
+    },
+    temBorda: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
@@ -74,6 +78,13 @@ export default {
     classePadding() {
       if (this.padding) {
         return `p-${this.padding}`
+      }
+
+      return ''
+    },
+    classeBorda() {
+      if (this.temBorda) {
+        return 'borda'
       }
 
       return ''
@@ -104,9 +115,12 @@ export default {
 }
 
 .painel-agrupamento-borda {
-  border: 1px solid #eff0f2;
   border-radius: 8px;
   flex: 1;
+}
+
+.borda {
+  border: 1px solid #eff0f2;
 }
 
 .painel-agrupamento-header {

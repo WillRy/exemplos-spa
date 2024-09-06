@@ -20,6 +20,8 @@
               :disabled="coluna.disabled"
               :texto="coluna.texto"
               :width="coluna.width"
+              :maxWidth="coluna.maxWidth"
+              :minWidth="coluna.minWidth"
               :permiteRemoverOrdenacao="permiteRemoverOrdenacao"
             ></HeadSort>
           </template>
@@ -71,6 +73,8 @@ interface Coluna {
   disabled?: boolean
   info?: string
   width?: string
+  minWidth?: string
+  maxWidth?: string
 }
 
 type TabelaLayout = 'auto' | 'fixed'
@@ -141,7 +145,7 @@ export default {
     },
     exibirPaginacao: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data() {

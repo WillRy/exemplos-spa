@@ -28,7 +28,6 @@ Route::get('/csrf', function (Request $request) {
     return response()->json(['csrf' => (new CustomCSRF())->iniciarCSRF()]);
 });
 
-
 Route::get('/test-queries', [TestController::class, 'testQueries']);
 
 Route::group(['middleware' => 'locale'], function () {

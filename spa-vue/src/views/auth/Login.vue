@@ -20,11 +20,17 @@
           </template>
         </BaseInput>
       </div>
+
+      <div class="separador"></div>
+
       <div>
-        <BaseButtonPrimary :loading="loading" style="width: 100%" class="mb-3" type="submit">{{
-          $t('login.login')
-        }}</BaseButtonPrimary>
-        <router-link to="/esqueci-senha">{{ $t('login.esqueci_senha') }}</router-link>
+        <BaseButtonPrimary :loading="loading" style="width: 100%" class="mb-3" type="submit">
+          {{ $t('login.login') }}
+        </BaseButtonPrimary>
+
+        <div class="mx-auto link">
+          <RouterLinkInline to="/esqueci-senha">{{ $t('login.esqueci_senha') }}</RouterLinkInline>
+        </div>
       </div>
     </form>
   </div>
@@ -41,6 +47,7 @@ import { useBackendToast } from '../../external/hooks/useBackendToast'
 import * as yup from 'yup'
 import { useForm } from 'vee-validate'
 import { useRouter } from 'vue-router'
+import RouterLinkInline from '@/external/components/links/RouterLinkInline.vue'
 
 const { t: $t } = useI18n()
 const { backendToastError } = useBackendToast()
@@ -98,18 +105,14 @@ const submit = async function () {
   color: var(--primary-color-500);
 }
 
-a {
-  text-decoration: none;
-  color: var(--primary-color-500);
-  display: block;
+.link {
   text-align: center;
 }
 
-a:visited {
-  color: var(--primary-color-500);
-}
-
-a:hover {
-  opacity: 0.6;
+.separador {
+  height: 1px;
+  width: 100%;
+  background: #e0e0e0;
+  margin: 24px 0px;
 }
 </style>

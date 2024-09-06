@@ -1,43 +1,45 @@
 <template>
   <div class="subheader" :style="{ padding: padding }">
     <div class="subheader-container">
-      <div class="titulo">
-        <slot name="titulo"></slot>
+      <div class="box">
+        <div class="titulo">
+          <slot name="titulo"></slot>
+        </div>
+
+        <div class="links">
+          <template v-for="(link, index) in links" :key="index">
+            <span class="breadcrumb-separador" v-if="index !== 0">></span>
+            <component
+              class="breadcrumb-item"
+              :is="componentLink"
+              :class="{ atual: index == links.length - 1 }"
+              size="sm"
+              :href="link.link"
+              :to="link.link"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="12.56"
+                height="9.767"
+                viewBox="0 0 12.56 9.767"
+                v-if="index === 0"
+              >
+                <path
+                  d="M6.113,4.036,2.093,7.347v3.573a.349.349,0,0,0,.349.349l2.443-.006a.349.349,0,0,0,.347-.349V8.827a.349.349,0,0,1,.349-.349h1.4a.349.349,0,0,1,.349.349v2.085a.349.349,0,0,0,.349.35l2.443.007a.349.349,0,0,0,.349-.349V7.345L6.446,4.036A.266.266,0,0,0,6.113,4.036Zm6.35,2.25-1.823-1.5V1.764a.262.262,0,0,0-.262-.262H9.157a.262.262,0,0,0-.262.262V3.347L6.944,1.741a1.047,1.047,0,0,0-1.33,0L.094,6.287a.262.262,0,0,0-.035.368l.556.676a.262.262,0,0,0,.369.036L6.113,3.142a.266.266,0,0,1,.334,0l5.129,4.224a.262.262,0,0,0,.368-.035l.556-.676a.262.262,0,0,0-.037-.369Z"
+                  transform="translate(0.001 -1.502)"
+                  fill="#939599"
+                />
+              </svg>
+
+              <CaptionText class="breadcrumb-nome">{{ link.nome }}</CaptionText>
+            </component>
+          </template>
+        </div>
       </div>
 
-      <div class="botoes" v-if="$slots.botoes">
-        <slot name="botoes"> </slot>
+      <div class="complemento" v-if="$slots.complemento">
+        <slot name="complemento"> </slot>
       </div>
-    </div>
-
-    <div class="links">
-      <template v-for="(link, index) in links" :key="index">
-        <span class="breadcrumb-separador" v-if="index !== 0">></span>
-        <component
-          class="breadcrumb-item"
-          :is="componentLink"
-          :class="{ atual: index == links.length - 1 }"
-          size="sm"
-          :href="link.link"
-          :to="link.link"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="12.56"
-            height="9.767"
-            viewBox="0 0 12.56 9.767"
-            v-if="index === 0"
-          >
-            <path
-              d="M6.113,4.036,2.093,7.347v3.573a.349.349,0,0,0,.349.349l2.443-.006a.349.349,0,0,0,.347-.349V8.827a.349.349,0,0,1,.349-.349h1.4a.349.349,0,0,1,.349.349v2.085a.349.349,0,0,0,.349.35l2.443.007a.349.349,0,0,0,.349-.349V7.345L6.446,4.036A.266.266,0,0,0,6.113,4.036Zm6.35,2.25-1.823-1.5V1.764a.262.262,0,0,0-.262-.262H9.157a.262.262,0,0,0-.262.262V3.347L6.944,1.741a1.047,1.047,0,0,0-1.33,0L.094,6.287a.262.262,0,0,0-.035.368l.556.676a.262.262,0,0,0,.369.036L6.113,3.142a.266.266,0,0,1,.334,0l5.129,4.224a.262.262,0,0,0,.368-.035l.556-.676a.262.262,0,0,0-.037-.369Z"
-              transform="translate(0.001 -1.502)"
-              fill="#939599"
-            />
-          </svg>
-
-          <CaptionText class="breadcrumb-nome">{{ link.nome }}</CaptionText>
-        </component>
-      </template>
     </div>
 
     <div class="separador"></div>
@@ -111,18 +113,20 @@ export default defineComponent({
 
 .subheader-container {
   display: flex;
-  align-items: center;
   flex-wrap: wrap;
-  gap: 6px;
   justify-content: space-between;
+  gap: 30px;
   margin-bottom: 8px;
 }
 
-.botoes {
+.subheader-container .box {
   display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-left: 12px;
+  flex-direction: column;
+}
+
+.complemento {
+  flex: 0;
+  min-width: 400px;
 }
 
 .titulo {

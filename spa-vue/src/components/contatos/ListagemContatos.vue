@@ -70,6 +70,7 @@
       :total="contatos.dados && contatos.dados.total"
       :per-page="contatos.dados && contatos.dados.per_page"
       :current-page="contatos.dados && contatos.dados.current_page"
+      :exibirPaginacao="true"
       @onSort="sortBy"
       @onPage="updatePagina"
       texto-empty="Não há dados"
@@ -177,6 +178,7 @@ const abrirDetalhes = function (usuario) {
 }
 
 const sortBy = function (ordem) {
+  page.value = 1
   sortName.value = ordem.sortName
   sortOrder.value = ordem.sortOrder
   buscarDados()

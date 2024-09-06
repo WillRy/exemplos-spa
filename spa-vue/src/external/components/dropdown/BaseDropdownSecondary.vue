@@ -39,18 +39,19 @@
       <!-- This will be the content of the popover -->
       <template #popper="{ hide }">
         <div
-          class="dropdown-botao"
-          :style="{ maxHeight: maxHeight }"
           v-if="$slots.acoes"
+          class="dropdown-botao"
           @click.stop="hide"
+          :style="{ maxHeight: maxHeight, width: widthConteudo }"
         >
           <slot name="acoes"></slot>
         </div>
+
         <div
           class="dropdown-conteudo"
           @click.stop=""
           v-if="$slots.conteudo"
-          :style="{ maxHeight: maxHeight }"
+          :style="{ maxHeight: maxHeight, width: widthConteudo }"
         >
           <slot name="conteudo" :hide="hide"></slot>
         </div>
@@ -91,6 +92,10 @@ export default {
     maxHeight: {
       type: String,
       default: '400px'
+    },
+    widthConteudo: {
+      type: String,
+      default: ''
     },
     label: {
       type: String,

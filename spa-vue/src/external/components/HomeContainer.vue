@@ -2,7 +2,7 @@
   <div class="home-container">
     <slot name="sidebar"> </slot>
     <slot name="header"></slot>
-    <div class="home">
+    <div class="home" :class="{ temSidebar: $slots.sidebar }">
       <slot></slot>
     </div>
   </div>
@@ -24,11 +24,13 @@ export default {
 .home {
   top: 0;
   transition: all 0.5s ease;
-  z-index: var(--z-index-1);
-  padding-left: 60px;
   padding-top: 60px;
   width: 100%;
   height: 100%;
+}
+
+.temSidebar {
+  padding-left: 60px;
 }
 
 .sidebar.open ~ .home {

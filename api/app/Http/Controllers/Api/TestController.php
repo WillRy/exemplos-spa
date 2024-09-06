@@ -5,21 +5,18 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Organizacao;
 use App\Service\HelperArray;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class TestController extends Controller
 {
-
-
     public function testQueries()
     {
         $dados = Organizacao::query()
-            ->with('contatos', function($query) {
-                $query->where('nome','like','%teste%');
+            ->with('contatos', function ($query) {
+                $query->where('nome', 'like', '%teste%');
             })
-            ->whereHas('contatos', function($query) {
-                $query->where('nome','like','%teste%');
+            ->whereHas('contatos', function ($query) {
+                $query->where('nome', 'like', '%teste%');
             })
             ->get();
 
@@ -44,7 +41,6 @@ class TestController extends Controller
         // }
 
         // HelperArray::removerChavesNumericas($dados);
-
 
         return response()->json($dados);
     }

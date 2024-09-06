@@ -20,6 +20,7 @@
           :value="modelValue"
           @input="updateValue"
           :disabled="disabled"
+          ref="input"
         ></textarea>
         <div v-if="$slots.btnFlutuante" class="form-group-btn-flutuante">
           <slot name="btnFlutuante"></slot>
@@ -76,6 +77,10 @@ export default {
     legenda: {
       type: String
     },
+    autoResize: {
+      type: Boolean,
+      default: true
+    },
     size: {
       type: String,
       default: 'md',
@@ -92,7 +97,24 @@ export default {
       }
     }
   },
+  watch: {
+    modelValue() {
+      this.autoResetSize()
+    }
+  },
   methods: {
+    autoResetSize() {
+      if (!this.autoResize) return
+
+      const input = this.$refs.input as HTMLTextAreaElement
+
+      if (this.modelValue === '') {
+        input.style.height = 'initial'
+      } else {
+        input.style.height = 'auto'
+        input.style.height = input.scrollHeight + 'px'
+      }
+    },
     updateValue(event) {
       this.$emit('update:modelValue', event.target.value)
     }
@@ -245,6 +267,7 @@ textarea::placeholder {
   font-size: 1rem;
   color: var(--gray-color-400);
 }
+
 .form-group-btn-flutuante {
   display: flex;
   flex-direction: column;

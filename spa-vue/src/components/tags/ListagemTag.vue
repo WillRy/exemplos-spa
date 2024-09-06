@@ -23,6 +23,7 @@
       :total="tags.dados && tags.dados.total"
       :per-page="tags.dados && tags.dados.per_page"
       :current-page="tags.dados && tags.dados.current_page"
+      :exibirPaginacao="true"
       @onSort="sortBy"
       @onPage="updatePagina"
       texto-empty="Não há dados"
@@ -138,6 +139,7 @@ const abrirExclusao = function (tag) {
 }
 
 const sortBy = function (ordem) {
+  page.value = 1
   sortName.value = ordem.sortName
   sortOrder.value = ordem.sortOrder
   buscarDados()

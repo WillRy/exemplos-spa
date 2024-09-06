@@ -1,6 +1,6 @@
 <template>
   <button
-    :class="{ active: valorAtivo === valor, disabled: disabled }"
+    :class="{ active: valorAtivo === valor || active, disabled: disabled }"
     class="navegacao-abas-item"
     @click="mudarAba(valor)"
     :disabled="disabled"

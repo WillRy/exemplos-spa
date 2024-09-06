@@ -16,14 +16,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.caption-text {
-  font-weight: normal;
-  font-size: 0.75rem;
-  line-height: 1rem;
-  margin: 0;
-  font-style: italic;
-
-  color: var(--text-color);
-}
-</style>
+<style scoped></style>

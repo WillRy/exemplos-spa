@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'token_reset_senha_enviado' => 'Password reset token sent successfully',
+    'token_reset_senha_enviado' => 'Password reset link has been sent to your email',
     'token_reset_senha_invalido' => 'Invalid password reset token',
     'validacao_senha_forte' => 'Password must have 8 characters, lowercase, uppercase, number and special character!',
     'senha_redefinida' => 'Password successfully reset',

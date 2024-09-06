@@ -2,6 +2,7 @@
   <div
     class="box-container"
     :class="[`mb-${marginBottom}`, { 'ocupar-altura-maxima': ocuparAlturaMaxima }]"
+    :style="{ height: height, maxHeight: maxHeight }"
   >
     <OverlineText class="titulo">
       <template v-if="titulo">
@@ -80,6 +81,16 @@ export default {
     ocuparAlturaMaxima: {
       type: Boolean,
       default: false
+    },
+    height: {
+      type: String,
+      required: false,
+      default: ''
+    },
+    maxHeight: {
+      type: String,
+      required: false,
+      default: ''
     }
   },
   components: {

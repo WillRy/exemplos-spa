@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'token_reset_senha_enviado' => 'Token para reset de senha enviado com sucesso',
+    'token_reset_senha_enviado' => 'Link de redefinição de senha foi enviado para o seu e-mail',
     'token_reset_senha_invalido' => 'Token de reset de senha inválido',
-    'validacao_senha_forte' => 'Senha deve ter 8 caracteres, letras minusculas, maísculas, numero e caracter especial!',
+    'validacao_senha_forte' => 'Senha deve ter 8 caracteres, letras minusculas, maísculas, número e caracter especial!',
     'senha_redefinida' => 'Senha redefinida com sucesso',
     'validacao_telefone_valido' => 'Informe um telefone válido',
     'validacao_cep_valido' => 'Informe um cep válido',

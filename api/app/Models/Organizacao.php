@@ -68,7 +68,7 @@ class Organizacao extends Model
                 });
             })
             ->orderBy($sortName, $sortOrder)
-            ->paginate(15);
+            ->paginate(10);
     }
 
     public function criar(array $dados): Organizacao

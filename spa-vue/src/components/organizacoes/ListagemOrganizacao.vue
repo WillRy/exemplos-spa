@@ -88,6 +88,7 @@
       :total="organizacoes.dados && organizacoes.dados.total"
       :per-page="organizacoes.dados && organizacoes.dados.per_page"
       :current-page="organizacoes.dados && organizacoes.dados.current_page"
+      :exibirPaginacao="true"
       @onSort="sortBy"
       @onPage="updatePagina"
       texto-empty="Não há dados"
@@ -218,6 +219,7 @@ const abrirDetalhes = function (usuario) {
 }
 
 const sortBy = function (ordem) {
+  page.value = 1
   sortName.value = ordem.sortName
   sortOrder.value = ordem.sortOrder
   buscarDados()

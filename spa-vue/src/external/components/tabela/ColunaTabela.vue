@@ -1,8 +1,5 @@
 <template>
-  <td
-    :style="{ width: width, maxWidth: width, minWidth: width, padding: paddingColuna }"
-    :class="{ 'td-oculta-texto': esconderTexto }"
-  >
+  <td :style="allStyles" :class="{ 'td-oculta-texto': esconderTexto }">
     <div class="item" v-if="esconderTexto">
       <div class="item-box" :style="{ justifyContent: justify }">
         <span class="overflow">
@@ -35,7 +32,15 @@ export default {
     },
     width: {
       type: String,
-      required: false
+      default: ''
+    },
+    minWidth: {
+      type: String,
+      default: ''
+    },
+    maxWidth: {
+      type: String,
+      default: ''
     },
     btn: {
       type: Boolean,
@@ -53,6 +58,29 @@ export default {
   methods: {
     click() {
       this.$emit('onVer')
+    }
+  },
+  computed: {
+    allStyles() {
+      const styles = {}
+      if (this.maxWidth) {
+        styles['max-width'] = this.maxWidth
+      }
+
+      if (this.minWidth) {
+        styles['min-width'] = this.minWidth
+      }
+
+      if (this.width) {
+        styles['width'] = this.width
+        styles['max-width'] = this.width
+      }
+
+      if (this.paddingColuna) {
+        styles['padding'] = this.paddingColuna
+      }
+
+      return styles
     }
   }
 }

@@ -24,22 +24,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.overline-text {
-  vertical-align: super;
-  margin: 0;
-  color: var(--text-color);
-}
-
-.md {
-  font-weight: normal;
-  font-size: 1rem;
-  line-height: 1.5rem;
-}
-
-.sm {
-  font-weight: normal;
-  font-size: 0.75rem;
-  line-height: 1rem;
-}
-</style>
+<style scoped></style>

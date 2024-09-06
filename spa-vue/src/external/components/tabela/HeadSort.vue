@@ -1,5 +1,5 @@
 <template>
-  <th :style="styleWidth">
+  <th :style="allStyles">
     <button @click="sortBy(nome)" v-if="!disabled" type="button" class="head-container">
       <slot></slot>
 
@@ -63,7 +63,7 @@ export default {
   props: {
     nome: {
       type: String,
-      required: false,
+      required: true,
       default: ''
     },
     texto: {
@@ -71,6 +71,14 @@ export default {
       required: false
     },
     width: {
+      type: String,
+      default: ''
+    },
+    minWidth: {
+      type: String,
+      default: ''
+    },
+    maxWidth: {
       type: String,
       default: ''
     },
@@ -88,10 +96,22 @@ export default {
     }
   },
   computed: {
-    styleWidth() {
-      return this.width
-        ? { 'max-width': this.width, 'min-width': this.width, width: this.width }
-        : {}
+    allStyles() {
+      const styles = {}
+      if (this.maxWidth) {
+        styles['max-width'] = this.maxWidth
+      }
+
+      if (this.minWidth) {
+        styles['min-width'] = this.minWidth
+      }
+
+      if (this.width) {
+        styles['width'] = this.width
+        styles['max-width'] = this.width
+      }
+
+      return styles
     },
     orderMinuscula() {
       if (!this.order) return 'sort'

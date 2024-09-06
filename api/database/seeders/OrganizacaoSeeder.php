@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Contato;
 use App\Models\Organizacao;
 use Illuminate\Database\Seeder;
 

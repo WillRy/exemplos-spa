@@ -3,7 +3,7 @@
     <h3>{{ $t('login.redefinir_senha') }}</h3>
     <form @submit.prevent="submit">
       <div class="mb-3">
-        <BaseInput :label="$t('login.senha')" v-model="senha">
+        <BaseInput :label="$t('login.senha')" v-model="senha" type="password">
           <template v-slot:error v-if="errors.senha">
             <p>
               {{ errors.senha }}
@@ -38,7 +38,7 @@ const { backendToastError, backendToastSuccess } = useBackendToast()
 const $router = useRouter()
 const $route = useRoute()
 
-const { errors, validate, defineField } = useForm({
+const { errors, validate, defineField, setErrors } = useForm({
   validationSchema: yup.object({
     senha: yup.string().required($t('validacao.required', { field: $t('login.senha') }))
   }),
@@ -64,7 +64,7 @@ const submit = async function () {
       $router.push({ name: 'login' })
     }
   } catch (e) {
-    backendToastError(e, $t('textos.erro_redefinir_senha'))
+    setErrors(backendToastError(e, $t('textos.erro_redefinir_senha')))
   } finally {
     loading.value = false
   }

@@ -9,7 +9,12 @@
         v-bind="attrs"
       />
       <span class="checkmark"></span>
-      <template v-if="label">{{ label }}</template>
+      <span>
+        <template v-if="label && !$slots.label">{{ label }}</template>
+        <template v-if="$slots.label">
+          <slot name="label" />
+        </template>
+      </span>
     </label>
     <div v-if="$slots.legenda || legenda" class="legenda">
       <InfoInputIcon size="14px" class="icone-footer" />
@@ -82,12 +87,12 @@ export default {
 * {
   box-sizing: border-box;
 }
+
 .checkbox-container {
   display: flex;
   gap: 7px;
   position: relative;
   cursor: pointer;
-  align-items: center;
 }
 
 /* Esconder o checkbox padrão */
@@ -110,6 +115,7 @@ export default {
   border-radius: 2px;
   border: 1px solid var(--gray-color-300);
   border-radius: 6px;
+  flex-shrink: 0;
 }
 
 .checkmark:hover:not(.disabled) {

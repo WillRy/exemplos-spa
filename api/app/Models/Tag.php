@@ -41,7 +41,7 @@ class Tag extends Model
                 $query->orWhere('nome', 'like', $pesquisaPlaceholder);
             })
             ->orderBy($ordenarNome, $ordenarOrdem)
-            ->paginate(15);
+            ->paginate(10);
     }
 
     public function editar(

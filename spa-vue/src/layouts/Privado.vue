@@ -3,9 +3,7 @@
     <HomeContainer>
       <template #sidebar>
         <Sidebar :open="sidebarAberta" @change="mudarSidebar">
-          <template #logo>
-            <img src="/logo.png" alt="" />
-          </template>
+          <template #logo> </template>
           <SidebarLink :to="{ name: 'dashboard' }">
             <template #texto> Dashboard </template>
             <template #icone>

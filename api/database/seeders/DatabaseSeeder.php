@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -33,7 +32,7 @@ class DatabaseSeeder extends Seeder
             $rand = rand(1, 1000);
             $organizacaoCriada = \App\Models\Organizacao::create([
                 'nome' => $organizacao,
-                'email' => "{$rand}@teste.com"
+                'email' => "{$rand}@teste.com",
             ]);
 
             $organizacoesCriadas[] = $organizacaoCriada;
@@ -53,7 +52,7 @@ class DatabaseSeeder extends Seeder
 
         $organizacaoCriada = \App\Models\Organizacao::create([
             'nome' => 'organizacao teste',
-            'email' => "teste@teste.com",
+            'email' => 'teste@teste.com',
             'telefone' => '1234567890',
             'cep' => '12345678',
         ]);
