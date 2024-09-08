@@ -8,9 +8,9 @@
 import { computed } from 'vue'
 
 interface Props {
-  containerFluido: boolean
-  center: boolean
-  paddingTop: boolean
+  containerFluido?: boolean
+  center?: boolean
+  paddingTop?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
