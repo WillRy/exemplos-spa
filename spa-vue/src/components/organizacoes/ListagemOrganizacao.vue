@@ -80,6 +80,12 @@
           nome: 'tags',
           texto: $t('palavras.tags'),
           disabled: true
+        },
+        {
+          nome: 'acoes',
+          texto: '',
+          disabled: true,
+          width: '50px'
         }
       ]"
       :dados="organizacoes.dados && organizacoes.dados.data"
@@ -118,7 +124,7 @@
             </span>
           </ColunaTabela>
           <ColunaTabela justify="flex-end" class="coluna-acoes">
-            <DropdownAcoes :fundoClaro="true">
+            <BaseDropdownAction :fundoClaro="true">
               <button @click="abrirEdicao(dado)">
                 {{ $t('palavras.editar') }}
               </button>
@@ -128,7 +134,7 @@
               <button @click="abrirDetalhes(dado)">
                 {{ $t('palavras.detalhes') }}
               </button>
-            </DropdownAcoes>
+            </BaseDropdownAction>
           </ColunaTabela>
         </tr>
       </template>
@@ -161,7 +167,6 @@ import BaseInput from '../../external/components/form/BaseInput'
 import BaseSelectAjax from '../../external/components/form/BaseSelectAjax'
 import Tabela from '../../external/components/tabela/Tabela'
 import ColunaTabela from '../../external/components/tabela/ColunaTabela'
-import DropdownAcoes from '../../external/components/dropdown/BaseDropdownAction'
 import Box from '../../external/components/estrutura/Box'
 import api from '@/services/api'
 import ModalCriarOrganizacao from './ModalCriarOrganizacao'
@@ -172,6 +177,7 @@ import ModalDetalhesOrganizacao from './ModalDetalhesOrganizacao'
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useBackendToast } from '../../external/hooks/useBackendToast'
+import BaseDropdownAction from '@/external/components/dropdown/BaseDropdownAction.vue'
 
 const { t: $t } = useI18n()
 const { backendToastError } = useBackendToast()

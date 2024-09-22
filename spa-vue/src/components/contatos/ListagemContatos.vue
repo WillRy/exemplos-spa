@@ -83,7 +83,7 @@
           <ColunaTabela>{{ dado.telefone }}</ColunaTabela>
           <ColunaTabela>{{ dado.organizacao?.nome }}</ColunaTabela>
           <ColunaTabela justify="flex-end" class="coluna-acoes">
-            <DropdownAcoes :fundoClaro="true">
+            <BaseDropdownAction :fundoClaro="true">
               <button @click="abrirEdicao(dado)">
                 {{ $t('palavras.editar') }}
               </button>
@@ -93,7 +93,7 @@
               <button @click="abrirDetalhes(dado)">
                 {{ $t('palavras.detalhes') }}
               </button>
-            </DropdownAcoes>
+            </BaseDropdownAction>
           </ColunaTabela>
         </tr>
       </template>
@@ -123,7 +123,6 @@ import { useBackendToast } from '../../external/hooks/useBackendToast'
 import BaseSelectAjax from '../../external/components/form/BaseSelectAjax'
 import Tabela from '../../external/components/tabela/Tabela'
 import ColunaTabela from '../../external/components/tabela/ColunaTabela'
-import DropdownAcoes from '../../external/components/dropdown/BaseDropdownAction'
 import Box from '../../external/components/estrutura/Box'
 import BaseButtonPrimary from '../../external/components/buttons/BaseButtonPrimary'
 import ModalCriarContato from './ModalCriarContato'
@@ -132,6 +131,7 @@ import ModalEditarContato from './ModalEditarContato'
 import ModalExcluirContato from './ModalExcluirContato'
 import { reactive, ref } from 'vue'
 import api from '@/services/api.js'
+import BaseDropdownAction from '@/external/components/dropdown/BaseDropdownAction.vue'
 
 const { backendToastError } = useBackendToast()
 

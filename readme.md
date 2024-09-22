@@ -1,23 +1,38 @@
 # Aplicação de exemplo - Mini CRM
 
-Repositório contém 2 aplicações:
+Repositório contém 3 aplicações:
 
-- API: Backend em Laravel
-- FrontEnd: SPA em vue 3
+- API: Backend em Laravel: Reuntilizável entre os multiplos frontends
+- FrontEnd versão 1: SPA em vue 3
+- FrontEnd versão 2: App Nuxt 3
 
-Contemplando:
+**A API é reutilizável entre as multiplas opções de frontend.**
+
+**A API tem exemplos contemplando:**
 
 - autenticação
     - jwt
     - refresh token
     - tratamento de race condition em refresh token rotativo
     - CSRF token 
+
+**O frontend com Vue3 contempla** 
 - estruturação de rotas publicas e privadas
 - CRUD
 - comunicação entre componentes
     - pinia
     - técnicas de reload de dados
 - internacionalização
+- validações
+
+**O frontend feito com Nuxt3 contempla**
+- Autenticação Server Side Rendering e também Client Side
+- Personalização da lib ajax do Nuxt3 para fluxo de logout automatico ao expirar token e também refresh token
+- estruturação de rotas publicas e privadas
+- CRUD
+- comunicação entre componentes
+    - pinia
+    - técnicas de reload de dados
 - validações
 
 
@@ -27,7 +42,7 @@ Contemplando:
 - senha: 123456
 
 
-## Como executar?
+## Como executar a API?
 
 
 **pasta: api**
@@ -35,7 +50,23 @@ Contemplando:
 docker-compose up -d
 ```
 
+## Como executar o frontend?
+
+**Escolha entre um dos frontends**
+
+### SPA com Vue3
+
 **pasta: spa-vue**
+
+```shell
+npm install
+
+npm run dev
+```
+
+### SPA com Nuxt3
+
+**pasta: nuxt**
 
 ```shell
 npm install

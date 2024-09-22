@@ -21,7 +21,7 @@ class Autenticacao
 
     const SEGUNDOS_RETORNAR_TOKENS_AINDA_VALIDOS = 300; //5 minutes
 
-    const COOKIE_SAME_SITE = 'none';
+    const COOKIE_SAME_SITE = 'Lax';
 
     /**
      * Gerar token JWT de autenticação
@@ -274,11 +274,11 @@ class Autenticacao
     public function removerTokensExpirados(): void
     {
         DB::table('refresh_token')
-            ->whereRaw('(token_expiracao < ?)', [now()])
+            ->whereRaw('(token_expiracao < now())')
             ->delete();
 
         DB::table('token_autenticacao')
-            ->whereRaw('(token_expiracao < ?)', [now()])
+            ->whereRaw('(token_expiracao < now())')
             ->delete();
     }
 

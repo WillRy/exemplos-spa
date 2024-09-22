@@ -62,14 +62,14 @@
             </div>
           </ColunaTabela>
           <ColunaTabela justify="flex-end" class="coluna-acoes">
-            <DropdownAcoes :fundoClaro="true">
+            <BaseDropdownAction :fundoClaro="true">
               <button @click="abrirEdicao(dado)">
                 {{ $t('palavras.editar') }}
               </button>
               <button @click="abrirExclusao(dado)">
                 {{ $t('palavras.excluir') }}
               </button>
-            </DropdownAcoes>
+            </BaseDropdownAction>
           </ColunaTabela>
         </tr>
       </template>
@@ -97,7 +97,6 @@ import BaseButtonPrimary from '../../external/components/buttons/BaseButtonPrima
 import BaseInput from '../../external/components/form/BaseInput'
 import Tabela from '../../external/components/tabela/Tabela'
 import ColunaTabela from '../../external/components/tabela/ColunaTabela'
-import DropdownAcoes from '../../external/components/dropdown/BaseDropdownAction'
 import Box from '../../external/components/estrutura/Box'
 import api from '@/services/api'
 import { reactive, ref } from 'vue'
@@ -107,6 +106,7 @@ import ModalCriarTag from './ModalCriarTag.vue'
 import ModalEditarTag from './ModalEditarTag.vue'
 import ModalExcluirTag from './ModalExcluirTag.vue'
 import HeadSort from '@/external/components/tabela/HeadSort.vue'
+import BaseDropdownAction from '@/external/components/dropdown/BaseDropdownAction.vue'
 
 const { t: $t } = useI18n()
 const { backendToastError } = useBackendToast()

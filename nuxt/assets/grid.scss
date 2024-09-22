@@ -1,0 +1,130 @@
+@use "sass:map";
+
+.container,
+.container-fluid,
+.container-xxl,
+.container-xl,
+.container-lg,
+.container-md,
+.container-sm {
+  --bs-gutter-x: var(--spacing-4);
+  --bs-gutter-y: 0;
+  width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  /* margin-right: auto;
+    margin-left: auto; */
+}
+
+
+
+@each $grid, $pxBreakpoint in $grid-map {
+  @media (min-width: #{$pxBreakpoint}) {
+    .container-#{$grid},
+    .container {
+      max-width: map.get($container-map, $grid);
+    }
+  }
+
+  :root {
+    --bs-breakpoint-#{$grid}: #{$pxBreakpoint};
+  }
+  
+}
+
+.row {
+  --bs-gutter-x: var(--spacing-4);
+  --bs-gutter-y: var(--spacing-2);
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-0.5 * var(--bs-gutter-x));
+  margin-left: calc(-0.5 * var(--bs-gutter-x));
+}
+
+.row > * {
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+}
+
+.col {
+  flex: 1 0 0%;
+}
+
+.col-auto {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+@each $number, $px in $percentage-map {
+  .col-#{$number} {
+    flex: 0 0 auto;
+    width: #{$px};
+  }
+}
+
+@each $number, $px in $offset-map {
+  .offset-#{$number} {
+    margin-left: #{$px};
+  }
+}
+
+
+@each $key, $value in $spacing-map {
+  .g-#{$key},
+  .gx-#{$key} {
+    --bs-gutter-x: #{$value};
+  }
+
+  .g-#{$key},
+  .gy-#{$key} {
+    --bs-gutter-y: #{$value};
+  }
+
+  .gap-#{$key} {
+    gap: #{$value};
+  }
+}
+
+@each $grid, $pxBreakpoint in $grid-map {
+  @media (min-width: #{$pxBreakpoint}) {
+    .col-#{$grid} {
+      flex: 1 0 0%;
+    }
+
+    .col-#{$grid}-auto {
+      flex: 0 0 auto;
+      width: auto;
+    }
+
+    @each $number, $px in $percentage-map {
+      .col-#{$grid}-#{$number} {
+        flex: 0 0 auto;
+        width: #{$px};
+      }
+    }
+
+    @each $number, $px in $offset-map {
+      .offset-#{$grid}-#{$number} {
+        margin-left: #{$px};
+      }
+    }
+
+    @each $key, $value in $spacing-map {
+      .g-#{$grid}-#{$key},
+      .gx-#{$grid}-#{$key} {
+        --bs-gutter-x: #{$value};
+      }
+
+      .g-#{$grid}-#{$key},
+      .gy-#{$grid}-#{$key} {
+        --bs-gutter-y: #{$value};
+      }
+    }
+  }
+}

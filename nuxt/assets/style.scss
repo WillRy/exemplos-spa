@@ -1,0 +1,71 @@
+@import "./normalize.scss";
+@import "./variables.scss";
+@import "./colors.scss";
+
+@import "./grid.scss";
+@import "./estrutura.scss";
+
+@import "vue-multiselect/dist/vue-multiselect.css";
+@import "floating-vue/dist/style.css";
+@import "vue-toast-notification/dist/theme-sugar.css";
+@import '@vuepic/vue-datepicker/dist/main.css'
+;
+
+@import "./select.scss";
+@import "./tabelas.scss";
+@import "./fonts.scss";
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+
+*:not(g, text, tspan) {
+  font-family: "Roboto", sans-serif;
+  box-sizing: border-box;
+}
+
+body, html, #app {
+  height: 100%;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  line-height: 1; /* 1 */
+}
+
+.border-test {
+  border: 1px solid #000;
+}
+
+.v-popper__arrow-container {
+  display: none;
+}
+
+.v-toast__item {
+  border-radius: 8px;
+  min-height: 36px;
+}
+
+.v-toast__item--success {
+  background: var(--success-color-800);
+}
+
+.v-toast__item--error {
+  background: var(--error-color-600);
+}
+
+.v-toast__item--warning {
+  background: var(--warning-color);
+  color: var(--gray-color-800);
+}
+
+.v-toast__item .v-toast__text {
+  padding: 8px;
+  font-size: 0.875rem;
+}
+
+.v-toast__item .v-toast__icon {
+  height: 20px;
+  width: 20px;
+}

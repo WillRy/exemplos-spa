@@ -21,13 +21,13 @@ class CustomCSRF
 
     public static $hash = '';
 
-    const COOKIE_SAME_SITE = 'none';
+    const COOKIE_SAME_SITE = 'Lax';
 
     const SIGNATURE = 'NCJDWCWO8U8922FMCDNCIUDWO84928';
 
     public function __construct()
     {
-        $this->iniciarCSRF();
+        // $this->iniciarCSRF();
     }
 
     public function setCookie(string $name, string $value, bool $forceExpire = false, bool $httpOnly = true)
