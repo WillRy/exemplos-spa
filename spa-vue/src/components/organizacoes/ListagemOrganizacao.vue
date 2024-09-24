@@ -259,7 +259,7 @@ const buscarDados = function () {
       organizacoes.dados = r.data.data
     })
     .catch((e) => {
-      backendToastError(e, $t('texto.erro_listar_dados'))
+      backendToastError(e, $t('textos.erro_listar_dados'))
     })
     .finally(() => {
       loading.value = false

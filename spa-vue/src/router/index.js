@@ -16,7 +16,7 @@ const router = createRouter({
     {
       path: '/logout',
       name: 'logout',
-      component: () => import('../views/auth/Login'),
+      component: () => import('../views/Logout.vue'),
       async beforeEnter(from, to, next) {
         const usuarioState = usuarioStore()
         await usuarioState.logout()

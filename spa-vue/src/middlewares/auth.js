@@ -10,9 +10,7 @@ export const auth = async (to, from, next) => {
 
   //verifica se rota contém um meta indicando que o grupo de rota é privado
   /**
-   * meta: {
-   *  privado: true
-   * }
+   * meta: { privado: true }
    */
   let rotaEstaComoPrivada = to.matched.map((record) => record.meta.privado).find(Boolean)
 
@@ -23,8 +21,7 @@ export const auth = async (to, from, next) => {
   }
 
   //se está vindo de um login ou logout forçado, deixa entrar na rota (util para SSO)
-  const fazendoNovoLogin =
-    from.query.logout || to.query.logout || to.query.k || to.query.token || to.name === 'logout'
+  const fazendoNovoLogin = (to.query.logout && !logado) || to.query.k || to.query.token || to.name === 'logout'
   if (fazendoNovoLogin && !rotaEstaComoPrivada) {
     return next()
   }
@@ -34,8 +31,8 @@ export const auth = async (to, from, next) => {
     return next({
       name: 'login',
       query: {
-        logout: 1
-      }
+        logout: Math.floor(Math.random() * 1000)
+      },
     })
   }
 
@@ -68,7 +65,7 @@ export const auth = async (to, from, next) => {
   })
 
   if (usuarioTemPermissao.length || permissoesRotas.length === 0) {
-    next()
+    return next()
   } else {
     const toast = useToast()
     toast.open({
@@ -76,6 +73,6 @@ export const auth = async (to, from, next) => {
       message: i18n.global.t('message.rota_sem_permissao')
     })
 
-    next({ name: 'dashboard' })
+    return next({ name: 'dashboard' })
   }
 }

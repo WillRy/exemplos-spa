@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { i18n } from '../lang'
 import router from '../router'
+import { usuarioStore } from '@/stores/usuario.js';
 
 
 
@@ -24,12 +25,13 @@ class BaseHttp {
 
   }
 
-  redirectLogout() {
+  async redirectLogout() {
+    await usuarioStore().logout();
     return router.push({
       name: 'login',
       query: {
         logout: 1
-      }
+      },
     })
   }
 
@@ -55,8 +57,8 @@ class BaseHttp {
               this.failedRequestsQueue.forEach((request) => request.onSuccess(token))
               this.failedRequestsQueue = []
             })
-            .catch((err) => {
-              this.failedRequestsQueue.forEach((request) => request.onFailure(err))
+            .catch(() => {
+              this.failedRequestsQueue.forEach((request) => request.onFailure(error))
               this.failedRequestsQueue = []
 
               if (shouldRedirectLogout) {

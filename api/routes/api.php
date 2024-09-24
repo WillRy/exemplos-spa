@@ -33,7 +33,7 @@ Route::get('/test-queries', [TestController::class, 'testQueries']);
 Route::group(['middleware' => 'locale'], function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/refresh', [AuthController::class, 'refreshToken'])->name('refreshToken');
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::any('/logout', [AuthController::class, 'logout']);
 
     Route::post('/esqueci-senha', [AuthController::class, 'esqueciSenha'])
         ->name('esqueci-senha');

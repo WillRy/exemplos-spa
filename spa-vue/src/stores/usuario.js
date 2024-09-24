@@ -13,7 +13,7 @@ export const usuarioStore = defineStore('usuarioStore', {
       return (permissao) => state.permissoes.includes(permissao)
     },
     isLoggedIn: (state) => {
-      return !!state.usuario
+      return state.usuario
     }
   },
   actions: {
@@ -30,17 +30,14 @@ export const usuarioStore = defineStore('usuarioStore', {
     },
     async logout() {
       try {
-        await apiSemLogout.post('/logout')
+        await apiSemLogout.get('/logout')
+
+        this.usuario = null
 
         return true
       } catch (error) {
-        return true
-      } finally {
-        //se fosse usar localstorage ao invés de cookie
-        // window.localStorage.removeItem("token");
-        // window.localStorage.removeItem("refresh_token");
-
         this.usuario = null
+        return true
       }
     }
   }
