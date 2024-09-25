@@ -1,6 +1,10 @@
 import type { Usuario } from "~/composables/useUsuario";
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  
+
+  if(process.client) {
+    return;
+  }
+
   const { usuario } = useUsuario();
 
   const isPrivate = to.path.includes("/painel");

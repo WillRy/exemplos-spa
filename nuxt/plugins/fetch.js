@@ -2,13 +2,36 @@ import { parseCookies } from "h3";
 
 export default defineNuxtPlugin(() => {
   const CSRF_COOKIE = "CSRF-TOKEN";
-  const token = useCookie("token");
-  const headers = useRequestHeaders(["cookie"]);
   const baseurl = useRuntimeConfig().public.apiUrl;
+  const frontUrl = useRuntimeConfig().public.frontUrl;
   const nuxtApp = useNuxtApp();
+  const headersCookie = useRequestHeaders(['cookie']);
+
+  const randomInt = Math.floor(Math.random() * 1000);
+  const newCookies = ref({
+    teste: randomInt
+  });
+
+
 
   let refreshingToken = false;
   let failedRequestsQueue = [];
+
+  async function getCookie(nome) {
+    await nuxtApp.runWithContext(() => refreshCookie(nome));
+    // const event = typeof useEvent === "function" ? useEvent() : null;
+
+    let existingToken = newCookies.value[nome] ?? await nuxtApp.runWithContext(() => useCookie(nome).value);
+    
+    return existingToken;
+  }
+
+  async function setCookie(nome, valor) {
+    await nuxtApp.runWithContext(() => {
+      newCookies.value[nome] = valor;
+      return useCookie(nome).value = valor;
+    });
+  }
 
   const buildContextRetry = (options) => {
     return {
@@ -27,20 +50,27 @@ export default defineNuxtPlugin(() => {
   };
 
   async function initCsrf() {
-    const event = typeof useEvent === "function" ? useEvent() : null;
-    let existingToken = event
-      ? parseCookies(event)[CSRF_COOKIE]
-      : nuxtApp.runWithContext(() => useCookie(CSRF_COOKIE).value);
+    let existingToken = await getCookie(CSRF_COOKIE);
 
     if (existingToken) return existingToken;
 
-    await $fetch("/csrf", {
+    const response = await $fetch("/csrf", {
       baseURL: baseurl,
       credentials: "include",
-    });
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Referer: frontUrl,
+      },
+    })
 
-    return await nuxtApp.runWithContext(() => useCookie(CSRF_COOKIE).value);
+    await nuxtApp.runWithContext(() => {
+      setCookie(CSRF_COOKIE, response.csrf);
+    })
+
+    return response.csrf;
   }
+
 
   const $fetchApi = $fetch.create({
     credentials: "include",
@@ -48,23 +78,33 @@ export default defineNuxtPlugin(() => {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      ...headers,
+      Referer: frontUrl,
+      ...headersCookie
     },
     async onRequest({ request, options, error }) {
-      const csrfToken = await initCsrf();
 
-      options.headers["CSRF-TOKEN"] = csrfToken;
+      try {
+        const csrf = await initCsrf();
+        
+        const token = await getCookie('token');
 
-      if (token.value) {
-        options.headers["Authorization"] = `Bearer ${token.value}`;
+        options.headers["CSRF-TOKEN"] = csrf;
+
+        if(token) {
+          options.headers["Authorization"] = `Bearer ${token}`;
+        }
+
+
+      } catch (e) {
+        console.log(e);
       }
     },
     async onResponse(ctx) {
-      const refreshToken = await nuxtApp.runWithContext(
-        () => useCookie("refresh_token").value
-      );
+      const refreshToken = await getCookie("refresh_token");
 
-      const shouldRefresh = !ctx.response.url.includes("/refresh") && !ctx.response.url.includes("/login");
+      const shouldRefresh =
+        !ctx.response.url.includes("/refresh") &&
+        !ctx.response.url.includes("/login");
       if (ctx.response.status === 401 && shouldRefresh) {
         if (ctx.response.url.includes("/refresh")) {
           await nuxtApp.runWithContext(() => navigateTo("/?logout=1"));
@@ -88,8 +128,8 @@ export default defineNuxtPlugin(() => {
                 const refresh_token = ctx2.data.refresh_token;
 
                 await nuxtApp.runWithContext(() => {
-                  useCookie("token").value = token;
-                  useCookie("refresh_token").value = refresh_token;
+                  setCookie("token", token);
+                  setCookie("refresh_token", refresh_token);
                 });
 
                 failedRequestsQueue.forEach((request) =>
@@ -99,17 +139,15 @@ export default defineNuxtPlugin(() => {
 
                 // resolve(this)
               })
-              .catch(async (ctx2) => {
+              .catch(async () => {
                 failedRequestsQueue.forEach((request) => {
-                  const newData = {
-                    ...ctx2.response.data,
-                    message: "Sessão expirou",
-                  }
-                  request.onFailure(newData)
+                  request.onFailure(ctx);
                 });
                 failedRequestsQueue = [];
                 // reject(this)
-                return await nuxtApp.runWithContext(() => navigateTo("/?logout=2"));
+                return await nuxtApp.runWithContext(() =>
+                  navigateTo("/?logout=2")
+                );
               })
               .finally(() => {
                 refreshingToken = false;

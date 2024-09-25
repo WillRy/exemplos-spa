@@ -69,6 +69,9 @@ const submit = async function () {
       method: 'post',
       body: values
     });
+    
+    refreshCookie('token');
+    refreshCookie('refresh_token');
 
     $router.push('/painel/dashboard');
 
