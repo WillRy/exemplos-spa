@@ -1,15 +1,13 @@
 import type { Usuario } from "~/composables/useUsuario";
 export default defineNuxtRouteMiddleware(async (to, from) => {
-
-  if(process.client) {
-    return;
-  }
+  
+  await useNuxtApp().$getCsrf();
 
   const { usuario } = useUsuario();
 
   const isPrivate = to.path.includes("/painel");
-  const haveLogout = to.fullPath.includes("logout");
 
+  const haveLogout = to.fullPath.includes("logout");
 
   if (haveLogout) {
     usuario.value = null;
@@ -21,8 +19,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       data: Usuario;
     }>("/usuario");
 
-
-    if(data.value?.data) {
+    if (data.value?.data) {
       usuario.value = data.value?.data;
     }
   }
