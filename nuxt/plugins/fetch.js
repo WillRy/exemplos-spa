@@ -1,10 +1,11 @@
-import { parseCookies } from "h3";
-
 export default defineNuxtPlugin(() => {
   const baseurl = useRuntimeConfig().public.apiUrl;
   const frontUrl = useRuntimeConfig().public.frontUrl;
   const nuxtApp = useNuxtApp();
   const headersCookie = useRequestHeaders(["cookie"]);
+
+  const token = useCookie("token");
+  const refresh_token = useCookie("refresh_token");
 
 
   let refreshingToken = false;
@@ -40,7 +41,7 @@ export default defineNuxtPlugin(() => {
 
         const token = await nuxtApp.$getCookie("token");
 
-        options.headers["CSRF-TOKEN"] = await nuxtApp.$getCsrf();
+        options.headers[nuxtApp.$CSRF_HEADER] = await nuxtApp.$getCsrf();
 
         if (token) {
           options.headers["Authorization"] = `Bearer ${token}`;
@@ -75,14 +76,14 @@ export default defineNuxtPlugin(() => {
                 },
               })
               .then(async (ctx2) => {
-                const token = ctx2.data.token;
-                const refresh_token = ctx2.data.refresh_token;
+                const newToken = ctx2.data.token;
+                const newRefreshToken = ctx2.data.refresh_token;
 
-                await nuxtApp.$setCookie("token", token);
-                await nuxtApp.$setCookie("refresh_token", refresh_token);
+                token.value = newToken;
+                refresh_token.value = newRefreshToken;
 
                 failedRequestsQueue.forEach((request) =>
-                  request.onSuccess(token)
+                  request.onSuccess(newToken)
                 );
                 failedRequestsQueue = [];
 

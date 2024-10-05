@@ -27,16 +27,14 @@ class Authenticate extends Middleware
         }
 
         foreach ($guards as $guard) {
-            $autenticado = $this->auth->guard($guard)->check();
+            $valido = $this->auth->guard($guard)->check();
 
-            if ($guard === 'api' && $autenticado) {
-
+            if ($guard === 'api' && $valido) {
                 $valido = (new Autenticacao())->isLogged(Autenticacao::tokenRequest());
+            }
 
-                if ($valido) {
-                    return $this->auth->shouldUse($guard);
-                }
-
+            if ($valido) {
+                return $this->auth->shouldUse($guard);
             }
         }
 
