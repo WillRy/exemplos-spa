@@ -4,12 +4,23 @@ export default defineNuxtPlugin(() => {
   const nuxtApp = useNuxtApp();
   const headersCookie = useRequestHeaders(["cookie"]);
 
-  const token = useCookie("token");
-  const refresh_token = useCookie("refresh_token");
-
-
   let refreshingToken = false;
   let failedRequestsQueue = [];
+
+  const buildHeader = async (headers, name, value) => {
+    
+    if(!value) return;
+
+    if (Array.isArray(headers)) {
+      headers.push([name, value]);
+    } else if (headers instanceof Headers) {
+      headers.append(name, value);
+    } else {
+      headers[name] = value;
+    }
+
+    return headers;
+  };
 
   const buildContextRetry = (options) => {
     return {
@@ -38,14 +49,18 @@ export default defineNuxtPlugin(() => {
     },
     async onRequest({ request, options, error }) {
       try {
+        const headers = (options.headers ||= {});
 
         const token = await nuxtApp.$getCookie("token");
 
-        options.headers[nuxtApp.$CSRF_HEADER] = await nuxtApp.$getCsrf();
+        const csrf = await nuxtApp.$getCsrf();
 
-        if (token) {
-          options.headers["Authorization"] = `Bearer ${token}`;
+        if(token) {
+          buildHeader(headers, "Authorization", `Bearer ${token}`);
         }
+        
+        buildHeader(headers, nuxtApp.$CSRF_HEADER, csrf);
+
       } catch (e) {
         console.log(e);
       }
@@ -55,8 +70,8 @@ export default defineNuxtPlugin(() => {
 
       const shouldRefresh =
         !ctx.response.url.includes("/refresh") &&
-        !ctx.response.url.includes("/login")
-        !ctx.response.url.includes("/csrf");
+        !ctx.response.url.includes("/login");
+      !ctx.response.url.includes("/csrf");
       if (ctx.response.status === 401 && shouldRefresh) {
         if (ctx.response.url.includes("/refresh")) {
           await nuxtApp.runWithContext(() => navigateTo("/?logout=1"));
@@ -79,8 +94,8 @@ export default defineNuxtPlugin(() => {
                 const newToken = ctx2.data.token;
                 const newRefreshToken = ctx2.data.refresh_token;
 
-                token.value = newToken;
-                refresh_token.value = newRefreshToken;
+                await nuxtApp.$setCookie("token", newToken);
+                await nuxtApp.$setCookie("refresh_token", newRefreshToken);
 
                 failedRequestsQueue.forEach((request) =>
                   request.onSuccess(newToken)
@@ -114,12 +129,12 @@ export default defineNuxtPlugin(() => {
                 ...originalConfig,
                 headers: {
                   ...(originalConfig.headers || {}),
-                  Authorization: `Bearer ${token}`,
+                  // Authorization: `Bearer ${token}`,
                 },
               };
 
               resolve(
-                $fetch(ctx.response.url, {
+                $fetchApi(ctx.response.url, {
                   ...newConfig,
                   onResponse: (ctx3) => {
                     Object.assign(ctx, ctx3);

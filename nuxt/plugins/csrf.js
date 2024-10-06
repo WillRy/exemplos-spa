@@ -16,7 +16,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   }
 
   async function deleteCookie(name) {
-    newCookies.value[name] = null;
+    // newCookies.value[name] = null;
     await nuxtApp.runWithContext(() => {
       const cookie = useCookie(name);
       cookie.value = null;
@@ -26,16 +26,17 @@ export default defineNuxtPlugin((nuxtApp) => {
   }
 
   async function getCookie(nome) {
-    let existingToken =
-      newCookies.value[nome] ??
-      nuxtApp.runWithContext(() => useCookie(nome).value);
+    let existingToken = newCookies.value[nome] ?? nuxtApp.runWithContext(() => useCookie(nome).value);
 
     return existingToken;
   }
 
   async function setCookie(nome, valor) {
     newCookies.value[nome] = valor;
-    await nuxtApp.runWithContext(() => useCookie(nome, valor));
+    await nuxtApp.runWithContext(() => {
+      const cookie = useCookie(nome);
+      cookie.value = valor;
+    });
   }
 
   async function getCsrf() {
@@ -74,10 +75,11 @@ export default defineNuxtPlugin((nuxtApp) => {
         }
       },
     });
+    
 
     csrf.value = response.csrf;
 
-    return await getCookie(CSRF_COOKIE);
+    return csrf.value
   }
 
   return {
