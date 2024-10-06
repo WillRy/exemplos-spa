@@ -82,23 +82,26 @@ export default defineNuxtPlugin((nuxtApp) => {
         ...headersCookie,
       },
       async onResponse({ response }) {
-        if (process.server) {
-          const combinedCookie = response.headers.get("set-cookie") ?? "";
-          const cookies = combinedCookie.split(/,(?=\s*[a-zA-Z0-9_\-]+=)/);
+        // if (process.server) {
+        //   const combinedCookie = response.headers.get("set-cookie") ?? "";
+        //   const cookies = combinedCookie.split(/,(?=\s*[a-zA-Z0-9_\-]+=)/);
 
-          await nuxtApp.runWithContext(() => {
-            const event = useRequestEvent();
+        //   await nuxtApp.runWithContext(() => {
+        //     const event = useRequestEvent();
 
-            cookies.forEach((c) => {
-              appendResponseHeader(event, "set-cookie", c);
-            });
-          });
-        }
+        //     cookies.forEach((c) => {
+        //       appendResponseHeader(event, "set-cookie", c);
+        //     });
+        //   });
+        // }
       },
     });
     
 
-    csrf.value = response.csrf;
+    if(response.csrf) {
+      csrf.value = response.csrf;
+    }
+
 
     return csrf.value
   }

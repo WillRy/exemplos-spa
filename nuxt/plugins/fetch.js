@@ -55,8 +55,8 @@ export default defineNuxtPlugin(() => {
 
         //CSRF: valor para enviar via cookie (somente para SSR), pois dentro da mesma request não é possível ler o cookie atualizado
         if(import.meta.server){
-          let appendCookie = headersCookie["cookie"];
-          if(!appendCookie.includes("CSRF")){
+          let appendCookie = headersCookie["cookie"] ?? "";
+          if(!appendCookie.includes(nuxtApp.$CSRF_COOKIE)){
             appendCookie = appendCookie + `; ${nuxtApp.$CSRF_COOKIE}=${csrf}`;
           }
 
