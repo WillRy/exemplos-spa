@@ -9,7 +9,7 @@ class InitCustomCSRF
 {
     public function handle(\Illuminate\Http\Request $request, Closure $next)
     {
-        if ((new CustomCSRF())->hasOrigin()) {
+        if ((new CustomCSRF())->fromFrontEnd()) {
 
             (new CustomCSRF())->tratarCSRF();
 

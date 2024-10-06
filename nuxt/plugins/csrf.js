@@ -8,7 +8,27 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   const headersCookie = useRequestHeaders(["cookie"]);
 
-  const csrf = useCookie(CSRF_COOKIE);
+  const csrf = useCookie(CSRF_COOKIE, {
+    sameSite: 'Lax',
+  });
+
+  const token = useCookie('token', {
+    sameSite: 'Lax',
+    httpOnly: true,
+  });
+  
+  const refresh_token = useCookie('refresh_token', {
+    sameSite: 'Lax',
+    httpOnly: true,
+  });
+
+  function setToken(tk) {
+    token.value = tk;
+  }
+
+  function setRefreshToken(tk) {
+    refresh_token.value = tk;
+  }
 
   async function cleanCsrf() {
     newCookies.value = {};
@@ -16,7 +36,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   }
 
   async function deleteCookie(name) {
-    // newCookies.value[name] = null;
+    newCookies.value[name] = null;
     await nuxtApp.runWithContext(() => {
       const cookie = useCookie(name);
       cookie.value = null;
@@ -26,7 +46,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   }
 
   async function getCookie(nome) {
-    let existingToken = newCookies.value[nome] ?? nuxtApp.runWithContext(() => useCookie(nome).value);
+    let existingToken = nuxtApp.runWithContext(() => useCookie(nome).value) ?? newCookies.value[nome];
 
     return existingToken;
   }
@@ -36,11 +56,12 @@ export default defineNuxtPlugin((nuxtApp) => {
     await nuxtApp.runWithContext(() => {
       const cookie = useCookie(nome);
       cookie.value = valor;
+      refreshCookie(nome);
     });
   }
 
   async function getCsrf() {
-    let existingToken = await getCookie(CSRF_COOKIE);
+    let existingToken = csrf.value
 
     if (existingToken) return existingToken;
 
@@ -81,9 +102,14 @@ export default defineNuxtPlugin((nuxtApp) => {
 
     return csrf.value
   }
+  
 
   return {
     provide: {
+      setToken,
+      setRefreshToken,
+      token: toRef(token),
+      refresh_token: toRef(refresh_token),
       CSRF_COOKIE: CSRF_COOKIE,
       CSRF_HEADER: CSRF_HEADER,
       cleanCsrf: cleanCsrf,

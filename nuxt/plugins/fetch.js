@@ -8,8 +8,7 @@ export default defineNuxtPlugin(() => {
   let failedRequestsQueue = [];
 
   const buildHeader = async (headers, name, value) => {
-    
-    if(!value) return;
+    if (!value) return;
 
     if (Array.isArray(headers)) {
       headers.push([name, value]);
@@ -45,28 +44,39 @@ export default defineNuxtPlugin(() => {
       Accept: "application/json",
       "Content-Type": "application/json",
       Referer: frontUrl,
-      ...headersCookie,
+      // ...headersCookie,
     },
     async onRequest({ request, options, error }) {
       try {
         const headers = (options.headers ||= {});
 
-        const token = await nuxtApp.$getCookie("token");
-
+        //CSRF: valor para enviar via HEADER
         const csrf = await nuxtApp.$getCsrf();
 
-        if(token) {
+        //CSRF: valor para enviar via cookie (somente para SSR), pois dentro da mesma request não é possível ler o cookie atualizado
+        if(import.meta.server){
+          let appendCookie = headersCookie["cookie"];
+          if(!appendCookie.includes("CSRF")){
+            appendCookie = appendCookie + `; ${nuxtApp.$CSRF_COOKIE}=${csrf}`;
+          }
+
+          buildHeader(headers, "Cookie", appendCookie);
+        }
+
+      
+        // válido somente na camada SSR onde cookie é legível por ser HTTPOnly
+        const token = nuxtApp.$token.value;
+        if (token) {
           buildHeader(headers, "Authorization", `Bearer ${token}`);
         }
-        
-        buildHeader(headers, nuxtApp.$CSRF_HEADER, csrf);
 
+        buildHeader(headers, nuxtApp.$CSRF_HEADER, csrf);
       } catch (e) {
         console.log(e);
       }
     },
     async onResponse(ctx) {
-      const refreshToken = await nuxtApp.$getCookie("refresh_token");
+      const refreshToken = nuxtApp.$refresh_token.value;
 
       const shouldRefresh =
         !ctx.response.url.includes("/refresh") &&
@@ -94,8 +104,10 @@ export default defineNuxtPlugin(() => {
                 const newToken = ctx2.data.token;
                 const newRefreshToken = ctx2.data.refresh_token;
 
-                await nuxtApp.$setCookie("token", newToken);
-                await nuxtApp.$setCookie("refresh_token", newRefreshToken);
+                if (import.meta.server) {
+                  nuxtApp.$setToken(newToken);
+                  nuxtApp.$setRefreshToken(newRefreshToken);
+                }
 
                 failedRequestsQueue.forEach((request) =>
                   request.onSuccess(newToken)

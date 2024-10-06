@@ -74,9 +74,9 @@ class CustomCSRF
 
     }
 
-    public function hasOrigin(): bool
+    public function fromFrontEnd(): bool
     {
-        return isset($_SERVER['HTTP_ORIGIN']);
+        return isset($_SERVER['HTTP_ORIGIN']) || isset($_SERVER['HTTP_REFERER']);
     }
 
     /**
@@ -92,7 +92,7 @@ class CustomCSRF
         }
 
         //protects only browser requests
-        if (! $this->hasOrigin()) {
+        if (! $this->fromFrontEnd()) {
             return false;
         }
 
