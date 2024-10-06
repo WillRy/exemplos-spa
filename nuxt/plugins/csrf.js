@@ -60,6 +60,26 @@ export default defineNuxtPlugin((nuxtApp) => {
     });
   }
 
+  function parseCookieHeader(cookieName, cookieHeader) {
+    // Split the cookie header by commas to handle multiple cookies correctly
+    const cookies = cookieHeader.split(/,\s*/);
+    
+    for (let cookie of cookies) {
+      // Each cookie may have attributes (e.g., expires, path, etc.)
+      // We only care about the name=value part
+      let [nameValue] = cookie.split(';'); // Get the first part (name=value)
+      
+      let [name, value] = nameValue.trim().split('=');
+      
+      // If the cookie name matches the one we're looking for, return its value
+      if (name === cookieName) {
+        return decodeURIComponent(value);
+      }
+    }
+    
+    // Return null if the cookie was not found
+    return null;
+  }
   async function getCsrf() {
     let existingToken = csrf.value
 
@@ -82,26 +102,28 @@ export default defineNuxtPlugin((nuxtApp) => {
         ...headersCookie,
       },
       async onResponse({ response }) {
-        // if (process.server) {
-        //   const combinedCookie = response.headers.get("set-cookie") ?? "";
-        //   const cookies = combinedCookie.split(/,(?=\s*[a-zA-Z0-9_\-]+=)/);
+        if (process.server) {
+          const combinedCookie = response.headers.get("set-cookie") ?? "";
+          const cookies = combinedCookie.split(/, (?=\s*[a-zA-Z0-9_\-]+=)/);
 
-        //   await nuxtApp.runWithContext(() => {
-        //     const event = useRequestEvent();
+          csrf.value = parseCookieHeader(CSRF_COOKIE, combinedCookie);
 
-        //     cookies.forEach((c) => {
-        //       appendResponseHeader(event, "set-cookie", c);
-        //     });
-        //   });
-        // }
+          await nuxtApp.runWithContext(() => {
+            const event = useRequestEvent();
+
+            cookies.forEach((c) => {
+              appendResponseHeader(event, "set-cookie", c);
+            });
+          });
+        }
+
       },
     });
     
 
-    if(response.csrf) {
+    if(response?.csrf) {
       csrf.value = response.csrf;
     }
-
 
     return csrf.value
   }
