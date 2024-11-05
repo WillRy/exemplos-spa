@@ -8,7 +8,12 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
   const haveLogout = to.fullPath.includes("logout");
 
-  await useNuxtApp().$getCsrf();
+  if(import.meta.server) {
+    await useNuxtApp().$getCsrf();
+    await useApi('/login', {
+      method: 'POST'
+    })
+  }
 
   if (haveLogout) {
     usuario.value = null;

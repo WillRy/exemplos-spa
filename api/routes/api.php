@@ -42,7 +42,7 @@ Route::group(['middleware' => 'locale'], function () {
         ->name('password.reset');
 
     //rotas privadas
-    Route::group(['middleware' => ['auth:api']], function () {
+    Route::group(['middleware' => ['auth:api,sanctum']], function () {
 
         Route::get('/usuario', [AuthController::class, 'usuarioLogado'])->name('usuarioLogado');
 
