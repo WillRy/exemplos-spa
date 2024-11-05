@@ -25,11 +25,11 @@
             <td colspan="99999">{{ textoEmpty }}</td>
           </tr>
         </tbody>
-        <!-- <tbody v-if="loading">
+        <tbody v-if="loading">
           <tr class="overlay">
             <Loader width="3%" height="3%" :cor-principal="true" />
           </tr>
-        </tbody> -->
+        </tbody>
       </table>
     </div>
 

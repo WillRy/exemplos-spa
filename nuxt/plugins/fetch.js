@@ -44,7 +44,7 @@ export default defineNuxtPlugin(() => {
       Accept: "application/json",
       "Content-Type": "application/json",
       Referer: frontUrl,
-      // ...headersCookie,
+      ...headersCookie,
     },
     async onRequest({ request, options, error }) {
       try {
@@ -59,6 +59,10 @@ export default defineNuxtPlugin(() => {
           if(!appendCookie.includes(nuxtApp.$CSRF_COOKIE)){
             appendCookie = appendCookie + `; ${nuxtApp.$CSRF_COOKIE}=${csrf}`;
           }
+
+          // if(!appendCookie.includes('laravel_session')){
+          //   appendCookie = appendCookie + `; ${'laravel_session'}=${nuxtApp.$session.value}`;
+          // }
 
           buildHeader(headers, "Cookie", appendCookie);
         }

@@ -11,6 +11,10 @@ export default defineNuxtPlugin((nuxtApp) => {
   const csrf = useCookie(CSRF_COOKIE, {
     sameSite: 'Lax',
   });
+  
+  // const session = useCookie('laravel_session', {
+  //   sameSite: 'Lax',
+  // });
 
   const token = useCookie('token', {
     sameSite: 'Lax',
@@ -102,19 +106,23 @@ export default defineNuxtPlugin((nuxtApp) => {
         ...headersCookie,
       },
       async onResponse({ response }) {
-        if (process.server) {
+        if (import.meta.server) {
           const combinedCookie = response.headers.get("set-cookie") ?? "";
-          const cookies = combinedCookie.split(/, (?=\s*[a-zA-Z0-9_\-]+=)/);
 
+
+          //recupera o csrf/sessão retornado pelo backend e armazena
           csrf.value = parseCookieHeader(CSRF_COOKIE, combinedCookie);
+          // session.value = parseCookieHeader('laravel_session', combinedCookie);
 
-          await nuxtApp.runWithContext(() => {
-            const event = useRequestEvent();
+          // const cookies = combinedCookie.split(/, (?=\s*[a-zA-Z0-9_\-]+=)/);
+          // recupera todos os cookies retornados pelo backend(incluindo session)
+          // await nuxtApp.runWithContext(() => {
+          //   const event = useRequestEvent();
 
-            cookies.forEach((c) => {
-              appendResponseHeader(event, "set-cookie", c);
-            });
-          });
+          //   cookies.forEach((c) => {
+          //     appendResponseHeader(event, "set-cookie", c);
+          //   });
+          // });
         }
 
       },
@@ -135,6 +143,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       setRefreshToken,
       token: toRef(token),
       refresh_token: toRef(refresh_token),
+      // session: toRef(session),
       CSRF_COOKIE: CSRF_COOKIE,
       CSRF_HEADER: CSRF_HEADER,
       cleanCsrf: cleanCsrf,

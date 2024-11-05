@@ -157,18 +157,18 @@ const $fetchApi = useNuxtApp().$fetchApi
 const id_tags = computed(() => form.tag_id ? form.tag_id.map((tag) => tag.id) : [])
 
 const { data, status, error, refresh } = await useAsyncData(
-  'organizacoes',
+  `organizacoes-${page.value}-${sortName.value}-${sortOrder.value}-${id_tags.value}`,
   () => {
     return $fetchApi('/organizacao', {
       params: {
         ...(form.pesquisa ? { pesquisa: form.pesquisa } : {}),
         ...(id_tags.value ? { 'id_tags[]': id_tags.value } : {}),
-        ...(page.value ? { page: page.value } : {}),
+        page: page.value || 1,
         sortOrder: sortOrder.value,
         sortName: sortName.value
       }
     })
-  },
+  }
 )
 
 const loading = computed(() => status.value === 'pending')
@@ -228,29 +228,7 @@ const pesquisar = function () {
 }
 
 const buscarDados = function () {
-  // loading.value = true
-
   refresh();
-
-  // const id_tags = form.tag_id ? form.tag_id.map((tag) => tag.id) : []
-  // $fetchApi('/organizacao', {
-  //   params: {
-  //     ...(form.pesquisa ? { pesquisa: form.pesquisa } : {}),
-  //     ...(id_tags ? { 'id_tags[]': id_tags } : {}),
-  //     ...(page.value ? { page: page.value } : {}),
-  //     sortOrder: sortOrder.value,
-  //     sortName: sortName.value
-  //   }
-  // })
-  //   .then((r) => {
-  //     organizacoes.dados = r.data
-  //   })
-  //   .catch((e) => {
-  //     backendAlertError(e, 'Não foi possível exibir os dados!')
-  //   })
-  //   .finally(() => {
-  //     loading.value = false
-  //   })
 }
 
 </script>
