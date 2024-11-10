@@ -60,8 +60,8 @@ export default defineNuxtPlugin(() => {
             appendCookie = appendCookie + `; ${nuxtApp.$CSRF_COOKIE}=${csrf}`;
           }
 
-          if(!appendCookie.includes('laravel_session')){
-            appendCookie = appendCookie + `; ${'laravel_session'}=${nuxtApp.$session.value}`;
+          if(!appendCookie.includes(nuxtApp.$SESSION_NAME)){
+            appendCookie = appendCookie + `; ${nuxtApp.$SESSION_NAME}=${nuxtApp.$session.value}`;
           }
 
           buildHeader(headers, "Cookie", appendCookie);
