@@ -79,92 +79,92 @@ export default defineNuxtPlugin(() => {
         console.log(e);
       }
     },
-    async onResponse(ctx) {
-      const refreshToken = nuxtApp.$refresh_token.value;
+    // async onResponse(ctx) {
+    //   const refreshToken = nuxtApp.$refresh_token.value;
 
-      const shouldRefresh =
-        !ctx.response.url.includes("/refresh") &&
-        !ctx.response.url.includes("/login");
-      !ctx.response.url.includes("/csrf");
-      if (ctx.response.status === 401 && shouldRefresh) {
-        if (ctx.response.url.includes("/refresh")) {
-          await nuxtApp.runWithContext(() => navigateTo("/?logout=1"));
-        }
+    //   const shouldRefresh =
+    //     !ctx.response.url.includes("/refresh") &&
+    //     !ctx.response.url.includes("/login");
+    //   !ctx.response.url.includes("/csrf");
+    //   if (ctx.response.status === 401 && shouldRefresh) {
+    //     if (ctx.response.url.includes("/refresh")) {
+    //       await nuxtApp.runWithContext(() => navigateTo("/?logout=1"));
+    //     }
 
-        if (!refreshingToken) {
-          refreshingToken = true;
-          new Promise((resolve, reject) => {
-            nuxtApp
-              .$fetchApi("/refresh", {
-                onResponse(ctx) {},
-                // ...buildContextRetry(ctx.options),
-                method: "POST",
-                credentials: "include",
-                body: {
-                  refresh_token: refreshToken,
-                },
-              })
-              .then(async (ctx2) => {
-                const newToken = ctx2.data.token;
-                const newRefreshToken = ctx2.data.refresh_token;
+    //     if (!refreshingToken) {
+    //       refreshingToken = true;
+    //       new Promise((resolve, reject) => {
+    //         nuxtApp
+    //           .$fetchApi("/refresh", {
+    //             onResponse(ctx) {},
+    //             // ...buildContextRetry(ctx.options),
+    //             method: "POST",
+    //             credentials: "include",
+    //             body: {
+    //               refresh_token: refreshToken,
+    //             },
+    //           })
+    //           .then(async (ctx2) => {
+    //             const newToken = ctx2.data.token;
+    //             const newRefreshToken = ctx2.data.refresh_token;
 
-                if (import.meta.server) {
-                  nuxtApp.$setToken(newToken);
-                  nuxtApp.$setRefreshToken(newRefreshToken);
-                }
+    //             if (import.meta.server) {
+    //               nuxtApp.$setToken(newToken);
+    //               nuxtApp.$setRefreshToken(newRefreshToken);
+    //             }
 
-                failedRequestsQueue.forEach((request) =>
-                  request.onSuccess(newToken)
-                );
-                failedRequestsQueue = [];
+    //             failedRequestsQueue.forEach((request) =>
+    //               request.onSuccess(newToken)
+    //             );
+    //             failedRequestsQueue = [];
 
-                // resolve(this)
-              })
-              .catch(async () => {
-                failedRequestsQueue.forEach((request) => {
-                  request.onFailure(ctx);
-                });
-                failedRequestsQueue = [];
-                // reject(this)
-                return await nuxtApp.runWithContext(() =>
-                  navigateTo("/?logout=2")
-                );
-              })
-              .finally(() => {
-                refreshingToken = false;
-              });
-          });
-        }
+    //             // resolve(this)
+    //           })
+    //           .catch(async () => {
+    //             failedRequestsQueue.forEach((request) => {
+    //               request.onFailure(ctx);
+    //             });
+    //             failedRequestsQueue = [];
+    //             // reject(this)
+    //             return await nuxtApp.runWithContext(() =>
+    //               navigateTo("/?logout=2")
+    //             );
+    //           })
+    //           .finally(() => {
+    //             refreshingToken = false;
+    //           });
+    //       });
+    //     }
 
-        return new Promise((resolve, reject) => {
-          failedRequestsQueue.push({
-            onSuccess: (token) => {
-              const originalConfig = buildContextRetry(ctx.options);
+    //     return new Promise((resolve, reject) => {
+    //       failedRequestsQueue.push({
+    //         onSuccess: (token) => {
+    //           const originalConfig = buildContextRetry(ctx.options);
 
-              const newConfig = {
-                ...originalConfig,
-                headers: {
-                  ...(originalConfig.headers || {}),
-                  // Authorization: `Bearer ${token}`,
-                },
-              };
+    //           const newConfig = {
+    //             ...originalConfig,
+    //             headers: {
+    //               ...(originalConfig.headers || {}),
+    //               // Authorization: `Bearer ${token}`,
+    //             },
+    //           };
 
-              resolve(
-                $fetchApi(ctx.response.url, {
-                  ...newConfig,
-                  onResponse: (ctx3) => {
-                    Object.assign(ctx, ctx3);
-                  },
-                })
-              );
-            },
-            onFailure: (err) => {
-              reject(err);
-            },
-          });
-        });
-      }
-    },
+    //           resolve(
+    //             $fetchApi(ctx.response.url, {
+    //               ...newConfig,
+    //               onResponse: (ctx3) => {
+    //                 Object.assign(ctx, ctx3);
+    //               },
+    //             })
+    //           );
+    //         },
+    //         onFailure: (err) => {
+    //           reject(err);
+    //         },
+    //       });
+    //     });
+    //   }
+    // },
   });
 
   // Expose to useNuxtApp().$fetchApi

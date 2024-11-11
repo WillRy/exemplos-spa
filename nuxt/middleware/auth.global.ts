@@ -1,6 +1,6 @@
 import type { Usuario } from "~/composables/useUsuario";
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  
+  const navigateBetweenPublic = !from.path.includes("/painel") && !to.path.includes("/painel");
 
   const { usuario } = useUsuario();
 
@@ -20,7 +20,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     return;
   }
 
-  if (!usuario.value && !haveLogout) {
+  if (!usuario.value && !haveLogout && !navigateBetweenPublic) {
     const { data } = await useApi<{
       data: Usuario;
     }>("/usuario");
