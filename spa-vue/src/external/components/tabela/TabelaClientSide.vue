@@ -1,39 +1,24 @@
 <template>
   <div>
     <div :class="{ 'table-responsive': responsive }">
-      <table
-        class="tabela"
-        :class="{
-          loading: loading,
-          listras: listras,
-          auto: tableLayout === 'auto',
-          fixed: tableLayout === 'fixed'
-        }"
-      >
+      <table class="tabela" :class="{
+        loading: loading,
+        listras: listras,
+        auto: tableLayout === 'auto',
+        fixed: tableLayout === 'fixed'
+      }">
         <thead>
           <template v-if="!$slots.thead">
-            <HeadSort
-              v-for="(coluna, index) in colunas"
-              :info="coluna.info"
-              :key="index"
-              :nome="coluna.nome"
-              :disabled="coluna.disabled"
-              :texto="coluna.texto"
-              :width="coluna.width"
-              :maxWidth="coluna.maxWidth"
-              :minWidth="coluna.minWidth"
-              :permiteRemoverOrdenacao="permiteRemoverOrdenacao"
-            ></HeadSort>
+            <HeadSort v-for="(coluna, index) in colunas" :info="coluna.info" :key="index" :nome="coluna.nome"
+              :disabled="coluna.disabled" :texto="coluna.texto" :width="coluna.width" :maxWidth="coluna.maxWidth"
+              :minWidth="coluna.minWidth" :permiteRemoverOrdenacao="permiteRemoverOrdenacao"></HeadSort>
           </template>
           <slot name="thead" :dados="dados" />
         </thead>
         <tbody v-if="dados && dados.length">
-          <slot name="colunas" :dados="dados" v-if="$slots.colunas"></slot>
+          <slot name="colunas" :dados="localRows" v-if="$slots.colunas"></slot>
         </tbody>
-        <tbody
-          v-if="(!dados && !loading) || (dados && dados.length === 0 && !loading)"
-          class="tabela-vazia"
-        >
+        <tbody v-if="(!dados && !loading) || (dados && dados.length === 0 && !loading)" class="tabela-vazia">
           <tr v-if="!loading">
             <td colspan="99999">{{ textoEmpty }}</td>
           </tr>
@@ -48,14 +33,8 @@
 
     <template v-if="exibirPaginacao">
       <Separador />
-      <PaginacaoSemRouter
-        class="mt-3 p-2"
-        :exibir-total="true"
-        :pagina-atual="currentPage"
-        :total="total"
-        :porPagina="perPage"
-        @onChange="updatePagina($event)"
-      />
+      <PaginacaoSemRouter class="mt-3 p-2" :exibir-total="true" :pagina-atual="currentPage" :total="totalItems"
+        :porPagina="perPage" @onChange="updatePagina($event)" />
     </template>
   </div>
 </template>
@@ -81,6 +60,11 @@ type TabelaLayout = 'auto' | 'fixed'
 type TableSort = 'asc' | 'desc' | 'ASC' | 'DESC'
 
 type Colunas = Array<Coluna>
+
+type DadosOrdenacao = {
+  sortName: string
+  sortOrder: string
+}
 
 export default {
   name: 'Tabela',
@@ -145,38 +129,118 @@ export default {
     },
     exibirPaginacao: {
       type: Boolean,
-      default: false
+      default: true
+    },
+    clientSide: {
+      type: Boolean,
+      default: true
+    },
+    callbackPesquisa: {
+      type: Function,
+      default: null
     }
   },
   data() {
     return {
-      checkedAll: false
+      checkedAll: false,
+      localRows: [] as Array<any>,
+      totalFiltered: 0,
+    }
+  },
+  provide() {
+    return {
+      sortByTabela: (dados: DadosOrdenacao) => this.sortBy(dados),
+      ordenando: computed(() => this.sortName),
+      order: computed(() => this.sortOrder)
     }
   },
   watch: {
     dados: {
       handler() {
-        const hasItems = this.dados && this.dados.length > 0;
-        if(this.currentPage > 1 && !hasItems) {
-          this.updatePagina(this.currentPage - 1);
-        }
+        this.$nextTick(() => {
+          this.redraw();
+        })
       },
-      deep: true
-    }
-  },
-  provide() {
-    return {
-      sortByTabela: (dados) => this.sortBy(dados),
-      ordenando: computed(() => this.sortName),
-      order: computed(() => this.sortOrder)
-    }
-  },
-  methods: {
-    sortBy(dadosOrdenacao) {
-      this.$emit('onSort', dadosOrdenacao)
+      deep: true,
+      immediate: true
     },
-    updatePagina(page) {
+    currentPage: {
+      handler() {
+        this.$nextTick(() => {
+          this.redraw()
+        })
+      }
+    }
+  },
+  computed: {
+    totalItems() {
+      return this.clientSide ? this.totalFiltered : this.total
+    },
+    totalPage() {
+      return Math.ceil(this.totalItems / this.perPage)
+    }
+  },
+  expose: ['search', 'totalFiltered'],
+  methods: {
+    sortBy(dadosOrdenacao: DadosOrdenacao) {
+      this.$emit('onSort', dadosOrdenacao)
+      this.$nextTick(() => {
+        this.redraw()
+      })
+    },
+    updatePagina(page: number | string) {
       this.$emit('onPage', page)
+      this.$nextTick(() => {
+        this.redraw()
+      })
+    },
+    search() {
+      this.updatePagina(1)
+      this.$nextTick(() => {
+        this.redraw()
+      })
+    },
+    redraw() {
+
+      this.totalFiltered = this.dados.length;
+
+
+      if (!this.clientSide) {
+        this.localRows = this.dados;
+        return this.localRows
+      }
+
+      let newData = [...this.dados]
+
+      if (this.callbackPesquisa) {
+        newData = this.callbackPesquisa(newData)
+        this.totalFiltered = newData.length !== this.dados.length ? newData.length : this.dados.length
+      }
+
+
+      newData = newData.slice().sort((a: any, b: any) => {
+        if (this.sortOrder === 'asc' || this.sortOrder === 'ASC') {
+          return a[this.sortName] > b[this.sortName] ? 1 : -1
+        } else {
+          return a[this.sortName] < b[this.sortName] ? 1 : -1
+        }
+      })
+
+      if (this.exibirPaginacao) {
+        newData = newData.slice(
+          (this.currentPage - 1) * this.perPage,
+          this.currentPage * this.perPage
+        )
+      }
+
+      this.localRows = newData
+
+      if(this.localRows.length === 0 && this.currentPage > 1){
+        this.updatePagina(this.currentPage - 1)
+      }
+
+
+      return this.localRows
     }
   }
 }
@@ -240,7 +304,7 @@ export default {
   white-space: nowrap;
 }
 
-.tabela thead tr th > button,
+.tabela thead tr th>button,
 .tabela :deep(thead tr th > button) {
   color: rgb(75 85 99);
   font-weight: 500;
@@ -255,7 +319,7 @@ export default {
   cursor: pointer;
 }
 
-.tabela thead tr th > *:not(button),
+.tabela thead tr th>*:not(button),
 .tabela :deep(thead tr th > *:not(button)) {
   color: rgb(75 85 99);
   font-weight: 500;
@@ -279,7 +343,7 @@ export default {
   margin: 0;
 }
 
-.tabela tbody tr ~ tr,
+.tabela tbody tr~tr,
 .tabela tbody :deep(tr ~ tr) {
   border-top: 1px solid #e5e7eb;
 }

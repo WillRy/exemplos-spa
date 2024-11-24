@@ -1,19 +1,18 @@
 <template>
-  <div
-    class="form-group"
-    :class="{
-      error: error,
-      md: size === 'md',
-      lg: size === 'lg',
-      disabled: disabled
-    }"
-  >
+  <div class="form-group" :class="{
+    error: error,
+    md: size === 'md',
+    lg: size === 'lg',
+    disabled: disabled
+  }">
     <div class="label-container" v-if="$slots.label">
       <slot name="label" v-if="$slots.label" @click.stop=""></slot>
     </div>
     <div class="label-container" v-if="label">
       <label>{{ label }}</label>
     </div>
+
+
 
     <div style="display: flex; align-items: center">
       <div class="form-group-container" :class="{ borda: borda, btn: $slots.btn }">
@@ -24,33 +23,27 @@
           <slot name="prefix"></slot>
         </div>
 
-        <DatePicker
-          v-model="data"
-          v-bind="attrs"
-          is-required
-          mode="date"
-          :first-day-of-week="1"
-          :popover="{ visibility: visibility }"
-          :is24hr="is24hrConfig"
-          :timezone="timezoneConfig"
-          :locale="localeConfig"
-        >
-          <template v-slot="{ inputValue, inputEvents }">
-            <input
-              v-if="!disabled"
-              v-on="inputEvents"
-              :value="inputValue"
-              :placeholder="placeholder"
+        <VueDatePicker v-model="data" v-bind="$attrs" :first-day-of-week="1" :is24="is24hrConfig" :teleport="true"
+          :timezone="timezoneConfig" :locale="localeConfig" :enable-time-picker="false" :cancelText="config.txtCancelar"
+          :selectText="config.txtSelecionar" :format="config.formatoData" :disabled="disabled" :auto-apply="true">
+          <template #dp-input="{ value }">
+            <input 
+              :value="value" 
+              :placeholder="placeholder" 
+              @input.prevent=""
               ref="input"
-            />
-            <input v-else :value="inputValue" :placeholder="placeholder" disabled />
+              :disabled="disabled"
+              :name="name"
+              autocomplete="no"
+             />
           </template>
-        </DatePicker>
+          <template #action-preview></template>
+        </VueDatePicker>
         <div class="form-group-default-icon" @click="focusInput">
           <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
             <path
-              d="M368.005 272h-96v96h96v-96zm-32-208v32h-160V64h-48v32h-24.01c-22.002 0-40 17.998-40 40v272c0 22.002 17.998 40 40 40h304.01c22.002 0 40-17.998 40-40V136c0-22.002-17.998-40-40-40h-24V64h-48zm72 344h-304.01V196h304.01v212z"
-            ></path>
+              d="M368.005 272h-96v96h96v-96zm-32-208v32h-160V64h-48v32h-24.01c-22.002 0-40 17.998-40 40v272c0 22.002 17.998 40 40 40h304.01c22.002 0 40-17.998 40-40V136c0-22.002-17.998-40-40-40h-24V64h-48zm72 344h-304.01V196h304.01v212z">
+            </path>
           </svg>
         </div>
       </div>
@@ -77,159 +70,131 @@
   </div>
 </template>
 
-<script lang="ts">
-import { DatePicker } from 'v-calendar'
+<script lang="ts" setup>
 import { format } from 'date-fns'
 import InfoInputIcon from '../icons/InfoInputIcon.vue'
 import InfoSuccessIcon from '../icons/InfoSuccessIcon.vue'
 import InfoErrorIcon from '../icons/InfoErrorIcon.vue'
+import VueDatePicker from '@vuepic/vue-datepicker';
 
-import type { PropType } from 'vue'
+import { computed, ref, defineEmits } from 'vue'
 import { useConfigStore } from '../../store/config.ts'
 
-export type PopoverVisibility = 'click' | 'hover' | 'hover-focus' | 'focus'
 export type SizeInput = 'md' | 'lg'
 
-export default {
-  name: 'BaseDate',
+defineOptions({
   inheritAttrs: false,
-  components: {
-    DatePicker,
-    InfoInputIcon,
-    InfoSuccessIcon,
-    InfoErrorIcon
-  },
-  emits: ['update:modelValue', 'update:formatado', 'change', 'changeFormatado'],
-  setup() {
-    const config = useConfigStore()
-    return {
-      config: config
+
+})
+
+defineExpose({
+  focusInput,
+  clickInput,
+})
+
+
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: Date | null): void
+  (e: 'update:formatado', value: string | null): void
+}>()
+
+
+const input = ref(null);
+const config = useConfigStore()
+
+const props = withDefaults(defineProps<{
+  size: SizeInput
+  borda: boolean
+  label: string
+  placeholder: string
+  error: string
+  success: string
+  legenda: string
+  modelValue: string | Date
+  disabled: boolean
+  timezone: string
+  is24hr: boolean
+  locale: string
+  name?: string
+}>(), {
+  size: 'md',
+  borda: true,
+  label: "",
+  placeholder: "",
+  error: "",
+  success: "",
+  legenda: "",
+  disabled: false,
+  timezone: "America/Sao_Paulo",
+  is24hr: true,
+  locale: "pt-BR",
+  name: "",
+});
+
+const timezoneConfig = computed(() => props.timezone ?? config.config.current_timezone)
+const is24hrConfig = computed(() => props.is24hr ?? config.config.is24hr)
+const localeConfig = computed(() => props.locale ?? config.config.locale)
+
+
+const data = computed({
+  get() {
+    if (!props.modelValue) {
+      return null
     }
-  },
-  props: {
-    size: {
-      type: String as PropType<SizeInput>,
-      default: 'md'
-    },
-    borda: {
-      type: Boolean,
-      default: true
-    },
-    label: {
-      type: String,
-      default: ''
-    },
-    placeholder: {
-      default: null,
-      type: String
-    },
-    error: {
-      type: String
-    },
-    success: {
-      type: String
-    },
-    legenda: {
-      type: String
-    },
-    modelValue: [String, Date],
-    disabled: {
-      type: Boolean,
-      default: false
-    },
-    timezone: {
-      type: String
-    },
-    is24hr: {
-      type: Boolean
-    },
-    locale: {
-      type: String
-    },
-    visibility: {
-      default: 'click',
-      type: String as PropType<PopoverVisibility>
+
+    if (typeof props.modelValue === 'object') {
+      return props.modelValue
     }
+
+    let normalizarDataUtc = new Date(props.modelValue)
+
+    return new Date(
+      normalizarDataUtc.getUTCFullYear(),
+      normalizarDataUtc.getUTCMonth(),
+      normalizarDataUtc.getUTCDate(),
+      0,
+      0,
+      0
+    )
   },
-  computed: {
-    attrs() {
-      return {
-        ...this.$attrs
-      }
-    },
-    timezoneConfig() {
-      return this.timezone ?? this.config.config.current_timezone
-    },
-    is24hrConfig() {
-      return this.is24hr ?? this.config.config.is24hr
-    },
-    localeConfig() {
-      return this.locale ?? this.config.config.locale
-    },
-    data: {
-      set(valor) {
-        if (!valor) {
-          this.$emit('update:modelValue', null)
-          this.$emit('update:formatado', null)
-          return null
-        }
-
-        let valorNormalizado = valor
-
-        if (typeof valor !== 'object') {
-          let normalizarDataUtc = new Date(valor)
-          valorNormalizado = new Date(
-            normalizarDataUtc.getUTCFullYear(),
-            normalizarDataUtc.getUTCMonth(),
-            normalizarDataUtc.getUTCDate(),
-            0,
-            0,
-            0
-          )
-        }
-
-        let string = format(valorNormalizado, 'yyyy-MM-dd')
-        this.$emit('update:modelValue', valorNormalizado)
-        this.$emit('update:formatado', string)
-
-        return null
-      },
-      get() {
-        if (!this.modelValue) {
-          return null
-        }
-
-        if (typeof this.modelValue === 'object') {
-          return this.modelValue
-        }
-
-        let normalizarDataUtc = new Date(this.modelValue)
-
-        return new Date(
-          normalizarDataUtc.getUTCFullYear(),
-          normalizarDataUtc.getUTCMonth(),
-          normalizarDataUtc.getUTCDate(),
-          0,
-          0,
-          0
-        )
-      }
+  set(valor) {
+    if (!valor) {
+      emit('update:modelValue', null)
+      emit('update:formatado', null)
+      return null
     }
-  },
-  expose: ['focusInput', 'clickInput'],
-  methods: {
-    focusInput() {
-      ;(this.$refs.input as HTMLInputElement).focus()
 
-      setTimeout(() => {
-        ;(this.$refs.input as HTMLInputElement).click()
-      })
-    },
-    clickInput() {
-      ;(this.$refs.input as HTMLInputElement).click()
+    let valorNormalizado = valor
+
+    if (typeof valor !== 'object') {
+      let normalizarDataUtc = new Date(valor)
+      valorNormalizado = new Date(
+        normalizarDataUtc.getUTCFullYear(),
+        normalizarDataUtc.getUTCMonth(),
+        normalizarDataUtc.getUTCDate(),
+        0,
+        0,
+        0
+      )
     }
-  },
-  created() {}
+
+    let string = format(valorNormalizado, 'yyyy-MM-dd')
+    emit('update:modelValue', valorNormalizado)
+    emit('update:formatado', string)
+
+    return null
+  }
+})
+
+function focusInput() {
+  if (!input.value) return;
+  (input.value as HTMLInputElement).focus()
+}
+
+function clickInput() {
+  if (!input.value) return;
+  (input.value as HTMLInputElement).click()
 }
 </script>
 <style scoped>
@@ -287,19 +252,20 @@ export default {
   justify-content: center;
 }
 
-.form-group-icon > :deep(img) {
+.form-group-icon> :deep(img) {
   height: 18px;
   width: 18px;
 }
 
-.form-group-icon > :deep(svg) {
+.form-group-icon> :deep(svg) {
   height: 18px;
   width: 18px;
 }
 
-.form-group-container:focus-within .form-group-icon > :deep(svg path) {
+.form-group-container:focus-within .form-group-icon> :deep(svg path) {
   fill: var(--focus-color);
 }
+
 
 .form-group-default-icon {
   flex-shrink: 0;
@@ -309,18 +275,18 @@ export default {
   justify-content: center;
 }
 
-.form-group-default-icon > :deep(img) {
+.form-group-default-icon> :deep(img) {
   height: 18px;
   width: 18px;
 }
 
-.form-group-default-icon > :deep(svg) {
+.form-group-default-icon> :deep(svg) {
   height: 18px;
   width: 18px;
   fill: var(--primary-color-principal);
 }
 
-.form-group-container:focus-within .form-group-icon > :deep(svg path) {
+.form-group-container:focus-within .form-group-icon> :deep(svg path) {
   fill: var(--focus-color);
 }
 
@@ -412,7 +378,7 @@ export default {
   flex-shrink: 0;
 }
 
-.form-group-btn > :deep(button) {
+.form-group-btn> :deep(button) {
   height: 100%;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
@@ -475,7 +441,7 @@ input::placeholder {
   margin-top: var(--spacing-1);
 }
 
-.legenda > svg {
+.legenda>svg {
   flex-shrink: 0;
   width: 14px;
   margin-right: 8px;
@@ -493,7 +459,7 @@ input::placeholder {
   margin-top: var(--spacing-1);
 }
 
-.errorMessage > svg {
+.errorMessage>svg {
   flex-shrink: 0;
   width: 14px;
   margin-right: 8px;
@@ -511,7 +477,7 @@ input::placeholder {
   margin-top: var(--spacing-1);
 }
 
-.successMessage > svg {
+.successMessage>svg {
   flex-shrink: 0;
   width: 14px;
   margin-right: 8px;
@@ -597,24 +563,19 @@ input::placeholder {
   fill: #fff;
 }
 
-.form-group-container.borda:focus-within ~ .form-group-btn :deep(button:not(:active)) {
+.form-group-container.borda:focus-within~.form-group-btn :deep(button:not(:active)) {
   box-shadow: var(--primary-color-principal) 0px 0px 0px var(--border);
 }
 
-.form-group-container.borda:focus-within ~ .form-group-btn :deep(button:hover) {
+.form-group-container.borda:focus-within~.form-group-btn :deep(button:hover) {
   box-shadow: var(--primary-color-principal-hover) 0px 0px 0px var(--border);
 }
 
-.md
-  .form-group-container
-  > div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
-  min-height: 42px;
+.md .form-group-container>div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
   width: 100%;
 }
 
-.lg
-  .form-group-container
-  > div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
+.lg .form-group-container>div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
   min-height: 54px;
   width: 100%;
 }

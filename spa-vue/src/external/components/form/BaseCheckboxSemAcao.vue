@@ -1,7 +1,7 @@
 <template>
   <div :class="{ 'form-group-has-icon': $slots.icon }" class="form-group">
     <label class="checkbox-container" :class="{ disabled: disabled }">
-      <input type="checkbox" class="checkbox" :disabled="disabled" v-model="localValue" v-bind="attrs" />
+      <div type="checkbox" class="checkbox" :class="{ checked: checked }"></div>
       <span class="checkmark"></span>
       <span>
         <template v-if="label && !$slots.label">{{ label }}</template>
@@ -10,33 +10,14 @@
         </template>
       </span>
     </label>
-    <div v-if="$slots.legenda || legenda" class="legenda">
-      <InfoInputIcon size="14px" class="icone-footer" />
-      <slot name="legenda" v-if="$slots.legenda"></slot>
-      <template v-else>{{ legenda }}</template>
-    </div>
-    <div v-if="$slots.success || success" class="successMessage">
-      <InfoSuccessIcon size="14px" class="icone-footer" />
-      <slot name="success" v-if="$slots.success"></slot>
-      <template v-else>{{ success }}</template>
-    </div>
-    <div v-if="$slots.error || error" class="errorMessage">
-      <InfoErrorIcon size="14px" class="icone-footer" />
-      <slot name="error" v-if="$slots.error"></slot>
-      <template v-else>{{ error }}</template>
-    </div>
   </div>
 </template>
 
 <script lang="ts">
-import InfoErrorIcon from "../icons/InfoErrorIcon.vue";
-import InfoInputIcon from "../icons/InfoInputIcon.vue";
-import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
 
 export default {
-  name: "BaseCheckbox",
+  name: "BaseCheckboxSemAcao",
   inheritAttrs: false,
-  emits: ['update:modelValue'],
   props: {
     disabled: {
       default: false,
@@ -45,36 +26,12 @@ export default {
       type: String,
       default: "",
     },
-    modelValue: {
-      required: false,
-    },
-    error: {
-      type: String,
-    },
-    success: {
-      type: String,
-    },
-    legenda: {
-      type: String,
-    },
-  },
-  computed: {
-    attrs() {
-      return {
-        ...this.$attrs,
-      };
-    },
-    localValue: {
-      set(valor) {
-        this.$emit("update:modelValue", valor);
-      },
-      get() {
-        return this.modelValue;
-      },
+    checked: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {},
-  components: { InfoInputIcon, InfoSuccessIcon, InfoErrorIcon },
 };
 </script>
 
@@ -114,7 +71,7 @@ export default {
 }
 
 .checkmark:hover:not(.disabled) {
-  border: 1px solid var(--primary-color-principal);
+  /* border: 1px solid var(--primary-color-principal); */
 }
 
 .checkmark:focus-within:not(.disabled) {
@@ -125,7 +82,7 @@ export default {
   border: 1px solid var(--primary-color-principal);
 }
 
-.checkbox-container input:checked~.checkmark {
+.checkbox-container div.checked~.checkmark {
   background-color: var(--primary-color-principal);
 }
 
@@ -146,7 +103,7 @@ export default {
 }
 
 /* Exibir o ícone quando selecionado */
-.checkbox-container input:checked~.checkmark:after {
+.checkbox-container div.checked~.checkmark:after {
   display: block;
 }
 

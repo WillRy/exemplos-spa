@@ -9,18 +9,18 @@
 
 <script>
 export default {
-  name: 'DotsIcon',
+  name: "DotsIcon",
   props: {
     size: {
       type: String,
-      default: '24px'
+      default: "24px",
     },
     color: {
       type: String,
-      default: '#707070'
-    }
-  }
-}
+      default: "#707070",
+    },
+  },
+};
 </script>
 
 <style scoped></style>

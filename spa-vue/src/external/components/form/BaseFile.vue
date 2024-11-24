@@ -1,5 +1,5 @@
 <template>
-    <div class="form-group" :class="{error: error, md: size==='md', lg: size==='lg', disabled: disabled}">
+    <div class="form-group" :class="{ error: error, md: size === 'md', lg: size === 'lg', disabled: disabled }">
         <div class="label-container" v-if="$slots.label">
             <slot name="label" v-if="$slots.label" @click.stop=""></slot>
         </div>
@@ -9,36 +9,41 @@
 
 
         <div style="display: flex; align-items: center" class="form-all-container">
-            <div class="form-group-container" :class="{ borda: borda, btn: $slots.btn, icon: $slots.icon }">
+            <div class="form-group-container" :class="{ borda: borda, btn: true, icon: $slots.icon }">
                 <div v-if="$slots.icon" class="form-group-icon">
                     <slot name="icon"></slot>
                 </div>
                 <div v-if="$slots.prefix" class="form-group-prefix">
                     <slot name="prefix"></slot>
                 </div>
-                <input v-bind="$attrs" :value="modelValue" @input="updateValue" :disabled="disabled" ref="input"/>
-                <div v-if="$slots.btnFlutuante" class="form-group-btn-flutuante">
-                    <slot name="btnFlutuante"></slot>
+                <input v-bind="$attrs" type="file" style="display: none;" ref="input" @change="updateValue"
+                    :multiple="multiple">
+                <input :value="nomesArquivos" @input="updateValue" :disabled="disabled" readonly
+                    @click="abrirSelecaoArquivo" />
+                <div class="form-group-btn-flutuante" v-if="nomesArquivos">
+                    <button class="btn-remover-select" @click="removerArquivos">
+                        x
+                    </button>
                 </div>
             </div>
-            <div v-if="$slots.btn" class="form-group-btn">
-                <slot name="btn"></slot>
+            <div class="form-group-btn">
+                <BaseButtonPrimary @click="abrirSelecaoArquivo">Selecionar</BaseButtonPrimary>
             </div>
         </div>
 
 
         <div v-if="$slots.legenda || legenda" class="legenda">
-            <InfoInputIcon size="14px" class="icone-footer"/>
+            <InfoInputIcon size="14px" class="icone-footer" />
             <slot name="legenda" v-if="$slots.legenda"></slot>
             <template v-else>{{ legenda }}</template>
         </div>
         <div v-if="$slots.success || success" class="successMessage">
-            <InfoSuccessIcon size="14px" class="icone-footer"/>
+            <InfoSuccessIcon size="14px" class="icone-footer" />
             <slot name="success" v-if="$slots.success"></slot>
             <template v-else>{{ success }}</template>
         </div>
-        <div v-if="$slots.error || error"  class="errorMessage">
-            <InfoErrorIcon size="14px" class="icone-footer"/>
+        <div v-if="$slots.error || error" class="errorMessage">
+            <InfoErrorIcon size="14px" class="icone-footer" />
             <slot name="error" v-if="$slots.error"></slot>
             <template v-else>{{ error }}</template>
         </div>
@@ -46,10 +51,11 @@
 </template>
 
 <script lang="ts" setup>
-import {ref} from 'vue'
+import { computed, ref } from 'vue'
 import InfoErrorIcon from '../icons/InfoErrorIcon.vue';
 import InfoInputIcon from '../icons/InfoInputIcon.vue';
 import InfoSuccessIcon from '../icons/InfoSuccessIcon.vue';
+import BaseButtonPrimary from '../buttons/BaseButtonPrimary.vue';
 
 type SizeInput = 'md' | 'lg'
 
@@ -59,37 +65,60 @@ defineOptions({
     inheritAttrs: false,
 })
 
-const input = ref(null)
+const input = ref<HTMLInputElement | null>(null)
 
 defineExpose({
     focusInput: () => {
-        if(!input.value) return
-        (input.value as HTMLInputElement).focus()
+        if (!input.value) return
+        input.value.focus()
     }
 })
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
     disabled: boolean,
     borda: boolean,
     label: string,
-    modelValue: string | number,
+    modelValue: FileList | null,
     error: string,
     success: string,
     legenda: string,
-    size: SizeInput
+    size: SizeInput,
+    multiple: boolean
 }>(), {
     disabled: false,
     borda: true,
     label: "",
-    modelValue: "",
+    modelValue: null,
     error: "",
     success: "",
     legenda: "",
     size: "md" as SizeInput,
+    multiple: false
 })
 
+const nomesArquivos = computed(() => {
+    if (!props.modelValue) return "";
+
+    const arquivos = props.modelValue as FileList;
+    const arrayArquivos = Array.from(arquivos);
+
+
+    return arrayArquivos.map(arquivo => arquivo.name).join(", ");
+})
+
+
 function updateValue(event: Event) {
-    emit("update:modelValue", (event.target as HTMLInputElement).value)
+    emit("update:modelValue", (event.target as HTMLInputElement).files)
+}
+
+function abrirSelecaoArquivo() {
+    if (!input.value) return;
+
+    input.value.click();
+}
+
+function removerArquivos() {
+    emit("update:modelValue", null)
 }
 
 </script>
@@ -151,17 +180,17 @@ function updateValue(event: Event) {
     justify-content: center;
 }
 
-.form-group-icon > :deep(img) {
+.form-group-icon> :deep(img) {
     height: 18px;
     width: 18px;
 }
 
-.form-group-icon > :deep(svg) {
+.form-group-icon> :deep(svg) {
     height: 18px;
     width: 18px;
 }
 
-.form-group-container:focus-within .form-group-icon > :deep(svg path) {
+.form-group-container:focus-within .form-group-icon> :deep(svg path) {
     fill: var(--focus-color)
 }
 
@@ -227,16 +256,21 @@ function updateValue(event: Event) {
     border-radius: 8px 8px 0 0;
     border-top: var(--border) solid transparent;
     border-bottom: var(--border) solid var(--primary-color-principal-hover);
-    border-left: var(--border) solid transparent;;
-    border-right: var(--border) solid transparent;;
+    border-left: var(--border) solid transparent;
+    ;
+    border-right: var(--border) solid transparent;
+    ;
 }
 
 .form-group-container:not(.borda):focus-within {
     border-radius: 8px 8px 0 0;
-    border-top: var(--border) solid transparent;;
+    border-top: var(--border) solid transparent;
+    ;
     border-bottom: var(--border) solid var(--focus-color);
-    border-left: var(--border) solid transparent;;
-    border-right: var(--border) solid transparent;;
+    border-left: var(--border) solid transparent;
+    ;
+    border-right: var(--border) solid transparent;
+    ;
 }
 
 
@@ -251,11 +285,12 @@ function updateValue(event: Event) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
+
 .form-group-btn {
     flex-shrink: 0;
 }
 
-.form-group-btn > :deep(button) {
+.form-group-btn> :deep(button) {
     height: 100%;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
@@ -304,8 +339,8 @@ input::placeholder {
 }
 
 .icone-footer {
-  flex-shrink: 0;
-  margin-right: 8px;
+    flex-shrink: 0;
+    margin-right: 8px;
 }
 
 .legenda {
@@ -320,7 +355,7 @@ input::placeholder {
     margin-top: var(--spacing-1);
 }
 
-.legenda > svg {
+.legenda>svg {
     flex-shrink: 0;
     width: 14px;
     margin-right: 8px;
@@ -340,7 +375,7 @@ input::placeholder {
 }
 
 
-.errorMessage > svg {
+.errorMessage>svg {
     flex-shrink: 0;
     width: 14px;
     margin-right: 8px;
@@ -359,7 +394,7 @@ input::placeholder {
 }
 
 
-.successMessage > svg {
+.successMessage>svg {
     flex-shrink: 0;
     width: 14px;
     margin-right: 8px;
@@ -382,21 +417,24 @@ input::placeholder {
     gap: 12px;
 }
 
-.form-group-btn-flutuante :deep(button) {
+.btn-remover-select {
+    all: unset;
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translate(0, -50%);
+    z-index: 3;
+    background: var(--error-color-600);
+    color: #fff;
+    font-weight: bold;
     border: none;
-    background: none;
+    border-radius: 4px;
     cursor: pointer;
-}
-
-.form-group-btn-flutuante :deep(button:hover) {
-    opacity: 0.6;
-}
-
-.form-group-btn-flutuante :deep(button svg path) {
-    fill: var(--primary-color-principal);
-}
-
-.form-group-container:focus-within .form-group-btn-flutuante :deep(button path) {
-    fill: var(--focus-color)
+    padding: 0px 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    line-height: 0;
 }
 </style>

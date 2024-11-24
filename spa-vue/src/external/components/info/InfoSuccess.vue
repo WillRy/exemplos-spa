@@ -6,20 +6,20 @@
 </template>
 
 <script>
-import InfoSuccessIcon from '../icons/InfoSuccessIcon.vue'
+import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
 
 export default {
-  name: 'ActionText',
+  name: "ActionText",
   components: {
-    InfoSuccessIcon
+    InfoSuccessIcon,
   },
   props: {
     exibirIcone: {
       type: Boolean,
-      default: true
-    }
-  }
-}
+      default: true,
+    },
+  },
+};
 </script>
 
 <style scoped>

@@ -1,92 +1,106 @@
 <template>
-  <div class="layout" v-if="!loading && usuarioState.usuario">
-    <HomeContainer>
-      <template #sidebar>
-        <Sidebar :open="sidebarAberta" @change="mudarSidebar">
-          <template #logo> </template>
-          <SidebarLink :to="{ name: 'dashboard' }">
-            <template #texto> Dashboard </template>
-            <template #icone>
-              <HomeIcon />
-            </template>
-          </SidebarLink>
-          <SidebarLink :to="{ name: 'organizacoes' }">
-            <template #texto>
-              {{ $t('palavras.organizacoes') }}
-            </template>
-            <template #icone>
-              <OrganizacaoIcon />
-            </template>
-          </SidebarLink>
-          <SidebarLink :to="{ name: 'contatos' }">
-            <template #texto>
-              {{ $t('palavras.contatos') }}
-            </template>
-            <template #icone>
-              <ContatoIcon />
-            </template>
-          </SidebarLink>
-          <SidebarLink :to="{ name: 'tags' }">
-            <template #texto>
-              {{ $t('palavras.tags') }}
-            </template>
-            <template #icone>
-              <TagIcon />
-            </template>
-          </SidebarLink>
-        </Sidebar>
-      </template>
+  <DynamicThemeProvider :theme-config="{
+    primaryColor: {
+      50: '#ecfdf5',
+      100: '#d1fae5',
+      200: '#a7f3d0',
+      300: '#6ee7b7',
+      400: '#34d399',
+      500: '#10b981',
+      600: '#059669',
+      700: '#047857',
+      800: '#065f46',
+      900: '#064e3b'
+    },
+    escalaPrimaryColorPrincipal: 700,
+  }">
+    <div class="layout" v-if="!loading && usuarioState.usuario">
+      <HomeContainer>
+        <template #sidebar>
+          <Sidebar :open="sidebarAberta" @change="mudarSidebar">
+            <template #logo> </template>
+            <SidebarLink :to="{ name: 'dashboard' }">
+              <template #texto> Dashboard </template>
+              <template #icone>
+                <HomeIcon />
+              </template>
+            </SidebarLink>
+            <SidebarLink :to="{ name: 'organizacoes' }">
+              <template #texto>
+                {{ $t('palavras.organizacoes') }}
+              </template>
+              <template #icone>
+                <OrganizacaoIcon />
+              </template>
+            </SidebarLink>
+            <SidebarLink :to="{ name: 'contatos' }">
+              <template #texto>
+                {{ $t('palavras.contatos') }}
+              </template>
+              <template #icone>
+                <ContatoIcon />
+              </template>
+            </SidebarLink>
+            <SidebarLink :to="{ name: 'tags' }">
+              <template #texto>
+                {{ $t('palavras.tags') }}
+              </template>
+              <template #icone>
+                <TagIcon />
+              </template>
+            </SidebarLink>
+          </Sidebar>
+        </template>
 
-      <template #header>
-        <Header :containerFluido="true">
-          <template #boxDireito>
-            <div class="row">
-              <div class="col col-count" v-if="qtdOrganizacoes">
-                <span>Organizações:</span>
-                <span>{{ qtdOrganizacoes }}</span>
+        <template #header>
+          <Header :containerFluido="true">
+            <template #boxDireito>
+              <div class="row">
+                <div class="col col-count" v-if="qtdOrganizacoes">
+                  <span>Organizações:</span>
+                  <span>{{ qtdOrganizacoes }}</span>
+                </div>
+                <div class="col">
+                  <BaseDropdownSecondary>
+                    <template #botao>
+                      {{ $i18n.locale }}
+                    </template>
+                    <template #acoes>
+                      <button @click="mudarIdioma('pt-BR')">Português</button>
+                      <button @click="mudarIdioma('en')">Inglês</button>
+                    </template>
+                  </BaseDropdownSecondary>
+                </div>
+                <div class="col">
+                  <BaseDropdownPrimary>
+                    <template #botao>
+                      {{ usuarioState.usuario.nome }}
+                    </template>
+                    <template #acoes>
+                      <button @click="logout">{{ $t('palavras.logout') }}</button>
+                      <button :disabled="!usuarioState.temPermissao('botao')"
+                        v-if="!usuarioState.temPermissao('botao')">
+                        {{ $t('textos.botao_sem_permissao') }}
+                      </button>
+                      <button v-else>
+                        {{ $t('textos.botao_sem_permissao') }}
+                      </button>
+                    </template>
+                  </BaseDropdownPrimary>
+                </div>
               </div>
-              <div class="col">
-                <BaseDropdownSecondary>
-                  <template #botao>
-                    {{ $i18n.locale }}
-                  </template>
-                  <template #acoes>
-                    <button @click="mudarIdioma('pt-BR')">Português</button>
-                    <button @click="mudarIdioma('en')">Inglês</button>
-                  </template>
-                </BaseDropdownSecondary>
-              </div>
-              <div class="col">
-                <BaseDropdownPrimary>
-                  <template #botao>
-                    {{ usuarioState.usuario.nome }}
-                  </template>
-                  <template #acoes>
-                    <button @click="logout">{{ $t('palavras.logout') }}</button>
-                    <button
-                      :disabled="!usuarioState.temPermissao('botao')"
-                      v-if="!usuarioState.temPermissao('botao')"
-                    >
-                      {{ $t('textos.botao_sem_permissao') }}
-                    </button>
-                    <button v-else>
-                      {{ $t('textos.botao_sem_permissao') }}
-                    </button>
-                  </template>
-                </BaseDropdownPrimary>
-              </div>
-            </div>
-          </template>
-        </Header>
-      </template>
+            </template>
+          </Header>
+        </template>
 
-      <router-view :key="$route.path"></router-view>
-    </HomeContainer>
-  </div>
+        <router-view :key="$route.path"></router-view>
+      </HomeContainer>
+    </div>
 
-  <div class="loader-overlay" v-if="loading">
-    <Loader width="126px" height="126px" :corPrincipal="true" />
-  </div>
+    <div class="loader-overlay" v-if="loading">
+      <Loader width="126px" height="126px" :corPrincipal="true" />
+    </div>
+  </DynamicThemeProvider>
 </template>
 
 <script>
@@ -108,10 +122,12 @@ import {
   modalExcluirOrganizacaoStore
 } from '../stores/organizacao'
 import { definirIdioma } from '../lang'
+import DynamicThemeProvider from "@/external/provider/DynamicThemeProvider.vue"
 
 export default {
   name: 'Privado',
   components: {
+    DynamicThemeProvider,
     TagIcon,
     BaseDropdownSecondary,
     BaseDropdownPrimary,
@@ -195,6 +211,7 @@ body {
   align-items: center;
   justify-content: center;
 }
+
 .col-count {
   display: flex;
   align-items: center;

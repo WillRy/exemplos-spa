@@ -9,15 +9,16 @@
 </template>
 
 <script lang="ts">
-import { useAlertStore } from '../../store/alert'
-import Alert from './Alert.vue'
+import {useAlertStore} from "../../store/alert";
+import Alert from "./Alert.vue";
+
 
 export default {
-  name: 'AlertContainer',
-  components: { Alert },
+  name: "AlertContainer",
+  components: {Alert},
   setup() {
     return {
-      alertState: useAlertStore()
+        alertState: useAlertStore()
     }
   },
   data() {
@@ -32,21 +33,25 @@ export default {
   },
   methods: {
     clickContainer() {
+
       if (!this.temAlertQueDeveTremer) {
-        return false
+        return false;
       }
 
-      //necessario por bug de animação
-      const alertError = document.querySelectorAll('.alert-container .error')
-      Array.from(alertError).forEach((el) => {
-        el.classList.add('shaking')
 
-        el.addEventListener('animationend', (event) => {
-          if (event && event.currentTarget) {
-            ;(event.currentTarget as HTMLElement).classList.remove('shaking')
-          }
+      //necessario por bug de animação
+      const alertError = document.querySelectorAll('.alert-container .error');
+      Array.from(alertError).forEach((el) => {
+        el.classList.add("shaking")
+
+        el.addEventListener("animationend", (event) => {
+            if(event && event.currentTarget) {
+                (event.currentTarget as HTMLElement).classList.remove('shaking')
+            }
+
         })
       })
+
     }
   }
 }

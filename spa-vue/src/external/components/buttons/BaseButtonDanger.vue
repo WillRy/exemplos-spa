@@ -5,15 +5,15 @@
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
-import BaseButton from './BaseButton.vue'
+import { PropType } from "vue";
+import BaseButton from "./BaseButton.vue";
 
 type TypeButton = 'submit' | 'button'
 type SizeButton = 'sm' | 'md' | 'lg'
 
 export default {
-  name: 'BaseButtonDanger',
-  components: { BaseButton },
+  name: "BaseButtonDanger",
+  components: {BaseButton},
   props: {
     is: {
       type: String,
@@ -44,6 +44,9 @@ export default {
 </script>
 
 <style scoped>
+
+
+
 .btn-danger {
   background: var(--error-color-600);
   color: #fff;
@@ -56,9 +59,7 @@ export default {
 }
 
 .btn-danger:focus:not(:active) {
-  box-shadow:
-    0 0 0 1px #fff,
-    0 0 0 2px var(--error-color-400);
+  box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--error-color-400);
   background: var(--error-color-400);
 }
 
@@ -72,6 +73,7 @@ export default {
   cursor: not-allowed;
   border: none;
 }
+
 
 .btn-danger:disabled :deep(path) {
   fill: var(--gray-color-300);
