@@ -50,7 +50,7 @@ class Contato extends Model
                 $query->where('organizacao_id', '=', $organizacao_id);
             })
             ->orderBy($sortName, $sortOrder)
-            ->paginate(10);
+            ->get();
     }
 
     public function criar(array $dados): Contato

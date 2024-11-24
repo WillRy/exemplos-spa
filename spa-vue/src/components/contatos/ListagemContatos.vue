@@ -32,7 +32,7 @@
         </div>
       </div>
     </form>
-    <Tabela
+    <TabelaClientSide
       :loading="loading"
       :colunas="[
         {
@@ -67,13 +67,15 @@
       :dados="contatos.dados && contatos.dados.data"
       :sort-name="sortName"
       :sort-order="sortOrder"
-      :total="contatos.dados && contatos.dados.total"
+      :total="contatos.dados.total"
       :per-page="contatos.dados && contatos.dados.per_page"
-      :current-page="contatos.dados && contatos.dados.current_page"
-      :exibirPaginacao="true"
+      :currentPage="page"
+      :callbackPesquisa="callbackPesquisa"
       @onSort="sortBy"
       @onPage="updatePagina"
       texto-empty="Não há dados"
+      :clientSide="true"
+      ref="tabela"
     >
       <template v-slot:colunas="{ dados }">
         <tr v-for="(dado, index) in dados" :key="index">
@@ -97,22 +99,24 @@
           </ColunaTabela>
         </tr>
       </template>
-    </Tabela>
+    </TabelaClientSide>
+
+
 
     <ModalCriarContato
       :aberta="criarContatoAberto"
       @onClose="criarContatoAberto = null"
-      @onReload="buscarDados"
+      @onReload="callbackCriacao"
     />
     <ModalEditarContato
       :contato="contatoSendoEditado"
       @onClose="contatoSendoEditado = null"
-      @onReload="buscarDados"
+      @onReload="callbackEdicao"
     />
     <ModalExcluirContato
       :contato="contatoSendoExcluido"
       @onClose="contatoSendoExcluido = null"
-      @onReload="buscarDados"
+      @onReload="callbackExclusao"
     />
     <ModalDetalhesContato :contato="detalhesContato" @onClose="detalhesContato = null" />
   </Box>
@@ -121,7 +125,7 @@
 import BaseInput from '../../external/components/form/BaseInput'
 import { useBackendToast } from '../../external/hooks/useBackendToast'
 import BaseSelectAjax from '../../external/components/form/BaseSelectAjax'
-import Tabela from '../../external/components/tabela/Tabela'
+import TabelaClientSide from '../../external/components/tabela/TabelaClientSide.vue'
 import ColunaTabela from '../../external/components/tabela/ColunaTabela'
 import Box from '../../external/components/estrutura/Box'
 import BaseButtonPrimary from '../../external/components/buttons/BaseButtonPrimary'
@@ -140,11 +144,17 @@ const form = reactive({
   empresa_id: null
 })
 const loading = ref(false)
+const tabela = ref(false)
 const sortName = ref('id')
 const sortOrder = ref('desc')
 const page = ref(1)
 const contatos = reactive({
-  dados: []
+  dados: {
+    data: [],
+    total: 0,
+    per_page: 10,
+    current_page: 1
+  }
 })
 const resultadoPesquisaEmpresa = reactive({
   dados: []
@@ -177,21 +187,64 @@ const abrirDetalhes = function (usuario) {
   detalhesContato.value = usuario
 }
 
+const callbackExclusao = function(contato) {
+  contatos.dados.data = contatos.dados.data.filter((c) => c.id !== contato.id)
+  contatos.dados.total--
+  // const totalPage = Math.ceil(contatos.dados.total / contatos.dados.per_page)
+  // if (page.value > totalPage) {
+  //   page.value = totalPage
+  // }
+}
+
+const callbackCriacao = function(contato) {
+  contatos.dados.data.push(contato)
+  contatos.dados.total++
+}
+
+const callbackEdicao = function(contato) {
+  const index = contatos.dados.data.findIndex((c) => c.id === contato.id)
+  contatos.dados.data[index] = contato
+}
+
 const sortBy = function (ordem) {
-  page.value = 1
+  page.value = 1;
   sortName.value = ordem.sortName
   sortOrder.value = ordem.sortOrder
-  buscarDados()
 }
 
 const updatePagina = function (pagina) {
   page.value = pagina
-  buscarDados()
 }
 
 const pesquisar = function () {
-  page.value = 1
-  buscarDados()
+  // page.value = 1
+  tabela.value.search();
+}
+
+const callbackPesquisa = function (data) {
+  return data.filter((dado) => {
+    if (!form.pesquisa && !form.empresa_id) {
+      return true
+    }
+
+    const filtered = ['nome', 'telefone'].some((campo) => {
+      if (dado[campo] && String(dado[campo]).toLowerCase().includes(form.pesquisa.toLowerCase())) {
+        return true
+      }
+    })
+
+    if(filtered && form.pesquisa){
+      return true
+    }
+
+    if(dado.organizacao?.nome.toLowerCase().includes(form.pesquisa.toLowerCase())){
+      return true
+    }
+
+    if(form.empresas_id && dado.organizacao?.id === form.empresa_id.id){
+      return true
+    }
+  })
 }
 
 const buscarDados = function () {
@@ -207,7 +260,9 @@ const buscarDados = function () {
       }
     })
     .then((r) => {
-      contatos.dados = r.data.data
+      contatos.dados.data = r.data.data
+      contatos.dados.total = r.data.data.length
+      contatos.dados.current_page = page.value
     })
     .catch((e) => {
       backendToastError(e, $t('texto.erro_listar_dados'))
@@ -217,5 +272,6 @@ const buscarDados = function () {
     })
 }
 
+pesquisarEmpresa();
 buscarDados()
 </script>
