@@ -20,11 +20,6 @@
           >
           </BaseSelectAjax>
         </div>
-        <div class="col-auto">
-          <BaseButtonPrimary :loading="loading" type="submit">
-            {{ $t('palavras.pesquisar') }}
-          </BaseButtonPrimary>
-        </div>
         <div class="col-auto ms-auto">
           <BaseButtonPrimary @click="abrirCriar">
             {{ $t('palavras.criar') }}
@@ -133,7 +128,7 @@ import ModalCriarContato from './ModalCriarContato'
 import ModalDetalhesContato from './ModalDetalhesContato'
 import ModalEditarContato from './ModalEditarContato'
 import ModalExcluirContato from './ModalExcluirContato'
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import api from '@/services/api.js'
 import BaseDropdownAction from '@/external/components/dropdown/BaseDropdownAction.vue'
 
@@ -221,7 +216,8 @@ const pesquisar = function () {
   tabela.value.search();
 }
 
-const callbackPesquisa = function (data) {
+
+const callbackPesquisa = function (data, filters) {
   return data.filter((dado) => {
     if (!form.pesquisa && !form.empresa_id) {
       return true
@@ -233,16 +229,19 @@ const callbackPesquisa = function (data) {
       }
     })
 
-    if(filtered && form.pesquisa){
-      return true
+    const temPesquisa = form.pesquisa;
+    const temFiltroEmpresa = form.empresa_id;
+
+    if(temPesquisa && temFiltroEmpresa){
+      return filtered && dado.organizacao?.id === form.empresa_id.id
     }
 
-    if(dado.organizacao?.nome.toLowerCase().includes(form.pesquisa.toLowerCase())){
-      return true
+    if(temPesquisa){
+      return filtered
     }
 
-    if(form.empresas_id && dado.organizacao?.id === form.empresa_id.id){
-      return true
+    if(temFiltroEmpresa){
+      return dado.organizacao?.id === form.empresa_id.id
     }
   })
 }

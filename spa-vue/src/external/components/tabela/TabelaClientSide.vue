@@ -16,9 +16,10 @@
           <slot name="thead" :dados="dados" />
         </thead>
         <tbody v-if="dados && dados.length">
-          <slot name="colunas" :dados="localRows" v-if="$slots.colunas"></slot>
+          <slot name="colunas" :dados="localRows.data" v-if="$slots.colunas"></slot>
         </tbody>
-        <tbody v-if="(!dados && !loading) || (dados && dados.length === 0 && !loading)" class="tabela-vazia">
+        <tbody v-if="(!localRows.data && !loading) || (localRows.data && localRows.data.length === 0 && !loading)"
+          class="tabela-vazia">
           <tr v-if="!loading">
             <td colspan="99999">{{ textoEmpty }}</td>
           </tr>
@@ -42,7 +43,7 @@
 <script lang="ts">
 import HeadSort from './HeadSort.vue'
 import Loader from '../Loader.vue'
-import { PropType, computed } from 'vue'
+import { PropType, computed, defineComponent } from 'vue'
 import PaginacaoSemRouter from '../paginacao/PaginacaoSemRouter.vue'
 import Separador from '../estrutura/Separador.vue'
 
@@ -66,7 +67,7 @@ type DadosOrdenacao = {
   sortOrder: string
 }
 
-export default {
+export default defineComponent({
   name: 'Tabela',
   components: { Loader, HeadSort, PaginacaoSemRouter, Separador },
   emits: ['onSort', 'onPage'],
@@ -138,12 +139,16 @@ export default {
     callbackPesquisa: {
       type: Function,
       default: null
+    },
+    filters: {
+      type: Object,
+      default: () => ({})
     }
   },
   data() {
     return {
       checkedAll: false,
-      localRows: [] as Array<any>,
+      // localRows: [] as Array<any>,
       totalFiltered: 0,
     }
   },
@@ -154,67 +159,32 @@ export default {
       order: computed(() => this.sortOrder)
     }
   },
-  watch: {
-    dados: {
-      handler() {
-        this.$nextTick(() => {
-          this.redraw();
-        })
-      },
-      deep: true,
-      immediate: true
-    },
-    currentPage: {
-      handler() {
-        this.$nextTick(() => {
-          this.redraw()
-        })
-      }
-    }
-  },
   computed: {
     totalItems() {
-      return this.clientSide ? this.totalFiltered : this.total
+      return this.clientSide ? this.localRows.totalFiltered : this.total
     },
     totalPage() {
       return Math.ceil(this.totalItems / this.perPage)
-    }
-  },
-  expose: ['search', 'totalFiltered'],
-  methods: {
-    sortBy(dadosOrdenacao: DadosOrdenacao) {
-      this.$emit('onSort', dadosOrdenacao)
-      this.$nextTick(() => {
-        this.redraw()
-      })
     },
-    updatePagina(page: number | string) {
-      this.$emit('onPage', page)
-      this.$nextTick(() => {
-        this.redraw()
-      })
-    },
-    search() {
-      this.updatePagina(1)
-      this.$nextTick(() => {
-        this.redraw()
-      })
-    },
-    redraw() {
+    localRows() {
+      const result: { data: any[], totalFiltered: number } = {
+        data: [],
+        totalFiltered: 0
+      }
 
-      this.totalFiltered = this.dados.length;
+      result.totalFiltered = this.dados.length;
 
 
       if (!this.clientSide) {
-        this.localRows = this.dados;
-        return this.localRows
+        result.data = this.dados;
+        return result;
       }
 
       let newData = [...this.dados]
 
       if (this.callbackPesquisa) {
-        newData = this.callbackPesquisa(newData)
-        this.totalFiltered = newData.length !== this.dados.length ? newData.length : this.dados.length
+        newData = this.callbackPesquisa(newData);
+        result.totalFiltered = newData.length !== this.dados.length ? newData.length : this.dados.length;
       }
 
 
@@ -233,17 +203,28 @@ export default {
         )
       }
 
-      this.localRows = newData
+      result.data = newData;
 
-      if(this.localRows.length === 0 && this.currentPage > 1){
+      if (result.data.length === 0 && this.currentPage > 1) {
         this.updatePagina(this.currentPage - 1)
       }
 
 
-      return this.localRows
+      return result
+    }
+  },
+  methods: {
+    sortBy(dadosOrdenacao: DadosOrdenacao) {
+      this.$emit('onSort', dadosOrdenacao)
+    },
+    updatePagina(page: number | string) {
+      this.$emit('onPage', page)
+    },
+    search() {
+      this.updatePagina(1)
     }
   }
-}
+})
 </script>
 
 <style scoped>

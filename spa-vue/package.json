@@ -50,7 +50,7 @@
     "eslint-plugin-vue": "^9.23.0",
     "laravel-vite-plugin": "^1.0.1",
     "prettier": "^3.2.5",
-    "typescript": "^5.4.2",
+    "typescript": "^5.7.2",
     "vite": "^5.0.12",
     "vue-tsc": "^2.0.2",
     "rollup-plugin-visualizer": "^5.9.0",

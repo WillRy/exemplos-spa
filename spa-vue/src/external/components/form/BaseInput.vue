@@ -69,14 +69,14 @@ defineExpose({
 })
 
 withDefaults(defineProps<{
-    disabled: boolean,
-    borda: boolean,
-    label: string,
-    modelValue: string | number,
-    error: string,
-    success: string,
-    legenda: string,
-    size: SizeInput
+    disabled?: boolean,
+    borda?: boolean,
+    label?: string,
+    modelValue?: string | number,
+    error?: string,
+    success?: string,
+    legenda?: string,
+    size?: SizeInput
 }>(), {
     disabled: false,
     borda: true,
