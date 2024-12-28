@@ -6,19 +6,16 @@
           <BaseInput :label="$t('palavras.pesquisar')" name="pesquisa" v-model="form.pesquisa" />
         </div>
         <div class="col-md-4">
-          <BaseSelectAjax
-            :label="$t('palavras.empresa')"
-            :placeholder="$t('textos.pesquise_as_empresas')"
-            v-model="form.empresa_id"
-            track-by="id"
-            text-by="nome"
-            :options="resultadoPesquisaEmpresa.dados"
-            @search-change="pesquisarEmpresa"
-            :noOptions="$t('textos.pesquise_as_empresas')"
-            :empty="true"
-            :remover="true"
-          >
+          <BaseSelectAjax :label="$t('palavras.empresa')" :placeholder="$t('textos.pesquise_as_empresas')"
+            v-model="form.empresa_id" track-by="id" text-by="nome" :options="resultadoPesquisaEmpresa.dados"
+            @search-change="pesquisarEmpresa" :noOptions="$t('textos.pesquise_as_empresas')" :empty="true"
+            :remover="true">
           </BaseSelectAjax>
+        </div>
+        <div class="col-auto">
+          <BaseButtonPrimary :loading="loading" type="submit">
+            {{ $t('palavras.pesquisar') }}
+          </BaseButtonPrimary>
         </div>
         <div class="col-auto ms-auto">
           <BaseButtonPrimary @click="abrirCriar">
@@ -27,51 +24,39 @@
         </div>
       </div>
     </form>
-    <TabelaClientSide
-      :loading="loading"
-      :colunas="[
-        {
-          nome: 'id',
-          texto: $t('palavras.id'),
-          width: '80px'
-        },
-        {
-          nome: 'nome',
-          texto: $t('palavras.nome')
-        },
-        {
-          nome: 'email',
-          texto: $t('palavras.email')
-        },
-        {
-          nome: 'telefone',
-          texto: $t('palavras.telefone')
-        },
-        {
-          nome: 'organizacao',
-          texto: $t('palavras.empresa'),
-          disabled: true
-        },
-        {
-          nome: 'acoes',
-          texto: '',
-          disabled: true,
-          width: '50px'
-        }
-      ]"
-      :dados="contatos.dados && contatos.dados.data"
-      :sort-name="sortName"
-      :sort-order="sortOrder"
-      :total="contatos.dados.total"
-      :per-page="contatos.dados && contatos.dados.per_page"
-      :currentPage="page"
-      :callbackPesquisa="callbackPesquisa"
-      @onSort="sortBy"
-      @onPage="updatePagina"
-      texto-empty="Não há dados"
-      :clientSide="true"
-      ref="tabela"
-    >
+    <TabelaClientSide :loading="loading" :colunas="[
+      {
+        nome: 'id',
+        texto: $t('palavras.id'),
+        width: '80px'
+      },
+      {
+        nome: 'nome',
+        texto: $t('palavras.nome')
+      },
+      {
+        nome: 'email',
+        texto: $t('palavras.email')
+      },
+      {
+        nome: 'telefone',
+        texto: $t('palavras.telefone')
+      },
+      {
+        nome: 'organizacao',
+        texto: $t('palavras.empresa'),
+        disabled: true
+      },
+      {
+        nome: 'acoes',
+        texto: '',
+        disabled: true,
+        width: '50px'
+      }
+    ]" :dados="contatos.dados && contatos.dados.data" :sort-name="sortName" :sort-order="sortOrder"
+      :total="contatos.dados.total" :per-page="contatos.dados && contatos.dados.per_page" :currentPage="page"
+      :callbackPesquisa="callbackPesquisa" @onSort="sortBy" @onPage="updatePagina" texto-empty="Não há dados"
+      :clientSide="true" ref="tabela">
       <template v-slot:colunas="{ dados }">
         <tr v-for="(dado, index) in dados" :key="index">
           <ColunaTabela>{{ dado.id }}</ColunaTabela>
@@ -98,37 +83,27 @@
 
 
 
-    <ModalCriarContato
-      :aberta="criarContatoAberto"
-      @onClose="criarContatoAberto = null"
-      @onReload="callbackCriacao"
-    />
-    <ModalEditarContato
-      :contato="contatoSendoEditado"
-      @onClose="contatoSendoEditado = null"
-      @onReload="callbackEdicao"
-    />
-    <ModalExcluirContato
-      :contato="contatoSendoExcluido"
-      @onClose="contatoSendoExcluido = null"
-      @onReload="callbackExclusao"
-    />
+    <ModalCriarContato :aberta="criarContatoAberto" @onClose="criarContatoAberto = null" @onReload="callbackCriacao" />
+    <ModalEditarContato :contato="contatoSendoEditado" @onClose="contatoSendoEditado = null"
+      @onReload="callbackEdicao" />
+    <ModalExcluirContato :contato="contatoSendoExcluido" @onClose="contatoSendoExcluido = null"
+      @onReload="callbackExclusao" />
     <ModalDetalhesContato :contato="detalhesContato" @onClose="detalhesContato = null" />
   </Box>
 </template>
 <script setup>
-import BaseInput from '../../external/components/form/BaseInput'
+import BaseInput from '../../external/components/form/BaseInput.vue'
 import { useBackendToast } from '../../external/hooks/useBackendToast'
 import BaseSelectAjax from '../../external/components/form/BaseSelectAjax'
 import TabelaClientSide from '../../external/components/tabela/TabelaClientSide.vue'
-import ColunaTabela from '../../external/components/tabela/ColunaTabela'
-import Box from '../../external/components/estrutura/Box'
-import BaseButtonPrimary from '../../external/components/buttons/BaseButtonPrimary'
-import ModalCriarContato from './ModalCriarContato'
-import ModalDetalhesContato from './ModalDetalhesContato'
-import ModalEditarContato from './ModalEditarContato'
-import ModalExcluirContato from './ModalExcluirContato'
-import { reactive, ref, watch } from 'vue'
+import ColunaTabela from '../../external/components/tabela/ColunaTabela.vue'
+import Box from '../../external/components/estrutura/Box.vue'
+import BaseButtonPrimary from '../../external/components/buttons/BaseButtonPrimary.vue'
+import ModalCriarContato from './ModalCriarContato.vue'
+import ModalDetalhesContato from './ModalDetalhesContato.vue'
+import ModalEditarContato from './ModalEditarContato.vue'
+import ModalExcluirContato from './ModalExcluirContato.vue'
+import { reactive, ref } from 'vue'
 import api from '@/services/api.js'
 import BaseDropdownAction from '@/external/components/dropdown/BaseDropdownAction.vue'
 
@@ -182,23 +157,23 @@ const abrirDetalhes = function (usuario) {
   detalhesContato.value = usuario
 }
 
-const callbackExclusao = function(contato) {
+const callbackExclusao = function (contato) {
   contatos.dados.data = contatos.dados.data.filter((c) => c.id !== contato.id)
   contatos.dados.total--
-  // const totalPage = Math.ceil(contatos.dados.total / contatos.dados.per_page)
-  // if (page.value > totalPage) {
-  //   page.value = totalPage
-  // }
 }
 
-const callbackCriacao = function(contato) {
-  contatos.dados.data.push(contato)
+const callbackCriacao = function (contato) {
+  contatos.dados.data = [...contatos.dados.data, contato]
   contatos.dados.total++
 }
 
-const callbackEdicao = function(contato) {
-  const index = contatos.dados.data.findIndex((c) => c.id === contato.id)
-  contatos.dados.data[index] = contato
+const callbackEdicao = function (contato) {
+  contatos.dados.data = contatos.dados.data.map((c) => {
+    if (c.id === contato.id) {
+      return contato
+    }
+    return c
+  })
 }
 
 const sortBy = function (ordem) {
@@ -212,12 +187,11 @@ const updatePagina = function (pagina) {
 }
 
 const pesquisar = function () {
-  // page.value = 1
   tabela.value.search();
 }
 
 
-const callbackPesquisa = function (data, filters) {
+const callbackPesquisa = function (data) {
   return data.filter((dado) => {
     if (!form.pesquisa && !form.empresa_id) {
       return true
@@ -232,21 +206,21 @@ const callbackPesquisa = function (data, filters) {
     const temPesquisa = form.pesquisa;
     const temFiltroEmpresa = form.empresa_id;
 
-    if(temPesquisa && temFiltroEmpresa){
+    if (temPesquisa && temFiltroEmpresa) {
       return filtered && dado.organizacao?.id === form.empresa_id.id
     }
 
-    if(temPesquisa){
+    if (temPesquisa) {
       return filtered
     }
 
-    if(temFiltroEmpresa){
+    if (temFiltroEmpresa) {
       return dado.organizacao?.id === form.empresa_id.id
     }
   })
 }
 
-const buscarDados = function () {
+const buscarDados = async function () {
   loading.value = true
   return api
     .get('/contato', {
