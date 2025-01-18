@@ -129,7 +129,7 @@ export default {
   display: flex;
   flex-direction: column;
 
-  z-index: var(--z-index-3);
+  z-index: 95;
 
   transition: all 0.5s ease;
   flex-shrink: 0;

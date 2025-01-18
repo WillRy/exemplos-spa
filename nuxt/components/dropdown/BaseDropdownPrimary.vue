@@ -21,6 +21,7 @@
         :size="size"
         :disabled="disabled"
         :full="full"
+        :invertido="invertido"
       >
         <slot name="botao"></slot>
         <svg
@@ -45,11 +46,15 @@
           @click.stop="hide"
           :style="{ maxHeight: maxHeight, width: widthConteudo}"
         >
-          <slot name="acoes"></slot>
+          <ThemeTeleport>
+            <slot name="acoes"></slot>
+          </ThemeTeleport>
         </div>
         
         <div class="dropdown-conteudo" @click.stop="" v-if="$slots.conteudo" :style="{ maxHeight: maxHeight, width: widthConteudo }">
-          <slot name="conteudo" :hide="hide"></slot>
+          <ThemeTeleport>
+            <slot name="conteudo" :hide="hide"></slot>
+          </ThemeTeleport>
         </div>
       </template>
     </VDropdown>
@@ -60,7 +65,9 @@
 import { Dropdown } from "floating-vue";
 import { directive } from "../../directives/click-away";
 import BaseButtonPrimary from "../buttons/BaseButtonPrimary.vue";
-import { PropType } from "vue";
+import { computed, inject, PropType } from "vue";
+import DynamicThemeProvider from "../../provider/DynamicThemeProvider.vue";
+import ThemeTeleport from "../../provider/ThemeTeleport.vue";
 
 type TriggerEvent = 'hover' | 'click' | 'focus' | 'touch';
 type SizeButton = 'sm' | 'md' | 'lg'
@@ -104,11 +111,16 @@ export default {
     autoSize: {
       type: Boolean,
       default: false,
+    },
+    invertido: {
+      type: Boolean,
+      default: false,
     }
   },
   components: {
     VDropdown: Dropdown,
     BaseButtonPrimary,
+    ThemeTeleport,
   },
   directives: {
     "click-away": directive,
@@ -176,8 +188,8 @@ img {
   overflow: auto;
 }
 
-.dropdown-botao::v-deep button,
-.dropdown-botao::v-deep a {
+.dropdown-botao :deep(button),
+.dropdown-botao :deep(a) {
   display: flex;
   align-items: center;
   background: none;

@@ -1,11 +1,11 @@
 <template>
-  <div class="legenda">
+  <div class="successMessage" :class="{ 'input-mode': inputMode }">
     <InfoSuccessIcon size="14px" class="icone-footer" v-if="exibirIcone" />
     <slot></slot>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
 
 export default {
@@ -18,6 +18,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    inputMode: {
+      type: Boolean,
+      default: false,
+    },
   },
 };
 </script>
@@ -27,7 +31,7 @@ export default {
   display: flex;
 }
 
-.legenda {
+.successMessage {
   display: flex;
   font-size: 0.75rem;
   line-height: 0.9975rem;
@@ -38,7 +42,7 @@ export default {
   padding-left: var(--padding-text);
 }
 
-.legenda > svg {
+.successMessage > svg {
   flex-shrink: 0;
   width: 14px;
   margin-right: 8px;
@@ -47,5 +51,10 @@ export default {
 .icone-footer {
   flex-shrink: 0;
   margin-right: 8px;
+}
+
+.input-mode {
+  padding-left: 16px;
+  margin-top: var(--spacing-1);
 }
 </style>

@@ -1,12 +1,9 @@
 <template>
     <div class="form-group" :class="{ error: error, md: size === 'md', lg: size === 'lg', disabled: disabled }">
-        <div class="label-container" v-if="$slots.label">
-            <slot name="label" v-if="$slots.label" @click.stop=""></slot>
-        </div>
-        <div class="label-container" v-if="label">
-            <label>{{ label }}</label>
-        </div>
-
+        <BaseLabel :label="label" :padding="true" v-if="label"/>
+        <BaseLabel :padding="true" v-if="$slots.label">
+            <slot name="label"/>
+        </BaseLabel>
 
         <div style="display: flex; align-items: center" class="form-all-container">
             <div class="form-group-container" :class="{ borda: borda, btn: $slots.btn, icon: $slots.icon }">
@@ -19,33 +16,43 @@
         </div>
 
 
-        <div v-if="$slots.legenda || legenda" class="legenda">
-            <InfoInputIcon size="14px" class="icone-footer" />
-            <slot name="legenda" v-if="$slots.legenda"></slot>
-            <template v-else>{{ legenda }}</template>
+
+        <div v-if="$slots.legenda || legenda">
+            <InfoLegenda :input-mode="true">
+                <slot name="legenda" v-if="$slots.legenda"></slot>
+                <template v-else>{{ legenda }}</template>
+            </InfoLegenda>
         </div>
-        <div v-if="$slots.success || success" class="successMessage">
-            <InfoSuccessIcon size="14px" class="icone-footer" />
-            <slot name="success" v-if="$slots.success"></slot>
-            <template v-else>{{ success }}</template>
+        <div v-if="$slots.success || success">
+            <InfoSuccess :input-mode="true">
+                <slot name="success" v-if="$slots.success"></slot>
+                <template v-else>{{ success }}</template>
+            </InfoSuccess>
         </div>
-        <div v-if="$slots.error || error" class="errorMessage">
-            <InfoErrorIcon size="14px" class="icone-footer" />
-            <slot name="error" v-if="$slots.error"></slot>
-            <template v-else>{{ error }}</template>
+        <div v-if="$slots.error || error">
+            <InfoError :input-mode="true">
+                <slot name="error" v-if="$slots.error"></slot>
+                <template v-else>{{ error }}</template>
+            </InfoError>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import InfoErrorIcon from '../icons/InfoErrorIcon.vue';
-import InfoInputIcon from '../icons/InfoInputIcon.vue';
-import InfoSuccessIcon from '../icons/InfoSuccessIcon.vue';
+import InfoError from "../info/InfoError.vue";
+import InfoLegenda from "../info/InfoLegenda.vue";
+import InfoSuccess from "../info/InfoSuccess.vue";
+import BaseLabel from "./BaseLabel.vue";
 
 export default {
     name: "BaseTextArea",
     inheritAttrs: false,
-    components: { InfoInputIcon, InfoSuccessIcon, InfoErrorIcon },
+    components: { 
+        InfoError, 
+        InfoLegenda, 
+        InfoSuccess, 
+        BaseLabel
+    },
     props: {
         disabled: {
             default: false
@@ -143,17 +150,6 @@ export default {
 
     /* espaçamento do texto/label */
     --padding-text: 16px;
-}
-
-:deep(label) {
-    line-height: 24px;
-    font-weight: 400;
-    font-size: 0.75rem;
-
-    color: var(--label-color);
-    margin-bottom: var(--label-margin-bottom);
-    display: block;
-    padding-left: var(--padding-text);
 }
 
 
@@ -301,63 +297,6 @@ textarea::placeholder {
 
 .icone-footer {
     flex-shrink: 0;
-    margin-right: 8px;
-}
-
-.legenda {
-    display: flex;
-    font-size: 0.75rem;
-    line-height: 0.9975rem;
-    font-weight: normal;
-    margin: 0;
-    font-style: italic;
-    color: var(--gray-color-400);
-    padding-left: var(--padding-text);
-    margin-top: var(--spacing-1);
-}
-
-
-.legenda>svg {
-    flex-shrink: 0;
-    width: 14px;
-    margin-right: 8px;
-}
-
-.errorMessage {
-    display: flex;
-    font-size: 0.75rem;
-    line-height: 0.9975rem;
-    font-weight: normal;
-    margin: 0;
-    font-style: italic;
-    color: var(--error-color-600);
-    padding-left: var(--padding-text);
-    margin-top: var(--spacing-1);
-}
-
-
-.errorMessage>svg {
-    flex-shrink: 0;
-    width: 14px;
-    margin-right: 8px;
-}
-
-.successMessage {
-    display: flex;
-    font-size: 0.75rem;
-    line-height: 0.9975rem;
-    font-weight: normal;
-    margin: 0;
-    font-style: italic;
-    color: var(--success-color-600);
-    padding-left: var(--padding-text);
-    margin-top: var(--spacing-1);
-}
-
-
-.successMessage>svg {
-    flex-shrink: 0;
-    width: 14px;
     margin-right: 8px;
 }
 </style>

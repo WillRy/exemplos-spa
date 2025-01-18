@@ -37,7 +37,7 @@ export default {
 .header {
   height: 60px;
   background: v-bind(background);
-  box-shadow: 0px 2px 2px #00000029;
+  border-bottom: 1px solid #e9e8e8;
   width: 100%;
 
   display: flex;

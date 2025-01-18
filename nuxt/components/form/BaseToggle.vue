@@ -1,39 +1,29 @@
 <template>
-  <div
-    class="check-container"
-    :class="{ error: error, checked: checked, disabled: disabled }"
-  >
+  <div class="check-container" :class="{ error: error, checked: checked, disabled: disabled }">
     <div class="label-container" v-if="$slots.label">
       <slot name="label" v-if="$slots.label" @click.stop=""></slot>
     </div>
 
     <label>
       <ActionText size="sm" v-if="label">{{ label }}</ActionText>
-      <input
-        ref="checkbox"
-        v-bind="$attrs"
-        :checked="checkedNormalizado"
-        :disabled="disabled"
-        class="check"
-        type="checkbox"
-        @click.stop="updateValue"
-      />
+      <input ref="checkbox" v-bind="$attrs" :checked="checkedNormalizado" :disabled="disabled" class="check"
+        type="checkbox" @click.stop="updateValue" />
 
       <div class="checktoggle"></div>
     </label>
 
     <div v-if="$slots.legenda || legenda" class="legenda">
-      <InfoInputIcon size="14px"  class="icone-footer"/>
+      <InfoInputIcon size="14px" class="icone-footer" />
       <slot name="legenda" v-if="$slots.legenda"></slot>
       <template v-else>{{ legenda }}</template>
     </div>
     <div v-if="$slots.success || success" class="successMessage">
-      <InfoSuccessIcon size="14px"  class="icone-footer"/>
+      <InfoSuccessIcon size="14px" class="icone-footer" />
       <slot name="success" v-if="$slots.success"></slot>
       <template v-else>{{ success }}</template>
     </div>
     <div v-if="$slots.error || error" class="errorMessage">
-      <InfoErrorIcon size="14px"  class="icone-footer"/>
+      <InfoErrorIcon size="14px" class="icone-footer" />
       <slot name="error" v-if="$slots.error"></slot>
       <template v-else>{{ error }}</template>
     </div>
@@ -123,28 +113,28 @@ export default {
   padding-left: var(--padding-text);
 }
 
-.legenda > svg {
-    flex-shrink: 0;
-    width: 14px;
-    margin-right: 8px;
+.legenda>svg {
+  flex-shrink: 0;
+  width: 14px;
+  margin-right: 8px;
 }
 
 
 .errorMessage {
-    display: flex;
-    font-size: 0.75rem;
-    line-height: 0.9975rem;
-    font-weight: normal;
-    margin: 0;
-    font-style: italic;
-    color: var(--error-color-600);
-    padding-left: var(--padding-text);
+  display: flex;
+  font-size: 0.75rem;
+  line-height: 0.9975rem;
+  font-weight: normal;
+  margin: 0;
+  font-style: italic;
+  color: var(--error-color-600);
+  padding-left: var(--padding-text);
 }
 
-.errorMessage > svg {
-    flex-shrink: 0;
-    width: 14px;
-    margin-right: 8px;
+.errorMessage>svg {
+  flex-shrink: 0;
+  width: 14px;
+  margin-right: 8px;
 }
 
 .successMessage {
@@ -159,10 +149,10 @@ export default {
 }
 
 
-.successMessage > svg {
-    flex-shrink: 0;
-    width: 14px;
-    margin-right: 8px;
+.successMessage>svg {
+  flex-shrink: 0;
+  width: 14px;
+  margin-right: 8px;
 }
 
 .check-container {
@@ -199,30 +189,28 @@ export default {
   position: absolute;
 }
 
-.check:disabled + .checktoggle {
+.check:disabled+.checktoggle {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-.check:checked + .checktoggle {
+.check:checked+.checktoggle {
   background-color: var(--primary-color-principal);
   box-shadow: none;
 }
 
 .checktoggle {
-  background-color: var(--gray-color-300);
+  background-color: var(--gray-color-200);
   color: #bbbfc4;
   border-radius: 24px;
   cursor: pointer;
   display: flex;
   align-items: center;
   font-size: 0;
-
   margin-bottom: 0;
   position: relative;
-  width: 52px;
-  height: 28px;
-
+  width: 68px;
+  height: 36px;
   justify-content: space-between;
 }
 
@@ -242,7 +230,7 @@ export default {
   transition: left 300ms ease, transform 300ms ease;
 }
 
-.check:checked + .checktoggle:after {
+.check:checked+.checktoggle:after {
   background-color: #fff;
   left: 100%;
   transform: translate(calc(-100% - 5px), -50%);

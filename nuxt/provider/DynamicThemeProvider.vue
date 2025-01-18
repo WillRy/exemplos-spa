@@ -8,7 +8,6 @@
 import {
     defineProps,
     reactive,
-    onBeforeMount,
     watch,
     provide,
     ref,
@@ -44,10 +43,10 @@ const props = withDefaults(defineProps<{
     corThemaPrincipal?: string,
     themeConfig?: Thema
     autoEscala?: boolean
-    escalaPrimaryColorPrincipal?: number
-    escalaPrimaryColorPrincipalHover?: number
-    escalaPrimaryColorPrincipalActive?: number
-    escalaPrimaryColorPrincipalFocus?: number
+    escalaPrimaryColorPrincipal?: keyof typeof theme.value.primaryColor
+    escalaPrimaryColorPrincipalHover?: keyof typeof theme.value.primaryColor
+    escalaPrimaryColorPrincipalActive?: keyof typeof theme.value.primaryColor
+    escalaPrimaryColorPrincipalFocus?: keyof typeof theme.value.primaryColor
 }>(), {
     corThemaPrincipal: undefined,
     themeConfig: undefined,
@@ -63,7 +62,7 @@ const dados = reactive({
     corThemaPrincipal: props.corThemaPrincipal
 })
 
-const theme = ref({
+const theme = ref<Thema>({
     primaryColor: {
         50: "#b9cffc",
         100: "#a3c4f8",
@@ -75,7 +74,11 @@ const theme = ref({
         700: "#0b2c40",
         800: "#071e29",
         900: "#05171e",
-    }
+    },
+    escalaPrimaryColorPrincipal: 600,
+    escalaPrimaryColorPrincipalHover: 500,
+    escalaPrimaryColorPrincipalActive: 400,
+    escalaPrimaryColorPrincipalFocus: 500,
 });
 
 provide('themaProps', {
@@ -144,6 +147,10 @@ function configurarThema() {
     if (props.themeConfig) {
         Object.assign(theme.value, props.themeConfig);
     }
+
+    if(import.meta.server) {
+        console.log(theme.value);
+    }
 }
 
 watch(() => props.corThemaPrincipal, () => {
@@ -153,9 +160,7 @@ watch(() => props.corThemaPrincipal, () => {
     }
 });
 
-onBeforeMount(() => {
-    configurarThema();
-});
+configurarThema();
 </script>
 <style scoped lang="scss">
 .themeprovider {

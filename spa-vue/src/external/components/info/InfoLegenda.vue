@@ -1,29 +1,32 @@
 <template>
-    <div class="legenda">
-        <InfoInputIcon size="14px" class="icone-footer" v-if="exibirIcone"/>
+    <div class="legenda" :class="{ 'input-mode': inputMode }">
+        <InfoInputIcon size="14px" class="icone-footer" v-if="exibirIcone" />
         <slot></slot>
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import InfoInputIcon from '../icons/InfoInputIcon.vue';
 
 export default {
     name: "ActionText",
     components: {
-    InfoInputIcon,
-},
+        InfoInputIcon,
+    },
     props: {
-       exibirIcone: {
-        type: Boolean,
-        default: true
-       }
+        exibirIcone: {
+            type: Boolean,
+            default: true
+        },
+        inputMode: {
+            type: Boolean,
+            default: false,
+        },
     }
 }
 </script>
 
 <style scoped>
-
 .info {
     display: flex;
 }
@@ -39,14 +42,19 @@ export default {
     padding-left: var(--padding-text);
 }
 
-.legenda > svg {
+.legenda>svg {
     flex-shrink: 0;
     width: 14px;
     margin-right: 8px;
 }
 
 .icone-footer {
-  flex-shrink: 0;
-  margin-right: 8px;
+    flex-shrink: 0;
+    margin-right: 8px;
+}
+
+.input-mode {
+  padding-left: 16px;
+  margin-top: var(--spacing-1);
 }
 </style>

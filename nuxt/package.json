@@ -16,6 +16,7 @@
     "floating-vue": "^5.2.2",
     "nuxt": "^3.13.2",
     "pinia": "^2.2.2",
+    "polished": "^4.3.1",
     "vee-validate": "^4.13.2",
     "vue": "latest",
     "vue-multiselect": "^3.1.0",

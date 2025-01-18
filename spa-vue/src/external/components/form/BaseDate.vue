@@ -5,12 +5,10 @@
     lg: size === 'lg',
     disabled: disabled
   }">
-    <div class="label-container" v-if="$slots.label">
-      <slot name="label" v-if="$slots.label" @click.stop=""></slot>
-    </div>
-    <div class="label-container" v-if="label">
-      <label>{{ label }}</label>
-    </div>
+    <BaseLabel :label="label" :padding="true" v-if="props.label" />
+    <BaseLabel :padding="true" v-if="$slots.label">
+      <slot name="label" />
+    </BaseLabel>
 
 
 
@@ -27,15 +25,8 @@
           :timezone="timezoneConfig" :locale="localeConfig" :enable-time-picker="false" :cancelText="config.txtCancelar"
           :selectText="config.txtSelecionar" :format="config.formatoData" :disabled="disabled" :auto-apply="true">
           <template #dp-input="{ value }">
-            <input 
-              :value="value" 
-              :placeholder="placeholder" 
-              @input.prevent=""
-              ref="input"
-              :disabled="disabled"
-              :name="name"
-              autocomplete="no"
-             />
+            <input :value="value" :placeholder="placeholder" @input.prevent="" ref="input" :disabled="disabled"
+              :name="name" autocomplete="no" />
           </template>
           <template #action-preview></template>
         </VueDatePicker>
@@ -52,33 +43,37 @@
       </div>
     </div>
 
-    <div v-if="$slots.legenda || legenda" class="legenda">
-      <InfoInputIcon size="14px" class="icone-footer" />
-      <slot name="legenda" v-if="$slots.legenda"></slot>
-      <template v-else>{{ legenda }}</template>
+    <div v-if="$slots.legenda || legenda">
+      <InfoLegenda :input-mode="true">
+        <slot name="legenda" v-if="$slots.legenda"></slot>
+        <template v-else>{{ legenda }}</template>
+      </InfoLegenda>
     </div>
-    <div v-if="$slots.success || success" class="successMessage">
-      <InfoSuccessIcon size="14px" class="icone-footer" />
-      <slot name="success" v-if="$slots.success"></slot>
-      <template v-else>{{ success }}</template>
+    <div v-if="$slots.success || success">
+      <InfoSuccess :input-mode="true">
+        <slot name="success" v-if="$slots.success"></slot>
+        <template v-else>{{ success }}</template>
+      </InfoSuccess>
     </div>
-    <div v-if="$slots.error || error" class="errorMessage">
-      <InfoErrorIcon size="14px" class="icone-footer" />
-      <slot name="error" v-if="$slots.error"></slot>
-      <template v-else>{{ error }}</template>
+    <div v-if="$slots.error || error">
+      <InfoError :input-mode="true">
+        <slot name="error" v-if="$slots.error"></slot>
+        <template v-else>{{ error }}</template>
+      </InfoError>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { format } from 'date-fns'
-import InfoInputIcon from '../icons/InfoInputIcon.vue'
-import InfoSuccessIcon from '../icons/InfoSuccessIcon.vue'
-import InfoErrorIcon from '../icons/InfoErrorIcon.vue'
 import VueDatePicker from '@vuepic/vue-datepicker';
 
 import { computed, ref, defineEmits } from 'vue'
 import { useConfigStore } from '../../store/config.ts'
+import BaseLabel from "./BaseLabel.vue";
+import InfoLegenda from "../info/InfoLegenda.vue";
+import InfoSuccess from "../info/InfoSuccess.vue";
+import InfoError from "../info/InfoError.vue";
 
 export type SizeInput = 'md' | 'lg'
 
@@ -104,18 +99,18 @@ const input = ref(null);
 const config = useConfigStore()
 
 const props = withDefaults(defineProps<{
-  size: SizeInput
-  borda: boolean
-  label: string
-  placeholder: string
-  error: string
-  success: string
-  legenda: string
-  modelValue: string | Date
-  disabled: boolean
-  timezone: string
-  is24hr: boolean
-  locale: string
+  size?: SizeInput
+  borda?: boolean
+  label?: string
+  placeholder?: string
+  error?: string
+  success?: string
+  legenda?: string
+  modelValue?: string | Date
+  disabled?: boolean
+  timezone?: string
+  is24hr?: boolean
+  locale?: string
   name?: string
 }>(), {
   size: 'md',
@@ -228,16 +223,6 @@ function clickInput() {
   --padding-text: 16px;
 }
 
-:deep(label) {
-  line-height: 24px;
-  font-weight: 400;
-  font-size: 0.75rem;
-
-  color: var(--label-color);
-  margin-bottom: var(--label-margin-bottom);
-  display: block;
-  padding-left: var(--padding-text);
-}
 
 .form-group-container {
   position: relative;
@@ -429,59 +414,6 @@ input::placeholder {
   margin-right: 8px;
 }
 
-.legenda {
-  display: flex;
-  font-size: 0.75rem;
-  line-height: 0.9975rem;
-  font-weight: normal;
-  margin: 0;
-  font-style: italic;
-  color: var(--gray-color-400);
-  padding-left: var(--padding-text);
-  margin-top: var(--spacing-1);
-}
-
-.legenda>svg {
-  flex-shrink: 0;
-  width: 14px;
-  margin-right: 8px;
-}
-
-.errorMessage {
-  display: flex;
-  font-size: 0.75rem;
-  line-height: 0.9975rem;
-  font-weight: normal;
-  margin: 0;
-  font-style: italic;
-  color: var(--error-color-600);
-  padding-left: var(--padding-text);
-  margin-top: var(--spacing-1);
-}
-
-.errorMessage>svg {
-  flex-shrink: 0;
-  width: 14px;
-  margin-right: 8px;
-}
-
-.successMessage {
-  display: flex;
-  font-size: 0.75rem;
-  line-height: 0.9975rem;
-  font-weight: normal;
-  margin: 0;
-  font-style: italic;
-  color: var(--success-color-600);
-  padding-left: var(--padding-text);
-  margin-top: var(--spacing-1);
-}
-
-.successMessage>svg {
-  flex-shrink: 0;
-  width: 14px;
-  margin-right: 8px;
-}
 
 .md .form-group-btn {
   height: var(--md-min-height-btn);

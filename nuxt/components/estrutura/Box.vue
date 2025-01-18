@@ -13,7 +13,7 @@
       </template>
     </OverlineText>
 
-    <div :class="{ 'acesso-bloqueado': bloqueado }" class="acesso-bloqueado-container">
+    <div :class="[{ 'acesso-bloqueado': bloqueado }, classeAlturaMaximaComScroll]" class="acesso-bloqueado-container">
       <div class="acesso-bloqueado-box">
         <svg
           fill="#000000"
@@ -41,7 +41,7 @@
           {{ mensagemPermissao }}
         </p>
       </div>
-      <div class="box" :class="`p-${padding}`">
+      <div class="box" :class="[`p-${padding}`, classeAlturaMaximaComScroll]">
         <slot></slot>
       </div>
     </div>
@@ -94,9 +94,18 @@ export default {
       required: false,
       default: ""
     },
+    alturaMaximaComScroll: {
+      type: Boolean,
+      default: false
+    }
   },
   components: {
     OverlineText
+  },
+  computed: {
+    classeAlturaMaximaComScroll() {
+      return this.alturaMaximaComScroll ? 'altura-maxima-scroll' : ''
+    }
   }
 }
 </script>
@@ -182,5 +191,10 @@ export default {
 }
 .acesso-bloqueado svg path {
   fill: var(--primary-color-principal);
+}
+
+.altura-maxima-scroll  {
+  overflow: hidden;
+  height: 100%;
 }
 </style>

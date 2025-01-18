@@ -2,11 +2,13 @@
     <div class="dropdown-container">
       <VDropdown
         :triggers="triggers"
+        :popper-triggers="popperTriggers"
         :distance="4"
         placement="bottom-start"
         :auto-size="autoSize"
-        v-bind="$attrs"
         :disabled="disabled"
+        :auto-hide="autoHide"
+        v-bind="$attrs"
       >
         <div class="dropdown-btn">
             <slot name="trigger"></slot>
@@ -17,7 +19,6 @@
           <div
             v-if="$slots.acoes"
             class="dropdown-botao"
-            @click.stop="hide"
             :style="{ maxHeight: maxHeight }"
           >
             <slot name="acoes" :hide="hide"></slot>
@@ -37,15 +38,20 @@
   import { PropType } from "vue";
   
   type TriggerEvent = 'hover' | 'click' | 'focus' | 'touch';
+  type ModoDropdown = 'click' | 'hover';
   
   export default {
     name: "BaseDropdownPrimary",
     emits: ["onOpen", "onClose"],
     inheritAttrs: false,
     props: {
-      triggers: {
-        type: Array as PropType<TriggerEvent[]>,
-        default: () => ['click'],
+      modo: {
+        type: String as PropType<ModoDropdown>,
+        default: "click",
+      }, 
+      autoHide: {
+        type: Boolean as PropType<boolean>,
+        default: true,
       },
       disabled: {
         default: false,
@@ -73,6 +79,20 @@
       return {
         open: false,
       };
+    },
+    computed: {
+      triggers(): TriggerEvent[] {
+        if (this.modo === "click") {
+          return ["click"];
+        }
+        return ["hover", "focus"];
+      },
+      popperTriggers(): TriggerEvent[] {
+        if (this.modo === "click") {
+          return ["click"];
+        }
+        return ["hover", "focus"];
+      },
     },
     methods: {
     },

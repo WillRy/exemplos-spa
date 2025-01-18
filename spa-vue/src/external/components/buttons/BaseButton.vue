@@ -104,6 +104,10 @@ export default {
   text-decoration: none;
 }
 
+.btn *, .btn :deep(*) {
+  line-height: 1;
+}
+
 .btn:hover :deep(.loader path) {
   fill: currentColor !important;
 }
@@ -119,7 +123,7 @@ export default {
 
 .btn-md {
   font-size: 0.875rem;
-  padding: 10px 20px;
+  padding: 8px 20px;
   min-height: 36px;
 }
 

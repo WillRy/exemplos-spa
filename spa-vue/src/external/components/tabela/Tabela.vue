@@ -153,17 +153,6 @@ export default {
       checkedAll: false
     }
   },
-  watch: {
-    dados: {
-      handler() {
-        const hasItems = this.dados && this.dados.length > 0;
-        if(this.currentPage > 1 && !hasItems) {
-          this.updatePagina(this.currentPage - 1);
-        }
-      },
-      deep: true
-    }
-  },
   provide() {
     return {
       sortByTabela: (dados) => this.sortBy(dados),
@@ -173,7 +162,7 @@ export default {
   },
   methods: {
     sortBy(dadosOrdenacao) {
-      this.$emit('onSort', dadosOrdenacao)
+      this.$emit('onSort', dadosOrdenacao);
     },
     updatePagina(page) {
       this.$emit('onPage', page)

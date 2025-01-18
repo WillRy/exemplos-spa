@@ -1,24 +1,39 @@
 <template>
-    <div class="layout">
-        <HomeContainer v-if="usuario">
-            <template #sidebar>
-                <Sidebar :open="sidebarAberta" @change="mudarSidebar">
-                    <template #logo> </template>
-                    <SidebarLink to="/painel/dashboard">
-                        <template #texto> Dashboard </template>
-                        <template #icone>
-                            <HomeIcon />
-                        </template>
-                    </SidebarLink>
-                    <SidebarLink to="/painel/organizacoes">
-                        <template #texto>
-                            Organizações
-                        </template>
-                        <template #icone>
-                            <OrganizacaoIcon />
-                        </template>
-                    </SidebarLink>
-                    <!-- <SidebarLink to="/painel/contatos">
+    <DynamicThemeProvider :theme-config="{
+        primaryColor: {
+            50: '#ecfdf5',
+            100: '#d1fae5',
+            200: '#a7f3d0',
+            300: '#6ee7b7',
+            400: '#34d399',
+            500: '#10b981',
+            600: '#059669',
+            700: '#047857',
+            800: '#065f46',
+            900: '#064e3b'
+        },
+        escalaPrimaryColorPrincipal: 700,
+    }">
+        <div class="layout">
+            <HomeContainer v-if="usuario">
+                <template #sidebar>
+                    <Sidebar :open="sidebarAberta" @change="mudarSidebar">
+                        <template #logo> </template>
+                        <SidebarLink to="/painel/dashboard">
+                            <template #texto> Dashboard </template>
+                            <template #icone>
+                                <HomeIcon />
+                            </template>
+                        </SidebarLink>
+                        <SidebarLink to="/painel/organizacoes">
+                            <template #texto>
+                                Organizações
+                            </template>
+                            <template #icone>
+                                <OrganizacaoIcon />
+                            </template>
+                        </SidebarLink>
+                        <!-- <SidebarLink to="/painel/contatos">
                         <template #texto>
                             Contatos
                         </template>
@@ -34,14 +49,14 @@
                             <TagIcon />
                         </template>
                     </SidebarLink> -->
-                </Sidebar>
-            </template>
+                    </Sidebar>
+                </template>
 
-            <template #header>
-                <Header :containerFluido="true">
-                    <template #boxDireito>
-                        <div class="row">
-                            <div class="col">
+                <template #header>
+                    <Header :containerFluido="true">
+                        <template #boxDireito>
+                            <div class="row">
+                                <div class="col">
                                     <BaseDropdownPrimary>
                                         <template #botao>
                                             {{ usuario.nome }}
@@ -51,20 +66,22 @@
 
                                         </template>
                                     </BaseDropdownPrimary>
+                                </div>
                             </div>
-                        </div>
-                    </template>
-                </Header>
-            </template>
+                        </template>
+                    </Header>
+                </template>
 
-            <slot />
+                <slot />
 
-        </HomeContainer>
-    </div>
-
+            </HomeContainer>
+        </div>
+    </DynamicThemeProvider>
 </template>
 
 <script setup>
+import DynamicThemeProvider from "~/provider/DynamicThemeProvider.vue";
+
 const sidebarAberta = ref(false)
 
 const { usuario } = useUsuario();

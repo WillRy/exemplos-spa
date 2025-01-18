@@ -81,6 +81,7 @@ img {
   outline: 0;
   font-size: 1rem;
   flex-shrink: 0;
+  line-height: 1;
 }
 
 .dropdown-acoes::v-deep button:hover,

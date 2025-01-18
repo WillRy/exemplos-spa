@@ -21,6 +21,7 @@
         :size="size"
         :disabled="disabled"
         :full="full"
+        :invertido="invertido"
       >
         <slot name="botao"></slot>
         <svg
@@ -45,11 +46,15 @@
           @click.stop="hide"
           :style="{ maxHeight: maxHeight, width: widthConteudo}"
         >
-          <slot name="acoes"></slot>
+          <ThemeTeleport>
+            <slot name="acoes"></slot>
+          </ThemeTeleport>
         </div>
         
         <div class="dropdown-conteudo" @click.stop="" v-if="$slots.conteudo" :style="{ maxHeight: maxHeight, width: widthConteudo }">
-          <slot name="conteudo" :hide="hide"></slot>
+          <ThemeTeleport>
+            <slot name="conteudo" :hide="hide"></slot>
+          </ThemeTeleport>
         </div>
       </template>
     </VDropdown>
@@ -61,6 +66,7 @@ import { Dropdown } from "floating-vue";
 import BaseButtonSecondary from "../buttons/BaseButtonSecondary.vue";
 import { directive } from "../../directives/click-away";
 import { PropType } from "vue";
+import ThemeTeleport from '../../provider/ThemeTeleport.vue';
 
 type TriggerEvent = 'hover' | 'click' | 'focus' | 'touch';
 type SizeButton = 'sm' | 'md' | 'lg'
@@ -104,11 +110,16 @@ export default {
     autoSize: {
       type: Boolean,
       default: false,
+    },
+    invertido: {
+      type: Boolean,
+      default: false,
     }
   },
   components: {
     VDropdown: Dropdown,
     BaseButtonSecondary,
+    ThemeTeleport,
   },
   directives: {
     "click-away": directive,
