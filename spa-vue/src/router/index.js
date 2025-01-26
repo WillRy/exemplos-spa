@@ -97,7 +97,7 @@ const router = createRouter({
 
 // get a new csrf token in case the user has no token
 router.beforeEach(async (from, to, next) => {
-  const hasCSRFToken = document.cookie.split(';').some((cookie) => cookie.trim().startsWith('XSRF-TOKEN='))
+  const hasCSRFToken = document.cookie.split(';').some((cookie) => cookie.trim().startsWith('CSRF-TOKEN='))
   if (!hasCSRFToken) {
     await apiPublic.get('/csrf')
   }
