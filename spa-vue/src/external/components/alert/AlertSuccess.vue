@@ -11,8 +11,8 @@
 
 <script lang="ts">
 export default {
-  name: 'AlertSuccess'
-}
+  name: "AlertSuccess",
+};
 </script>
 
 <style scoped>

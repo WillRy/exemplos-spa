@@ -1,28 +1,27 @@
 <template>
   <div>
-    <div class="label-container" :class="{ padding: padding }" v-if="$slots.default">
-      <slot @click.stop=""></slot>
+    <div class="label-container" :class="{padding: padding}" v-if="$slots.default">
+      <slot  @click.stop=""></slot>
     </div>
-    <div class="label-container" :class="{ padding: padding }" v-if="label">
+    <div class="label-container" :class="{padding: padding}" v-if="label">
       <label>{{ label }}</label>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { defineProps, withDefaults } from 'vue'
-interface Props {
-  label: string
-  padding: boolean
+type Types = {
+  label?: string,
+  padding?: boolean
 }
 
-withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Types>(), {
   label: '',
   padding: false
 })
 </script>
 <style scoped>
-:deep(.label-container),
-.label-container {
+:deep(.label-container), .label-container {
   line-height: 24px;
   font-weight: 400;
   font-size: 0.75rem;
@@ -30,9 +29,10 @@ withDefaults(defineProps<Props>(), {
   color: var(--gray-color-400);
   margin-bottom: 2px;
   display: block;
+
 }
 
 .padding {
-  padding-left: 16px;
+    padding-left: 16px;
 }
 </style>

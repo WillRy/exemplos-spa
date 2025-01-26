@@ -252,11 +252,11 @@ const submit = async function () {
       organizacao_id: values.organizacao_id ? values.organizacao_id.id : null
     }
 
-    await api.post(`/contato`, data)
+    const r = await api.post(`/contato`, data)
 
     fecharModal()
 
-    $emit('onReload')
+    $emit('onReload', r.data.data)
   } catch (e) {
     const errors = backendToastError(e, $t('textos.erro_cadastrar_contato'))
     setErrors(errors)

@@ -56,9 +56,10 @@ const submit = async function () {
     loading.value = true
     await api.delete(`/contato/${props.contato.id}`)
 
+    $emit('onReload', props.contato)
+
     fecharModal()
 
-    $emit('onReload')
   } catch (e) {
     backendToastError(e, $t('textos.erro_excluir_contato'))
   } finally {

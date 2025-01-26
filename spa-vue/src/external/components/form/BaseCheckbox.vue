@@ -1,13 +1,7 @@
 <template>
   <div :class="{ 'form-group-has-icon': $slots.icon }" class="form-group">
     <label class="checkbox-container" :class="{ disabled: disabled }">
-      <input
-        type="checkbox"
-        class="checkbox"
-        :disabled="disabled"
-        v-model="localValue"
-        v-bind="attrs"
-      />
+      <input type="checkbox" class="checkbox" :disabled="disabled" v-model="localValue" v-bind="attrs" />
       <span class="checkmark"></span>
       <span>
         <template v-if="label && !$slots.label">{{ label }}</template>
@@ -35,52 +29,53 @@
 </template>
 
 <script lang="ts">
-import InfoErrorIcon from '../icons/InfoErrorIcon.vue'
-import InfoInputIcon from '../icons/InfoInputIcon.vue'
-import InfoSuccessIcon from '../icons/InfoSuccessIcon.vue'
+import InfoErrorIcon from "../icons/InfoErrorIcon.vue";
+import InfoInputIcon from "../icons/InfoInputIcon.vue";
+import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
 
 export default {
-  name: 'BaseCheckbox',
+  name: "BaseCheckbox",
   inheritAttrs: false,
+  emits: ['update:modelValue'],
   props: {
     disabled: {
-      default: false
+      default: false,
     },
     label: {
       type: String,
-      default: ''
+      default: "",
     },
     modelValue: {
-      required: false
+      required: false,
     },
     error: {
-      type: String
+      type: String,
     },
     success: {
-      type: String
+      type: String,
     },
     legenda: {
-      type: String
-    }
+      type: String,
+    },
   },
   computed: {
     attrs() {
       return {
-        ...this.$attrs
-      }
+        ...this.$attrs,
+      };
     },
     localValue: {
       set(valor) {
-        this.$emit('update:modelValue', valor)
+        this.$emit("update:modelValue", valor);
       },
       get() {
-        return this.modelValue
-      }
-    }
+        return this.modelValue;
+      },
+    },
   },
   methods: {},
-  components: { InfoInputIcon, InfoSuccessIcon, InfoErrorIcon }
-}
+  components: { InfoInputIcon, InfoSuccessIcon, InfoErrorIcon },
+};
 </script>
 
 <style scoped>
@@ -126,17 +121,17 @@ export default {
   border: 1px solid var(--primary-color-principal);
 }
 
-.checkbox-container input:focus ~ .checkmark {
+.checkbox-container input:focus~.checkmark {
   border: 1px solid var(--primary-color-principal);
 }
 
-.checkbox-container input:checked ~ .checkmark {
+.checkbox-container input:checked~.checkmark {
   background-color: var(--primary-color-principal);
 }
 
 /* Criar o ícone de check, escondido quando não estiver selecionado */
 .checkbox-container .checkmark:after {
-  content: '';
+  content: "";
   position: absolute;
   display: none;
   left: 7px;
@@ -151,7 +146,7 @@ export default {
 }
 
 /* Exibir o ícone quando selecionado */
-.checkbox-container input:checked ~ .checkmark:after {
+.checkbox-container input:checked~.checkmark:after {
   display: block;
 }
 
@@ -172,7 +167,7 @@ label.disabled {
   margin-top: var(--spacing-1);
 }
 
-.legenda > svg {
+.legenda>svg {
   flex-shrink: 0;
   width: 14px;
   margin-right: 8px;
@@ -190,7 +185,7 @@ label.disabled {
   margin-top: var(--spacing-1);
 }
 
-.errorMessage > svg {
+.errorMessage>svg {
   flex-shrink: 0;
   width: 14px;
   margin-right: 8px;
@@ -208,7 +203,7 @@ label.disabled {
   margin-top: var(--spacing-1);
 }
 
-.successMessage > svg {
+.successMessage>svg {
   flex-shrink: 0;
   width: 14px;
   margin-right: 8px;

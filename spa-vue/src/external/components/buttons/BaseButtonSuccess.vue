@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
+import { PropType } from 'vue';
 import BaseButton from './BaseButton.vue'
 
 type TypeButton = 'submit' | 'button'

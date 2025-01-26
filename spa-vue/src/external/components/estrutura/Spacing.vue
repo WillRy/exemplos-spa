@@ -1,20 +1,20 @@
 <template>
-  <div :class="`p-${size}`">
+<div :class="`p-${size}`">
     <slot></slot>
-  </div>
+</div>
 </template>
 <script lang="ts">
-import { PropType } from 'vue'
+import { PropType } from 'vue';
 
-type Size = '0' | '1' | '2' | '3' | '4' | '5' | '6'
+type Size = '0' | '1' | '2' | '3' | '4' | '5' | '6';
 
 export default {
-  name: 'Spacing',
-  props: {
-    size: {
-      type: String as PropType<Size>,
-      default: '2'
+    name: 'Spacing',
+    props: {
+        size: {
+            type: String as PropType<Size>,
+            default: '2',
+        }
     }
-  }
 }
 </script>

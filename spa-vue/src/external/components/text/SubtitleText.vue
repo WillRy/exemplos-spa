@@ -1,27 +1,29 @@
 <template>
-  <component :is="is" :class="[size, 'subtitle-text']">
-    <slot></slot>
-  </component>
+    <component :is="is" :class="[size,'subtitle-text']">
+        <slot></slot>
+    </component>
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
+import { PropType } from 'vue';
 
-type TextSize = 'sm' | 'lg'
+type TextSize = "sm" | "lg";
 
 export default {
-  name: 'SubtitleText',
-  props: {
-    is: {
-      type: String,
-      default: 'span'
-    },
-    size: {
-      type: String as PropType<TextSize>,
-      default: 'sm'
+    name: "SubtitleText",
+    props: {
+        is: {
+            type: String,
+            default: 'span'
+        },
+        size: {
+            type: String as PropType<TextSize>,
+            default: 'sm',
+        },
     }
-  }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

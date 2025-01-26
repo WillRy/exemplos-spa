@@ -24,6 +24,10 @@ export default {
     paddingLeft: {
       type: String,
       default: '250px'
+    },
+    background: {
+      type: String,
+      default: '#ffffff'
     }
   }
 };
@@ -32,15 +36,15 @@ export default {
 <style scoped>
 .header {
   height: 60px;
-  background: #ffffff;
-  box-shadow: 0px 2px 2px #00000029;
+  background: v-bind(background);
+  border-bottom: 1px solid #e9e8e8;
   width: 100%;
 
   display: flex;
   align-items: stretch;
   position: fixed;
   top: 0;
-  z-index: var(--z-index-2);
+  z-index: 90;
 
 }
 

@@ -1,4 +1,4 @@
-@use 'sass:map';
+@use "sass:map";
 
 .container,
 .container-fluid,
@@ -16,21 +16,40 @@
     margin-left: auto; */
 }
 
-@each $grid, $pxBreakpoint in $grid-map {
-  @media (min-width: #{$pxBreakpoint}) {
-    .container-#{$grid},
-    .container {
-      max-width: map.get($container-map, $grid);
-    }
+@media (min-width: #{map.get($grid-map, "sm")}) {
+  .container-sm, .container {
+    max-width: 540px;
   }
+}
+@media (min-width: #{map.get($grid-map, "md")}) {
+  .container-md, .container-sm, .container {
+    max-width: 720px;
+  }
+}
+@media (min-width: #{map.get($grid-map, "lg")}) {
+  .container-lg, .container-md, .container-sm, .container {
+    max-width: 960px;
+  }
+}
+@media (min-width: #{map.get($grid-map, "xl")}) {
+  .container-xl, .container-lg, .container-md, .container-sm, .container {
+    max-width: 1140px;
+  }
+}
+@media (min-width: #{map.get($grid-map, "xxl")}) {
+  .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+    max-width: 1320px;
+  }
+}
 
+@each $grid, $pxBreakpoint in $grid-map {
   :root {
     --bs-breakpoint-#{$grid}: #{$pxBreakpoint};
   }
 }
 
 .row {
-  --bs-gutter-x: var(--spacing-4);
+  --bs-gutter-x: var(--spacing-3);
   --bs-gutter-y: var(--spacing-2);
   display: flex;
   flex-wrap: wrap;
@@ -48,6 +67,32 @@
   padding-left: calc(var(--bs-gutter-x) * 0.5);
   margin-top: var(--bs-gutter-y);
 }
+
+.row-inline {
+  --bs-gutter-x: var(--spacing-2);
+  --bs-gutter-y: var(--spacing-2);
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.row-inline > * {
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+}
+
+.no-gutters {
+  --bs-gutter-x: 0;
+  --bs-gutter-y: 0;
+}
+
 
 .col {
   flex: 1 0 0%;
@@ -71,6 +116,7 @@
   }
 }
 
+
 @each $key, $value in $spacing-map {
   .g-#{$key},
   .gx-#{$key} {
@@ -84,6 +130,10 @@
 
   .gap-#{$key} {
     gap: #{$value};
+  }
+
+  .grid-gap-#{$key} {
+    --bs-gap: #{$value};
   }
 }
 
@@ -120,6 +170,36 @@
       .g-#{$grid}-#{$key},
       .gy-#{$grid}-#{$key} {
         --bs-gutter-y: #{$value};
+      }
+    }
+  }
+}
+
+
+.grid {
+  display: grid;
+  grid-template-rows: repeat(var(--bs-rows, 1), 1fr);
+  grid-template-columns: repeat(var(--bs-columns, 12), 1fr);
+  gap: var(--bs-gap, var(--spacing-2));
+}
+
+@for $i from 1 through 12 {
+  .grid .g-col-#{$i} {
+    grid-column: auto / span #{$i};
+  }
+  .grid .g-start-#{$i} {
+    grid-column-start: #{$i};
+  }
+}
+
+@each $breakpoint, $pxBreakpoint in $grid-map {
+  @media (min-width: #{$pxBreakpoint}) {
+    @for $i from 1 through 12 {
+      .grid .g-col-#{$breakpoint}-#{$i} {
+        grid-column: auto / span #{$i};
+      }
+      .grid .g-start-#{$breakpoint}-#{$i} {
+        grid-column-start: #{$i};
       }
     }
   }

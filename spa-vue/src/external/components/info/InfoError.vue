@@ -1,25 +1,29 @@
 <template>
-  <div class="legenda">
+  <div class="errorMessage" :class="{ 'input-mode': inputMode }">
     <InfoErrorIcon size="14px" class="icone-footer" v-if="exibirIcone" />
     <slot></slot>
   </div>
 </template>
 
-<script>
-import InfoErrorIcon from '../icons/InfoErrorIcon.vue'
+<script lang="ts">
+import InfoErrorIcon from "../icons/InfoErrorIcon.vue";
 
 export default {
-  name: 'ActionText',
+  name: "ActionText",
   components: {
-    InfoErrorIcon
+    InfoErrorIcon,
   },
   props: {
     exibirIcone: {
       type: Boolean,
-      default: true
-    }
-  }
-}
+      default: true,
+    },
+    inputMode: {
+      type: Boolean,
+      default: false,
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -27,7 +31,7 @@ export default {
   display: flex;
 }
 
-.legenda {
+.errorMessage {
   display: flex;
   font-size: 0.75rem;
   line-height: 0.9975rem;
@@ -38,7 +42,7 @@ export default {
   padding-left: var(--padding-text);
 }
 
-.legenda > svg {
+.errorMessage > svg {
   flex-shrink: 0;
   width: 14px;
   margin-right: 8px;
@@ -47,5 +51,10 @@ export default {
 .icone-footer {
   flex-shrink: 0;
   margin-right: 8px;
+}
+
+.input-mode {
+  padding-left: 16px;
+  margin-top: var(--spacing-1);
 }
 </style>

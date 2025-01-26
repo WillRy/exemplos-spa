@@ -10,12 +10,12 @@
 </template>
 <script setup lang="ts">
 import { defineProps, withDefaults } from 'vue'
-interface Props {
-  label: string,
-  padding: boolean
+type Types = {
+  label?: string,
+  padding?: boolean
 }
 
-withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Types>(), {
   label: '',
   padding: false
 })

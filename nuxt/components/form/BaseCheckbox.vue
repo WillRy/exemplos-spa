@@ -36,6 +36,7 @@ import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
 export default {
   name: "BaseCheckbox",
   inheritAttrs: false,
+  emits: ['update:modelValue'],
   props: {
     disabled: {
       default: false,

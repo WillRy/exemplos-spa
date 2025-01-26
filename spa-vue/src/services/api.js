@@ -40,6 +40,9 @@ class BaseHttp {
     // const shouldRefresh = error.response.data?.code === 'token.expired';
     const shouldRefresh = !error.response.config.url.includes('/refresh')
 
+    const urlParams = new URLSearchParams(error.config?.url?.split('?')[1] || '');
+    const ignoreRedirect = urlParams.has('ignoreRedirect');
+
     if (status === 401) {
       if (shouldRefresh) {
         const originalConfig = error.config
@@ -61,7 +64,7 @@ class BaseHttp {
               this.failedRequestsQueue.forEach((request) => request.onFailure(error))
               this.failedRequestsQueue = []
 
-              if (shouldRedirectLogout) {
+              if (shouldRedirectLogout && !ignoreRedirect) {
                 return this.redirectLogout(1)
               }
             })
@@ -84,7 +87,7 @@ class BaseHttp {
           })
         })
       } else {
-        if (shouldRedirectLogout) {
+        if (shouldRedirectLogout && !ignoreRedirect) {
           this.redirectLogout(2)
         }
         return Promise.reject(new Error('Sessão expirada'))

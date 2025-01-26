@@ -2,7 +2,7 @@
   <div class="home-container">
     <slot name="sidebar"> </slot>
     <slot name="header"></slot>
-    <div class="home" :class="{ temSidebar: $slots.sidebar }">
+    <div class="home" :class="{temSidebar: $slots.sidebar}">
       <slot></slot>
     </div>
   </div>

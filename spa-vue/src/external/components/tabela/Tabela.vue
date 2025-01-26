@@ -11,23 +11,21 @@
         }"
       >
         <thead>
-          <tr>
-            <template v-if="!$slots.thead">
-              <HeadSort
-                v-for="(coluna, index) in colunas"
-                :info="coluna.info"
-                :key="index"
-                :nome="coluna.nome"
-                :disabled="coluna.disabled"
-                :texto="coluna.texto"
-                :width="coluna.width"
-                :maxWidth="coluna.maxWidth"
-                :minWidth="coluna.minWidth"
-                :permiteRemoverOrdenacao="permiteRemoverOrdenacao"
-              ></HeadSort>
-            </template>
-            <slot name="thead" :dados="dados" />
-          </tr>
+          <template v-if="!$slots.thead">
+            <HeadSort
+              v-for="(coluna, index) in colunas"
+              :info="coluna.info"
+              :key="index"
+              :nome="coluna.nome"
+              :disabled="coluna.disabled"
+              :texto="coluna.texto"
+              :width="coluna.width"
+              :maxWidth="coluna.maxWidth"
+              :minWidth="coluna.minWidth"
+              :permiteRemoverOrdenacao="permiteRemoverOrdenacao"
+            ></HeadSort>
+          </template>
+          <slot name="thead" :dados="dados" />
         </thead>
         <tbody v-if="dados && dados.length">
           <slot name="colunas" :dados="dados" v-if="$slots.colunas"></slot>
@@ -164,7 +162,7 @@ export default {
   },
   methods: {
     sortBy(dadosOrdenacao) {
-      this.$emit('onSort', dadosOrdenacao)
+      this.$emit('onSort', dadosOrdenacao);
     },
     updatePagina(page) {
       this.$emit('onPage', page)

@@ -20,10 +20,11 @@
         :size="size"
         :disabled="disabled"
         :full="full"
+        :invertido="invertido"
       >
         <slot name="botao"></slot>
         <svg
-          v-if="iconePadrao && !$slots.icone"
+          v-if="iconePadrao && !$slots.icone" 
           viewBox="0 0 330 330"
           xml:space="preserve"
           :style="{ height: '12px', width: '12px' }"
@@ -37,23 +38,22 @@
       </BaseButtonPrimary>
 
       <!-- This will be the content of the popover -->
-      <template #popper="{ hide }">
+      <template #popper="{hide}">
         <div
           v-if="$slots.acoes"
           class="dropdown-botao"
           @click.stop="hide"
-          :style="{ maxHeight: maxHeight, width: widthConteudo }"
+          :style="{ maxHeight: maxHeight, width: widthConteudo}"
         >
-          <slot name="acoes"></slot>
+          <ThemeTeleport>
+            <slot name="acoes"></slot>
+          </ThemeTeleport>
         </div>
-
-        <div
-          class="dropdown-conteudo"
-          @click.stop=""
-          v-if="$slots.conteudo"
-          :style="{ maxHeight: maxHeight, width: widthConteudo }"
-        >
-          <slot name="conteudo" :hide="hide"></slot>
+        
+        <div class="dropdown-conteudo" @click.stop="" v-if="$slots.conteudo" :style="{ maxHeight: maxHeight, width: widthConteudo }">
+          <ThemeTeleport>
+            <slot name="conteudo" :hide="hide"></slot>
+          </ThemeTeleport>
         </div>
       </template>
     </VDropdown>
@@ -61,69 +61,79 @@
 </template>
 
 <script lang="ts">
-import { Dropdown } from 'floating-vue'
-import { directive } from '../../directives/click-away'
-import BaseButtonPrimary from '../buttons/BaseButtonPrimary.vue'
-import { PropType } from 'vue'
+import { Dropdown } from "floating-vue";
+import { directive } from "../../directives/click-away";
+import BaseButtonPrimary from "../buttons/BaseButtonPrimary.vue";
+import { computed, inject, PropType } from "vue";
+import DynamicThemeProvider from "../../provider/DynamicThemeProvider.vue";
+import ThemeTeleport from "../../provider/ThemeTeleport.vue";
 
-type TriggerEvent = 'hover' | 'click' | 'focus' | 'touch'
+type TriggerEvent = 'hover' | 'click' | 'focus' | 'touch';
 type SizeButton = 'sm' | 'md' | 'lg'
 
 export default {
-  name: 'BaseDropdownPrimary',
-  emits: ['onOpen', 'onClose'],
+  name: "BaseDropdownPrimary",
+  emits: ["onOpen", "onClose"],
   inheritAttrs: false,
   props: {
     triggers: {
       type: Array as PropType<TriggerEvent[]>,
-      default: () => ['click']
+      default: () => ['click'],
     },
     size: {
       type: String as PropType<SizeButton>,
-      default: 'md'
+      default: "md",
     },
     iconePadrao: {
       type: Boolean,
-      default: true
+      default: true,
     },
     disabled: {
-      default: false
+      default: false,
     },
     maxHeight: {
       type: String,
-      default: '400px'
+      default: "400px",
     },
     widthConteudo: {
       type: String,
-      default: ''
+      default: "",
     },
     label: {
       type: String,
-      default: ''
+      default: "",
     },
     full: {
       type: Boolean,
-      default: false
+      default: false,
     },
     autoSize: {
       type: Boolean,
-      default: false
+      default: false,
+    },
+    invertido: {
+      type: Boolean,
+      default: false,
     }
   },
   components: {
     VDropdown: Dropdown,
-    BaseButtonPrimary
+    BaseButtonPrimary,
+    ThemeTeleport,
   },
   directives: {
-    'click-away': directive
+    "click-away": directive,
   },
   data() {
     return {
-      open: false
-    }
+      open: false,
+    };
   },
-  methods: {}
-}
+  methods: {
+    
+  },
+  
+};
 </script>
 
 <style scoped>
@@ -177,8 +187,8 @@ img {
   overflow: auto;
 }
 
-.dropdown-botao::v-deep button,
-.dropdown-botao::v-deep a {
+.dropdown-botao :deep(button),
+.dropdown-botao :deep(a) {
   display: flex;
   align-items: center;
   background: none;
@@ -230,7 +240,7 @@ img {
 }
 
 .btn {
-  all: 'unset';
+  all: "unset";
   display: flex;
   align-items: center;
   justify-content: center;
@@ -246,7 +256,7 @@ img {
   position: relative;
 }
 
-.btn[data-loading='true'] {
+.btn[data-loading="true"] {
   cursor: progress !important;
 }
 

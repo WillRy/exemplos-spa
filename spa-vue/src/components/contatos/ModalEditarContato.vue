@@ -252,11 +252,11 @@ const submit = async function () {
       organizacao_id: values.organizacao_id ? values.organizacao_id.id : null
     }
 
-    await api.put(`/contato/${props.contato.id}`, data)
+    const r = await api.put(`/contato/${props.contato.id}`, data)
 
     fecharModal()
 
-    $emit('onReload')
+    $emit('onReload', r.data.data)
   } catch (e) {
     const errors = backendToastError(e, $t('textos.erro_editar_contato'))
     setErrors(errors)

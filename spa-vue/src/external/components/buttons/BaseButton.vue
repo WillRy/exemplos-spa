@@ -8,71 +8,76 @@
       'btn-md': size === 'md',
       'btn-lg': size === 'lg',
       'btn-full': full,
-      outline: outline
+      outline: outline,
     }"
     :disabled="disabled || loading"
     :data-loading="loading"
     :type="type"
   >
-    <Loader v-if="loading" :height="loadingSize" :width="loadingSize" :cor-principal="true" />
+    <Loader
+      v-if="loading"
+      :height="loadingSize"
+      :width="loadingSize"
+      :cor-principal="true"
+    />
     <slot></slot>
   </component>
 </template>
 
 <script>
-import Loader from '../Loader.vue'
+import Loader from "../Loader.vue";
 
 export default {
-  name: 'BaseButton',
+  name: "BaseButton",
   components: { Loader },
   props: {
     is: {
       type: String,
-      default: 'button'
+      default: "button",
     },
     disabled: {
-      default: false
+      default: false,
     },
     size: {
       type: String,
-      default: 'md'
+      default: "md",
     },
     type: {
       type: String,
-      default: 'button'
+      default: "button",
     },
     min: {
       type: Boolean,
-      default: false
+      default: false,
     },
     full: {
       type: Boolean,
-      default: false
+      default: false,
     },
     loading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     outline: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     loadingSize() {
       switch (this.size) {
-        case 'sm':
-          return '14px'
-        case 'md':
-          return '16px'
-        case 'lg':
-          return '20px'
+        case "sm":
+          return "14px";
+        case "md":
+          return "16px";
+        case "lg":
+          return "20px";
         default:
-          return '16px'
+          return "16px";
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -82,7 +87,7 @@ export default {
 }
 
 .btn {
-  all: 'unset';
+  all: "unset";
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -99,11 +104,15 @@ export default {
   text-decoration: none;
 }
 
+.btn *, .btn :deep(*) {
+  line-height: 1;
+}
+
 .btn:hover :deep(.loader path) {
   fill: currentColor !important;
 }
 
-.btn[data-loading='true'] {
+.btn[data-loading="true"] {
   cursor: progress !important;
 }
 
@@ -114,7 +123,7 @@ export default {
 
 .btn-md {
   font-size: 0.875rem;
-  padding: 10px 20px;
+  padding: 8px 20px;
   min-height: 36px;
 }
 

@@ -1,56 +1,50 @@
 <template>
-  <div
-    class="painel-agrupamento"
-    :class="[`mb-${marginBottom}`, { 'ocupar-altura-maxima': ocuparAlturaMaxima }]"
-  >
+  <div class="painel-agrupamento" :class="[`mb-${marginBottom}`, { 'ocupar-altura-maxima': ocuparAlturaMaxima }, alturaMaximaComScroll]">
     <div class="painel-agrupamento-header">
       <OverlineText v-if="titulo" class="titulo" size="sm">
         {{ titulo }}
       </OverlineText>
       <slot name="header"></slot>
     </div>
-    <div
-      class="painel-agrupamento-borda"
-      :class="[classeFundoCinza, classePadding, classeBorda]"
-      :style="{
-        minHeight: alturaMinima,
-        maxHeight: alturaMaxima,
-        overflow: alturaMaxima ? 'auto' : ''
-      }"
-      v-on:scroll="onScroll"
-    >
+    <div class="painel-agrupamento-borda" :class="[
+    classeFundoCinza,
+    classePadding,
+    classeBorda,
+    alturaMaximaComScroll
+  ]" :style="{ minHeight: alturaMinima, maxHeight: alturaMaxima, overflow: ocuparAlturaMaxima && alturaMaximaComScroll ? 'auto' : '' }"
+      v-on:scroll="onScroll">
       <slot></slot>
     </div>
   </div>
 </template>
 <script lang="ts">
-import OverlineText from '../text/OverlineText.vue'
-import { PropType } from 'vue'
+import OverlineText from "../text/OverlineText.vue";
+import { PropType } from "vue";
 
-type MarginBottomType = '0' | '1' | '2' | '3' | '4' | '5' | '6' | 'padrao'
-type PaddingType = '0' | '1' | '2' | '3' | '4' | '5' | '6' | 'padrao'
+type MarginBottomType = "0" | "1" | "2" | "3" | "4" | "5" | "6" | 'padrao';
+type PaddingType = '0' | '1' | '2' | '3' | '4' | '5' | '6' | 'padrao';
 
 export default {
-  name: 'BoxSection',
+  name: "BoxSection",
   props: {
     titulo: {
-      type: String
+      type: String,
     },
     fundoCinza: {
       type: Boolean,
-      default: false
+      default: false,
     },
     padding: {
       type: String as PropType<PaddingType>,
-      default: 'padrao'
+      default: "padrao",
     },
     marginBottom: {
       type: String as PropType<MarginBottomType>,
-      default: '3'
+      default: "3",
     },
     ocuparAlturaMaxima: {
       type: Boolean,
-      default: false
+      default: false,
     },
     alturaMaxima: {
       type: String,
@@ -64,7 +58,11 @@ export default {
     },
     temBorda: {
       type: Boolean,
-      default: true
+      default: true,
+    },
+    alturaMaximaComScroll: {
+      type: Boolean,
+      default: true,
     }
   },
   computed: {
@@ -88,15 +86,18 @@ export default {
       }
 
       return ''
+    },
+    classeAlturaMaximaComScroll() {
+      return this.alturaMaximaComScroll ? 'altura-maxima-scroll' : ''
     }
   },
   components: { OverlineText },
   methods: {
     onScroll(event: Event) {
-      this.$emit('scroll', event)
-    }
+      this.$emit("scroll", event);
+    },
   }
-}
+};
 </script>
 <style scoped>
 .titulo {
@@ -131,6 +132,16 @@ export default {
 
 .painel-agrupamento-cinza {
   background: #e7e7e7;
+}
+
+.altura-maxima-scroll .acesso-bloqueado-container {
+  overflow: hidden;
+  height: 100%;
+}
+
+.altura-maxima-scroll  {
+  overflow: hidden;
+  height: 100%;
 }
 
 .alturaMaxima {

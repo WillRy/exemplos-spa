@@ -1,13 +1,5 @@
 <template>
-  <BaseButton
-    class="btn-primary"
-    :size="size"
-    :min="min"
-    :loading="loading"
-    :is="is"
-    :full="full"
-    :type="type"
-  >
+  <BaseButton class="btn-primary" :class="{'invertido': invertido}" :size="size" :min="min" :loading="loading" :is="is" :full="full" :type="type">
     <slot></slot>
   </BaseButton>
 </template>
@@ -44,6 +36,10 @@ export default {
       default: 'button'
     },
     full: {
+      type: Boolean,
+      default: false
+    },
+    invertido: {
       type: Boolean,
       default: false
     }
@@ -101,5 +97,43 @@ export default {
 
 .btn-primary:active :deep(path) {
   fill: #fff;
+}
+
+.btn-primary.invertido {
+  background: #fff;
+  color: var(--primary-color-principal);
+  border: 1px solid transparent;
+}
+
+.btn-primary.invertido  :deep(path) {
+  fill: var(--primary-color-principal);
+}
+
+.btn-primary.invertido:hover {
+  background: #fff;
+  color: var(--primary-color-principal-hover);
+}
+
+.btn-primary.invertido:hover :deep(path) {
+  fill: var(--primary-color-principal-hover);
+}
+
+.btn-primary.invertido:focus:not(:active) {
+  background:  #fff;
+  color: var(--primary-color-principal-focus);
+}
+
+.btn-primary.invertido:hover :deep(path) {
+  fill: var(--primary-color-principal-focus);
+}
+
+.btn-primary.invertido:active {
+  background: #fff;
+  color: var(--primary-color-700);
+  border: 1px solid transparent;
+}
+
+.btn-primary.invertido:active :deep(path) {
+  fill: var(--primary-color-700);
 }
 </style>

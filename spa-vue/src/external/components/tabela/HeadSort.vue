@@ -8,8 +8,7 @@
           {{ texto }}
           <svg class="info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
             <path
-              d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"
-            />
+              d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
           </svg>
         </span>
         <span v-else>
@@ -17,30 +16,25 @@
         </span>
       </template>
 
-      <SortAscIcon
-        v-if="(ordenando === nome || ordenando === order) && ordenando && orderMinuscula === 'asc'"
-      />
-      <SortDescIcon
-        v-else-if="
-          (ordenando === nome || ordenando === order) && ordenando && orderMinuscula === 'desc'
-        "
-      />
+      <SortAscIcon v-if="(ordenando === nome || ordenando === order) && ordenando && orderMinuscula === 'asc'" size="20px"/>
+      <SortDescIcon v-else-if="
+        (ordenando === nome || ordenando === order) && ordenando && orderMinuscula === 'desc'
+      " size="20px"/>
 
       <SortIcon v-else />
     </button>
-    <span v-else-if="!$slots.default" class="head-container">
+    <div v-else-if="!$slots.default" class="head-container">
       <span v-if="info" v-tooltip="{ content: info }">
         {{ texto }}
         <svg class="info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
           <path
-            d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"
-          />
+            d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
         </svg>
       </span>
       <span v-else>
         {{ texto }}
       </span>
-    </span>
+    </div>
     <span v-else>
       <slot></slot>
     </span>
@@ -55,7 +49,7 @@ import SortDescIcon from '../icons/SortDescIcon.vue'
 import SortIcon from '../icons/SortIcon.vue'
 import { inject } from 'vue'
 
-type SortFunction = (sort: { sortName: string; sortOrder: string }) => void
+type SortFunction = (sort: { sortName: string, sortOrder: string }) => void
 
 export default {
   name: 'HeadSort',
@@ -165,6 +159,10 @@ export default {
 </script>
 
 <style scoped>
+th {
+  vertical-align: middle;
+}
+
 th button,
 th :deep(button) {
   color: var(--gray-color-700);
@@ -177,9 +175,13 @@ th :deep(button) {
   padding: 0;
 }
 
-.head-container > span,
-.head-container > :deep(span),
-.head-container > button > span {
+.head-container {
+  line-height: 1rem;
+}
+
+.head-container span,
+.head-container> :deep(span),
+.head-container>button>span {
   color: var(--gray-color-700);
   font-weight: 700;
   padding: 0.5rem;
@@ -187,9 +189,12 @@ th :deep(button) {
   background: none;
   border: none;
   font-size: 1rem;
-  display: block;
+  display: flex;
+  align-items: center;
   text-align: left;
+  line-height: 1rem;
 }
+
 
 .info {
   width: 20px;

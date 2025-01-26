@@ -1,26 +1,19 @@
 <template>
-  <BaseButton
-    class="btn-secondary"
-    :size="size"
-    :min="min"
-    :loading="loading"
-    :is="is"
-    :full="full"
-  >
+  <BaseButton class="btn-secondary" :class="{'invertido': invertido}" :size="size" :min="min" :loading="loading" :is="is" :full="full">
     <slot></slot>
   </BaseButton>
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
-import BaseButton from './BaseButton.vue'
+import { PropType } from "vue";
+import BaseButton from "./BaseButton.vue";
 
 type TypeButton = 'submit' | 'button'
 type SizeButton = 'sm' | 'md' | 'lg'
 
 export default {
-  name: 'BaseButtonSecondary',
-  components: { BaseButton },
+  name: "BaseButtonSecondary",
+  components: {BaseButton},
   props: {
     is: {
       type: String,
@@ -43,6 +36,10 @@ export default {
       default: 'button'
     },
     full: {
+      type: Boolean,
+      default: false
+    },
+    invertido: {
       type: Boolean,
       default: false
     }
@@ -100,6 +97,48 @@ export default {
 }
 
 .btn-secondary:active :deep(path) {
+  fill: #fff;
+}
+
+.btn-secondary.invertido {
+  background: var(--primary-color-principal);
+  color: #fff;
+  border: 1px solid #fff;
+}
+
+.btn-secondary.invertido :deep(path) {
+  fill: #fff;
+}
+
+.btn-secondary.invertido:hover {
+  background: var(--primary-color-500);
+  color: var(--primary-color-50);
+  border: 1px solid transparent;
+  box-shadow: none;
+}
+
+.btn-secondary.invertido:hover :deep(path) {
+  fill: var(--primary-color-600);
+}
+
+.btn-secondary.invertido:focus:not(:active) {
+  background: var(--primary-color-500);
+  color: var(--primary-color-50);
+  border: 1px solid #fff;
+  box-shadow: none;
+}
+
+.btn-secondary.invertido:focus :deep(path) {
+  fill: var(--primary-color-50);
+}
+
+.btn-secondary.invertido:active {
+  background: #fff;
+  color: var(--primary-color-500);
+  border: 1px solid transparent;
+}
+
+.btn-secondary.invertido:active :deep(path) {
   fill: #fff;
 }
 </style>

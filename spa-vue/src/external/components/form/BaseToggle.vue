@@ -6,15 +6,8 @@
 
     <label>
       <ActionText size="sm" v-if="label">{{ label }}</ActionText>
-      <input
-        ref="checkbox"
-        v-bind="$attrs"
-        :checked="checkedNormalizado"
-        :disabled="disabled"
-        class="check"
-        type="checkbox"
-        @click.stop="updateValue"
-      />
+      <input ref="checkbox" v-bind="$attrs" :checked="checkedNormalizado" :disabled="disabled" class="check"
+        type="checkbox" @click.stop="updateValue" />
 
       <div class="checktoggle"></div>
     </label>
@@ -38,60 +31,61 @@
 </template>
 
 <script lang="ts">
-import InfoErrorIcon from '../icons/InfoErrorIcon.vue'
-import InfoInputIcon from '../icons/InfoInputIcon.vue'
-import InfoSuccessIcon from '../icons/InfoSuccessIcon.vue'
-import ActionText from '../text/ActionText.vue'
+import InfoErrorIcon from "../icons/InfoErrorIcon.vue";
+import InfoInputIcon from "../icons/InfoInputIcon.vue";
+import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
+import ActionText from "../text/ActionText.vue";
 
 export default {
-  name: 'BaseToggle',
+  name: "BaseToggle",
   inheritAttrs: false,
   emits: ['toggle'],
   components: { InfoInputIcon, InfoSuccessIcon, InfoErrorIcon, ActionText },
   props: {
     error: {
-      type: String
+      type: String,
     },
     success: {
-      type: String
+      type: String,
     },
     legenda: {
-      type: String
+      type: String,
     },
     checked: {
-      type: [Boolean, String]
+      type: [Boolean, String],
     },
     disabled: Boolean,
     label: String,
     on: {
       type: String,
-      default: 'ON'
+      default: "ON",
     },
     off: {
       type: String,
-      default: 'OFF'
-    }
+      default: "OFF",
+    },
   },
   computed: {
     checkedNormalizado() {
       if (
-        (typeof this.checked === 'string' && this.checked === 'S') ||
-        (typeof this.checked === 'boolean' && this.checked)
+        (typeof this.checked === "string" && this.checked === "S") ||
+        (typeof this.checked === "boolean" && this.checked)
       ) {
-        return true
+        return true;
       }
-      return false
-    }
+      return false;
+    },
   },
   methods: {
     updateValue() {
-      if (this.disabled) return
-      let valor = (this.$refs.checkbox as HTMLInputElement).checked
-      this.$emit('toggle', valor)
-    }
+      if (this.disabled) return;
+      let valor = (this.$refs.checkbox as HTMLInputElement).checked;
+      this.$emit("toggle", valor);
+    },
   },
-  created() {}
-}
+  created() {
+  },
+};
 </script>
 
 <style scoped>
@@ -119,11 +113,12 @@ export default {
   padding-left: var(--padding-text);
 }
 
-.legenda > svg {
+.legenda>svg {
   flex-shrink: 0;
   width: 14px;
   margin-right: 8px;
 }
+
 
 .errorMessage {
   display: flex;
@@ -136,7 +131,7 @@ export default {
   padding-left: var(--padding-text);
 }
 
-.errorMessage > svg {
+.errorMessage>svg {
   flex-shrink: 0;
   width: 14px;
   margin-right: 8px;
@@ -153,7 +148,8 @@ export default {
   padding-left: var(--padding-text);
 }
 
-.successMessage > svg {
+
+.successMessage>svg {
   flex-shrink: 0;
   width: 14px;
   margin-right: 8px;
@@ -193,37 +189,35 @@ export default {
   position: absolute;
 }
 
-.check:disabled + .checktoggle {
+.check:disabled+.checktoggle {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-.check:checked + .checktoggle {
+.check:checked+.checktoggle {
   background-color: var(--primary-color-principal);
   box-shadow: none;
 }
 
 .checktoggle {
-  background-color: var(--gray-color-300);
+  background-color: var(--gray-color-200);
   color: #bbbfc4;
   border-radius: 24px;
   cursor: pointer;
   display: flex;
   align-items: center;
   font-size: 0;
-
   margin-bottom: 0;
   position: relative;
-  width: 52px;
-  height: 28px;
-
+  width: 68px;
+  height: 36px;
   justify-content: space-between;
 }
 
 .checktoggle:after {
   box-shadow: 0px 3px 6px #00000029;
 
-  content: ' ';
+  content: " ";
   display: block;
   position: absolute;
   top: 50%;
@@ -233,12 +227,10 @@ export default {
   height: 22px;
   background-color: #fff;
   border-radius: 50%;
-  transition:
-    left 300ms ease,
-    transform 300ms ease;
+  transition: left 300ms ease, transform 300ms ease;
 }
 
-.check:checked + .checktoggle:after {
+.check:checked+.checktoggle:after {
   background-color: #fff;
   left: 100%;
   transform: translate(calc(-100% - 5px), -50%);

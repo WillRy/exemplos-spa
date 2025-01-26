@@ -152,6 +152,7 @@ export default {
     border-radius: 5px;
     font-weight: 700;
     font-size: 14px;
+    flex-shrink: 0;
 }
 
 .contador.active {

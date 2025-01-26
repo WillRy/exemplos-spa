@@ -8,19 +8,23 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
   const haveLogout = to.fullPath.includes("logout");
 
-  if(import.meta.server) {
-    await useNuxtApp().$getCsrf();
-    await useApi('/login', {
-      method: 'POST'
-    })
-  }
+  const navigateBetweenPublic = from.path !== to.path && !from.path.includes("/painel") && !isPrivate;
+
+  //OBS: SOMENTE PARA TESTES E DEBUG
+  // if(import.meta.server) {
+  //   await useNuxtApp().$getCsrf();
+  //   await useApi("/login", {
+  //     method: "POST",
+  //   });
+  // }
+  
 
   if (haveLogout) {
     usuario.value = null;
     return;
   }
 
-  if (!usuario.value && !haveLogout) {
+  if (!usuario.value && !haveLogout && !navigateBetweenPublic) {
     const { data } = await useApi<{
       data: Usuario;
     }>("/usuario");
@@ -35,7 +39,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   }
 
   if (!usuario.value && isPrivate && !haveLogout) {
-    await useNuxtApp().$cleanCsrf();
     return navigateTo("/?logout=3");
   }
 });

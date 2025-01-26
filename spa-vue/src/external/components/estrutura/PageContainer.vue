@@ -1,15 +1,17 @@
 <template>
-  <div class="page-container" :class="classes">
+  <div class="page-container"
+    :class="classes">
     <slot></slot>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
+
 
 interface Props {
-  containerFluido?: boolean
-  center?: boolean
+  containerFluido?: boolean,
+  center?: boolean,
   paddingTop?: boolean
 }
 
@@ -20,12 +22,8 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const classes = computed(() => {
-  const classesPadroes = {
-    'container-fluid': props.containerFluido,
-    container: !props.containerFluido,
-    center: props.center
-  }
-  if (props.paddingTop) {
+  const classesPadroes = { 'container-fluid': props.containerFluido, 'container': !props.containerFluido, 'center': props.center }
+  if(props.paddingTop) {
     return { ...classesPadroes, 'pt-4': true }
   }
 

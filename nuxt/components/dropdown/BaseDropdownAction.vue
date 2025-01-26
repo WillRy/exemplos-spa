@@ -1,6 +1,6 @@
 <template>
   <div class="dropdown-action-container">
-    <VDropdown :triggers="triggers" :shown="open" :distance="4" placement="bottom" aria-id="some-dropdown">
+    <Dropdown :triggers="triggers" :shown="open" :distance="4" placement="bottom" aria-id="some-dropdown">
       <button class="dropdown-acoes-btn" :class="{ 'disabled-btn': disabled }" :disabled="disabled">
         <DotsIcon />
       </button>
@@ -8,43 +8,36 @@
       <!-- This will be the content of the popover -->
       <template #popper="{ hide }">
         <div class="dropdown-acoes" @click.stop="hide">
-          <slot></slot>
+          <ThemeTeleport>
+            <slot></slot>
+          </ThemeTeleport>
         </div>
       </template>
-    </VDropdown>
+    </Dropdown>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { Dropdown } from 'floating-vue'
 import DotsIcon from '../icons/DotsIcon.vue'
-import { PropType } from 'vue'
+import { PropType, ref } from 'vue'
+import ThemeTeleport from '../../provider/ThemeTeleport.vue';
 
 type TriggerEvent = 'hover' | 'click' | 'focus' | 'touch'
 
-export default {
-  name: 'DropdownAcoes',
-  props: {
-    triggers: {
-      type: Array as PropType<TriggerEvent[]>,
-      default: () => ['click']
-    },
-    disabled: {
-      type: Boolean,
-      default: false
-    }
+defineProps({
+  triggers: {
+    type: Array as PropType<TriggerEvent[]>,
+    default: () => ['click']
   },
-  components: {
-    VDropdown: Dropdown,
-    DotsIcon
-  },
-  data() {
-    return {
-      open: false
-    }
-  },
-  methods: {}
-}
+  disabled: {
+    type: Boolean,
+    default: false
+  }
+})
+
+
+const open = ref(false)
 </script>
 
 <style scoped>
@@ -64,8 +57,8 @@ img {
   flex-direction: column;
 }
 
-.dropdown-acoes::v-deep button,
-.dropdown-acoes::v-deep a {
+.dropdown-acoes :deep(button),
+.dropdown-acoes :deep(a) {
   display: flex;
   align-items: center;
   background: none;
@@ -88,6 +81,7 @@ img {
   outline: 0;
   font-size: 1rem;
   flex-shrink: 0;
+  line-height: 1;
 }
 
 .dropdown-acoes::v-deep button:hover,
