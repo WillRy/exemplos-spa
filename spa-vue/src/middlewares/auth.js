@@ -8,39 +8,32 @@ import { useToast } from 'vue-toast-notification'
 export const auth = async (to, from, next) => {
   const usuarioState = usuarioStore()
 
-  //verifica se rota contém um meta indicando que o grupo de rota é privado
-  /**
-   * meta: { privado: true }
-   */
-  let rotaEstaComoPrivada = to.matched.map((record) => record.meta.privado).find(Boolean)
+  const toRouteIsPrivate = to.matched.some((record) => record.meta.privado)
 
-  //se usuário não está carregado na store, carrega ele
-  let logado = usuarioState.isLoggedIn
-  if (!logado) {
-    logado = await usuarioState.carregarUsuarioLogado()
+  const fromRouteIsPublic = from.matched.some((record) => !record.meta.privado);
+
+  const betweenPublic = fromRouteIsPublic && !toRouteIsPrivate;
+
+
+  if(!usuarioState.usuario && !to.query.logout && !betweenPublic) {
+    try {
+      await usuarioState.carregarUsuarioLogado();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  //se está vindo de um login ou logout forçado, deixa entrar na rota (util para SSO)
-  const fazendoNovoLogin = (to.query.logout && !logado) || to.query.k || to.query.token || to.name === 'logout'
-  if (fazendoNovoLogin && !rotaEstaComoPrivada) {
-    return next()
-  }
-
-  //se rota é privada e não to logado, redireciona para o login
-  if (rotaEstaComoPrivada && !logado) {
+  if (toRouteIsPrivate && !usuarioState.usuario) {
     return next({
       name: 'login',
       query: {
-        logout: Math.floor(Math.random() * 1000)
-      },
+        logout: 1
+      }
     })
   }
 
-  //se rota é publica e estou logado, envia para a home
-  if (!rotaEstaComoPrivada && logado) {
-    return next({
-      name: 'dashboard'
-    })
+  if (usuarioState.usuario && !toRouteIsPrivate && !to.name.includes('logout')) {
+    return next({ name: 'dashboard' })
   }
 
   /**

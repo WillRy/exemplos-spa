@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { apiSemLogout } from '../services/api'
+import api, { apiPublic } from '../services/api'
 
 export const usuarioStore = defineStore('usuarioStore', {
   state: () => {
@@ -19,7 +19,7 @@ export const usuarioStore = defineStore('usuarioStore', {
   actions: {
     async carregarUsuarioLogado() {
       try {
-        const response = await apiSemLogout.get('/usuario')
+        const response = await api.get('/usuario?ignoreRedirect=1')
         this.usuario = response.data.data
 
         return true
@@ -30,7 +30,7 @@ export const usuarioStore = defineStore('usuarioStore', {
     },
     async logout() {
       try {
-        await apiSemLogout.get('/logout')
+        await apiPublic.get('/logout')
 
         this.usuario = null
 

@@ -21,7 +21,7 @@ const router = createRouter({
         const usuarioState = usuarioStore()
         await usuarioState.logout()
         return next({ name: 'login', query: { logout: 1 } })
-      }
+      },
     },
     // rotas publicas
     {
@@ -29,9 +29,6 @@ const router = createRouter({
       component: () => import('../layouts/Publico'),
       name: 'publico',
       beforeEnter: [],
-      meta: {
-        public: true
-      },
       children: [
         {
           path: '',
@@ -98,6 +95,16 @@ const router = createRouter({
   ]
 })
 
+// get a new csrf token in case the user has no token
+router.beforeEach(async (from, to, next) => {
+  const hasCSRFToken = document.cookie.split(';').some((cookie) => cookie.trim().startsWith('XSRF-TOKEN='))
+  if (!hasCSRFToken) {
+    await apiPublic.get('/csrf')
+  }
+
+  return next()
+})
+
 router.beforeEach(configuraIdioma)
 
 router.beforeEach(iniciaLoader)
@@ -106,10 +113,5 @@ router.afterEach(terminaLoader)
 
 router.beforeEach(auth)
 
-// get a new csrf token in each request
-router.beforeEach(async (from, to, next) => {
-  await apiPublic.get('/csrf')
-  return next()
-})
 
 export default router
