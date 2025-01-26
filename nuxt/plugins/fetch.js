@@ -2,7 +2,6 @@ export default defineNuxtPlugin(() => {
   const baseurl = useRuntimeConfig().public.apiUrl;
   const frontUrl = useRuntimeConfig().public.frontUrl;
   const nuxtApp = useNuxtApp();
-  const headersCookie = useRequestHeaders(["cookie"]);
 
   let refreshingToken = false;
   let failedRequestsQueue = [];
@@ -41,10 +40,9 @@ export default defineNuxtPlugin(() => {
     credentials: "include",
     baseURL: baseurl,
     headers: {
-      Accept: "application/json",
+      "Accept": "application/json",
       "Content-Type": "application/json",
-      Referer: frontUrl,
-      ...headersCookie,
+      "Referer": frontUrl,
     },
     async onRequest({ request, options, error }) {
       try {
@@ -53,25 +51,26 @@ export default defineNuxtPlugin(() => {
         //CSRF: valor para enviar via HEADER
         const csrf = await nuxtApp.$getCsrf();
 
-        //CSRF: valor para enviar via cookie (somente para SSR), pois dentro da mesma request não é possível ler o cookie atualizado
-        if(import.meta.server){
-          let appendCookie = headersCookie["cookie"] ?? "";
-          if(!appendCookie.includes(nuxtApp.$CSRF_COOKIE)){
-            appendCookie = appendCookie + `; ${nuxtApp.$CSRF_COOKIE}=${csrf}`;
+        if (import.meta.server) {
+          //CSRF (SSR): valor para enviar via cookie, pois se for obtido dentro da mesma request não é possível ler o cookie atualizado
+          let cookieString = await nuxtApp.runWithContext(() => useRequestHeaders(["cookie"]).cookie ?? '');
+          if (!cookieString.includes(nuxtApp.$CSRF_COOKIE)) {
+            cookieString = cookieString + `; ${nuxtApp.$CSRF_COOKIE}=${csrf}`;
           }
+
 
           // if(!appendCookie.includes('laravel_session')){
           //   appendCookie = appendCookie + `; ${'laravel_session'}=${nuxtApp.$session.value}`;
           // }
 
-          buildHeader(headers, "Cookie", appendCookie);
-        }
+          buildHeader(headers, "Cookie", cookieString);
 
-      
-        // válido somente na camada SSR onde cookie é legível por ser HTTPOnly
-        const token = nuxtApp.$token.value;
-        if (token) {
-          buildHeader(headers, "Authorization", `Bearer ${token}`);
+
+          // válido somente na camada SSR onde cookie é legível por ser HTTPOnly
+          const token = nuxtApp.$token.value;
+          if (token) {
+            buildHeader(headers, "Authorization", `Bearer ${token}`);
+          }
         }
 
         buildHeader(headers, nuxtApp.$CSRF_HEADER, csrf);
@@ -139,6 +138,7 @@ export default defineNuxtPlugin(() => {
         return new Promise((resolve, reject) => {
           failedRequestsQueue.push({
             onSuccess: (token) => {
+              console.log('token', token);
               const originalConfig = buildContextRetry(ctx.options);
 
               const newConfig = {

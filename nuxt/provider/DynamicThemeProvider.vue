@@ -148,9 +148,6 @@ function configurarThema() {
         Object.assign(theme.value, props.themeConfig);
     }
 
-    if(import.meta.server) {
-        console.log(theme.value);
-    }
 }
 
 watch(() => props.corThemaPrincipal, () => {
