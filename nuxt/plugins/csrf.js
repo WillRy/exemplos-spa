@@ -115,7 +115,7 @@ export default defineNuxtPlugin((nuxtApp) => {
           session.value = parseCookieHeader('laravel_session', combinedCookie);
 
           // const cookies = combinedCookie.split(/, (?=\s*[a-zA-Z0-9_\-]+=)/);
-          // recupera todos os cookies retornados pelo backend(incluindo session)
+          // //recupera todos os cookies retornados pelo backend(incluindo session)
           // await nuxtApp.runWithContext(() => {
           //   const event = useRequestEvent();
 
@@ -151,6 +151,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       getCookie: getCookie,
       setCookie: setCookie,
       getCsrf: getCsrf,
+      parseCookieHeader
     },
   };
 });

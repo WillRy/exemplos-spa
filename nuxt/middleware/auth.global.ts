@@ -12,10 +12,10 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
   //OBS: SOMENTE PARA TESTES E DEBUG
   // if(import.meta.server) {
-  //   await useNuxtApp().$getCsrf();
-  //   await useApi("/login", {
-  //     method: "POST",
-  //   });
+    // await useNuxtApp().$getCsrf();
+    // await useApi("/login", {
+    //   method: "POST",
+    // });
   // }
   
 

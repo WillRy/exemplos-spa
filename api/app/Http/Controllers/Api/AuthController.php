@@ -25,7 +25,7 @@ class AuthController extends Controller
 
         try {
 
-            $token = Auth::guard('api')->attempt([
+            $token = Auth::guard('web')->attempt([
                 'email' => $dados['email'],
                 'senha' => $dados['senha'],
             ]);
@@ -36,11 +36,11 @@ class AuthController extends Controller
 
             $user = Usuario::query()->where('email', $dados['email'])->first();
 
-            $tokens = (new Autenticacao())->gerarAutenticacao(
-                $user->id
-            );
+            // $tokens = (new Autenticacao())->gerarAutenticacao(
+            //     $user->id
+            // );
 
-            return (new ResponseJSON())->setData($tokens)->setMessage('Bem vindo!')->render();
+            return (new ResponseJSON())->setData($user)->setMessage('Bem vindo!')->render();
 
         } catch (\Exception $e) {
             return (new ResponseJSON())->setError($e)->render();

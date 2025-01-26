@@ -3,8 +3,6 @@ export default defineNuxtPlugin(() => {
   const frontUrl = useRuntimeConfig().public.frontUrl;
   const nuxtApp = useNuxtApp();
 
-  let refreshingToken = false;
-  let failedRequestsQueue = [];
 
   const buildHeader = async (headers, name, value) => {
     if (!value) return;
@@ -50,6 +48,7 @@ export default defineNuxtPlugin(() => {
 
         //CSRF: valor para enviar via HEADER
         const csrf = await nuxtApp.$getCsrf();
+        buildHeader(headers, nuxtApp.$CSRF_HEADER, csrf);
 
         if (import.meta.server) {
           //CSRF (SSR): valor para enviar via cookie, pois se for obtido dentro da mesma request não é possível ler o cookie atualizado
@@ -58,13 +57,9 @@ export default defineNuxtPlugin(() => {
             cookieString = cookieString + `; ${nuxtApp.$CSRF_COOKIE}=${csrf}`;
           }
 
-          if(!appendCookie.includes('laravel_session')){
-            appendCookie = appendCookie + `; ${'laravel_session'}=${nuxtApp.$session.value}`;
+          if(!cookieString.includes('laravel_session')){
+            cookieString = cookieString + `; laravel_session=${nuxtApp.$session.value}`;
           }
-
-          // if(!appendCookie.includes('laravel_session')){
-          //   appendCookie = appendCookie + `; ${'laravel_session'}=${nuxtApp.$session.value}`;
-          // }
 
           buildHeader(headers, "Cookie", cookieString);
 
@@ -76,96 +71,14 @@ export default defineNuxtPlugin(() => {
           }
         }
 
-        buildHeader(headers, nuxtApp.$CSRF_HEADER, csrf);
+
       } catch (e) {
         console.log(e);
       }
     },
     async onResponse(ctx) {
-      const refreshToken = nuxtApp.$refresh_token.value;
-
-      const shouldRefresh =
-        !ctx.response.url.includes("/refresh") &&
-        !ctx.response.url.includes("/login");
-      !ctx.response.url.includes("/csrf");
-      if (ctx.response.status === 401 && shouldRefresh) {
-        if (ctx.response.url.includes("/refresh")) {
-          await nuxtApp.runWithContext(() => navigateTo("/?logout=1"));
-        }
-
-        if (!refreshingToken) {
-          refreshingToken = true;
-          new Promise((resolve, reject) => {
-            nuxtApp
-              .$fetchApi("/refresh", {
-                onResponse(ctx) {},
-                // ...buildContextRetry(ctx.options),
-                method: "POST",
-                credentials: "include",
-                body: {
-                  refresh_token: refreshToken,
-                },
-              })
-              .then(async (ctx2) => {
-                const newToken = ctx2.data.token;
-                const newRefreshToken = ctx2.data.refresh_token;
-
-                if (import.meta.server) {
-                  nuxtApp.$setToken(newToken);
-                  nuxtApp.$setRefreshToken(newRefreshToken);
-                }
-
-                failedRequestsQueue.forEach((request) =>
-                  request.onSuccess(newToken)
-                );
-                failedRequestsQueue = [];
-
-                // resolve(this)
-              })
-              .catch(async () => {
-                failedRequestsQueue.forEach((request) => {
-                  request.onFailure(ctx);
-                });
-                failedRequestsQueue = [];
-                // reject(this)
-                return await nuxtApp.runWithContext(() =>
-                  navigateTo("/?logout=2")
-                );
-              })
-              .finally(() => {
-                refreshingToken = false;
-              });
-          });
-        }
-
-        return new Promise((resolve, reject) => {
-          failedRequestsQueue.push({
-            onSuccess: (token) => {
-              console.log('token', token);
-              const originalConfig = buildContextRetry(ctx.options);
-
-              const newConfig = {
-                ...originalConfig,
-                headers: {
-                  ...(originalConfig.headers || {}),
-                  // Authorization: `Bearer ${token}`,
-                },
-              };
-
-              resolve(
-                $fetchApi(ctx.response.url, {
-                  ...newConfig,
-                  onResponse: (ctx3) => {
-                    Object.assign(ctx, ctx3);
-                  },
-                })
-              );
-            },
-            onFailure: (err) => {
-              reject(err);
-            },
-          });
-        });
+      if (ctx.response.status === 401) {
+        await nuxtApp.runWithContext(() => navigateTo("/?logout=1"));
       }
     },
   });

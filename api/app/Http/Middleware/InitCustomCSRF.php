@@ -11,7 +11,7 @@ class InitCustomCSRF
     {
         if ((new CustomCSRF())->fromFrontEnd()) {
 
-            // (new CustomCSRF())->tratarCSRF();
+            (new CustomCSRF())->tratarCSRF();
 
             return $next($request);
 
