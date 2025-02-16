@@ -28,39 +28,51 @@ function getFormError(e: any) {
 }
 
 function descobrirDadosBackend(e: any) {
-  let data: jsonBackend | null = null
+  let data: jsonBackend | null = null;
 
-  if (axios.isAxiosError(e) && e.response) {
-    data = e.response.data
-  } else if (!(e instanceof Error) && !(typeof e === 'string') && e) {
-    data = e.data
+  if (e instanceof Object && "response" in e && e.response && e.response._data) {
+    data = e.response._data;
+  } else if (e instanceof Object && "response" in e && e.response && e.response.data) {
+    data = e.response.data;
+  } else if (e instanceof Object && "data" in e && e.data) {
+    data = e.data;
+  } else if (e instanceof Object && "_data" in e && e._data) {
+    data = e._data;
   }
 
-  return data
+  return data;
 }
 
 function descobrirMensagem(e: any, defaultMessage: string | null = null) {
-  let response: AxiosResponse<any> | undefined | null
+  let response: object | undefined | null
 
   const data: jsonBackend | null = descobrirDadosBackend(e)
 
-  if (axios.isAxiosError(e) && e.response) {
+  if (e && e.response) {
     response = e.response
   } else if (!(e instanceof Error) && !(typeof e === 'string') && e) {
     response = e
   }
 
-  if (response && response.status === 422 && data && data.errors.length) {
-    const erro = Object.keys(response.data.errors)[0]
-    return response.data.errors[erro][0]
-  } else if (response && response.data && response.data.message) {
-    return response.data.message
+  if (data && data?.message === '') {
+    return null;
+  } else if (data && data?.errors && Array.isArray(data?.errors)) {
+    if(Object.keys(data.errors).length > 0) {
+      const erro = Object.keys(data.errors)[0] as any;
+      return data.errors[erro][0]
+    }
+
+    return data?.message || defaultMessage || null;
+  }else if(data && data.message){
+    return data.message;
+  } else if (response && "message" in response && typeof response.message === "string") {
+    return response.message;
   } else if (e instanceof Error && e.message) {
-    return e.message
-  } else if (typeof e === 'string') {
-    return e
+    return e.message;
+  } else if (typeof e === "string") {
+    return e;
   } else if (defaultMessage) {
-    return defaultMessage
+    return defaultMessage;
   }
 
   return null

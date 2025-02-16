@@ -29,7 +29,7 @@ function getFormError(e: any) {
   if (json && "errors" in json) {
     for (const campo in json.errors) {
       if (json.errors[campo] && json.errors[campo].length > 0) {
-        erros[campo] = json.errors[campo][0];
+        erros[campo] = json.errors[campo][0] as string;
       }
     }
   }
@@ -46,8 +46,8 @@ function descobrirDadosBackend(e: any) {
 
   if (e instanceof Object && "response" in e && e.response && e.response._data) {
     data = e.response._data;
-  } else if (e instanceof Object && "response" in e && e.response) {
-    data = e.response;
+  } else if (e instanceof Object && "response" in e && e.response && e.response.data) {
+    data = e.response.data;
   } else if (e instanceof Object && "data" in e && e.data) {
     data = e.data;
   } else if (e instanceof Object && "_data" in e && e._data) {
@@ -58,28 +58,27 @@ function descobrirDadosBackend(e: any) {
 }
 
 function descobrirMensagem(e: any, defaultMessage: string | null = null) {
-  debugger;
-  let response: object | undefined | null;
+  let response: object | undefined | null
 
-  const data: jsonBackend | null = descobrirDadosBackend(e);
+  const data: jsonBackend | null = descobrirDadosBackend(e)
 
-  if (e instanceof Object && "response" in e && e.response && e.response._data) {
-    response = e.response._data;
-  } else if (e instanceof Object && "response" in e && e.response) {
-    response = e.response;
-  } else if (e instanceof Object && "data" in e && e.data) {
-    response = e.data;
-  } else if (e instanceof Object && "_data" in e && e._data) {
-    response = e._data;
-  } else if (!(e instanceof Error) && !(typeof e === "string") && e) {
-    response = e;
-  } else if (e instanceof Object) {
-    response = e;
+  if (e && e.response) {
+    response = e.response
+  } else if (!(e instanceof Error) && !(typeof e === 'string') && e) {
+    response = e
   }
 
-  if (data && data.errors && data.errors.length) {
-    const erro = Object.keys(data.errors)[0];
-    return data.errors[erro][0];
+  if (data && data?.message === '') {
+    return null;
+  } else if (data && data?.errors && Array.isArray(data?.errors)) {
+    if(Object.keys(data.errors).length > 0) {
+      const erro = Object.keys(data.errors)[0] as any;
+      return data.errors[erro][0]
+    }
+
+    return data?.message || defaultMessage || null;
+  }else if(data && data.message){
+    return data.message;
   } else if (response && "message" in response && typeof response.message === "string") {
     return response.message;
   } else if (e instanceof Error && e.message) {
@@ -90,7 +89,7 @@ function descobrirMensagem(e: any, defaultMessage: string | null = null) {
     return defaultMessage;
   }
 
-  return null;
+  return null
 }
 
 export function useBackendAlert() {
