@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { usuarioStore } from '../stores/usuario'
 import { configuraIdioma, mudarIdioma } from '../middlewares/configuraIdioma'
 import { iniciaLoader, terminaLoader } from '../middlewares/loaders'
-import api, { apiPublic } from '../services/api'
+import api from '../services/api'
 import { auth } from '@/middlewares/auth.js'
 
 const router = createRouter({
@@ -90,7 +90,7 @@ const router = createRouter({
     {
       path: '/:pathMatch(.*)*',
       name: 'not-found',
-      component: () => import('../views/NaoEncontrado')
+      component: () => import('../views/NaoEncontrado.vue')
     }
   ]
 })

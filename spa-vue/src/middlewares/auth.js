@@ -12,9 +12,15 @@ export const auth = async (to, from, next) => {
 
   const betweenPublic = fromRouteIsPublic && !toRouteIsPrivate;
 
+  const fromNotFound = from.name === 'not-found';
+
   const usuarioState = usuarioStore()
 
-  if(!usuarioState.isLoggedIn && !to.query.logout && !betweenPublic) {
+  if(to.name === 'not-found' || to.name === 'logout') {
+    return next();
+  }
+
+  if(!usuarioState.isLoggedIn && !to.query.logout && !betweenPublic || fromNotFound) {
     try {
       await usuarioState.carregarUsuarioLogado();
     } catch (error) {
@@ -23,16 +29,12 @@ export const auth = async (to, from, next) => {
   }
 
   if (toRouteIsPrivate && !usuarioState.isLoggedIn) {
-    return next({name: 'login', query: {logout: 1}})
+    return next({name: 'login'})
   }
 
-  if (usuarioState.isLoggedIn && !toRouteIsPrivate) {
+  if (!toRouteIsPrivate && usuarioState.isLoggedIn) {
     return next({name: 'dashboard'})
   }
-
-  // if(to.path === '/' && !usuarioState.isLoggedIn) {
-  //   return next({name: 'login', query: {logout: 1}})
-  // }
 
   const permissoesUsuario = usuarioState.permissoes
 

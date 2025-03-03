@@ -23,7 +23,7 @@
 <script setup>
 import BaseInput from '../../external/components/form/BaseInput'
 import BaseButtonPrimary from '../../external/components/buttons/BaseButtonPrimary'
-import api, { apiPublic } from '../../services/api'
+import api from '../../services/api'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'

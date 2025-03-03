@@ -24,14 +24,13 @@ class BaseHttp {
       }
 
 
-      if(!csrfCookie) {
+      if(!csrfCookie && !config.url.includes('/csrf')) {
         await axios.create({
           baseURL: this.baseUrl,
           withCredentials: true
         }).get('/csrf');
         config.headers['CSRF-TOKEN'] = ('; ' + document.cookie).split(`; CSRF-TOKEN=`).pop().split(';')[0] ?? null;
       }
-      // await api.get('/csrf')
 
       return config;
     });
@@ -50,20 +49,18 @@ class BaseHttp {
 
   }
 
-  async redirectLogout() {
+  async redirectLogout(number = 1) {
     await usuarioStore().logout();
     return router.push({
       name: 'login',
       query: {
-        logout: 1
+        logout: number
       },
     })
   }
 
   interceptorRefresh(error) {
-    const status = error.response.status
-    // const shouldRefresh = error.response.data?.code === 'token.expired';
-
+    const status = error.response.status;
 
     const routeToIgnoreRedirect = [
       "/login",
@@ -125,9 +122,10 @@ class BaseHttp {
           })
         })
       } else {
-        if (shouldRedirectLogout) {
-          this.redirectLogout(2)
-        }
+
+        // if (shouldRedirectLogout) {
+        //   this.redirectLogout(2)
+        // }
         return Promise.reject(error)
       }
     }
@@ -169,9 +167,7 @@ class BaseHttp {
 
 }
 
-const apiPublic = new BaseHttp(false);
-const api = new BaseHttp(true);
 
-export { apiPublic }
+const api = new BaseHttp(true);
 
 export default api;
