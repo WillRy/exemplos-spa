@@ -23,7 +23,7 @@
 <script setup>
 import BaseInput from '../../external/components/form/BaseInput'
 import BaseButtonPrimary from '../../external/components/buttons/BaseButtonPrimary'
-import { apiPublic } from '../../services/api'
+import api, { apiPublic } from '../../services/api'
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -52,7 +52,7 @@ const submit = async function () {
 
     const result = await validate()
     if (result.valid) {
-      const r = await apiPublic.post('/esqueci-senha', {
+      const r = await api.post('/esqueci-senha', {
         email: email.value,
         url: window.location.origin + '/' + 'redefinir-senha'
       })

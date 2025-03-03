@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { usuarioStore } from '../stores/usuario'
 import { configuraIdioma, mudarIdioma } from '../middlewares/configuraIdioma'
 import { iniciaLoader, terminaLoader } from '../middlewares/loaders'
-import { apiPublic } from '../services/api'
+import api, { apiPublic } from '../services/api'
 import { auth } from '@/middlewares/auth.js'
 
 const router = createRouter({
@@ -99,7 +99,7 @@ const router = createRouter({
 router.beforeEach(async (from, to, next) => {
   const hasCSRFToken = document.cookie.split(';').some((cookie) => cookie.trim().startsWith('CSRF-TOKEN='))
   if (!hasCSRFToken) {
-    await apiPublic.get('/csrf')
+    await api.get('/csrf')
   }
 
   return next()

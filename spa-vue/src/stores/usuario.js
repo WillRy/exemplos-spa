@@ -30,7 +30,7 @@ export const usuarioStore = defineStore('usuarioStore', {
     },
     async logout() {
       try {
-        await apiPublic.get('/logout')
+        await api.get('/logout')
 
         this.usuario = null
 

@@ -6,9 +6,11 @@ import { usuarioStore } from '@/stores/usuario.js';
 
 
 class BaseHttp {
-  constructor() {
+  constructor(executeLogoutFlow = false) {
+    this.baseUrl  = 'http://localhost:8000/api/';
+
     this.instance = axios.create({
-      baseURL: 'http://localhost:8000/api/',
+      baseURL: this.baseUrl,
       withCredentials: true
     });
 
@@ -16,9 +18,32 @@ class BaseHttp {
 
     this.instance.interceptors.request.use(async (config) => {
       config.headers['Accept-Language'] = i18n.global.locale;
-      config.headers['CSRF-TOKEN'] = ('; ' + document.cookie).split(`; CSRF-TOKEN=`).pop().split(';')[0] ?? null;
+      const csrfCookie = ('; ' + document.cookie).split(`; CSRF-TOKEN=`).pop().split(';')[0] ?? null;
+      if(csrfCookie) {
+        config.headers['CSRF-TOKEN'] = csrfCookie;
+      }
+
+
+      if(!csrfCookie) {
+        await axios.create({
+          baseURL: this.baseUrl,
+          withCredentials: true
+        }).get('/csrf');
+        config.headers['CSRF-TOKEN'] = ('; ' + document.cookie).split(`; CSRF-TOKEN=`).pop().split(';')[0] ?? null;
+      }
+      // await api.get('/csrf')
+
       return config;
     });
+
+    if(executeLogoutFlow) {
+      this.instance.interceptors.response.use(
+        (response) => {
+          return response
+        },
+        (error) => this.interceptorRefresh(error, true)
+      )
+    }
 
     this.isRefreshing = false
     this.failedRequestsQueue = []
@@ -35,13 +60,26 @@ class BaseHttp {
     })
   }
 
-  interceptorRefresh(error, shouldRedirectLogout = true) {
+  interceptorRefresh(error) {
     const status = error.response.status
     // const shouldRefresh = error.response.data?.code === 'token.expired';
-    const shouldRefresh = !error.response.config.url.includes('/refresh')
+
+
+    const routeToIgnoreRedirect = [
+      "/login",
+      "/logout",
+      "/cadastro",
+      "/esqueci-senha",
+      "/redefinir-senha",
+      "/csrf"
+    ];
 
     const urlParams = new URLSearchParams(error.config?.url?.split('?')[1] || '');
-    const ignoreRedirect = urlParams.has('ignoreRedirect');
+    const ignoreRedirect = error.config?.query?.ignoreRedirect || urlParams.has('ignoreRedirect');
+    const shouldRedirectLogout = (!routeToIgnoreRedirect.includes(error.response.config.url) && !ignoreRedirect);
+
+    const shouldRefresh = !error.response.config.url.includes('/refresh') && !routeToIgnoreRedirect.includes(error.response.config.url)
+
 
     if (status === 401) {
       if (shouldRefresh) {
@@ -50,7 +88,7 @@ class BaseHttp {
         if (!this.isRefreshing) {
           this.isRefreshing = true
 
-          apiPublic
+          api
             .post('/refresh')
             .then((response) => {
               const { token } = response.data
@@ -64,7 +102,7 @@ class BaseHttp {
               this.failedRequestsQueue.forEach((request) => request.onFailure(error))
               this.failedRequestsQueue = []
 
-              if (shouldRedirectLogout && !ignoreRedirect) {
+              if (shouldRedirectLogout) {
                 return this.redirectLogout(1)
               }
             })
@@ -87,10 +125,10 @@ class BaseHttp {
           })
         })
       } else {
-        if (shouldRedirectLogout && !ignoreRedirect) {
+        if (shouldRedirectLogout) {
           this.redirectLogout(2)
         }
-        return Promise.reject(new Error('Sessão expirada'))
+        return Promise.reject(error)
       }
     }
 
@@ -130,43 +168,10 @@ class BaseHttp {
   }
 
 }
-class ApiPublic  extends BaseHttp {
-  constructor() {
-    super();
-  }
-}
 
-class ApiSemLogout  extends BaseHttp {
-  constructor() {
-    super();
+const apiPublic = new BaseHttp(false);
+const api = new BaseHttp(true);
 
-    this.instance.interceptors.response.use(
-      (response) => {
-        return response
-      },
-      (error) => this.interceptorRefresh(error, false)
-    )
-  }
-}
-
-class Api extends BaseHttp {
-  constructor() {
-    super();
-
-    this.instance.interceptors.response.use(
-      (response) => {
-        return response
-      },
-      (error) => this.interceptorRefresh(error, true)
-    )
-  }
-}
-
-
-const apiPublic = new ApiPublic();
-const apiSemLogout = new ApiSemLogout();
-const api = new Api();
-
-export { apiPublic, apiSemLogout }
+export { apiPublic }
 
 export default api;

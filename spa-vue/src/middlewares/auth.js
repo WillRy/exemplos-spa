@@ -6,16 +6,15 @@ import { useToast } from 'vue-toast-notification'
  * Middleware de permissão
  */
 export const auth = async (to, from, next) => {
-  const usuarioState = usuarioStore()
-
   const toRouteIsPrivate = to.matched.some((record) => record.meta.privado)
 
   const fromRouteIsPublic = from.matched.some((record) => !record.meta.privado);
 
   const betweenPublic = fromRouteIsPublic && !toRouteIsPrivate;
 
+  const usuarioState = usuarioStore()
 
-  if(!usuarioState.usuario && !to.query.logout && !betweenPublic) {
+  if(!usuarioState.isLoggedIn && !to.query.logout && !betweenPublic) {
     try {
       await usuarioState.carregarUsuarioLogado();
     } catch (error) {
@@ -23,22 +22,17 @@ export const auth = async (to, from, next) => {
     }
   }
 
-  if (toRouteIsPrivate && !usuarioState.usuario) {
-    return next({
-      name: 'login',
-      query: {
-        logout: 1
-      }
-    })
+  if (toRouteIsPrivate && !usuarioState.isLoggedIn) {
+    return next({name: 'login', query: {logout: 1}})
   }
 
-  if (usuarioState.usuario && !toRouteIsPrivate && !to.name.includes('logout')) {
-    return next({ name: 'dashboard' })
+  if (usuarioState.isLoggedIn && !toRouteIsPrivate) {
+    return next({name: 'dashboard'})
   }
 
-  /**
-   * Se rota é privada e está logado, verifica se tem permissão para acess
-   */
+  // if(to.path === '/' && !usuarioState.isLoggedIn) {
+  //   return next({name: 'login', query: {logout: 1}})
+  // }
 
   const permissoesUsuario = usuarioState.permissoes
 
