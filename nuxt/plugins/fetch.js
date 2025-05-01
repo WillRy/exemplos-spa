@@ -5,6 +5,8 @@ export default defineNuxtPlugin(() => {
   const frontUrl = useRuntimeConfig().public.frontUrl;
   const nuxtApp = useNuxtApp();
 
+  const headersCookie = useRequestHeaders(["cookie"]);
+
   const CSRF_COOKIE = "CSRF-TOKEN";
   const CSRF_HEADER = "CSRF-TOKEN";
 
