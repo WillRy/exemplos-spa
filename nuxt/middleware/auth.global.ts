@@ -39,6 +39,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   }
 
   if (!usuario.value && isPrivate && !haveLogout) {
+    // await useNuxtApp().$cleanAllCookies();
     return navigateTo("/?logout=3");
   }
 });
