@@ -177,10 +177,7 @@ export default defineNuxtPlugin(() => {
                 const newToken = ctx2.data.token;
                 const newRefreshToken = ctx2.data.refresh_token;
 
-                if (import.meta.server) {
-                  nuxtApp.$setToken(newToken);
-                  nuxtApp.$setRefreshToken(newRefreshToken);
-                }
+          
 
                 failedRequestsQueue.forEach((request) =>
                   request.onSuccess(newToken)
