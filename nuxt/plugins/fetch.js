@@ -1,10 +1,20 @@
+import { appendResponseHeader } from "h3";
+
 export default defineNuxtPlugin(() => {
   const baseurl = useRuntimeConfig().public.apiUrl;
   const frontUrl = useRuntimeConfig().public.frontUrl;
   const nuxtApp = useNuxtApp();
 
+  const CSRF_COOKIE = "CSRF-TOKEN";
+  const CSRF_HEADER = "CSRF-TOKEN";
+
   let refreshingToken = false;
   let failedRequestsQueue = [];
+
+  let token = ref(null);
+  let refresh_token = ref(null);
+  let csrfCookie = useCookie(CSRF_COOKIE);
+  let csrf = ref(null);
 
   const buildHeader = async (headers, name, value) => {
     if (!value) return;
@@ -36,13 +46,77 @@ export default defineNuxtPlugin(() => {
     };
   };
 
+  async function cleanAllCookies() {
+    await nuxtApp.runWithContext(() => {
+      const cookie = useCookie(CSRF_COOKIE);
+      cookie.value = null;
+
+      const tokenCookie = useCookie("token");
+      tokenCookie.value = null;
+
+      const refreshTokenCookie = useCookie("refresh_token");
+      refreshTokenCookie.value = null;
+    });
+  }
+
+  async function getCsrf() {
+    let existingToken = csrfCookie.value;
+
+    if (existingToken) return existingToken;
+
+    await $fetch("/csrf", {
+      baseURL: baseurl,
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Referer: frontUrl,
+        // ...useRequestHeaders(["cookie"]),
+      },
+      async onResponse({ response }) {
+        if (import.meta.server) {
+          const combinedCookie = response.headers.get("set-cookie") ?? "";
+
+          const cookies = combinedCookie.split(/, (?=\s*[a-zA-Z0-9_\-]+=)/);
+          await nuxtApp.runWithContext(() => {
+            const event = useRequestEvent();
+
+            cookies.forEach((c) => {
+              try {
+                appendResponseHeader(event, "set-cookie", c);
+
+                const cookieName = c.split("=")[0];
+                const cookieValue = c.split("=")[1]?.split(";")[0];
+                const cookieExpires = c.split("expires=")[1]?.split(";")[0];
+
+                //tratar cookies que importam
+                if (cookieName === CSRF_COOKIE) {
+                  csrfCookie = useCookie(CSRF_COOKIE, {
+                    expires: new Date(cookieExpires),
+                  });
+                  csrfCookie.value = cookieValue;
+
+                  csrf.value = cookieValue;
+                }
+              } catch (error) {
+                console.log("error", error);
+              }
+            });
+          });
+        }
+      },
+    });
+
+    return csrfCookie.value;
+  }
+
   const $fetchApi = $fetch.create({
     credentials: "include",
     baseURL: baseurl,
     headers: {
-      "Accept": "application/json",
+      Accept: "application/json",
       "Content-Type": "application/json",
-      "Referer": frontUrl,
+      Referer: frontUrl,
     },
     async onRequest({ request, options, error }) {
       try {
@@ -51,35 +125,31 @@ export default defineNuxtPlugin(() => {
         //CSRF: valor para enviar via HEADER
         const csrf = await nuxtApp.$getCsrf();
 
+        //CSRF: valor para enviar via cookie (somente para SSR), pois dentro da mesma request não é possível ler o cookie atualizado
         if (import.meta.server) {
-          //CSRF (SSR): valor para enviar via cookie, pois se for obtido dentro da mesma request não é possível ler o cookie atualizado
-          let cookieString = await nuxtApp.runWithContext(() => useRequestHeaders(["cookie"]).cookie ?? '');
-          if (!cookieString.includes(nuxtApp.$CSRF_COOKIE)) {
-            cookieString = cookieString + `; ${nuxtApp.$CSRF_COOKIE}=${csrf}`;
+          let appendCookie = headersCookie["cookie"] ?? "";
+          if (!appendCookie.includes(CSRF_COOKIE)) {
+            appendCookie = appendCookie + `; ${CSRF_COOKIE}=${csrf}`;
           }
-
 
           // if(!appendCookie.includes('laravel_session')){
           //   appendCookie = appendCookie + `; ${'laravel_session'}=${nuxtApp.$session.value}`;
           // }
 
-          buildHeader(headers, "Cookie", cookieString);
-
-
-          // válido somente na camada SSR onde cookie é legível por ser HTTPOnly
-          const token = nuxtApp.$token.value;
-          if (token) {
-            buildHeader(headers, "Authorization", `Bearer ${token}`);
-          }
+          buildHeader(headers, "Cookie", appendCookie);
+        }
+        // válido somente na camada SSR onde cookie é legível por ser HTTPOnly
+        if (token.value) {
+          buildHeader(headers, "Authorization", `Bearer ${token.value}`);
         }
 
-        buildHeader(headers, nuxtApp.$CSRF_HEADER, csrf);
+        buildHeader(headers, CSRF_HEADER, csrf);
       } catch (e) {
         console.log(e);
       }
     },
     async onResponse(ctx) {
-      const refreshToken = nuxtApp.$refresh_token.value;
+      const refreshToken = refresh_token.value;
 
       const shouldRefresh =
         !ctx.response.url.includes("/refresh") &&
@@ -138,7 +208,6 @@ export default defineNuxtPlugin(() => {
         return new Promise((resolve, reject) => {
           failedRequestsQueue.push({
             onSuccess: (token) => {
-              console.log('token', token);
               const originalConfig = buildContextRetry(ctx.options);
 
               const newConfig = {
@@ -171,6 +240,8 @@ export default defineNuxtPlugin(() => {
   return {
     provide: {
       fetchApi: $fetchApi,
+      getCsrf: getCsrf,
+      cleanAllCookies: cleanAllCookies,
     },
   };
 });
