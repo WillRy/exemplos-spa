@@ -61,7 +61,7 @@ export default defineNuxtPlugin(() => {
 
   async function getCsrf() {
     let existingToken = csrfCookie.value;
-    
+
     if (existingToken) return existingToken;
 
     await $fetch("/csrf", {
@@ -114,84 +114,41 @@ export default defineNuxtPlugin(() => {
     credentials: "include",
     baseURL: baseurl,
     headers: {
-      "Accept": "application/json",
+      Accept: "application/json",
       "Content-Type": "application/json",
       Referer: frontUrl,
-      ...useRequestHeaders(["cookie"]),
     },
     async onRequest({ request, options, error }) {
       try {
         const headers = (options.headers ||= {});
 
         //CSRF: valor para enviar via HEADER
-        const csrfToken = await getCsrf();
+        const csrf = await nuxtApp.$getCsrf();
 
-        //CSRF (SSR): valor para enviar via cookie, pois se for obtido dentro da mesma request não é possível ler o cookie atualizado
+        //CSRF: valor para enviar via cookie (somente para SSR), pois dentro da mesma request não é possível ler o cookie atualizado
         if (import.meta.server) {
-
-          let cookieString = await nuxtApp.runWithContext(() => useRequestHeaders(["cookie"]).cookie ?? '');
-          if (!cookieString.includes(CSRF_COOKIE)) {
-            cookieString = cookieString + `; ${CSRF_COOKIE}=${csrfToken}`;
+          let appendCookie = headersCookie["cookie"] ?? "";
+          if (!appendCookie.includes(CSRF_COOKIE)) {
+            appendCookie = appendCookie + `; ${CSRF_COOKIE}=${csrf}`;
           }
 
-          buildHeader(headers, "Cookie", cookieString);
-        }
+          // if(!appendCookie.includes('laravel_session')){
+          //   appendCookie = appendCookie + `; ${'laravel_session'}=${nuxtApp.$session.value}`;
+          // }
 
+          buildHeader(headers, "Cookie", appendCookie);
+        }
+        // válido somente na camada SSR onde cookie é legível por ser HTTPOnly
         if (token.value) {
           buildHeader(headers, "Authorization", `Bearer ${token.value}`);
         }
 
-        buildHeader(headers, CSRF_HEADER, csrfToken);
+        buildHeader(headers, CSRF_HEADER, csrf);
       } catch (e) {
         console.log(e);
       }
     },
     async onResponse(ctx) {
-      if (import.meta.server) {
-        try {
-          const combinedCookie = ctx.response.headers.get("set-cookie") ?? "";
-
-          const cookies = combinedCookie.split(/, (?=\s*[a-zA-Z0-9_\-]+=)/);
-          // recupera todos os cookies retornados pelo backend(incluindo session)
-          await nuxtApp.runWithContext(() => {
-            const event = useRequestEvent();
-
-            cookies.forEach((c) => {
-              // repassar os cookies para o cliente
-              appendResponseHeader(event, "set-cookie", c);
-
-              const cookieName = c.split("=")[0];
-              const cookieValue = c.split("=")[1]?.split(";")[0];
-              const cookieExpires = c.split("expires=")[1]?.split(";")[0];
-
-              const expiresSecconds = new Date(cookieExpires);
-
-              //tratar cookies que importam
-              if (cookieName === "refresh_token") {
-                refresh_token.value = cookieValue;
-
-                const cookie = useCookie("refresh_token", {
-                  expires: expiresSecconds,
-                });
-
-                cookie.value = cookieValue;
-              } else if (cookieName === "token") {
-                token.value = cookieValue;
-
-                const cookie = useCookie("token", {
-                  expires: expiresSecconds,
-                });
-                cookie.value = cookieValue;
-              }
-            });
-
-            return;
-          });
-        } catch (error) {
-          console.log("error", error);
-        }
-      }
-
       const refreshToken = refresh_token.value;
 
       const shouldRefresh =
@@ -208,6 +165,7 @@ export default defineNuxtPlugin(() => {
           new Promise((resolve, reject) => {
             nuxtApp
               .$fetchApi("/refresh", {
+                onResponse(ctx) {},
                 // ...buildContextRetry(ctx.options),
                 method: "POST",
                 credentials: "include",
@@ -219,10 +177,10 @@ export default defineNuxtPlugin(() => {
                 const newToken = ctx2.data.token;
                 const newRefreshToken = ctx2.data.refresh_token;
 
-                // if (import.meta.server) {
-                //   nuxtApp.$setToken(newToken);
-                //   nuxtApp.$setRefreshToken(newRefreshToken);
-                // }
+                if (import.meta.server) {
+                  nuxtApp.$setToken(newToken);
+                  nuxtApp.$setRefreshToken(newRefreshToken);
+                }
 
                 failedRequestsQueue.forEach((request) =>
                   request.onSuccess(newToken)
@@ -250,7 +208,6 @@ export default defineNuxtPlugin(() => {
         return new Promise((resolve, reject) => {
           failedRequestsQueue.push({
             onSuccess: (token) => {
-              console.log('token', token);
               const originalConfig = buildContextRetry(ctx.options);
 
               const newConfig = {
