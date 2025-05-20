@@ -47,7 +47,7 @@ class Autenticacao
     public function setCookie(string $name, string $value, bool $forceExpire = false, bool $httpOnly = true)
     {
         setcookie($name, $value, [
-            'expires' => $forceExpire ? time() - 3600 : null,
+            'expires' => $forceExpire ? time() - 3600 : time() + self::SEGUNDOS_REFRESH_TOKEN_VALIDO,
             'path' => '/',
             'secure' => true,
             'httponly' => $httpOnly,

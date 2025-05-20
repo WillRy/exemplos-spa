@@ -16,7 +16,6 @@ export default defineNuxtPlugin(() => {
   let token = ref(null);
   let refresh_token = ref(null);
   let csrfCookie = useCookie(CSRF_COOKIE);
-  let csrf = ref(null);
 
   const buildHeader = async (headers, name, value) => {
     if (!value) return;
@@ -61,6 +60,51 @@ export default defineNuxtPlugin(() => {
     });
   }
 
+  async function handleCookies(response) {
+    if (import.meta.server) {
+      const combinedCookie = response.headers.get("set-cookie") ?? "";
+
+      const cookies = combinedCookie.split(/, (?=\s*[a-zA-Z0-9_\-]+=)/);
+      await nuxtApp.runWithContext(() => {
+        const event = useRequestEvent();
+
+        cookies.forEach((c) => {
+          try {
+            appendResponseHeader(event, "set-cookie", c);
+
+            const cookieName = c.split("=")[0];
+            const cookieValue = c.split("=")[1]?.split(";")[0];
+            const cookieExpires = c.split("expires=")[1]?.split(";")[0];
+            //tratar cookies que importam
+            if (cookieName === "token") {
+              const cookie = useCookie("token", {
+                expires: new Date(cookieExpires),
+              });
+              cookie.value = cookieValue;
+            }
+
+            if (cookieName === "refresh_token") {
+              const cookie = useCookie("refresh_token", {
+                expires: new Date(cookieExpires),
+              });
+              cookie.value = cookieValue;
+            }
+
+            if (cookieName === CSRF_COOKIE) {
+              csrfCookie = useCookie(CSRF_COOKIE, {
+                expires: new Date(cookieExpires),
+              });
+              csrfCookie.value = cookieValue;
+            }
+          } catch (error) {
+            console.log("error", error);
+          }
+        });
+      });
+    }
+  }
+  
+
   async function getCsrf() {
     let existingToken = csrfCookie.value;
 
@@ -76,36 +120,7 @@ export default defineNuxtPlugin(() => {
         // ...useRequestHeaders(["cookie"]),
       },
       async onResponse({ response }) {
-        if (import.meta.server) {
-          const combinedCookie = response.headers.get("set-cookie") ?? "";
-
-          const cookies = combinedCookie.split(/, (?=\s*[a-zA-Z0-9_\-]+=)/);
-          await nuxtApp.runWithContext(() => {
-            const event = useRequestEvent();
-
-            cookies.forEach((c) => {
-              try {
-                appendResponseHeader(event, "set-cookie", c);
-
-                const cookieName = c.split("=")[0];
-                const cookieValue = c.split("=")[1]?.split(";")[0];
-                const cookieExpires = c.split("expires=")[1]?.split(";")[0];
-
-                //tratar cookies que importam
-                if (cookieName === CSRF_COOKIE) {
-                  csrfCookie = useCookie(CSRF_COOKIE, {
-                    expires: new Date(cookieExpires),
-                  });
-                  csrfCookie.value = cookieValue;
-
-                  csrf.value = cookieValue;
-                }
-              } catch (error) {
-                console.log("error", error);
-              }
-            });
-          });
-        }
+        await handleCookies(response);
       },
     });
 
@@ -167,7 +182,9 @@ export default defineNuxtPlugin(() => {
           new Promise((resolve, reject) => {
             nuxtApp
               .$fetchApi("/refresh", {
-                onResponse(ctx) {},
+                async onResponse({ response }) {
+                  await handleCookies(response);
+                },
                 // ...buildContextRetry(ctx.options),
                 method: "POST",
                 credentials: "include",
@@ -179,7 +196,8 @@ export default defineNuxtPlugin(() => {
                 const newToken = ctx2.data.token;
                 const newRefreshToken = ctx2.data.refresh_token;
 
-          
+                token.value = newToken;
+                refresh_token.value = newRefreshToken;
 
                 failedRequestsQueue.forEach((request) =>
                   request.onSuccess(newToken)
