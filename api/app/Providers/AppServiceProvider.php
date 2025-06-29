@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\AuthGuard\JwtGuard;
 use App\AuthGuard\UsuariosProvider;
 use App\Models\Usuario;
 use Illuminate\Contracts\Foundation\Application;
@@ -26,6 +27,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        Auth::extend('jwt2', function ($app, $name, array $config) {
+            // Retorna uma instância de App\AuthGuard\JwtGuard...
+            return new JwtGuard(Auth::createUserProvider($config['provider']), $app['request']);
+        });
+
         /** Registrar uma auth guard personalizada */
         Auth::provider('usuarios', function (Application $app, array $config) {
 
