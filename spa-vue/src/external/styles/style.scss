@@ -1,28 +1,29 @@
-@import "./normalize.scss";
-@import "./variables.scss";
-@import "./colors.scss";
+@import './normalize.scss';
+@import './variables.scss';
+@import './colors.scss';
 
-@import "./grid.scss";
-@import "./estrutura.scss";
+@import './grid.scss';
+@import './estrutura.scss';
 
-@import "vue-multiselect/dist/vue-multiselect.css";
-@import "floating-vue/dist/style.css";
-@import "vue-toast-notification/dist/theme-sugar.css";
-@import '@vuepic/vue-datepicker/dist/main.css'
-;
+@import 'vue-multiselect/dist/vue-multiselect.css';
+@import 'floating-vue/dist/style.css';
+@import 'vue-toast-notification/dist/theme-sugar.css';
+@import '@vuepic/vue-datepicker/dist/main.css';
 
-@import "./select.scss";
-@import "./tabelas.scss";
-@import "./fonts.scss";
+@import './select.scss';
+@import './tabelas.scss';
+@import './fonts.scss';
 
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 *:not(g, text, tspan) {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   box-sizing: border-box;
 }
 
-body, html, #app {
+body,
+html,
+#app {
   height: 100%;
 }
 
@@ -48,16 +49,16 @@ textarea {
 }
 
 .v-toast__item--success {
-  background: var(--success-color-800);
+  background: var(--color-success-800);
 }
 
 .v-toast__item--error {
-  background: var(--error-color-600);
+  background: var(--color-error-600);
 }
 
 .v-toast__item--warning {
-  background: var(--warning-color);
-  color: var(--gray-color-800);
+  background: var(--color-warning);
+  color: var(--color-gray-800);
 }
 
 .v-toast__item .v-toast__text {
@@ -68,4 +69,30 @@ textarea {
 .v-toast__item .v-toast__icon {
   height: 20px;
   width: 20px;
+}
+
+.v-popper__inner {
+  overflow: initial;
+}
+
+.box-card {
+  border: 1px solid #e1e2e6;
+  border-radius: 8px;
+  position: relative;
+
+  background: #fff;
+
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.box-card-titulo {
+  vertical-align: super;
+  margin: 0;
+  color: var(--text-color);
+  font-weight: normal;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  margin-left: var(--spacing-3) !important;
 }

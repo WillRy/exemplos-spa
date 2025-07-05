@@ -32,32 +32,32 @@
 </template>
 
 <script lang="ts">
-import BaseButtonTertiary from './../buttons/BaseButtonTertiary.vue';
-import CaptionText from './../text/CaptionText.vue';
-import { PropType } from 'vue';
+import BaseButtonTertiary from './../buttons/BaseButtonTertiary.vue'
+import CaptionText from './../text/CaptionText.vue'
+import { PropType } from 'vue'
 interface tipoLink {
-    nome: string,
-    link: string
+  nome: string
+  link: string
 }
 export default {
-    name: "Breadcrumb",
-    props: {
-        links: {
-            type: Array as PropType<tipoLink[]>,
-            default: () => [],
-        },
-        componentLink: {
-            type: String,
-            default: "a",
-        },
+  name: 'Breadcrumb',
+  props: {
+    links: {
+      type: Array as PropType<tipoLink[]>,
+      default: () => []
     },
-    methods: {
-        clicou(link) {
-            this.$emit("change", link);
-        },
-    },
-    components: { BaseButtonTertiary, CaptionText }
-};
+    componentLink: {
+      type: String,
+      default: 'a'
+    }
+  },
+  methods: {
+    clicou(link) {
+      this.$emit('change', link)
+    }
+  },
+  components: { BaseButtonTertiary, CaptionText }
+}
 </script>
 
 <style scoped>
@@ -70,11 +70,9 @@ export default {
   gap: 6px;
 }
 
-
 .breadcrumb-separador {
   color: #606266;
 }
-
 
 .links {
   display: flex;
@@ -95,18 +93,17 @@ export default {
   opacity: 0.6;
 }
 
-
 .links .breadcrumb-item:not(:last-child) {
   color: #606266;
 }
 
 .links .atual *,
-.links .atual :deep(*){
-  color: var(--primary-color-principal);
+.links .atual :deep(*) {
+  color: var(--color-primary-principal);
 }
 
 .links .atual path {
-  fill: var(--primary-color-principal);
+  fill: var(--color-primary-principal);
 }
 
 .breadcrumb-nome {

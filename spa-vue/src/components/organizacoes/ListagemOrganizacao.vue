@@ -48,46 +48,36 @@
             {{ $t('palavras.pesquisar') }}
           </BaseButtonPrimary>
         </div>
-        <div class="col-auto ms-auto">
-          <BaseButtonPrimary @click="abrirCriar"> {{ $t('palavras.criar') }}</BaseButtonPrimary>
+        <div class="col">
+          <div class="row justify-end">
+            <div class="col-auto">
+              <BaseButtonPrimary @click="abrirCriar"> {{ $t('palavras.criar') }}</BaseButtonPrimary>
+            </div>
+            <div class="col-auto">
+              <BaseDropdownPrimary>
+                <template #botao> {{ $t('palavras.colunas') }} </template>
+                <template #conteudo>
+                  <div class="py-3 px-3">
+
+                    <BaseCheckbox
+                      v-for="(coluna, index) in visibleColumns"
+                      :key="index"
+                      :label="columns.find(c => c.nome === index).texto"
+                      v-model="visibleColumns[index]"
+                      :name="`coluna-${index}`"
+                      :disabled="false"
+                    />
+                  </div>
+                </template>
+              </BaseDropdownPrimary>
+            </div>
+          </div>
         </div>
       </div>
     </form>
     <Tabela
       :loading="loading"
-      :colunas="[
-        {
-          nome: 'id',
-          texto: $t('palavras.id')
-        },
-        {
-          nome: 'nome',
-          texto: $t('palavras.nome')
-        },
-        {
-          nome: 'email',
-          texto: $t('palavras.email')
-        },
-        {
-          nome: 'telefone',
-          texto: $t('palavras.telefone')
-        },
-        {
-          nome: 'qtd_contatos',
-          texto: $t('palavras.qtd_contatos')
-        },
-        {
-          nome: 'tags',
-          texto: $t('palavras.tags'),
-          disabled: true
-        },
-        {
-          nome: 'acoes',
-          texto: '',
-          disabled: true,
-          width: '50px'
-        }
-      ]"
+      :colunas="columns"
       :dados="organizacoes.dados && organizacoes.dados.data"
       :sort-name="sortName"
       :sort-order="sortOrder"
@@ -99,18 +89,18 @@
       @onPage="updatePagina"
       texto-empty="Não há dados"
     >
-      <template v-slot:colunas="{ dados }">
+      <template v-slot:colunas="{ dados, isColVisible }">
         <tr v-for="(dado, index) in dados" :key="index">
-          <ColunaTabela>
+          <ColunaTabela v-if="isColVisible('id')">
             <span style="font-weight: bold; color: var(--primary-color-principal)">
               {{ dado.id }}
             </span>
           </ColunaTabela>
-          <ColunaTabela>{{ dado.nome }}</ColunaTabela>
-          <ColunaTabela>{{ dado.email }}</ColunaTabela>
-          <ColunaTabela>{{ dado.telefone }}</ColunaTabela>
-          <ColunaTabela>{{ dado.qtd_contatos }}</ColunaTabela>
-          <ColunaTabela>
+          <ColunaTabela v-if="isColVisible('nome')">{{ dado.nome }}</ColunaTabela>
+          <ColunaTabela v-if="isColVisible('email')">{{ dado.email }}</ColunaTabela>
+          <ColunaTabela v-if="isColVisible('telefone')">{{ dado.telefone }}</ColunaTabela>
+          <ColunaTabela v-if="isColVisible('qtd_contatos')">{{ dado.qtd_contatos }}</ColunaTabela>
+          <ColunaTabela v-if="isColVisible('tags')">
             <span
               class="custom-tag"
               v-for="tag in dado.tags"
@@ -167,6 +157,7 @@ import BaseInput from '../../external/components/form/BaseInput'
 import BaseSelectAjax from '../../external/components/form/BaseSelectAjax'
 import Tabela from '../../external/components/tabela/Tabela'
 import ColunaTabela from '../../external/components/tabela/ColunaTabela'
+import BaseDropdownPrimary from '../../external/components/dropdown/BaseDropdownPrimary.vue'
 import Box from '../../external/components/estrutura/Box'
 import api from '@/services/api'
 import ModalCriarOrganizacao from './ModalCriarOrganizacao'
@@ -174,10 +165,11 @@ import ModalEditarOrganizacao from './ModalEditarOrganizacao'
 import ModalExcluirOrganizacao from './ModalExcluirOrganizacao'
 import ModalDetalhesOrganizacao from './ModalDetalhesOrganizacao'
 
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useBackendToast } from '../../external/hooks/useBackendToast'
+import { useBackendToast } from '../../external/composables/useBackendToast'
 import BaseDropdownAction from '@/external/components/dropdown/BaseDropdownAction.vue'
+import BaseCheckbox from '@/external/components/form/BaseCheckbox.vue'
 
 const { t: $t } = useI18n()
 const { backendToastError } = useBackendToast()
@@ -195,6 +187,27 @@ const organizacoes = reactive({
 })
 const resultadoPesquisaTag = reactive({
   dados: []
+})
+
+const visibleColumns = ref({
+  id: true,
+  nome: true,
+  email: true,
+  telefone: true,
+  qtd_contatos: false,
+  tags: true,
+  acoes: true
+})
+const columns = computed(() => {
+  return [
+    { nome: 'id', texto: $t('palavras.id'), show: visibleColumns.value.id },
+    { nome: 'nome', texto: $t('palavras.nome'), show: visibleColumns.value.nome },
+    { nome: 'email', texto: $t('palavras.email'), show: visibleColumns.value.email },
+    { nome: 'telefone', texto: $t('palavras.telefone'), show: visibleColumns.value.telefone },
+    { nome: 'qtd_contatos', texto: $t('palavras.qtd_contatos'), show: visibleColumns.value.qtd_contatos },
+    { nome: 'tags', texto: $t('palavras.tags'), disabled: true, show: visibleColumns.value.tags },
+    { nome: 'acoes', texto: '', disabled: true, width: '50px', show: visibleColumns.value.acoes }
+  ]
 })
 
 const detalhesOrganizacao = ref(false)

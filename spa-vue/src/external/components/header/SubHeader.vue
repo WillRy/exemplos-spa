@@ -108,7 +108,7 @@ export default defineComponent({
   padding-right: calc(var(--bs-gutter-x) * 0.5);
   padding-left: calc(var(--bs-gutter-x) * 0.5);
 
-  background: var(--gray-color-200);
+  background: var(--color-gray-200);
 }
 
 .subheader-container {
@@ -132,7 +132,7 @@ export default defineComponent({
 .titulo {
   font-size: 1.25rem;
   line-height: 24px;
-  color: var(--primary-color-principal);
+  color: var(--color-primary-principal);
   font-weight: bold;
   flex-shrink: 0;
 
@@ -171,10 +171,10 @@ export default defineComponent({
 
 .links .atual *,
 .links .atual :deep(*) {
-  color: var(--primary-color-principal) !important;
+  color: var(--color-primary-principal) !important;
 }
 
 .links .atual path {
-  fill: var(--primary-color-principal);
+  fill: var(--color-primary-principal);
 }
 </style>

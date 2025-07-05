@@ -14,25 +14,24 @@
 </template>
 
 <script lang="ts">
-
 export default {
-  name: "BaseCheckboxSemAcao",
+  name: 'BaseCheckboxSemAcao',
   inheritAttrs: false,
   props: {
     disabled: {
-      default: false,
+      default: false
     },
     label: {
       type: String,
-      default: "",
+      default: ''
     },
     checked: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
-  methods: {},
-};
+  methods: {}
+}
 </script>
 
 <style scoped>
@@ -65,30 +64,30 @@ export default {
   width: 24px;
   background-color: #fff;
   border-radius: 2px;
-  border: 1px solid var(--gray-color-300);
+  border: 1px solid var(--color-gray-300);
   border-radius: 6px;
   flex-shrink: 0;
 }
 
 .checkmark:hover:not(.disabled) {
-  /* border: 1px solid var(--primary-color-principal); */
+  /* border: 1px solid var(--color-primary-principal); */
 }
 
 .checkmark:focus-within:not(.disabled) {
-  border: 1px solid var(--primary-color-principal);
+  border: 1px solid var(--color-primary-principal);
 }
 
-.checkbox-container input:focus~.checkmark {
-  border: 1px solid var(--primary-color-principal);
+.checkbox-container input:focus ~ .checkmark {
+  border: 1px solid var(--color-primary-principal);
 }
 
-.checkbox-container div.checked~.checkmark {
-  background-color: var(--primary-color-principal);
+.checkbox-container div.checked ~ .checkmark {
+  background-color: var(--color-primary-principal);
 }
 
 /* Criar o ícone de check, escondido quando não estiver selecionado */
 .checkbox-container .checkmark:after {
-  content: "";
+  content: '';
   position: absolute;
   display: none;
   left: 7px;
@@ -103,7 +102,7 @@ export default {
 }
 
 /* Exibir o ícone quando selecionado */
-.checkbox-container div.checked~.checkmark:after {
+.checkbox-container div.checked ~ .checkmark:after {
   display: block;
 }
 
@@ -119,12 +118,12 @@ label.disabled {
   font-weight: normal;
   margin: 0;
   font-style: italic;
-  color: var(--gray-color-400);
+  color: var(--color-gray-400);
   padding-left: var(--padding-text);
   margin-top: var(--spacing-1);
 }
 
-.legenda>svg {
+.legenda > svg {
   flex-shrink: 0;
   width: 14px;
   margin-right: 8px;
@@ -137,12 +136,12 @@ label.disabled {
   font-weight: normal;
   margin: 0;
   font-style: italic;
-  color: var(--error-color-600);
+  color: var(--color-error-600);
   padding-left: var(--padding-text);
   margin-top: var(--spacing-1);
 }
 
-.errorMessage>svg {
+.errorMessage > svg {
   flex-shrink: 0;
   width: 14px;
   margin-right: 8px;
@@ -155,12 +154,12 @@ label.disabled {
   font-weight: normal;
   margin: 0;
   font-style: italic;
-  color: var(--success-color-600);
+  color: var(--color-success-600);
   padding-left: var(--padding-text);
   margin-top: var(--spacing-1);
 }
 
-.successMessage>svg {
+.successMessage > svg {
   flex-shrink: 0;
   width: 14px;
   margin-right: 8px;

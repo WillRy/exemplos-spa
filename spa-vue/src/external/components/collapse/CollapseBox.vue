@@ -1,5 +1,5 @@
 <template>
-  <div :class="{open: aberto}" class="collapse-box">
+  <div :class="{ open: aberto }" class="collapse-box">
     <div class="collapse-header" @click="analizeAbrir">
       <div class="collapse-header-content">
         <slot name="header"></slot>
@@ -7,7 +7,7 @@
       <div class="collapse-action" @click.stop="">
         <slot name="btn-esquerdo"></slot>
         <button class="collapse-toggle" @click.stop="toggle">
-          <ArrowDownSolidIcon :size="'18px'"/>
+          <ArrowDownSolidIcon :size="'18px'" />
         </button>
         <slot name="btn-direito"></slot>
       </div>
@@ -19,31 +19,34 @@
 </template>
 
 <script lang="ts">
-import ArrowDownSolidIcon from "../icons/ArrowDownSolidIcon.vue";
+import ArrowDownSolidIcon from '../icons/ArrowDownSolidIcon.vue'
 
 export default {
-  name: "CollapseBox",
+  name: 'CollapseBox',
   props: {
     aberto: {
       type: Boolean,
       default: false
+    },
+    minHeight: {
+      type: String,
+      default: '60px'
     }
   },
   methods: {
     toggle() {
-      this.$emit("toggle");
+      this.$emit('toggle')
     },
     analizeAbrir(event: Event) {
       if ((event?.target as HTMLAnchorElement)?.href) {
-        return event.preventDefault();
+        return event.preventDefault()
       }
 
-      this.toggle();
+      this.toggle()
     }
   },
-  created() {
-  },
-  components: {ArrowDownSolidIcon}
+  created() {},
+  components: { ArrowDownSolidIcon }
 }
 </script>
 
@@ -58,14 +61,13 @@ export default {
   margin-bottom: 20px;
 }
 
-
 .collapse-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 17px 20px;
-  min-height: 60px;
-  background: #FFFFFF;
+  padding: 10px 16px;
+  min-height: v-bind(minHeight);
+  background: #ffffff;
   position: relative;
   cursor: pointer;
 
@@ -77,7 +79,6 @@ export default {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
 }
-
 
 .open .collapse-header {
   border-bottom-left-radius: 0;
@@ -91,7 +92,7 @@ export default {
 .collapse-content {
   padding: 20px;
   flex: 1;
-  background: #F5F5F5;
+  background: #f5f5f5;
   border-right: 1px solid #70707029;
   border-left: 1px solid #70707029;
   border-bottom: 1px solid #70707029;
@@ -129,5 +130,9 @@ export default {
   border: none;
   font-size: 0.875rem;
   font-weight: bold;
+}
+
+.collapse-toggle :deep(svg path) {
+  fill: var(--color-primary-principal);
 }
 </style>

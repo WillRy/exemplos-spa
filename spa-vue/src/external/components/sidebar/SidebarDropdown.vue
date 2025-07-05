@@ -1,6 +1,6 @@
 <template>
-  <button class="dropdown-sidebar" @click="toggle" :class="{active: aberto,'url-open': aberto}">
-    <div class="sidebar-item" :class="{active: aberto}">
+  <button class="dropdown-sidebar" @click="toggle" :class="{ active: aberto, 'url-open': aberto }">
+    <div class="sidebar-item" :class="{ active: aberto }">
       <div class="sidebar-item-corpo">
         <div class="sidebar-item-badge" v-if="$slots.badge">
           <slot name="badge"></slot>
@@ -13,7 +13,7 @@
             <slot name="texto"></slot>
           </InteractionText>
         </div>
-        <ArrowDownIcon class="dropdown-sidebar-icon" size="16px"/>
+        <ArrowDownIcon class="dropdown-sidebar-icon" size="16px" />
       </div>
     </div>
     <div class="dropdown-sidebar-content" @click.stop="">
@@ -23,13 +23,12 @@
 </template>
 
 <script>
-
-import ArrowDownIcon from "../icons/ArrowDownIcon.vue";
-import InteractionText from "../text/InteractionText.vue";
+import ArrowDownIcon from '../icons/ArrowDownIcon.vue'
+import InteractionText from '../text/InteractionText.vue'
 
 export default {
-  name: "SidebarDropdown",
-  components: {ArrowDownIcon, InteractionText},
+  name: 'SidebarDropdown',
+  components: { ArrowDownIcon, InteractionText },
   inject: ['sidenavAberta'],
   props: {
     abertoInicial: {
@@ -41,33 +40,31 @@ export default {
   },
   data() {
     return {
-      aberto: this.abertoInicial,
+      aberto: this.abertoInicial
     }
   },
   computed: {},
   methods: {
     toggle() {
-      this.aberto = !this.aberto;
+      this.aberto = !this.aberto
 
-      this.$emit("toggle", this.aberto);
-    },
+      this.$emit('toggle', this.aberto)
+    }
   },
   watch: {
     abertoInicial(valor) {
-      this.aberto = valor;
+      this.aberto = valor
     },
     sidenavAberta(valor) {
       if (!valor) {
-        this.aberto = false;
+        this.aberto = false
       }
     }
   }
-
 }
 </script>
 
 <style scoped>
-
 .icon-menu {
   width: 100%;
   display: inline-flex;
@@ -97,7 +94,6 @@ export default {
   display: flex;
 }
 
-
 .sidebar-item {
   width: 100%;
   box-sizing: border-box;
@@ -109,14 +105,12 @@ export default {
   outline: 0;
   color: #fff;
 
-
   position: relative;
 }
 
 .sidebar-item :deep(svg path) {
   fill: #fff;
 }
-
 
 .sidebar-item:hover {
   background: rgba(196, 216, 255, 0.16);
@@ -126,7 +120,6 @@ export default {
 .sidebar-item:hover :deep(svg path) {
   fill: #fff;
 }
-
 
 .sidebar-item.active,
 .router-link-exact-active,
@@ -152,13 +145,11 @@ export default {
   fill: #fff;
 }
 
-
 .sidebar-item:focus:not(.active):not(.router-link-exact-active),
 .dropdown-sidebar:focus:not(.active):not(.router-link-exact-active) .sidebar-item {
   background: rgba(196, 216, 255, 0.16);
   color: #fff;
 }
-
 
 /** Icones **/
 .sidebar-item img.icon-noactive {
@@ -178,7 +169,6 @@ export default {
 .sidebar-item.url-open img.active {
   display: block;
 }
-
 
 .sidebar-item-corpo {
   width: 100%;
@@ -211,7 +201,6 @@ export default {
   visibility: visible;
 }
 
-
 .sidebar-item-corpo {
   position: relative;
 }
@@ -223,7 +212,6 @@ export default {
   height: 24px;
   width: 24px;
 }
-
 
 .dropdown-sidebar {
   background: none;
@@ -237,22 +225,20 @@ export default {
   line-height: 0;
 }
 
-.sidebar-item-texto :deep(*){
-  color: #fff  !important; 
+.sidebar-item-texto :deep(*) {
+  color: #fff !important;
 }
 
 .open .sidebar-item-texto {
   visibility: visible;
 }
 
-
 .dropdown-sidebar.active .sidebar-item .sidebar-item-texto :deep(*) {
   color: #fff !important;
 }
 
-
 .dropdown-sidebar .dropdown-sidebar-content > :deep(a.active) {
-  color: var(--primary-color-principal);
+  color: var(--color-primary-principal);
   background: #f4f4f4;
 }
 
@@ -281,12 +267,12 @@ export default {
   box-sizing: border-box;
   font-size: 0.75rem;
   text-decoration: none;
-  color: var(--primary-color-principal);
+  color: var(--color-primary-principal);
   font-weight: 500;
 }
 
 .dropdown-sidebar-content > :deep(a):hover {
-  color: var(--primary-color-principal);
+  color: var(--color-primary-principal);
 }
 
 .dropdown-sidebar-icon {
@@ -300,5 +286,4 @@ export default {
 .open .active .dropdown-sidebar-content {
   display: block;
 }
-
 </style>

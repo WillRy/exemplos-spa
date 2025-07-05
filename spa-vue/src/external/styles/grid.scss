@@ -1,4 +1,4 @@
-@use "sass:map";
+@use 'sass:map';
 
 .container,
 .container-fluid,
@@ -17,27 +17,42 @@
 }
 
 @media (min-width: #{map.get($grid-map, "sm")}) {
-  .container-sm, .container {
+  .container-sm,
+  .container {
     max-width: 540px;
   }
 }
 @media (min-width: #{map.get($grid-map, "md")}) {
-  .container-md, .container-sm, .container {
+  .container-md,
+  .container-sm,
+  .container {
     max-width: 720px;
   }
 }
 @media (min-width: #{map.get($grid-map, "lg")}) {
-  .container-lg, .container-md, .container-sm, .container {
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container {
     max-width: 960px;
   }
 }
 @media (min-width: #{map.get($grid-map, "xl")}) {
-  .container-xl, .container-lg, .container-md, .container-sm, .container {
+  .container-xl,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container {
     max-width: 1140px;
   }
 }
 @media (min-width: #{map.get($grid-map, "xxl")}) {
-  .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+  .container-xxl,
+  .container-xl,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container {
     max-width: 1320px;
   }
 }
@@ -93,7 +108,6 @@
   --bs-gutter-y: 0;
 }
 
-
 .col {
   flex: 1 0 0%;
 }
@@ -115,7 +129,6 @@
     margin-left: #{$px};
   }
 }
-
 
 @each $key, $value in $spacing-map {
   .g-#{$key},
@@ -174,7 +187,6 @@
     }
   }
 }
-
 
 .grid {
   display: grid;

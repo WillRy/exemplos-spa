@@ -21,7 +21,7 @@
 import { Dropdown } from 'floating-vue'
 import DotsIcon from '../icons/DotsIcon.vue'
 import { PropType, ref } from 'vue'
-import ThemeTeleport from '../../provider/ThemeTeleport.vue';
+import ThemeTeleport from '../../provider/ThemeTeleport.vue'
 
 type TriggerEvent = 'hover' | 'click' | 'focus' | 'touch'
 
@@ -35,7 +35,6 @@ defineProps({
     default: false
   }
 })
-
 
 const open = ref(false)
 </script>
@@ -76,7 +75,7 @@ img {
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  color: var(--primary-color-principal);
+  color: var(--color-primary-principal);
   border-radius: 8px;
   outline: 0;
   font-size: 1rem;
@@ -122,7 +121,7 @@ img {
 }
 
 .dropdown-acoes-btn :deep(svg path) {
-  fill: var(--primary-color-principal);
+  fill: var(--color-primary-principal);
 }
 
 .disabled-btn {

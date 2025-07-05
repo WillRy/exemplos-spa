@@ -6,24 +6,24 @@
 </template>
 
 <script lang="ts">
-import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
+import InfoSuccessIcon from '../icons/InfoSuccessIcon.vue'
 
 export default {
-  name: "ActionText",
+  name: 'ActionText',
   components: {
-    InfoSuccessIcon,
+    InfoSuccessIcon
   },
   props: {
     exibirIcone: {
       type: Boolean,
-      default: true,
+      default: true
     },
     inputMode: {
       type: Boolean,
-      default: false,
-    },
-  },
-};
+      default: false
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -38,7 +38,7 @@ export default {
   font-weight: normal;
   margin: 0;
   font-style: italic;
-  color: var(--success-color-600);
+  color: var(--color-success-600);
   padding-left: var(--padding-text);
 }
 

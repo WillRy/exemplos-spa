@@ -5,7 +5,6 @@
 </template>
 
 <script lang="ts">
-
 export default {
   name: 'LinkInline',
   props: {
@@ -27,12 +26,12 @@ export default {
 <style scoped>
 .link-inline {
   margin: 0;
-  color: var(--primary-color-principal);
+  color: var(--color-primary-principal);
   text-decoration: none;
 }
 
 .link-inline:hover {
-  color: var(--primary-color-principal);
+  color: var(--color-primary-principal);
   opacity: 0.8;
   cursor: pointer;
   text-decoration: underline;

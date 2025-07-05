@@ -1,16 +1,17 @@
 <template>
-  <div class="form-group" :class="{
-    error: error,
-    md: size === 'md',
-    lg: size === 'lg',
-    disabled: disabled
-  }">
+  <div
+    class="form-group"
+    :class="{
+      error: error,
+      md: size === 'md',
+      lg: size === 'lg',
+      disabled: disabled
+    }"
+  >
     <BaseLabel :label="label" :padding="true" v-if="props.label" />
     <BaseLabel :padding="true" v-if="$slots.label">
       <slot name="label" />
     </BaseLabel>
-
-
 
     <div style="display: flex; align-items: center">
       <div class="form-group-container" :class="{ borda: borda, btn: $slots.btn }">
@@ -21,20 +22,44 @@
           <slot name="prefix"></slot>
         </div>
 
-        <VueDatePicker v-model="data" v-bind="$attrs" :first-day-of-week="1" :is24="is24hrConfig" :teleport="true"
-          :timezone="timezoneConfig" :locale="localeConfig" :enable-time-picker="false" :cancelText="config.txtCancelar"
-          :selectText="config.txtSelecionar" :format="config.formatoData" :disabled="disabled" :auto-apply="true">
-          <template #dp-input="{ value }">
-            <input :value="value" :placeholder="placeholder" @input.prevent="" ref="input" :disabled="disabled"
-              :name="name" autocomplete="no" />
+        <VueDatePicker
+          v-model="data"
+          v-bind="$attrs"
+          :first-day-of-week="1"
+          :is24="is24hrConfig"
+          :teleport="true"
+          :timezone="timezoneConfig"
+          :locale="localeConfig"
+          :enable-time-picker="false"
+          :cancelText="config.txtCancelar"
+          :selectText="config.txtSelecionar"
+          :format="config.formatoData"
+          :disabled="disabled"
+          :auto-apply="true"
+          text-input
+        >
+        <template #dp-input="{ value, onInput, onEnter, onBlur, onKeypress }">
+            <input
+              :value="value"
+              :placeholder="placeholder"
+              @input="onInput"
+              @keydown.enter="onEnter"
+              @blur="onBlur"
+              @keypress="onKeypress"
+              ref="input"
+              :disabled="disabled"
+              :name="name"
+              autocomplete="no"
+              v-maska="mascara"
+            />
           </template>
           <template #action-preview></template>
         </VueDatePicker>
         <div class="form-group-default-icon" @click="focusInput">
           <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
             <path
-              d="M368.005 272h-96v96h96v-96zm-32-208v32h-160V64h-48v32h-24.01c-22.002 0-40 17.998-40 40v272c0 22.002 17.998 40 40 40h304.01c22.002 0 40-17.998 40-40V136c0-22.002-17.998-40-40-40h-24V64h-48zm72 344h-304.01V196h304.01v212z">
-            </path>
+              d="M368.005 272h-96v96h96v-96zm-32-208v32h-160V64h-48v32h-24.01c-22.002 0-40 17.998-40 40v272c0 22.002 17.998 40 40 40h304.01c22.002 0 40-17.998 40-40V136c0-22.002-17.998-40-40-40h-24V64h-48zm72 344h-304.01V196h304.01v212z"
+            ></path>
           </svg>
         </div>
       </div>
@@ -66,71 +91,71 @@
 
 <script lang="ts" setup>
 import { format } from 'date-fns'
-import VueDatePicker from '@vuepic/vue-datepicker';
+import VueDatePicker from '@vuepic/vue-datepicker'
 
 import { computed, ref, defineEmits } from 'vue'
 import { useConfigStore } from '../../store/config.ts'
-import BaseLabel from "./BaseLabel.vue";
-import InfoLegenda from "../info/InfoLegenda.vue";
-import InfoSuccess from "../info/InfoSuccess.vue";
-import InfoError from "../info/InfoError.vue";
+import BaseLabel from './BaseLabel.vue'
+import InfoLegenda from '../info/InfoLegenda.vue'
+import InfoSuccess from '../info/InfoSuccess.vue'
+import InfoError from '../info/InfoError.vue'
+import { vMaska } from "maska/vue"
 
 export type SizeInput = 'md' | 'lg'
 
 defineOptions({
-  inheritAttrs: false,
-
+  inheritAttrs: false
 })
 
 defineExpose({
   focusInput,
-  clickInput,
+  clickInput
 })
-
-
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: Date | null): void
   (e: 'update:formatado', value: string | null): void
 }>()
 
-
-const input = ref(null);
+const input = ref(null)
 const config = useConfigStore()
 
-const props = withDefaults(defineProps<{
-  size?: SizeInput
-  borda?: boolean
-  label?: string
-  placeholder?: string
-  error?: string
-  success?: string
-  legenda?: string
-  modelValue?: string | Date
-  disabled?: boolean
-  timezone?: string
-  is24hr?: boolean
-  locale?: string
-  name?: string
-}>(), {
-  size: 'md',
-  borda: true,
-  label: "",
-  placeholder: "",
-  error: "",
-  success: "",
-  legenda: "",
-  disabled: false,
-  timezone: "America/Sao_Paulo",
-  is24hr: true,
-  locale: "pt-BR",
-  name: "",
-});
+const props = withDefaults(
+  defineProps<{
+    size?: SizeInput
+    borda?: boolean
+    label?: string
+    placeholder?: string
+    error?: string
+    success?: string
+    legenda?: string
+    modelValue?: string | Date
+    disabled?: boolean
+    timezone?: string
+    is24hr?: boolean
+    locale?: string
+    name?: string
+  }>(),
+  {
+    size: 'md',
+    borda: true,
+    label: '',
+    placeholder: '',
+    error: '',
+    success: '',
+    legenda: '',
+    disabled: false,
+    timezone: 'America/Sao_Paulo',
+    is24hr: true,
+    locale: 'pt-BR',
+    name: ''
+  }
+)
 
 const timezoneConfig = computed(() => props.timezone ?? config.config.current_timezone)
 const is24hrConfig = computed(() => props.is24hr ?? config.config.is24hr)
 const localeConfig = computed(() => props.locale ?? config.config.locale)
-
+const mascara = computed(() => config.config.mascaraData ?? '##/##/####')
 
 const data = computed({
   get() {
@@ -183,13 +208,13 @@ const data = computed({
 })
 
 function focusInput() {
-  if (!input.value) return;
-  (input.value as HTMLInputElement).focus()
+  if (!input.value) return
+  ;(input.value as HTMLInputElement).focus()
 }
 
 function clickInput() {
-  if (!input.value) return;
-  (input.value as HTMLInputElement).click()
+  if (!input.value) return
+  ;(input.value as HTMLInputElement).click()
 }
 </script>
 <style scoped>
@@ -213,16 +238,15 @@ function clickInput() {
   --md-min-height-btn: calc(36px);
   --lg-min-height-btn: calc(42px);
 
-  --label-color: var(--gray-color-400);
+  --label-color: var(--color-gray-400);
   --label-margin-bottom: 2px;
 
   /* cor usada para destaque no focus */
-  --focus-color: var(--primary-color-principal-focus);
+  --focus-color: var(--color-primary-principal-focus);
 
   /* espaçamento do texto/label */
   --padding-text: 16px;
 }
-
 
 .form-group-container {
   position: relative;
@@ -237,20 +261,19 @@ function clickInput() {
   justify-content: center;
 }
 
-.form-group-icon> :deep(img) {
+.form-group-icon > :deep(img) {
   height: 18px;
   width: 18px;
 }
 
-.form-group-icon> :deep(svg) {
+.form-group-icon > :deep(svg) {
   height: 18px;
   width: 18px;
 }
 
-.form-group-container:focus-within .form-group-icon> :deep(svg path) {
+.form-group-container:focus-within .form-group-icon > :deep(svg path) {
   fill: var(--focus-color);
 }
-
 
 .form-group-default-icon {
   flex-shrink: 0;
@@ -260,18 +283,18 @@ function clickInput() {
   justify-content: center;
 }
 
-.form-group-default-icon> :deep(img) {
+.form-group-default-icon > :deep(img) {
   height: 18px;
   width: 18px;
 }
 
-.form-group-default-icon> :deep(svg) {
+.form-group-default-icon > :deep(svg) {
   height: 18px;
   width: 18px;
-  fill: var(--primary-color-principal);
+  fill: var(--color-primary-principal);
 }
 
-.form-group-container:focus-within .form-group-icon> :deep(svg path) {
+.form-group-container:focus-within .form-group-icon > :deep(svg path) {
   fill: var(--focus-color);
 }
 
@@ -293,13 +316,13 @@ function clickInput() {
 
 .form-group-container.borda {
   background: #ffffff;
-  border: var(--border) solid var(--gray-color-400);
+  border: var(--border) solid var(--color-gray-400);
   border-radius: 8px;
 }
 
 .form-group-container:not(.borda) {
-  background: var(--gray-color-100);
-  border-bottom: var(--border) solid var(--gray-color-800);
+  background: var(--color-gray-100);
+  border-bottom: var(--border) solid var(--color-gray-800);
   border-radius: 8px 8px 0 0;
 }
 
@@ -320,10 +343,10 @@ function clickInput() {
 }
 
 .form-group-container.borda:hover {
-  border-top: var(--border) solid var(--primary-color-principal-hover);
-  border-bottom: var(--border) solid var(--primary-color-principal-hover);
-  border-left: var(--border) solid var(--primary-color-principal-hover);
-  border-right: var(--border) solid var(--primary-color-principal-hover);
+  border-top: var(--border) solid var(--color-primary-principal-hover);
+  border-bottom: var(--border) solid var(--color-primary-principal-hover);
+  border-left: var(--border) solid var(--color-primary-principal-hover);
+  border-right: var(--border) solid var(--color-primary-principal-hover);
 }
 
 .form-group-container.borda:focus-within {
@@ -334,7 +357,7 @@ function clickInput() {
 .form-group-container:not(.borda):hover {
   border-radius: 8px 8px 0 0;
   border-top: var(--border) solid transparent;
-  border-bottom: var(--border) solid var(--primary-color-principal-hover);
+  border-bottom: var(--border) solid var(--color-primary-principal-hover);
   border-left: var(--border) solid transparent;
   border-right: var(--border) solid transparent;
 }
@@ -350,7 +373,7 @@ function clickInput() {
 .disabled .form-group-container,
 .disabled .form-group-container:hover,
 .disabled .form-group-container:focus {
-  background: var(--gray-color-100) !important;
+  background: var(--color-gray-100) !important;
   cursor: not-allowed;
 }
 
@@ -363,14 +386,14 @@ function clickInput() {
   flex-shrink: 0;
 }
 
-.form-group-btn> :deep(button) {
+.form-group-btn > :deep(button) {
   height: 100%;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
 
 /*.error .form-group-container {*/
-/*    border: 1px solid var(--error-color-500) !important;*/
+/*    border: 1px solid var(--color-error-500) !important;*/
 /*}*/
 
 input {
@@ -406,14 +429,13 @@ input:focus {
 
 input::placeholder {
   font-size: 0.875rem;
-  color: var(--gray-color-400);
+  color: var(--color-gray-400);
 }
 
 .icone-footer {
   flex-shrink: 0;
   margin-right: 8px;
 }
-
 
 .md .form-group-btn {
   height: var(--md-min-height-btn);
@@ -438,45 +460,45 @@ input::placeholder {
   -moz-osx-font-smoothing: grayscale;
   line-height: 1;
   position: relative;
-  background: var(--primary-color-principal);
+  background: var(--color-primary-principal);
   color: #fff;
 
   border-radius: 0 8px 8px 0;
 }
 
 .form-group-btn :deep(button) {
-  background: var(--primary-color-principal);
+  background: var(--color-primary-principal);
   color: #fff;
   border: 1px solid transparent;
 }
 
 .form-group-btn :deep(button:hover) {
-  background: var(--primary-color-principal-hover);
+  background: var(--color-primary-principal-hover);
   color: #fff;
 }
 
 .form-group-btn :deep(button:focus) {
   box-shadow:
     0 0 0 1px #fff,
-    0 0 0 2px var(--primary-color-principal-focus);
-  background: var(--primary-color-principal-focus);
+    0 0 0 2px var(--color-primary-principal-focus);
+  background: var(--color-primary-principal-focus);
   color: #fff;
 }
 
 .form-group-btn :deep(button:active) {
-  background: var(--primary-color-principal-active);
+  background: var(--color-primary-principal-active);
   color: #fff;
 }
 
 .form-group-btn :deep(button:disabled) {
-  background: var(--gray-color-200);
-  color: var(--gray-color-300);
+  background: var(--color-gray-200);
+  color: var(--color-gray-300);
   cursor: not-allowed;
   border: none;
 }
 
 .form-group-btn :disabled :deep(path) {
-  fill: var(--gray-color-300);
+  fill: var(--color-gray-300);
 }
 
 .form-group-btn :deep(path) {
@@ -495,19 +517,23 @@ input::placeholder {
   fill: #fff;
 }
 
-.form-group-container.borda:focus-within~.form-group-btn :deep(button:not(:active)) {
-  box-shadow: var(--primary-color-principal) 0px 0px 0px var(--border);
+.form-group-container.borda:focus-within ~ .form-group-btn :deep(button:not(:active)) {
+  box-shadow: var(--color-primary-principal) 0px 0px 0px var(--border);
 }
 
-.form-group-container.borda:focus-within~.form-group-btn :deep(button:hover) {
-  box-shadow: var(--primary-color-principal-hover) 0px 0px 0px var(--border);
+.form-group-container.borda:focus-within ~ .form-group-btn :deep(button:hover) {
+  box-shadow: var(--color-primary-principal-hover) 0px 0px 0px var(--border);
 }
 
-.md .form-group-container>div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
+.md
+  .form-group-container
+  > div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
   width: 100%;
 }
 
-.lg .form-group-container>div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
+.lg
+  .form-group-container
+  > div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
   min-height: 54px;
   width: 100%;
 }

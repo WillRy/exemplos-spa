@@ -1,15 +1,23 @@
 <template>
   <transition name="modal">
-    <div v-if="aberta"
-      :class="[{ aberta: aberta, 'center-modal': textCenter, 'full-h': ocuparAlturaMaxima,  }, mode]"
-      class="base-modal-container" @click.self="fecharModalClick" ref="modal">
-      <div class="base-modal" :class="tamanhoClass" data-modal="" :style="[]">
+    <div
+      v-if="aberta"
+      :class="[{ aberta: aberta, 'center-modal': textCenter, 'full-h': ocuparAlturaMaxima }, mode]"
+      class="base-modal-container"
+      @click.self="fecharModalClick"
+      ref="modal"
+    >
+      <div class="base-modal" :class="[tamanhoClass, mode]" data-modal="" :style="[]">
         <div v-if="$slots.title" class="base-modal-title" :style="{ padding: paddingHeader }">
           <div v-if="exibirBtnFechar" class="btn-fechar-modal" @click="fecharModal">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="21" viewBox="0 0 24 21">
-              <path id="Icon_awesome-window-close" data-name="Icon awesome-window-close"
+              <path
+                id="Icon_awesome-window-close"
+                data-name="Icon awesome-window-close"
                 d="M21.75,1.5H2.25A2.251,2.251,0,0,0,0,3.75v16.5A2.251,2.251,0,0,0,2.25,22.5h19.5A2.251,2.251,0,0,0,24,20.25V3.75A2.251,2.251,0,0,0,21.75,1.5ZM17.831,15.117a.577.577,0,0,1,0,.816l-1.9,1.9a.577.577,0,0,1-.816,0L12,14.686,8.883,17.831a.577.577,0,0,1-.816,0l-1.9-1.9a.577.577,0,0,1,0-.816L9.314,12,6.169,8.883a.577.577,0,0,1,0-.816l1.9-1.9a.577.577,0,0,1,.816,0L12,9.314l3.117-3.145a.577.577,0,0,1,.816,0l1.9,1.9a.577.577,0,0,1,0,.816L14.686,12l3.145,3.117Z"
-                transform="translate(0 -1.5)" fill="#f55b5b" />
+                transform="translate(0 -1.5)"
+                fill="#f55b5b"
+              />
             </svg>
           </div>
 
@@ -21,12 +29,15 @@
         </div>
         <div class="base-modal-separator" v-else-if="$slots.title"></div>
 
-        <div class="base-modal-body" :style="[{ padding: paddingBody }, ]">
+        <div class="base-modal-body" :style="[{ padding: paddingBody }]" :class="[mode]">
           <slot name="body"></slot>
         </div>
 
-        <div class="base-modal-footer" :style="{ padding: paddingFooter }"
-          v-if="$slots.footerEsquerdo || $slots.footerDireito">
+        <div
+          class="base-modal-footer"
+          :style="{ padding: paddingFooter }"
+          v-if="$slots.footerEsquerdo || $slots.footerDireito"
+        >
           <div class="footerEsquerdo" v-if="$slots.footerEsquerdo">
             <slot name="footerEsquerdo"> </slot>
           </div>
@@ -41,13 +52,16 @@
 </template>
 <script lang="ts">
 import { PropType } from 'vue'
+import ThemeTeleport from '../../provider/ThemeTeleport.vue'
 
 type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
 type ModalMode = 'scroll-body' | 'scroll-body-full' | 'full-no-scroll' | 'scroll-outside'
 
 export default {
   name: 'BaseModal',
-  components: {},
+  components: {
+    ThemeTeleport
+  },
   inheritAttrs: false,
   props: {
     paddingHeader: {
@@ -96,7 +110,7 @@ export default {
       default: true
     },
     mode: {
-      type: String  as PropType<ModalMode>,
+      type: String as PropType<ModalMode>,
       default: 'scroll-body'
     }
   },
@@ -234,7 +248,7 @@ export default {
 .base-modal {
   border-radius: 8px;
   background: #fff;
-  margin: 60px 0;
+  margin: 20px 0;
   max-width: 650px;
   width: 65vw;
   overscroll-behavior: contain;
@@ -301,7 +315,7 @@ flex: 1;
 
 .base-modal-title :deep(*) {
   margin: 0;
-  color: var(--primary-color-principal);
+  color: var(--color-primary-principal);
   font-size: 1.25rem;
   word-break: break-word;
   line-height: 24px;
@@ -404,11 +418,6 @@ flex-wrap: wrap;
   background: #eff0f2;
 }
 
-.base-modal-breadcrumb {
-  padding-bottom: 20px;
-  padding-top: 20px;
-}
-
 .preview-imagem {
   object-fit: cover;
   max-width: 100%;
@@ -424,28 +433,28 @@ flex-wrap: wrap;
   overflow-x: hidden;
 }
 
-.scroll-body .base-modal-body {
+.base-modal-body.scroll-body {
   overflow: auto;
 }
 
-.scroll-body-full .base-modal{
+.base-modal.scroll-body-full {
   flex: 1;
 }
 
-.scroll-body-full .base-modal-body {
+.base-modal-body.scroll-body-full {
   flex: 1;
 }
 
 .full-no-scroll.base-modal-container {
-  overflow: hidden
+  overflow: hidden;
 }
 
-.full-no-scroll .base-modal {
+.base-modal.full-no-scroll {
   overflow: hidden;
   flex: 1;
 }
 
-.full-no-scroll .base-modal-body {
+.base-modal-body.full-no-scroll {
   overflow: hidden;
   flex: 1;
 }
@@ -454,11 +463,11 @@ flex-wrap: wrap;
   overflow-y: auto;
 }
 
-.scroll-outside .base-modal {
+.base-modal.scroll-outside {
   overflow: initial;
 }
 
-.scroll-outside .base-modal-body {
+.base-modal-body.scroll-outside {
   overflow: initial;
 }
 </style>

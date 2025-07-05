@@ -28,7 +28,7 @@ import BaseModal from '../../external/components/modal/BaseModal'
 import BaseButtonDanger from '../../external/components/buttons/BaseButtonDanger'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useBackendToast } from '../../external/hooks/useBackendToast'
+import { useBackendToast } from '../../external/composables/useBackendToast'
 
 const props = defineProps({
   contato: {

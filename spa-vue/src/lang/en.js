@@ -46,7 +46,8 @@ export default {
       empresa: 'Company | Companies',
       tags: 'Tags',
       cor_fundo: 'Background color',
-      cor_texto: 'Text color'
+      cor_texto: 'Text color',
+      colunas: 'Columns',
     },
     textos: {
       botao_sem_permissao: 'Button without permission',

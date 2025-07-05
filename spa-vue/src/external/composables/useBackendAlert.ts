@@ -28,51 +28,37 @@ function getFormError(e: any) {
 }
 
 function descobrirDadosBackend(e: any) {
-  let data: jsonBackend | null = null;
+  let data: jsonBackend | null = null
 
-  if (e instanceof Object && "response" in e && e.response && e.response._data) {
-    data = e.response._data;
-  } else if (e instanceof Object && "response" in e && e.response && e.response.data) {
-    data = e.response.data;
-  } else if (e instanceof Object && "data" in e && e.data) {
-    data = e.data;
-  } else if (e instanceof Object && "_data" in e && e._data) {
-    data = e._data;
+  if (axios.isAxiosError(e) && e.response) {
+    data = e.response.data
+  } else if (!(e instanceof Error) && !(typeof e === 'string') && e) {
+    data = e.data
   }
 
-  return data;
+  return data
 }
 
 function descobrirMensagem(e: any, defaultMessage: string | null = null) {
-  let response: object | undefined | null
-
   const data: jsonBackend | null = descobrirDadosBackend(e)
 
-  if (e && e.response) {
-    response = e.response
-  } else if (!(e instanceof Error) && !(typeof e === 'string') && e) {
-    response = e
-  }
-
   if (data && data?.message === '') {
-    return null;
+    return null
   } else if (data && data?.errors && Array.isArray(data?.errors)) {
-    if(Object.keys(data.errors).length > 0) {
-      const erro = Object.keys(data.errors)[0] as any;
+    if (Object.keys(data.errors).length > 0) {
+      const erro = Object.keys(data.errors)[0]
       return data.errors[erro][0]
     }
 
-    return data?.message || defaultMessage || null;
-  }else if(data && data.message){
-    return data.message;
-  } else if (response && "message" in response && typeof response.message === "string") {
-    return response.message;
+    return data?.message || defaultMessage || null
+  } else if (data && data?.message) {
+    return data.message
   } else if (e instanceof Error && e.message) {
-    return e.message;
-  } else if (typeof e === "string") {
-    return e;
+    return e.message
+  } else if (typeof e === 'string') {
+    return e
   } else if (defaultMessage) {
-    return defaultMessage;
+    return defaultMessage
   }
 
   return null
@@ -105,8 +91,21 @@ export function useBackendAlert() {
     }
   }
 
+  function backendAlert(e: any, objAlert: alertParams = {}) {
+    const mensagem = descobrirMensagem(e, objAlert.mensagem)
+
+    if (mensagem) {
+      alertState.success({
+        ...objAlert,
+        mensagem
+      })
+    }
+  }
+
+
   return {
     backendAlertError,
-    backendAlertSuccess
+    backendAlertSuccess,
+    backendAlert
   }
 }

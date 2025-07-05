@@ -132,7 +132,7 @@ import BaseSelectAjax from '../../external/components/form/BaseSelectAjax'
 import BaseInput from '../../external/components/form/BaseInput'
 import axios from 'axios'
 import { useI18n } from 'vue-i18n'
-import { useBackendToast } from '../../external/hooks/useBackendToast'
+import { useBackendToast } from '../../external/composables/useBackendToast'
 import * as yup from 'yup'
 import { useForm } from 'vee-validate'
 

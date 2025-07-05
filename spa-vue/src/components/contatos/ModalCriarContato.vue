@@ -134,7 +134,7 @@ import BaseButtonTertiary from '../../external/components/buttons/BaseButtonTert
 import BaseModal from '../../external/components/modal/BaseModal'
 import BaseSelectAjax from '../../external/components/form/BaseSelectAjax'
 import BaseInput from '../../external/components/form/BaseInput'
-import { useBackendToast } from '../../external/hooks/useBackendToast'
+import { useBackendToast } from '../../external/composables/useBackendToast'
 import * as yup from 'yup'
 import { useForm } from 'vee-validate'
 

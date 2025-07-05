@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue';
+import { PropType } from 'vue'
 import BaseButton from './BaseButton.vue'
 
 type TypeButton = 'submit' | 'button'
@@ -45,29 +45,29 @@ export default {
 
 <style scoped>
 .btn-success {
-  background: var(--success-color-600);
+  background: var(--color-success-600);
   color: #fff;
 }
 
 .btn-success:hover {
-  background: var(--success-color-400);
+  background: var(--color-success-400);
   color: #fff;
 }
 
 .btn-success:focus:not(:active) {
   box-shadow:
     0 0 0 1px #fff,
-    0 0 0 2px var(--success-color-400);
-  background: var(--success-color-400);
+    0 0 0 2px var(--color-success-400);
+  background: var(--color-success-400);
 }
 
 .btn-success:active {
-  background: var(--success-color-700);
+  background: var(--color-success-700);
 }
 
 .btn-success:disabled {
-  background: var(--gray-color-200);
-  color: var(--gray-color-300);
+  background: var(--color-gray-200);
+  color: var(--color-gray-300);
   cursor: not-allowed;
   border: none;
 }

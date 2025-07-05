@@ -5,16 +5,16 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 export default {
-  name: "NavegacaoAbas",
-  emits: ['update:valor','navegar'],
+  name: 'NavegacaoAbas',
+  emits: ['update:valor', 'navegar'],
   props: {
     valor: {
       type: String,
       required: true,
-      default: ""
+      default: ''
     },
     manual: {
       type: Boolean,
@@ -29,20 +29,20 @@ export default {
   },
   methods: {
     mudarAba(valor) {
-      if(this.manual) {
+      if (this.manual) {
         this.$emit('navegar', valor)
       } else {
-        this.$emit("update:valor", valor);
+        this.$emit('update:valor', valor)
       }
     }
   }
-};
+}
 </script>
 
 <style scoped>
 .navegacao-abas-container {
   gap: 4px;
-  background: var(--primary-color-principal);
+  background: var(--color-primary-principal);
   box-shadow: inset 0px 2px 4px #00000029;
   overflow: hidden;
   border-radius: 8px;

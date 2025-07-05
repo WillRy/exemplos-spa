@@ -1,57 +1,59 @@
 <template>
   <transition name="modal">
-    <div v-if="aberta" :class="{ aberta: aberta, center: textCenter }" class="base-modal-container"
-      @click.self="fecharModalClick">
+    <div
+      v-if="aberta"
+      :class="{ aberta: aberta, center: textCenter }"
+      class="base-modal-container"
+      @click.self="fecharModalClick"
+    >
       <div class="base-modal" :class="tamanhoClass" data-modal="">
-
         <div class="base-modal-body" :style="{ padding: paddingBody }">
           <slot name="body"></slot>
         </div>
-
       </div>
     </div>
   </transition>
 </template>
 <script lang="ts">
-import { PropType } from 'vue';
+import { PropType } from 'vue'
 
-type ModalSize = "sm" | "md" | "lg" | "xl" | "xxl";
+type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
 
 export default {
-  name: "BaseSimpleModal",
+  name: 'BaseSimpleModal',
   components: {},
   props: {
     paddingHeader: {
       type: String,
-      default: "20px 20px 20px 20px",
+      default: '20px 20px 20px 20px'
     },
     paddingBody: {
       type: String,
-      default: "20px 20px 20px 20px",
+      default: '20px 20px 20px 20px'
     },
     paddingFooter: {
       type: String,
-      default: "20px 20px 20px 20px",
+      default: '20px 20px 20px 20px'
     },
     aberta: {
       default: false,
-      type: [Boolean, String, Number, Object],
+      type: [Boolean, String, Number, Object]
     },
     fecharClickOutside: {
       type: Boolean,
-      default: true,
+      default: true
     },
     exibirBtnFechar: {
       type: Boolean,
-      default: true,
+      default: true
     },
     textCenter: {
       type: Boolean,
-      default: false,
+      default: false
     },
     tamanho: {
       type: String as PropType<ModalSize>,
-      default: "sm",
+      default: 'sm'
     },
     autoFocusSelector: {
       default: () => ['.autofocus'],
@@ -66,70 +68,69 @@ export default {
 
         setTimeout(() => {
           this.autoFocusSelector.forEach((item) => {
-            const autoFocus = this.$el.querySelector(item);
+            const autoFocus = this.$el.querySelector(item)
             if (autoFocus) {
-              autoFocus.focus();
+              autoFocus.focus()
             }
 
-            return;
-          });
-        });
-
+            return
+          })
+        })
       }
     }
   },
   computed: {
     tamanhoClass() {
       switch (this.tamanho) {
-        case "sm":
-          return "modal-sm";
-        case "md":
-          return "modal-md";
-        case "lg":
-          return "modal-lg";
-        case "xl":
-          return "modal-xl";
-        case "xxl":
-          return "modal-xxl";
+        case 'sm':
+          return 'modal-sm'
+        case 'md':
+          return 'modal-md'
+        case 'lg':
+          return 'modal-lg'
+        case 'xl':
+          return 'modal-xl'
+        case 'xxl':
+          return 'modal-xxl'
         default:
-          return "modal-sm";
+          return 'modal-sm'
       }
-    },
+    }
   },
   data() {
     return {
-      handleClickOutside: null,
-    };
+      handleClickOutside: null
+    }
   },
   methods: {
     fecharModal() {
-      this.$emit("onClose");
+      this.$emit('onClose')
     },
     fecharModalClick() {
       if (this.fecharClickOutside) {
-        this.$emit("onClose");
+        this.$emit('onClose')
       }
     },
     onEnter(e) {
-      if (e.key === "Enter" && this.aberta) {
-        this.$emit("onEnter");
+      if (e.key === 'Enter' && this.aberta) {
+        this.$emit('onEnter')
       }
     },
     onEsc(e) {
-      if ((e.key === "Escape" || e.key === "Esc") && this.aberta) {
-        this.$emit("onEsc");
+      if ((e.key === 'Escape' || e.key === 'Esc') && this.aberta) {
+        this.$emit('onEsc')
       }
-    },
+    }
   },
   beforeUnmount() {
-    window.removeEventListener("keyup", this.onEnter);
-    window.removeEventListener("keyup", this.onEsc);
+    window.removeEventListener('keyup', this.onEnter)
+    window.removeEventListener('keyup', this.onEsc)
   },
   created() {
-    window.addEventListener("keyup", this.onEnter);
-    window.addEventListener("keyup", this.onEsc);
-  },
-};
+    window.addEventListener('keyup', this.onEnter)
+    window.addEventListener('keyup', this.onEsc)
+  }
+}
 </script>
 <style scoped>
 .footerEsquerdo {
@@ -219,7 +220,7 @@ export default {
 
 .base-modal-title h3 {
   margin: 0;
-  color: var(--primary-color-principal);
+  color: var(--color-primary-principal);
   font-size: 1.25rem;
   word-break: break-word;
   line-height: 24px;

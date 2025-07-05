@@ -6,24 +6,24 @@
 </template>
 
 <script lang="ts">
-import InfoErrorIcon from "../icons/InfoErrorIcon.vue";
+import InfoErrorIcon from '../icons/InfoErrorIcon.vue'
 
 export default {
-  name: "ActionText",
+  name: 'ActionText',
   components: {
-    InfoErrorIcon,
+    InfoErrorIcon
   },
   props: {
     exibirIcone: {
       type: Boolean,
-      default: true,
+      default: true
     },
     inputMode: {
       type: Boolean,
-      default: false,
-    },
-  },
-};
+      default: false
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -38,7 +38,7 @@ export default {
   font-weight: normal;
   margin: 0;
   font-style: italic;
-  color: var(--error-color-600);
+  color: var(--color-error-600);
   padding-left: var(--padding-text);
 }
 

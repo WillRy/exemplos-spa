@@ -1,19 +1,28 @@
 <template>
-  <BaseButton class="btn-secondary" :class="{'invertido': invertido}" :size="size" :min="min" :loading="loading" :is="is" :full="full">
+  <BaseButton
+    class="btn-secondary"
+    :class="{ invertido: invertido }"
+    :size="size"
+    :min="min"
+    :loading="loading"
+    :is="is"
+    :full="full"
+    variant="secondary"
+  >
     <slot></slot>
   </BaseButton>
 </template>
 
 <script lang="ts">
-import { PropType } from "vue";
-import BaseButton from "./BaseButton.vue";
+import { PropType } from 'vue'
+import BaseButton from './BaseButton.vue'
 
 type TypeButton = 'submit' | 'button'
 type SizeButton = 'sm' | 'md' | 'lg'
 
 export default {
-  name: "BaseButtonSecondary",
-  components: {BaseButton},
+  name: 'BaseButtonSecondary',
+  components: { BaseButton },
   props: {
     is: {
       type: String,
@@ -50,50 +59,50 @@ export default {
 <style scoped>
 .btn-secondary {
   background: none;
-  color: var(--primary-color-principal);
-  border: 1px solid var(--primary-color-principal);
+  color: var(--color-primary-principal);
+  border: 1px solid var(--color-primary-principal);
 }
 
 .btn-secondary:hover {
-  background: var(--primary-color-50);
-  color: var(--primary-color-600);
-  border: 1px solid var(--primary-color-500);
+  background: var(--color-primary-50);
+  color: var(--color-primary-600);
+  border: 1px solid var(--color-primary-500);
 }
 
 .btn-secondary:focus:not(:active) {
-  background: var(--primary-color-50);
-  color: var(--primary-color-500);
+  background: var(--color-primary-50);
+  color: var(--color-primary-500);
   border: 1px solid #fff;
-  box-shadow: 0 0 0 1px var(--primary-color-500);
+  box-shadow: 0 0 0 1px var(--color-primary-500);
 }
 
 .btn-secondary:active {
-  background: var(--primary-color-400);
+  background: var(--color-primary-400);
   color: #fff;
-  border: 1px solid var(--primary-color-400);
+  border: 1px solid var(--color-primary-400);
 }
 
 .btn-secondary:disabled {
-  background: var(--gray-color-200);
-  color: var(--gray-color-300);
+  background: var(--color-gray-200);
+  color: var(--color-gray-300);
   cursor: not-allowed;
   border: none;
 }
 
 .btn-secondary:disabled :deep(path) {
-  fill: var(--gray-color-300);
+  fill: var(--color-gray-300);
 }
 
 .btn-secondary :deep(path) {
-  fill: var(--primary-color-principal);
+  fill: var(--color-primary-principal);
 }
 
 .btn-secondary:hover :deep(path) {
-  fill: var(--primary-color-500);
+  fill: var(--color-primary-500);
 }
 
 .btn-secondary:focus :deep(path) {
-  fill: var(--primary-color-principal);
+  fill: var(--color-primary-principal);
 }
 
 .btn-secondary:active :deep(path) {
@@ -101,7 +110,7 @@ export default {
 }
 
 .btn-secondary.invertido {
-  background: var(--primary-color-principal);
+  background: var(--color-primary-principal);
   color: #fff;
   border: 1px solid #fff;
 }
@@ -111,30 +120,30 @@ export default {
 }
 
 .btn-secondary.invertido:hover {
-  background: var(--primary-color-500);
-  color: var(--primary-color-50);
+  background: var(--color-primary-500);
+  color: var(--color-primary-50);
   border: 1px solid transparent;
   box-shadow: none;
 }
 
 .btn-secondary.invertido:hover :deep(path) {
-  fill: var(--primary-color-600);
+  fill: var(--color-primary-600);
 }
 
 .btn-secondary.invertido:focus:not(:active) {
-  background: var(--primary-color-500);
-  color: var(--primary-color-50);
+  background: var(--color-primary-500);
+  color: var(--color-primary-50);
   border: 1px solid #fff;
   box-shadow: none;
 }
 
 .btn-secondary.invertido:focus :deep(path) {
-  fill: var(--primary-color-50);
+  fill: var(--color-primary-50);
 }
 
 .btn-secondary.invertido:active {
   background: #fff;
-  color: var(--primary-color-500);
+  color: var(--color-primary-500);
   border: 1px solid transparent;
 }
 

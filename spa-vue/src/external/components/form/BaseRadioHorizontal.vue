@@ -1,7 +1,7 @@
 <template>
-  <div class="radio-button-group" :class="{disabled: disabled}">
-    <label class='label' v-if="label">{{ label }}</label>
-    <div class="option-container" :class="{horizontal: horizontal}">
+  <div class="radio-button-group" :class="{ disabled: disabled }">
+    <label class="label" v-if="label">{{ label }}</label>
+    <div class="option-container" :class="{ horizontal: horizontal }">
       <label
         :for="option[identificadorResposta]"
         v-for="option in options"
@@ -13,8 +13,7 @@
           :value="option[identificadorResposta]"
           class="radio"
           :checked="
-            modelValue &&
-            option[identificadorResposta] === modelValue[identificadorResposta]
+            modelValue && option[identificadorResposta] === modelValue[identificadorResposta]
           "
           :id="option[identificadorResposta]"
           @change="() => atualizar(option)"
@@ -22,7 +21,12 @@
         />
         <div class="control__indicator"></div>
         <ActionText size="sm" is="span">{{ option[identificadorTexto] }}</ActionText>
-        <InfoInputIcon size="14px" class="icone-footer" v-if="option['tooltip']" v-tooltip="{content: option['tooltip']}"/>
+        <InfoInputIcon
+          size="14px"
+          class="icone-footer"
+          v-if="option['tooltip']"
+          v-tooltip="{ content: option['tooltip'] }"
+        />
       </label>
     </div>
 
@@ -45,49 +49,47 @@
 </template>
 
 <script lang="ts">
-import InfoErrorIcon from "../icons/InfoErrorIcon.vue";
-import InfoInputIcon from "../icons/InfoInputIcon.vue";
-import InfoSuccessIcon from "../icons/InfoSuccessIcon.vue";
-import ActionText from "../text/ActionText.vue";
-import {
-  VTooltip,
-} from 'floating-vue'
+import InfoErrorIcon from '../icons/InfoErrorIcon.vue'
+import InfoInputIcon from '../icons/InfoInputIcon.vue'
+import InfoSuccessIcon from '../icons/InfoSuccessIcon.vue'
+import ActionText from '../text/ActionText.vue'
+import { VTooltip } from 'floating-vue'
 
 export default {
-  name: "BaseRadioHorizontal",
+  name: 'BaseRadioHorizontal',
   props: {
     disabled: {
-        required: false,
-        type: Boolean
+      required: false,
+      type: Boolean
     },
     label: {
-        required: false,
-        type: String
+      required: false,
+      type: String
     },
     options: {
       required: true,
-      type: Array<object>,
+      type: Array<object>
     },
     identificadorResposta: {
       required: true,
-      type: String,
+      type: String
     },
     identificadorTexto: {
       required: true,
-      type: String,
+      type: String
     },
     modelValue: {
       required: false,
-      type: Object,
+      type: Object
     },
     error: {
-      type: String,
+      type: String
     },
     success: {
-      type: String,
+      type: String
     },
     legenda: {
-      type: String,
+      type: String
     },
     horizontal: {
       type: Boolean,
@@ -105,29 +107,29 @@ export default {
   directives: {
     tooltip: VTooltip
   }
-};
+}
 </script>
 
 <style scoped>
 * {
-    box-sizing: border-box;
-    --label-color: var(--gray-color-400);
-    --label-margin-bottom: 2px;
+  box-sizing: border-box;
+  --label-color: var(--color-gray-400);
+  --label-margin-bottom: 2px;
 }
 
 .radio-button-group.disabled {
-    cursor: not-allowed !important;
+  cursor: not-allowed !important;
 }
 
 .label {
-    line-height: 24px;
-    font-weight: 400;
-    font-size: 0.75rem;
+  line-height: 24px;
+  font-weight: 400;
+  font-size: 0.75rem;
 
-    color: var(--label-color);
-    margin-bottom: var(--label-margin-bottom);
-    display: block;
-    padding-left: var(--padding-text);
+  color: var(--label-color);
+  margin-bottom: var(--label-margin-bottom);
+  display: block;
+  padding-left: var(--padding-text);
 }
 
 .option-container {
@@ -150,7 +152,7 @@ export default {
 }
 
 .disabled .control {
-    cursor: not-allowed;
+  cursor: not-allowed;
 }
 
 .control .radio {
@@ -160,14 +162,14 @@ export default {
 }
 
 .control__indicator {
-    height: 16px;
-    width: 16px;
-    flex-shrink: 0;
-    position: relative;
-    border: 1px solid #70707066;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  height: 16px;
+  width: 16px;
+  flex-shrink: 0;
+  position: relative;
+  border: 1px solid #70707066;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .control--radio .control__indicator {
@@ -176,16 +178,16 @@ export default {
 
 .control:hover :not([disabled]) ~ .control__indicator,
 .control input:focus ~ .control__indicator {
-  border: 1px solid var(--primary-color-principal);
+  border: 1px solid var(--color-primary-principal);
 }
 
 .control input:checked ~ .control__indicator {
-  background: var(--primary-color-principal);
+  background: var(--color-primary-principal);
 }
 
 .control:hover input:not([disabled]):checked ~ .control__indicator,
 .control input:checked:focus ~ .control__indicator {
-  background: var(--primary-color-principal);
+  background: var(--color-primary-principal);
 }
 
 .control input:disabled ~ .control__indicator {
@@ -195,8 +197,8 @@ export default {
 }
 
 .control__indicator:after {
-    content: "";
-    position: relative;
+  content: '';
+  position: relative;
   display: none;
 }
 
@@ -219,11 +221,11 @@ export default {
 }
 
 .control--radio .control__indicator:after {
-    height: 8px;
-    width: 8px;
-    border-radius: 50%;
-    background: #fff;
-    line-height: 0;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  background: #fff;
+  line-height: 0;
 }
 
 .control--radio input:disabled ~ .control__indicator:after {
@@ -241,13 +243,12 @@ export default {
 }
 
 .input-outros:focus-within {
-  border-bottom: 1px solid var(--primary-color-principal);
+  border-bottom: 1px solid var(--color-primary-principal);
 }
 
 .error .input-outros {
   border-bottom: 1px solid #e03025;
 }
-
 
 .legenda {
   display: flex;
@@ -256,32 +257,31 @@ export default {
   font-weight: normal;
   margin: 0;
   font-style: italic;
-  color: var(--gray-color-400);
+  color: var(--color-gray-400);
   padding-left: var(--padding-text);
 }
 
 .legenda > svg {
-    flex-shrink: 0;
-    width: 14px;
-    margin-right: 8px;
+  flex-shrink: 0;
+  width: 14px;
+  margin-right: 8px;
 }
 
-
 .errorMessage {
-    display: flex;
-    font-size: 0.75rem;
-    line-height: 0.9975rem;
-    font-weight: normal;
-    margin: 0;
-    font-style: italic;
-    color: var(--error-color-600);
-    padding-left: var(--padding-text);
+  display: flex;
+  font-size: 0.75rem;
+  line-height: 0.9975rem;
+  font-weight: normal;
+  margin: 0;
+  font-style: italic;
+  color: var(--color-error-600);
+  padding-left: var(--padding-text);
 }
 
 .errorMessage > svg {
-    flex-shrink: 0;
-    width: 14px;
-    margin-right: 8px;
+  flex-shrink: 0;
+  width: 14px;
+  margin-right: 8px;
 }
 
 .successMessage {
@@ -291,14 +291,13 @@ export default {
   font-weight: normal;
   margin: 0;
   font-style: italic;
-  color: var(--success-color-600);
+  color: var(--color-success-600);
   padding-left: var(--padding-text);
 }
 
-
 .successMessage > svg {
-    flex-shrink: 0;
-    width: 14px;
-    margin-right: 8px;
+  flex-shrink: 0;
+  width: 14px;
+  margin-right: 8px;
 }
 </style>

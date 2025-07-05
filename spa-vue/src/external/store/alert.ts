@@ -1,23 +1,19 @@
-import { defineStore } from "pinia";
-import type { alertParams, RootState } from '../types';
+import { defineStore } from 'pinia'
+import type { alertParams, RootState } from '../types'
 
-let idNotificacao = 1;
+let idNotificacao = 1
 
-
-
-
-
-export const useAlertStore = defineStore("alert", {
+export const useAlertStore = defineStore('alert', {
   state: () => ({
-    alerts: [] as alertParams[],
+    alerts: [] as alertParams[]
   }),
   actions: {
     setAlert({ tipo, title, mensagem, id = null, acoes = null, onClose = null }: alertParams) {
-      const idAlert = id ? id : idNotificacao++;
+      const idAlert = id ? id : idNotificacao++
 
-      const exists = this.alerts.find((alert) => alert.id === idAlert);
+      const exists = this.alerts.find((alert) => alert.id === idAlert)
 
-      if (exists) return;
+      if (exists) return
 
       this.alerts.push({
         tipo,
@@ -25,75 +21,75 @@ export const useAlertStore = defineStore("alert", {
         mensagem,
         id: idAlert,
         acoes: acoes,
-        onClose: onClose,
-      });
+        onClose: onClose
+      })
     },
     error({ title, mensagem, id = null, acoes = null, onClose = null }: alertParams) {
-      const idAlert = id ? id : idNotificacao++;
+      const idAlert = id ? id : idNotificacao++
 
-      const exists = this.alerts.find((alert) => alert.id === id);
+      const exists = this.alerts.find((alert) => alert.id === id)
 
-      if (exists) return;
+      if (exists) return
 
       this.alerts.push({
-        tipo: "error",
+        tipo: 'error',
         title: title,
         mensagem,
         id: idAlert,
         acoes: acoes,
-        onClose: onClose,
-      });
+        onClose: onClose
+      })
     },
     success({ title, mensagem, id = null, acoes = null, onClose = null }: alertParams) {
-      const idAlert = id ? id : idNotificacao++;
+      const idAlert = id ? id : idNotificacao++
 
-      const exists = this.alerts.find((alert) => alert.id === id);
+      const exists = this.alerts.find((alert) => alert.id === id)
 
-      if (exists) return;
+      if (exists) return
 
       this.alerts.push({
-        tipo: "success",
+        tipo: 'success',
         title: title,
         mensagem,
         id: idAlert,
         acoes: acoes,
-        onClose: onClose,
-      });
+        onClose: onClose
+      })
     },
     info({ title, mensagem, id = null, acoes = null, onClose = null }: alertParams) {
-      const idAlert = id ? id : idNotificacao++;
+      const idAlert = id ? id : idNotificacao++
 
-      const exists = this.alerts.find((alert) => alert.id === id);
+      const exists = this.alerts.find((alert) => alert.id === id)
 
-      if (exists) return;
+      if (exists) return
 
       this.alerts.push({
-        tipo: "info",
+        tipo: 'info',
         title: title,
         mensagem,
         id: idAlert,
         acoes: acoes,
-        onClose: onClose,
-      });
+        onClose: onClose
+      })
     },
     warning({ title, mensagem, id = null, acoes = null, onClose = null }: alertParams) {
-      const idAlert = id ? id : idNotificacao++;
+      const idAlert = id ? id : idNotificacao++
 
-      const exists = this.alerts.find((alert) => alert.id === id);
+      const exists = this.alerts.find((alert) => alert.id === id)
 
-      if (exists) return;
+      if (exists) return
 
       this.alerts.push({
-        tipo: "warning",
+        tipo: 'warning',
         title: title,
         mensagem,
         id: idAlert,
         acoes: acoes,
-        onClose: onClose,
-      });
+        onClose: onClose
+      })
     },
     removeAlert(id: any) {
-      this.alerts = this.alerts.filter((alert) => alert.id !== id);
-    },
-  },
-});
+      this.alerts = this.alerts.filter((alert) => alert.id !== id)
+    }
+  }
+})

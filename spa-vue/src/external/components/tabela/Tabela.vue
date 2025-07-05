@@ -13,7 +13,7 @@
         <thead>
           <template v-if="!$slots.thead">
             <HeadSort
-              v-for="(coluna, index) in colunas"
+              v-for="(coluna, index) in colunasVisiveis"
               :info="coluna.info"
               :key="index"
               :nome="coluna.nome"
@@ -23,12 +23,12 @@
               :maxWidth="coluna.maxWidth"
               :minWidth="coluna.minWidth"
               :permiteRemoverOrdenacao="permiteRemoverOrdenacao"
-            ></HeadSort>
+            />
           </template>
           <slot name="thead" :dados="dados" />
         </thead>
         <tbody v-if="dados && dados.length">
-          <slot name="colunas" :dados="dados" v-if="$slots.colunas"></slot>
+          <slot name="colunas" :dados="dados" :cols="colunasVisiveis" :isColVisible="isColVisible" v-if="$slots.colunas"></slot>
         </tbody>
         <tbody
           v-if="(!dados && !loading) || (dados && dados.length === 0 && !loading)"
@@ -75,6 +75,7 @@ interface Coluna {
   width?: string
   minWidth?: string
   maxWidth?: string
+  show?: boolean
 }
 
 type TabelaLayout = 'auto' | 'fixed'
@@ -148,6 +149,17 @@ export default {
       default: false
     }
   },
+  computed: {
+    colunasVisiveis() {
+      return this.colunas.filter((coluna) => {
+        if(coluna.show === undefined || coluna.show === true) {
+          return true;
+        }
+
+        return false;
+      });
+    },
+  },
   data() {
     return {
       checkedAll: false
@@ -157,7 +169,10 @@ export default {
     return {
       sortByTabela: (dados) => this.sortBy(dados),
       ordenando: computed(() => this.sortName),
-      order: computed(() => this.sortOrder)
+      order: computed(() => this.sortOrder),
+      colunasVisiveis: computed(() => this.colunasVisiveis),
+      permiteRemoverOrdenacao: computed(() => this.permiteRemoverOrdenacao),
+      isColVisible: (coluna) => this.isColVisible(coluna),
     }
   },
   methods: {
@@ -166,6 +181,9 @@ export default {
     },
     updatePagina(page) {
       this.$emit('onPage', page)
+    },
+    isColVisible(coluna) {
+      return this.colunasVisiveis.some((col) => col.nome === coluna && col.show);
     }
   }
 }

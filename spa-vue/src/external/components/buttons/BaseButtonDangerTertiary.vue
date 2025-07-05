@@ -1,19 +1,27 @@
 <template>
-  <BaseButton class="btn-danger-tertiary" :size="size" :min="min" :loading="loading" :is="is" :full="full">
+  <BaseButton
+    class="btn-danger-tertiary"
+    :size="size"
+    :min="min"
+    :loading="loading"
+    :is="is"
+    :full="full"
+    variant="danger-tertiary"
+  >
     <slot></slot>
   </BaseButton>
 </template>
 
 <script lang="ts">
-import { PropType } from "vue";
-import BaseButton from "./BaseButton.vue";
+import { PropType } from 'vue'
+import BaseButton from './BaseButton.vue'
 
 type TypeButton = 'submit' | 'button'
 type SizeButton = 'sm' | 'md' | 'lg'
 
 export default {
-  name: "BaseButtonDanger",
-  components: {BaseButton},
+  name: 'BaseButtonDanger',
+  components: { BaseButton },
   props: {
     is: {
       type: String,
@@ -44,42 +52,41 @@ export default {
 </script>
 
 <style scoped>
-
 .btn-danger-tertiary {
   background: transparent;
-  color: var(--error-color-600);
+  color: var(--color-error-600);
   border: 1px solid transparent;
 }
 
 .btn-danger-tertiary:hover {
-  background:var(--error-color-400);
+  background: var(--color-error-400);
   color: #fff;
 }
 
 .btn-danger-tertiary:focus:not(:active) {
-  border: 1px solid var(--error-color-600);
-  background: var(--error-color-400);
+  border: 1px solid var(--color-error-600);
+  background: var(--color-error-400);
   color: #fff;
 }
 
 .btn-danger-tertiary:active {
-  background: var(--error-color-500);
+  background: var(--color-error-500);
   color: #fff;
 }
 
 .btn-danger-tertiary:disabled {
-  background: var(--gray-color-200);
-  color: var(--gray-color-300);
+  background: var(--color-gray-200);
+  color: var(--color-gray-300);
   cursor: not-allowed;
   border: none;
 }
 
 .btn-danger-tertiary:disabled :deep(path) {
-  fill: var(--gray-color-300);
+  fill: var(--color-gray-300);
 }
 
 .btn-danger-tertiary :deep(path) {
-  fill: var(--error-color-600);
+  fill: var(--color-error-600);
 }
 
 .btn-danger-tertiary:hover :deep(path) {

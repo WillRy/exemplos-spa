@@ -1,24 +1,18 @@
 <template>
-  <BaseButton
-    class="btn-warning"
-    :size="size"
-    :min="min"
-    :loading="loading"
-    :is="is"
-  >
+  <BaseButton class="btn-warning" :size="size" :min="min" :loading="loading" :is="is">
     <slot></slot>
   </BaseButton>
 </template>
 
 <script lang="ts">
-import { PropType } from "vue";
-import BaseButton from "./BaseButton.vue";
+import { PropType } from 'vue'
+import BaseButton from './BaseButton.vue'
 
 type TypeButton = 'submit' | 'button'
 type SizeButton = 'sm' | 'md' | 'lg'
 
 export default {
-  name: "BaseButtonWarning",
+  name: 'BaseButtonWarning',
   components: { BaseButton },
   props: {
     is: {
@@ -46,33 +40,35 @@ export default {
       default: false
     }
   }
-};
+}
 </script>
 
 <style scoped>
 .btn-warning {
-  background: var(--warning-color-600);
+  background: var(--color-warning-600);
   color: #000;
 }
 
 .btn-warning:hover {
-  background: var(--warning-color-300);
+  background: var(--color-warning-300);
   color: #000;
 }
 
 .btn-warning:focus:not(:active) {
-  box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--warning-color-300);
-  background: var(--warning-color-300);
+  box-shadow:
+    0 0 0 1px #fff,
+    0 0 0 2px var(--color-warning-300);
+  background: var(--color-warning-300);
 }
 
 .btn-warning:active {
   color: #000;
-  background: var(--warning-color-700);
+  background: var(--color-warning-700);
 }
 
 .btn-warning:disabled {
-  background: var(--gray-color-200);
-  color: var(--gray-color-300);
+  background: var(--color-gray-200);
+  color: var(--color-gray-300);
   cursor: not-allowed;
   border: none;
 }

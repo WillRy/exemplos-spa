@@ -19,13 +19,13 @@
 
 <script>
 export default {
-  name: "NavegacaoAbasItem",
+  name: 'NavegacaoAbasItem',
   props: {
     active: {
-      default: false,
+      default: false
     },
     disabled: {
-      default: false,
+      default: false
     },
     contador: {
       default: null
@@ -38,26 +38,26 @@ export default {
     },
     valor: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
-  inject: ["valorAtivo", "mudarAba"],
+  inject: ['valorAtivo', 'mudarAba'],
   computed: {
     deveExibirContador() {
-      if(!this.exibirContador) return false;
+      if (!this.exibirContador) return false
 
-      if(this.exibeContadorComZero && this.contador >= 0) return true;
+      if (this.exibeContadorComZero && this.contador >= 0) return true
 
-      return this.contador > 0;
+      return this.contador > 0
     }
   },
   methods: {
     navegar() {
-      if (this.disabled) return;
-      this.$emit("navegar");
-    },
-  },
-};
+      if (this.disabled) return
+      this.$emit('navegar')
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -86,12 +86,14 @@ export default {
 
 .navegacao-abas-item.active {
   background: #fff;
-  color: var(--primary-color-principal);
+  color: var(--color-primary-principal);
 }
 
 .navegacao-abas-item:focus:not(.active) {
-  box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--primary-color-principal-hover);
-  background: var(--primary-color-principal-hover);
+  box-shadow:
+    0 0 0 1px #fff,
+    0 0 0 2px var(--color-primary-principal-hover);
+  background: var(--color-primary-principal-hover);
   color: #fff;
 }
 
@@ -101,8 +103,8 @@ export default {
 
 /* 
 .navegacao-abas-item:focus {
-    box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--second-color-400);
-    background: var(--second-color-400);
+    box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--color-second-400);
+    background: var(--color-second-400);
     color: #fff;
 } */
 
@@ -111,7 +113,7 @@ export default {
 } */
 
 .navegacao-abas-item:not(.active):hover {
-  background: var(--primary-color-principal-hover);
+  background: var(--color-primary-principal-hover);
   color: #fff;
 }
 
@@ -120,7 +122,7 @@ export default {
 }
 
 .navegacao-abas-item.active :deep(svg path) {
-  fill: var(--primary-color-principal);
+  fill: var(--color-primary-principal);
 }
 
 .navegacao-abas-item .conteudo {
@@ -146,17 +148,17 @@ export default {
 }
 
 .contador {
-    background: #fff;
-    color: var(--primary-color-principal);
-    padding: 4px;
-    border-radius: 5px;
-    font-weight: 700;
-    font-size: 14px;
-    flex-shrink: 0;
+  background: #fff;
+  color: var(--color-primary-principal);
+  padding: 4px;
+  border-radius: 5px;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
 }
 
 .contador.active {
-  background: var(--primary-color-principal);
+  background: var(--color-primary-principal);
   color: #fff;
 }
 </style>

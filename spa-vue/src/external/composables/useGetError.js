@@ -16,6 +16,8 @@ export function useGetError() {
       return e.message
     } else if (typeof e === 'string') {
       return e
+    } else if (message) {
+      return message
     }
 
     return mensagemReserva

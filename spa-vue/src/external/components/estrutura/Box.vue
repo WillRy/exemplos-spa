@@ -1,39 +1,26 @@
 <template>
-  <div
-    class="box-container"
-    :class="[`mb-${marginBottom}`, { 'ocupar-altura-maxima': ocuparAlturaMaxima }]"
-    :style="{height: height, maxHeight: maxHeight}"
-  >
-    <OverlineText class="titulo">
+  <div class="box-container" :class="[
+    `mb-${marginBottom}`,
+    { 'ocupar-altura-maxima': ocuparAlturaMaxima },
+    classeAlturaMaximaComScroll
+  ]" :style="{ height: height, maxHeight: maxHeight }">
+    <BaseText variant="overline-text-md" class="titulo" v-if="titulo || titulo === ''">
       <template v-if="titulo">
         {{ titulo }}
       </template>
-      <template v-else>
-        &nbsp;
-      </template>
-    </OverlineText>
+      <template v-else-if="titulo === ''"> &nbsp; </template>
+    </BaseText>
 
     <div :class="[{ 'acesso-bloqueado': bloqueado }, classeAlturaMaximaComScroll]" class="acesso-bloqueado-container">
-      <div class="acesso-bloqueado-box">
-        <svg
-          fill="#000000"
-          height="30px"
-          width="30px"
-          version="1.1"
-          id="Layer_1"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          viewBox="0 0 330 330"
-          xml:space="preserve"
-        >
+      <div class="acesso-bloqueado-box" :class="[classeAlturaMaximaComScroll]">
+        <svg fill="#000000" height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330 330" xml:space="preserve">
           <g id="XMLID_509_">
-            <path
-              id="XMLID_510_"
+            <path id="XMLID_510_"
               d="M65,330h200c8.284,0,15-6.716,15-15V145c0-8.284-6.716-15-15-15h-15V85c0-46.869-38.131-85-85-85
-                    S80,38.131,80,85v45H65c-8.284,0-15,6.716-15,15v170C50,323.284,56.716,330,65,330z M180,234.986V255c0,8.284-6.716,15-15,15
-                    s-15-6.716-15-15v-20.014c-6.068-4.565-10-11.824-10-19.986c0-13.785,11.215-25,25-25s25,11.215,25,25
-                    C190,223.162,186.068,230.421,180,234.986z M110,85c0-30.327,24.673-55,55-55s55,24.673,55,55v45H110V85z"
-            />
+                      S80,38.131,80,85v45H65c-8.284,0-15,6.716-15,15v170C50,323.284,56.716,330,65,330z M180,234.986V255c0,8.284-6.716,15-15,15
+                      s-15-6.716-15-15v-20.014c-6.068-4.565-10-11.824-10-19.986c0-13.785,11.215-25,25-25s25,11.215,25,25
+                      C190,223.162,186.068,230.421,180,234.986z M110,85c0-30.327,24.673-55,55-55s55,24.673,55,55v45H110V85z" />
           </g>
         </svg>
 
@@ -49,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import OverlineText from '../text/OverlineText.vue'
+import BaseText from '../text/BaseText.vue'
 import { PropType } from 'vue'
 
 type MarginBottomType = '0' | '1' | '2' | '3' | '4' | '5' | '6' | 'padrao'
@@ -65,7 +52,8 @@ export default {
     },
     titulo: {
       type: String,
-      required: false
+      required: false,
+      default: null
     },
     mensagemPermissao: {
       type: String,
@@ -87,12 +75,12 @@ export default {
     height: {
       type: String,
       required: false,
-      default: ""
+      default: ''
     },
     maxHeight: {
       type: String,
       required: false,
-      default: ""
+      default: ''
     },
     alturaMaximaComScroll: {
       type: Boolean,
@@ -100,7 +88,7 @@ export default {
     }
   },
   components: {
-    OverlineText
+    BaseText
   },
   computed: {
     classeAlturaMaximaComScroll() {
@@ -135,6 +123,7 @@ export default {
 .titulo {
   margin-left: var(--spacing-3) !important;
 }
+
 .acesso-bloqueado {
   position: relative;
 }
@@ -178,7 +167,7 @@ export default {
 .acesso-bloqueado p {
   background: #f3f3f3;
   border-radius: 8px;
-  color: var(--primary-color-principal);
+  color: var(--color-primary-principal);
   text-shadow: none;
   padding: 8px;
 }
@@ -189,11 +178,12 @@ export default {
   display: flex;
   flex-shrink: 0;
 }
+
 .acesso-bloqueado svg path {
-  fill: var(--primary-color-principal);
+  fill: var(--color-primary-principal);
 }
 
-.altura-maxima-scroll  {
+.altura-maxima-scroll {
   overflow: hidden;
   height: 100%;
 }

@@ -1,8 +1,5 @@
 <template>
-  <td
-    :style="allStyles"
-    :class="{ 'td-oculta-texto': esconderTexto }"
-  >
+  <td :style="allStyles" :class="{ 'td-oculta-texto': esconderTexto }">
     <div class="item" v-if="esconderTexto">
       <div class="item-box" :style="{ justifyContent: justify }">
         <span class="overflow">
@@ -79,7 +76,7 @@ export default {
         styles['max-width'] = this.width
       }
 
-      if(this.paddingColuna) {
+      if (this.paddingColuna) {
         styles['padding'] = this.paddingColuna
       }
 

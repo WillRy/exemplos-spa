@@ -123,6 +123,7 @@ import {
 } from '../stores/organizacao'
 import { definirIdioma } from '../lang'
 import DynamicThemeProvider from "@/external/provider/DynamicThemeProvider.vue"
+import { useConfigStore } from "@/external/store/config.ts"
 
 export default {
   name: 'Privado',
@@ -144,11 +145,13 @@ export default {
     const modalCriarOrganizacaoState = modalCriarOrganizacaoStore()
     const modalEditarOrganizacaoState = modalEditarOrganizacaoStore()
     const modalExcluirOrganizacaoState = modalExcluirOrganizacaoStore()
+    const configStore = useConfigStore()
     return {
       usuarioState,
       modalCriarOrganizacaoState,
       modalEditarOrganizacaoState,
-      modalExcluirOrganizacaoState
+      modalExcluirOrganizacaoState,
+      configStore
     }
   },
   data() {
@@ -177,6 +180,7 @@ export default {
   },
   methods: {
     mudarIdioma(lang) {
+      this.configStore.setConfig({locale: lang})
       definirIdioma(lang)
     },
     mudarSidebar() {

@@ -1,42 +1,65 @@
 <template>
   <div
     class="form-group"
-    :class="{ error: error, md: size === 'md', lg: size === 'lg', disabled: disabled }"
+    :class="{
+      error: error,
+      md: size === 'md',
+      lg: size === 'lg',
+      disabled: disabled
+    }"
   >
-    <BaseLabel :label="label" :padding="true" v-if="label" />
+    <BaseLabel :label="label" :padding="true" v-if="props.label" />
     <BaseLabel :padding="true" v-if="$slots.label">
       <slot name="label" />
     </BaseLabel>
 
-    <div style="display: flex; align-items: center" class="form-all-container">
-      <div class="form-group-container" :class="{ borda: borda, btn: true, icon: $slots.icon }">
+    <div style="display: flex; align-items: center">
+      <div class="form-group-container" :class="{ borda: borda, btn: $slots.btn }">
         <div v-if="$slots.icon" class="form-group-icon">
           <slot name="icon"></slot>
         </div>
         <div v-if="$slots.prefix" class="form-group-prefix">
           <slot name="prefix"></slot>
         </div>
-        <input
+
+        <VueDatePicker
           v-bind="$attrs"
-          type="file"
-          style="display: none"
-          ref="input"
-          @change="updateValue"
-          :multiple="multiple"
-        />
-        <input
-          :value="nomesArquivos"
-          @input="updateValue"
+          v-model="data"
+          :first-day-of-week="1"
+          :is24="is24hrConfig"
+          :teleport="true"
+          :timezone="timezoneConfig"
+          :locale="localeConfig"
+          :cancelText="config.txtCancelar"
+          :selectText="config.txtSelecionar"
+          :format="config.formatoMesAno"
           :disabled="disabled"
-          readonly
-          @click="abrirSelecaoArquivo"
-        />
-        <div class="form-group-btn-flutuante" v-if="nomesArquivos">
-          <button class="btn-remover-select" @click="removerArquivos">x</button>
+          :auto-apply="true"
+          month-picker
+        >
+          <template #dp-input="{ value }">
+            <input
+              :value="value"
+              :placeholder="placeholder"
+              @input.prevent=""
+              ref="input"
+              :disabled="disabled"
+              :name="name"
+              autocomplete="no"
+            />
+          </template>
+          <template #action-preview></template>
+        </VueDatePicker>
+        <div class="form-group-default-icon" @click="focusInput">
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
+            <path
+              d="M368.005 272h-96v96h96v-96zm-32-208v32h-160V64h-48v32h-24.01c-22.002 0-40 17.998-40 40v272c0 22.002 17.998 40 40 40h304.01c22.002 0 40-17.998 40-40V136c0-22.002-17.998-40-40-40h-24V64h-48zm72 344h-304.01V196h304.01v212z"
+            ></path>
+          </svg>
         </div>
       </div>
-      <div class="form-group-btn">
-        <BaseButtonPrimary @click="abrirSelecaoArquivo">Selecionar</BaseButtonPrimary>
+      <div v-if="$slots.btn" class="form-group-btn">
+        <slot name="btn"></slot>
       </div>
     </div>
 
@@ -62,99 +85,108 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
-import BaseButtonPrimary from '../buttons/BaseButtonPrimary.vue'
+import { format } from 'date-fns'
+import VueDatePicker from '@vuepic/vue-datepicker'
+
+import { computed, ref, defineEmits } from 'vue'
+import { useConfigStore } from '../../store/config.ts'
+import BaseLabel from './BaseLabel.vue'
 import InfoLegenda from '../info/InfoLegenda.vue'
 import InfoSuccess from '../info/InfoSuccess.vue'
 import InfoError from '../info/InfoError.vue'
-import BaseLabel from './BaseLabel.vue'
 
-type SizeInput = 'md' | 'lg'
-
-const emit = defineEmits(['update:modelValue'])
+export type SizeInput = 'md' | 'lg'
+export type ObjetoData = {
+  month: number
+  year: number
+}
 
 defineOptions({
   inheritAttrs: false
 })
 
-const input = ref<HTMLInputElement | null>(null)
-
 defineExpose({
-  focusInput: () => {
-    if (!input.value) return
-    input.value.focus()
-  },
-  clear() {
-    emit('update:modelValue', null)
-    if (!input.value) return
-    input.value.value = ''
-  }
+  focusInput,
+  clickInput
 })
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: ObjetoData | null): void
+  (e: 'update:formatado', value: string | null): void
+}>()
+
+const input = ref(null)
+const config = useConfigStore()
 
 const props = withDefaults(
   defineProps<{
-    disabled?: boolean
+    size?: SizeInput
     borda?: boolean
     label?: string
-    modelValue?: FileList | null
+    placeholder?: string
     error?: string
     success?: string
     legenda?: string
-    size?: SizeInput
-    multiple?: boolean
+    modelValue?: ObjetoData
+    disabled?: boolean
+    timezone?: string
+    is24hr?: boolean
+    locale?: string
+    name?: string
   }>(),
   {
-    disabled: false,
+    size: 'md',
     borda: true,
     label: '',
-    modelValue: null,
+    placeholder: '',
     error: '',
     success: '',
     legenda: '',
-    size: 'md' as SizeInput,
-    multiple: false
+    disabled: false,
+    timezone: 'America/Sao_Paulo',
+    is24hr: true,
+    locale: 'pt-BR',
+    name: ''
   }
 )
 
-const nomesArquivos = computed(() => {
-  if (!props.modelValue) return ''
+const timezoneConfig = computed(() => props.timezone ?? config.config.current_timezone)
+const is24hrConfig = computed(() => props.is24hr ?? config.config.is24hr)
+const localeConfig = computed(() => props.locale ?? config.config.locale)
 
-  const arquivos = props.modelValue as FileList
-  const arrayArquivos = Array.from(arquivos)
+const data = computed({
+  get() {
+    if (!props.modelValue) {
+      return null
+    }
 
-  return arrayArquivos.map((arquivo) => arquivo.name).join(', ')
+    return {
+      month: props.modelValue.month,
+      year: props.modelValue.year
+    }
+  },
+  set(valor) {
+    if (!valor?.month && !valor?.year) {
+      emit('update:modelValue', null)
+      return null
+    }
+
+    emit('update:modelValue', valor)
+
+    return null
+  }
 })
 
-watch(
-  () => props.modelValue,
-  () => {
-    const arquivos = props.modelValue as FileList
-
-    if (arquivos && arquivos.length === 0 && input.value) {
-      input.value.value = ''
-    }
-
-    if (!arquivos && input.value) {
-      input.value.value = ''
-    }
-  }
-)
-
-function updateValue(event: Event) {
-  emit('update:modelValue', (event.target as HTMLInputElement).files)
-}
-
-function abrirSelecaoArquivo() {
+function focusInput() {
   if (!input.value) return
-
-  input.value.click()
+  ;(input.value as HTMLInputElement).focus()
 }
 
-function removerArquivos() {
-  emit('update:modelValue', null)
+function clickInput() {
+  if (!input.value) return
+  ;(input.value as HTMLInputElement).click()
 }
 </script>
-
 <style scoped>
 * {
   box-sizing: border-box;
@@ -207,6 +239,29 @@ function removerArquivos() {
 .form-group-icon > :deep(svg) {
   height: 18px;
   width: 18px;
+}
+
+.form-group-container:focus-within .form-group-icon > :deep(svg path) {
+  fill: var(--focus-color);
+}
+
+.form-group-default-icon {
+  flex-shrink: 0;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-group-default-icon > :deep(img) {
+  height: 18px;
+  width: 18px;
+}
+
+.form-group-default-icon > :deep(svg) {
+  height: 18px;
+  width: 18px;
+  fill: var(--color-primary-principal);
 }
 
 .form-group-container:focus-within .form-group-icon > :deep(svg path) {
@@ -360,32 +415,96 @@ input::placeholder {
   height: var(--lg-min-height-btn);
 }
 
-.form-group-btn-flutuante {
-  display: flex;
-  align-items: center;
-  position: absolute;
-  right: 8px;
-  gap: 12px;
-}
-
-.btn-remover-select {
-  all: unset;
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translate(0, -50%);
-  z-index: 3;
-  background: var(--color-error-600);
-  color: #fff;
-  font-weight: bold;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  padding: 0px 6px;
+.form-group-btn :deep(button) {
+  padding: 13px 20px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 20px;
-  line-height: 0;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  outline: 0;
+  gap: 10px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1;
+  position: relative;
+  background: var(--color-primary-principal);
+  color: #fff;
+
+  border-radius: 0 8px 8px 0;
+}
+
+.form-group-btn :deep(button) {
+  background: var(--color-primary-principal);
+  color: #fff;
+  border: 1px solid transparent;
+}
+
+.form-group-btn :deep(button:hover) {
+  background: var(--color-primary-principal-hover);
+  color: #fff;
+}
+
+.form-group-btn :deep(button:focus) {
+  box-shadow:
+    0 0 0 1px #fff,
+    0 0 0 2px var(--color-primary-principal-focus);
+  background: var(--color-primary-principal-focus);
+  color: #fff;
+}
+
+.form-group-btn :deep(button:active) {
+  background: var(--color-primary-principal-active);
+  color: #fff;
+}
+
+.form-group-btn :deep(button:disabled) {
+  background: var(--color-gray-200);
+  color: var(--color-gray-300);
+  cursor: not-allowed;
+  border: none;
+}
+
+.form-group-btn :disabled :deep(path) {
+  fill: var(--color-gray-300);
+}
+
+.form-group-btn :deep(path) {
+  fill: #fff;
+}
+
+.form-group-btn :hover :deep(path) {
+  fill: #fff;
+}
+
+.form-group-btn :focus :deep(path) {
+  fill: #fff;
+}
+
+.form-group-btn :active :deep(path) {
+  fill: #fff;
+}
+
+.form-group-container.borda:focus-within ~ .form-group-btn :deep(button:not(:active)) {
+  box-shadow: var(--color-primary-principal) 0px 0px 0px var(--border);
+}
+
+.form-group-container.borda:focus-within ~ .form-group-btn :deep(button:hover) {
+  box-shadow: var(--color-primary-principal-hover) 0px 0px 0px var(--border);
+}
+
+.md
+  .form-group-container
+  > div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
+  width: 100%;
+}
+
+.lg
+  .form-group-container
+  > div:not(.form-group-icon):not(.form-group-prefix):not(.form-group-default-icon) {
+  min-height: 54px;
+  width: 100%;
 }
 </style>

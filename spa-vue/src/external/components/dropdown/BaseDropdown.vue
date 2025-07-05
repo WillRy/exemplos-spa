@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown-container" :class="{open: open}">
+  <div class="dropdown-container" :class="{ open: open }">
     <VDropdown
       :triggers="[]"
       :shown="open"
@@ -29,44 +29,47 @@
 </template>
 
 <script lang="ts">
-import { Dropdown } from "floating-vue";
-import { directive } from "../../directives/click-away";
-import BaseButton from "../buttons/BaseButton.vue";
-import ArrowDownSolidIcon from "../icons/ArrowDownSolidIcon.vue";
+import { Dropdown } from 'floating-vue'
+import { directive } from '../../directives/click-away'
+import BaseButton from '../buttons/BaseButton.vue'
+import ArrowDownSolidIcon from '../icons/ArrowDownSolidIcon.vue'
+import { PropType } from 'vue'
+type SizeButton = 'sm' | 'md' | 'lg'
+
 export default {
-  name: "BaseDropdown",
-  emits: ["onOpen", "onClose"],
+  name: 'BaseDropdown',
+  emits: ['onOpen', 'onClose'],
   props: {
     size: {
-      type: String,
-      default: "md",
-    },
+      type: String as PropType<SizeButton>,
+      default: 'md'
+    }
   },
   components: {
     VDropdown: Dropdown,
     BaseButton,
     ArrowDownSolidIcon
-},
+  },
   directives: {
-    "click-away": directive,
+    'click-away': directive
   },
   data() {
     return {
-      open: false,
-    };
+      open: false
+    }
   },
   methods: {
     toggle() {
-      this.open = !this.open;
+      this.open = !this.open
 
-      this.$emit(this.open ? "onOpen" : "onClose");
+      this.$emit(this.open ? 'onOpen' : 'onClose')
     },
     fechar() {
-      this.open = false;
-      this.$emit("onClose");
-    },
-  },
-};
+      this.open = false
+      this.$emit('onClose')
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -107,7 +110,7 @@ img {
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  color: var(--primary-color-principal);
+  color: var(--color-primary-principal);
   border-radius: 8px;
   outline: 0;
   flex-shrink: 0;
@@ -148,7 +151,7 @@ img {
 }
 
 .btn {
-  all: "unset";
+  all: 'unset';
   display: flex;
   align-items: center;
   justify-content: center;
@@ -164,7 +167,7 @@ img {
   position: relative;
 }
 
-.btn[data-loading="true"] {
+.btn[data-loading='true'] {
   cursor: progress !important;
 }
 
@@ -216,11 +219,10 @@ img {
   line-height: 1;
 }
 
-
 .dropdown-btn {
-  border: 1px solid var(--primary-color-principal-hover);
+  border: 1px solid var(--color-primary-principal-hover);
   background: none;
-  color: var(--primary-color-principal);
+  color: var(--color-primary-principal);
 }
 
 .dropdown-btn svg {
@@ -228,28 +230,24 @@ img {
 }
 
 .dropdown-btn svg :deep(path) {
-  fill: var(--primary-color-principal) !important;
+  fill: var(--color-primary-principal) !important;
 }
-
 
 .dropdown-btn:hover {
-  background: #EFF0F2 0% 0%;
-
+  background: #eff0f2 0% 0%;
 }
 
-.open .dropdown-btn  {
-  background: var(--primary-color-principal-focus);
+.open .dropdown-btn {
+  background: var(--color-primary-principal-focus);
   border: 1px solid transparent;
   color: #fff;
 }
 
-.open .dropdown-btn svg{
+.open .dropdown-btn svg {
   rotate: 180deg;
 }
 
 .open .dropdown-btn svg :deep(path) {
   fill: #fff !important;
 }
-
-
 </style>
